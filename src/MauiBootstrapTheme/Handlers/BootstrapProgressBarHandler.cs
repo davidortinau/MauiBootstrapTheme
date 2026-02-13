@@ -71,7 +71,11 @@ public static class BootstrapProgressBarHandler
         var scale = theme.ProgressHeight / 4.0;
         progressView.Transform = CGAffineTransform.MakeScale(1.0f, (nfloat)scale);
         progressView.ClipsToBounds = true;
-        progressView.Layer.CornerRadius = (nfloat)(theme.CornerRadius / 2.0);
+        
+        // Corner radius needs to be divided by the Y scale factor to look correct after scaling
+        // For 6px corners with 4x scale: 6/4 = 1.5px before scaling = 6px after
+        progressView.Layer.CornerRadius = (nfloat)(theme.CornerRadius / scale);
+        progressView.Layer.MasksToBounds = true;
     }
 #endif
 
