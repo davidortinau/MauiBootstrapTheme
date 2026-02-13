@@ -1,5 +1,6 @@
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Themes.Default;
+using MauiDevFlow.Agent;
 
 namespace MauiBootstrapTheme.Sample;
 
@@ -17,6 +18,10 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
+
+#if DEBUG
+        builder.AddMauiDevFlowAgent();
+#endif
 
         return builder.Build();
     }

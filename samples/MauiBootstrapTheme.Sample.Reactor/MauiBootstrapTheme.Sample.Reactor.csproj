@@ -19,10 +19,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.1" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.31" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.31" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
     <PackageReference Include="Reactor.Maui" Version="2.*" />
+    <PackageReference Include="Redth.MauiDevFlow.Agent" Version="*" />
   </ItemGroup>
 
   <ItemGroup>
