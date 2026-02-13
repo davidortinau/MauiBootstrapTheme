@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <BootstrapThemeOutputDir>$(IntermediateOutputPath)BootstrapTheme\</BootstrapThemeOutputDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <BootstrapCss Include="wwwroot\css\bootstrap.css" Condition="Exists('wwwroot\css\bootstrap.css')" />
+  </ItemGroup>
+
+  <Target Name="GenerateBootstrapTheme" 
+          BeforeTargets="CoreCompile" 
+          Condition="'@(BootstrapCss)' != ''"
+          Inputs="@(BootstrapCss)"
+          Outputs="$(BootstrapThemeOutputDir)BootstrapTheme.g.cs">
+    
+    <MakeDir Directories="$(BootstrapThemeOutputDir)" />
+    
+    <GenerateBootstrapThemeTask
+        CssFile="@(BootstrapCss)"
+        OutputDirectory="$(BootstrapThemeOutputDir)"
+        Namespace="$(RootNamespace).Generated" />
+    
+    <ItemGroup>
+      <Compile Include="$(BootstrapThemeOutputDir)BootstrapTheme.g.cs" />
+    </ItemGroup>
+    
+  </Target>
+
+</Project>

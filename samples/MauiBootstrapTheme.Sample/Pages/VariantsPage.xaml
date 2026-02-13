@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
+             x:Class="MauiBootstrapTheme.Sample.Pages.VariantsPage"
+             Title="Variants">
+    
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            
+            <!-- Header -->
+            <Label Text="Color Variants"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+            
+            <Label Text="All Bootstrap color variants applied to various controls."
+                   FontSize="14"
+                   TextColor="Gray"
+                   HorizontalOptions="Center" />
+            
+            <!-- Primary -->
+            <Frame Padding="16" CornerRadius="8" BorderColor="#0d6efd" BackgroundColor="#cfe2ff">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Primary" FontAttributes="Bold" FontSize="18" TextColor="#052c65" />
+                    <Entry Placeholder="Primary Entry" theme:Bootstrap.Variant="Primary" />
+                    <Button Text="Primary Button" theme:Bootstrap.Variant="Primary" />
+                    <Button Text="Primary Outline" theme:Bootstrap.Variant="Primary" theme:Bootstrap.IsOutlined="True" />
+                </VerticalStackLayout>
+            </Frame>
+            
+            <!-- Secondary -->
+            <Frame Padding="16" CornerRadius="8" BorderColor="#6c757d" BackgroundColor="#e2e3e5">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Secondary" FontAttributes="Bold" FontSize="18" TextColor="#41464b" />
+                    <Entry Placeholder="Secondary Entry" theme:Bootstrap.Variant="Secondary" />
+                    <Button Text="Secondary Button" theme:Bootstrap.Variant="Secondary" />
+                    <Button Text="Secondary Outline" theme:Bootstrap.Variant="Secondary" theme:Bootstrap.IsOutlined="True" />
+                </VerticalStackLayout>
+            </Frame>
+            
+            <!-- Success -->
+            <Frame Padding="16" CornerRadius="8" BorderColor="#198754" BackgroundColor="#d1e7dd">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Success" FontAttributes="Bold" FontSize="18" TextColor="#0a3622" />
+                    <Entry Placeholder="Success Entry" theme:Bootstrap.Variant="Success" />
+                    <Button Text="Success Button" theme:Bootstrap.Variant="Success" />
+                    <Button Text="Success Outline" theme:Bootstrap.Variant="Success" theme:Bootstrap.IsOutlined="True" />
+                </VerticalStackLayout>
+            </Frame>
+            
+            <!-- Danger -->
+            <Frame Padding="16" CornerRadius="8" BorderColor="#dc3545" BackgroundColor="#f8d7da">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Danger" FontAttributes="Bold" FontSize="18" TextColor="#58151c" />
+                    <Entry Placeholder="Danger Entry" theme:Bootstrap.Variant="Danger" />
+                    <Button Text="Danger Button" theme:Bootstrap.Variant="Danger" />
+                    <Button Text="Danger Outline" theme:Bootstrap.Variant="Danger" theme:Bootstrap.IsOutlined="True" />
+                </VerticalStackLayout>
+            </Frame>
+            
+            <!-- Warning -->
+            <Frame Padding="16" CornerRadius="8" BorderColor="#ffc107" BackgroundColor="#fff3cd">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Warning" FontAttributes="Bold" FontSize="18" TextColor="#664d03" />
+                    <Entry Placeholder="Warning Entry" theme:Bootstrap.Variant="Warning" />
+                    <Button Text="Warning Button" theme:Bootstrap.Variant="Warning" />
+                    <Button Text="Warning Outline" theme:Bootstrap.Variant="Warning" theme:Bootstrap.IsOutlined="True" />
+                </VerticalStackLayout>
+            </Frame>
+            
+            <!-- Info -->
+            <Frame Padding="16" CornerRadius="8" BorderColor="#0dcaf0" BackgroundColor="#cff4fc">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Info" FontAttributes="Bold" FontSize="18" TextColor="#055160" />
+                    <Entry Placeholder="Info Entry" theme:Bootstrap.Variant="Info" />
+                    <Button Text="Info Button" theme:Bootstrap.Variant="Info" />
+                    <Button Text="Info Outline" theme:Bootstrap.Variant="Info" theme:Bootstrap.IsOutlined="True" />
+                </VerticalStackLayout>
+            </Frame>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>

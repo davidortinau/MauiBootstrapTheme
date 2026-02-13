@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    <!-- NuGet Package Properties -->
+    <PackageId>MauiBootstrapTheme.Build</PackageId>
+    <Version>0.1.0-preview1</Version>
+    <Authors>David Ortinau</Authors>
+    <Description>MSBuild task for parsing Bootstrap CSS and generating theme code for MauiBootstrapTheme.</Description>
+    <PackageTags>maui;bootstrap;theme;msbuild;codegen</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/davidortinau/MauiBootstrapTheme</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/davidortinau/MauiBootstrapTheme</RepositoryUrl>
+    
+    <!-- MSBuild task settings -->
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <NoWarn>$(NoWarn);NU5100</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ExCSS" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="17.12.6" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.12.6" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="build\**" Pack="true" PackagePath="build\" />
+  </ItemGroup>
+
+</Project>

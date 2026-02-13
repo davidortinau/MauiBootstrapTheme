@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MauiBootstrapTheme.Sample.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MauiBootstrapTheme.Sample"
+    xmlns:pages="clr-namespace:MauiBootstrapTheme.Sample.Pages"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Bootstrap Theme">
+
+    <TabBar>
+        <ShellContent
+            Title="Controls"
+            ContentTemplate="{DataTemplate pages:ControlsPage}"
+            Icon="{OnPlatform Default='', iOS='square.grid.2x2'}" />
+        
+        <ShellContent
+            Title="Variants"
+            ContentTemplate="{DataTemplate pages:VariantsPage}"
+            Icon="{OnPlatform Default='', iOS='paintpalette'}" />
+        
+        <ShellContent
+            Title="Forms"
+            ContentTemplate="{DataTemplate pages:FormsPage}"
+            Icon="{OnPlatform Default='', iOS='doc.text'}" />
+    </TabBar>
+
+</Shell>

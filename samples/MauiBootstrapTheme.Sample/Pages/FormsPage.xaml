@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
+             x:Class="MauiBootstrapTheme.Sample.Pages.FormsPage"
+             Title="Forms">
+    
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            
+            <!-- Header -->
+            <Label Text="Form Examples"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+            
+            <Label Text="Real-world form layouts using Bootstrap-themed controls."
+                   FontSize="14"
+                   TextColor="Gray"
+                   HorizontalOptions="Center" />
+            
+            <!-- Login Form -->
+            <Frame Padding="20" CornerRadius="8" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Login" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" />
+                    
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Email address" FontSize="14" />
+                        <Entry Placeholder="name@example.com" 
+                               Keyboard="Email"
+                               theme:Bootstrap.Variant="Default" />
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Password" FontSize="14" />
+                        <Entry Placeholder="Password" 
+                               IsPassword="True"
+                               theme:Bootstrap.Variant="Default" />
+                    </VerticalStackLayout>
+                    
+                    <HorizontalStackLayout Spacing="8">
+                        <CheckBox />
+                        <Label Text="Remember me" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    
+                    <Button Text="Sign In" 
+                            theme:Bootstrap.Variant="Primary" 
+                            HorizontalOptions="Fill" />
+                </VerticalStackLayout>
+            </Frame>
+            
+            <!-- Contact Form -->
+            <Frame Padding="20" CornerRadius="8" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Contact Us" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" />
+                    
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="First Name" FontSize="14" />
+                            <Entry Placeholder="John" />
+                        </VerticalStackLayout>
+                        
+                        <VerticalStackLayout Spacing="4" Grid.Column="1">
+                            <Label Text="Last Name" FontSize="14" />
+                            <Entry Placeholder="Doe" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Email" FontSize="14" />
+                        <Entry Placeholder="john.doe@example.com" 
+                               Keyboard="Email" />
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Subject" FontSize="14" />
+                        <Picker Title="Select a topic">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>General Inquiry</x:String>
+                                    <x:String>Technical Support</x:String>
+                                    <x:String>Sales</x:String>
+                                    <x:String>Feedback</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Message" FontSize="14" />
+                        <Editor Placeholder="Your message here..."
+                                HeightRequest="120"
+                                theme:Bootstrap.Variant="Default" />
+                    </VerticalStackLayout>
+                    
+                    <HorizontalStackLayout Spacing="12" HorizontalOptions="End">
+                        <Button Text="Cancel" 
+                                theme:Bootstrap.Variant="Secondary"
+                                theme:Bootstrap.IsOutlined="True" />
+                        <Button Text="Send Message" 
+                                theme:Bootstrap.Variant="Success" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+            
+            <!-- Validation Example -->
+            <Frame Padding="20" CornerRadius="8" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Validation States" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" />
+                    
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Valid Input" FontSize="14" />
+                        <Entry Text="Valid entry"
+                               theme:Bootstrap.Variant="Success" />
+                        <Label Text="✓ Looks good!" FontSize="12" TextColor="#198754" />
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Invalid Input" FontSize="14" />
+                        <Entry Placeholder="Required field"
+                               theme:Bootstrap.Variant="Danger" />
+                        <Label Text="✗ This field is required." FontSize="12" TextColor="#dc3545" />
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Warning Input" FontSize="14" />
+                        <Entry Text="Check this value"
+                               theme:Bootstrap.Variant="Warning" />
+                        <Label Text="⚠ Please verify this value." FontSize="12" TextColor="#ffc107" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>

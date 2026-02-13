@@ -1,0 +1,56 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiBootstrapTheme", "src\MauiBootstrapTheme\MauiBootstrapTheme.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiBootstrapTheme.Build", "src\MauiBootstrapTheme.Build\MauiBootstrapTheme.Build.csproj", "{B2C3D4E5-F678-90AB-CDEF-123456789012}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiBootstrapTheme.Themes.Default", "src\MauiBootstrapTheme.Themes.Default\MauiBootstrapTheme.Themes.Default.csproj", "{C3D4E5F6-7890-ABCD-EF12-345678901234}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiBootstrapTheme.Sample", "samples\MauiBootstrapTheme.Sample\MauiBootstrapTheme.Sample.csproj", "{D4E5F678-90AB-CDEF-1234-567890123456}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiBootstrapTheme.Tests", "tests\MauiBootstrapTheme.Tests\MauiBootstrapTheme.Tests.csproj", "{E5F67890-ABCD-EF12-3456-789012345678}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{SRC00000-0000-0000-0000-000000000000}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{SAMP0000-0000-0000-0000-000000000000}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{TEST0000-0000-0000-0000-000000000000}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2C3D4E5-F678-90AB-CDEF-123456789012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2C3D4E5-F678-90AB-CDEF-123456789012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2C3D4E5-F678-90AB-CDEF-123456789012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2C3D4E5-F678-90AB-CDEF-123456789012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3D4E5F6-7890-ABCD-EF12-345678901234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D4E5F6-7890-ABCD-EF12-345678901234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D4E5F6-7890-ABCD-EF12-345678901234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D4E5F6-7890-ABCD-EF12-345678901234}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4E5F678-90AB-CDEF-1234-567890123456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4E5F678-90AB-CDEF-1234-567890123456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4E5F678-90AB-CDEF-1234-567890123456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4E5F678-90AB-CDEF-1234-567890123456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5F67890-ABCD-EF12-3456-789012345678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5F67890-ABCD-EF12-3456-789012345678}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5F67890-ABCD-EF12-3456-789012345678}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5F67890-ABCD-EF12-3456-789012345678}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890} = {SRC00000-0000-0000-0000-000000000000}
+		{B2C3D4E5-F678-90AB-CDEF-123456789012} = {SRC00000-0000-0000-0000-000000000000}
+		{C3D4E5F6-7890-ABCD-EF12-345678901234} = {SRC00000-0000-0000-0000-000000000000}
+		{D4E5F678-90AB-CDEF-1234-567890123456} = {SAMP0000-0000-0000-0000-000000000000}
+		{E5F67890-ABCD-EF12-3456-789012345678} = {TEST0000-0000-0000-0000-000000000000}
+	EndGlobalSection
+EndGlobal

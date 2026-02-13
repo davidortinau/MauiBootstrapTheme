@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
+             x:Class="MauiBootstrapTheme.Sample.Pages.ControlsPage"
+             Title="Controls">
+    
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            
+            <!-- Header -->
+            <Label Text="Bootstrap Themed Controls"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+            
+            <Label Text="Stock MAUI controls styled with Bootstrap 5 theme values."
+                   FontSize="14"
+                   TextColor="Gray"
+                   HorizontalOptions="Center" />
+            
+            <!-- Entry Controls Section -->
+            <Frame Padding="16" CornerRadius="8" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Entry Controls" FontAttributes="Bold" FontSize="18" />
+                    
+                    <Entry Placeholder="Default Entry" />
+                    
+                    <Entry Placeholder="Primary Entry" 
+                           theme:Bootstrap.Variant="Primary" />
+                    
+                    <Entry Placeholder="Danger Entry" 
+                           theme:Bootstrap.Variant="Danger" />
+                    
+                    <Entry Placeholder="Large Entry" 
+                           theme:Bootstrap.Size="Large" />
+                    
+                    <Entry Placeholder="Small Entry" 
+                           theme:Bootstrap.Size="Small" />
+                </VerticalStackLayout>
+            </Frame>
+            
+            <!-- Button Controls Section -->
+            <Frame Padding="16" CornerRadius="8" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Button Controls" FontAttributes="Bold" FontSize="18" />
+                    
+                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Button Text="Primary" 
+                                theme:Bootstrap.Variant="Primary" />
+                        <Button Text="Secondary" 
+                                theme:Bootstrap.Variant="Secondary" />
+                        <Button Text="Success" 
+                                theme:Bootstrap.Variant="Success" />
+                    </HorizontalStackLayout>
+                    
+                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Button Text="Danger" 
+                                theme:Bootstrap.Variant="Danger" />
+                        <Button Text="Warning" 
+                                theme:Bootstrap.Variant="Warning" />
+                        <Button Text="Info" 
+                                theme:Bootstrap.Variant="Info" />
+                    </HorizontalStackLayout>
+                    
+                    <Label Text="Outline Buttons" FontSize="14" TextColor="Gray" />
+                    
+                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Button Text="Primary" 
+                                theme:Bootstrap.Variant="Primary" 
+                                theme:Bootstrap.IsOutlined="True" />
+                        <Button Text="Secondary" 
+                                theme:Bootstrap.Variant="Secondary" 
+                                theme:Bootstrap.IsOutlined="True" />
+                        <Button Text="Danger" 
+                                theme:Bootstrap.Variant="Danger" 
+                                theme:Bootstrap.IsOutlined="True" />
+                    </HorizontalStackLayout>
+                    
+                    <Label Text="Pill Buttons" FontSize="14" TextColor="Gray" />
+                    
+                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Button Text="Pill Primary" 
+                                theme:Bootstrap.Variant="Primary"
+                                theme:Bootstrap.IsPill="True" />
+                        <Button Text="Pill Success" 
+                                theme:Bootstrap.Variant="Success"
+                                theme:Bootstrap.IsPill="True" />
+                    </HorizontalStackLayout>
+                    
+                    <Label Text="Button Sizes" FontSize="14" TextColor="Gray" />
+                    
+                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Button Text="Large" 
+                                theme:Bootstrap.Variant="Primary"
+                                theme:Bootstrap.Size="Large" />
+                        <Button Text="Default" 
+                                theme:Bootstrap.Variant="Primary" />
+                        <Button Text="Small" 
+                                theme:Bootstrap.Variant="Primary"
+                                theme:Bootstrap.Size="Small" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+            
+            <!-- Editor Controls Section -->
+            <Frame Padding="16" CornerRadius="8" BorderColor="LightGray">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Editor Controls" FontAttributes="Bold" FontSize="18" />
+                    
+                    <Editor Placeholder="Default Editor" 
+                            HeightRequest="80" />
+                    
+                    <Editor Placeholder="Primary Editor"
+                            HeightRequest="80"
+                            theme:Bootstrap.Variant="Primary" />
+                </VerticalStackLayout>
+            </Frame>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>
