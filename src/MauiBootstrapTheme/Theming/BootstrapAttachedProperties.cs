@@ -321,6 +321,7 @@ public static class Bootstrap
         {
             label.FontSize = theme.GetHeadingFontSize(heading);
             label.FontAttributes = FontAttributes.Bold;
+            label.LineHeight = theme.LineHeightHeading;
         }
 
         // Apply text style
@@ -328,6 +329,7 @@ public static class Bootstrap
         {
             case BootstrapTextStyle.Lead:
                 label.FontSize = theme.FontSizeLead;
+                label.LineHeight = theme.LineHeightLead;
                 break;
             case BootstrapTextStyle.Small:
                 label.FontSize = theme.FontSizeSmall;

@@ -115,12 +115,17 @@ public class BootstrapTheme
     public double FontSizeLg { get; set; } = 20.0;
     public double FontSizeLead { get; set; } = 20.0;  // 1.25rem
     public double FontSizeSmall { get; set; } = 12.8; // 0.8rem
-    public double FontSizeH1 { get; set; } = 48.0;    // Bootstrap computed: 48px
-    public double FontSizeH2 { get; set; } = 40.0;    // Bootstrap computed: 40px (was 32)
-    public double FontSizeH3 { get; set; } = 32.0;    // Bootstrap computed: 32px (was 28)
-    public double FontSizeH4 { get; set; } = 24.0;    // 1.5rem
-    public double FontSizeH5 { get; set; } = 20.0;    // 1.25rem
-    public double FontSizeH6 { get; set; } = 16.0;    // 1rem
+    public double FontSizeH1 { get; set; } = 40.0;    // Bootstrap 2.5rem = 40px
+    public double FontSizeH2 { get; set; } = 32.0;    // Bootstrap 2rem = 32px
+    public double FontSizeH3 { get; set; } = 28.0;    // Bootstrap 1.75rem = 28px
+    public double FontSizeH4 { get; set; } = 24.0;    // Bootstrap 1.5rem = 24px
+    public double FontSizeH5 { get; set; } = 20.0;    // Bootstrap 1.25rem = 20px
+    public double FontSizeH6 { get; set; } = 16.0;    // Bootstrap 1rem = 16px
+    
+    // Line height multipliers (Bootstrap defaults)
+    public double LineHeightBase { get; set; } = 1.5;     // Bootstrap body line-height
+    public double LineHeightHeading { get; set; } = 1.2;  // Bootstrap heading line-height
+    public double LineHeightLead { get; set; } = 1.5;     // Bootstrap lead line-height
     
     // ── Control-Specific ──
     
