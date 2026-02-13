@@ -111,9 +111,9 @@
             <VerticalStackLayout Spacing="8">
                 <Label Text="Spinners" FontSize="24" />
                 <HorizontalStackLayout Spacing="16">
-                    <ActivityIndicator IsRunning="True" Color="{x:Static theme:BootstrapTheme.Primary}" />
-                    <ActivityIndicator IsRunning="True" Color="{x:Static theme:BootstrapTheme.Success}" />
-                    <ActivityIndicator IsRunning="True" Color="{x:Static theme:BootstrapTheme.Danger}" />
+                    <ActivityIndicator IsRunning="True" theme:Bootstrap.Variant="Primary" />
+                    <ActivityIndicator IsRunning="True" theme:Bootstrap.Variant="Success" />
+                    <ActivityIndicator IsRunning="True" theme:Bootstrap.Variant="Danger" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
             

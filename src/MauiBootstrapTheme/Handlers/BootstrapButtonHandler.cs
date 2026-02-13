@@ -40,6 +40,16 @@ public static class BootstrapButtonHandler
         
         var cornerRadius = isPill ? theme.CornerRadiusPill : GetCornerRadiusForSize(size, theme);
         var (backgroundColor, textColor) = Bootstrap.GetVariantColors(variant, theme);
+        
+        // For outline buttons, use transparent background and variant color for text
+        if (isOutlined && !IsOutlineVariant(variant))
+        {
+            // User set IsOutlined=True on a regular variant like Primary
+            // Override to transparent background with colored text
+            backgroundColor = Colors.Transparent;
+            textColor = Bootstrap.GetOutlineBorderColor(variant, theme);
+        }
+        
         var borderColor = isOutlined ? Bootstrap.GetOutlineBorderColor(variant, theme) : backgroundColor;
         var borderWidth = isOutlined ? theme.BorderWidth : 0;
         var (paddingX, paddingY) = GetPaddingForSize(size, theme);
