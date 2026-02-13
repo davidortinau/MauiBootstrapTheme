@@ -23,6 +23,11 @@
             Title="Forms"
             ContentTemplate="{DataTemplate pages:FormsPage}"
             Icon="{OnPlatform Default='', iOS='doc.text'}" />
+        
+        <ShellContent
+            Title="Themes"
+            ContentTemplate="{DataTemplate pages:ThemesPage}"
+            Icon="{OnPlatform Default='', iOS='paintbrush'}" />
     </TabBar>
 
 </Shell>
