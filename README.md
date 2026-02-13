@@ -5,6 +5,16 @@ Style stock .NET MAUI controls with Bootstrap themes — no custom control wrapp
 [![NuGet](https://img.shields.io/nuget/v/MauiBootstrapTheme.svg)](https://www.nuget.org/packages/MauiBootstrapTheme/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Screenshots
+
+| Default | Darkly | Minty |
+|---------|--------|-------|
+| ![Default Theme](screenshots/default.png) | ![Darkly Theme](screenshots/darkly.png) | ![Minty Theme](screenshots/minty.png) |
+
+| Cyborg | Slate |
+|--------|-------|
+| ![Cyborg Theme](screenshots/cyborg.png) | ![Slate Theme](screenshots/slate.png) |
+
 ## Features
 
 ✅ **Stock MAUI controls** — Button, Entry, Editor styled automatically  
@@ -108,6 +118,26 @@ Creates a pill-shaped button with rounded ends.
 
 ```xml
 <Button Text="Pill" theme:Bootstrap.Variant="Success" theme:Bootstrap.IsPill="True" />
+```
+
+## Included Themes
+
+The `MauiBootstrapTheme.Themes.Default` package includes several Bootswatch-inspired themes:
+
+| Theme | Description |
+|-------|-------------|
+| `DefaultTheme` | Standard Bootstrap 5 - blue primary, rounded corners |
+| `DarklyTheme` | Dark mode with teal accents |
+| `CyborgTheme` | Cyberpunk style - sharp edges, neon colors |
+| `MintyTheme` | Fresh pastels with very rounded corners |
+| `SlateTheme` | Professional dark gray theme |
+
+```csharp
+// Use any included theme
+.UseBootstrapTheme<DarklyTheme>()
+.UseBootstrapTheme<MintyTheme>()
+.UseBootstrapTheme<CyborgTheme>()
+.UseBootstrapTheme<SlateTheme>()
 ```
 
 ## Adding Custom Themes
