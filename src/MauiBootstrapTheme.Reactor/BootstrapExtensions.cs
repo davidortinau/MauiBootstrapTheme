@@ -6,38 +6,95 @@ namespace MauiBootstrapTheme.Reactor;
 
 /// <summary>
 /// Fluent extension methods for applying Bootstrap styling to MauiReactor components.
-/// These extensions set the underlying attached properties on MAUI controls.
 /// </summary>
 public static class BootstrapExtensions
 {
     // ══════════════════════════════════════════════════════════════════
-    // VARIANT & SIZE
+    // VARIANT
     // ══════════════════════════════════════════════════════════════════
 
     /// <summary>
-    /// Sets the Bootstrap color variant for this control.
+    /// Sets the color variant for this control.
     /// </summary>
-    public static T BootstrapVariant<T>(this T node, BootstrapVariant variant) 
+    public static T Variant<T>(this T node, BootstrapVariant variant) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.VariantProperty, variant);
         return node;
     }
 
+    /// <summary>Primary color variant.</summary>
+    public static T Primary<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Variant(BootstrapVariant.Primary);
+
+    /// <summary>Secondary color variant.</summary>
+    public static T Secondary<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Variant(BootstrapVariant.Secondary);
+
+    /// <summary>Success color variant.</summary>
+    public static T Success<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Variant(BootstrapVariant.Success);
+
+    /// <summary>Danger color variant.</summary>
+    public static T Danger<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Variant(BootstrapVariant.Danger);
+
+    /// <summary>Warning color variant.</summary>
+    public static T Warning<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Variant(BootstrapVariant.Warning);
+
+    /// <summary>Info color variant.</summary>
+    public static T Info<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Variant(BootstrapVariant.Info);
+
+    /// <summary>Light color variant.</summary>
+    public static T Light<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Variant(BootstrapVariant.Light);
+
+    /// <summary>Dark color variant.</summary>
+    public static T Dark<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Variant(BootstrapVariant.Dark);
+
+    // ══════════════════════════════════════════════════════════════════
+    // SIZE
+    // ══════════════════════════════════════════════════════════════════
+
     /// <summary>
-    /// Sets the Bootstrap size variant for this control.
+    /// Sets the size variant for this control.
     /// </summary>
-    public static T BootstrapSize<T>(this T node, BootstrapSize size) 
+    public static T Size<T>(this T node, BootstrapSize size) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.SizeProperty, size);
         return node;
     }
 
+    /// <summary>Small size variant.</summary>
+    public static T Small<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Size(BootstrapSize.Small);
+
+    /// <summary>Large size variant.</summary>
+    public static T Large<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Size(BootstrapSize.Large);
+
+    // ══════════════════════════════════════════════════════════════════
+    // BUTTON STYLES
+    // ══════════════════════════════════════════════════════════════════
+
     /// <summary>
     /// Makes this button an outline-style button.
     /// </summary>
-    public static T BootstrapOutlined<T>(this T node, bool isOutlined = true) 
+    public static T Outlined<T>(this T node, bool isOutlined = true) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.IsOutlinedProperty, isOutlined);
@@ -47,7 +104,7 @@ public static class BootstrapExtensions
     /// <summary>
     /// Makes this button a pill-shaped button.
     /// </summary>
-    public static T BootstrapPill<T>(this T node, bool isPill = true) 
+    public static T Pill<T>(this T node, bool isPill = true) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.IsPillProperty, isPill);
@@ -59,29 +116,69 @@ public static class BootstrapExtensions
     // ══════════════════════════════════════════════════════════════════
 
     /// <summary>
-    /// Sets the heading level (1-6) for a Label, like h1-h6 in HTML.
+    /// Sets the heading level (1-6) for a Label.
     /// </summary>
-    public static T BootstrapHeading<T>(this T node, int level) 
+    public static T Heading<T>(this T node, int level) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.HeadingProperty, level);
         return node;
     }
 
+    /// <summary>Heading level 1.</summary>
+    public static T H1<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Heading(1);
+
+    /// <summary>Heading level 2.</summary>
+    public static T H2<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Heading(2);
+
+    /// <summary>Heading level 3.</summary>
+    public static T H3<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Heading(3);
+
+    /// <summary>Heading level 4.</summary>
+    public static T H4<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Heading(4);
+
+    /// <summary>Heading level 5.</summary>
+    public static T H5<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Heading(5);
+
+    /// <summary>Heading level 6.</summary>
+    public static T H6<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Heading(6);
+
     /// <summary>
-    /// Sets the text style (Lead, Small, Muted, Mark) for a Label.
+    /// Sets the text style for a Label.
     /// </summary>
-    public static T BootstrapTextStyle<T>(this T node, BootstrapTextStyle style) 
+    public static T TextStyle<T>(this T node, BootstrapTextStyle style) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.TextStyleProperty, style);
         return node;
     }
 
+    /// <summary>Lead text style - larger and lighter.</summary>
+    public static T Lead<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.TextStyle(BootstrapTextStyle.Lead);
+
+    /// <summary>Muted text style - secondary color.</summary>
+    public static T Muted<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.TextStyle(BootstrapTextStyle.Muted);
+
     /// <summary>
-    /// Sets the text color variant for a Label.
+    /// Sets the text color variant.
     /// </summary>
-    public static T BootstrapTextColor<T>(this T node, BootstrapVariant variant) 
+    public static T TextColor<T>(this T node, BootstrapVariant variant) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.TextColorVariantProperty, variant);
@@ -93,9 +190,9 @@ public static class BootstrapExtensions
     // ══════════════════════════════════════════════════════════════════
 
     /// <summary>
-    /// Makes this Label display as a badge with the specified variant.
+    /// Makes this Label display as a badge.
     /// </summary>
-    public static T BootstrapBadge<T>(this T node, BootstrapVariant variant) 
+    public static T Badge<T>(this T node, BootstrapVariant variant) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.BadgeProperty, variant);
@@ -103,23 +200,42 @@ public static class BootstrapExtensions
     }
 
     // ══════════════════════════════════════════════════════════════════
-    // CONTAINERS
+    // SHADOWS
     // ══════════════════════════════════════════════════════════════════
 
     /// <summary>
-    /// Sets the shadow level for a Border (card styling).
+    /// Sets the shadow level for a Border.
     /// </summary>
-    public static T BootstrapShadow<T>(this T node, BootstrapShadow shadow) 
+    public static T Shadow<T>(this T node, BootstrapShadow shadow) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.ShadowProperty, shadow);
         return node;
     }
 
+    /// <summary>Small shadow.</summary>
+    public static T ShadowSm<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Shadow(BootstrapShadow.Small);
+
+    /// <summary>Default shadow.</summary>
+    public static T ShadowMd<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Shadow(BootstrapShadow.Default);
+
+    /// <summary>Large shadow.</summary>
+    public static T ShadowLg<T>(this T node) 
+        where T : VisualNode, IVisualNodeWithAttachedProperties
+        => node.Shadow(BootstrapShadow.Large);
+
+    // ══════════════════════════════════════════════════════════════════
+    // BACKGROUND
+    // ══════════════════════════════════════════════════════════════════
+
     /// <summary>
-    /// Sets the background color variant for a container.
+    /// Sets the background color variant.
     /// </summary>
-    public static T BootstrapBackground<T>(this T node, BootstrapVariant variant) 
+    public static T Background<T>(this T node, BootstrapVariant variant) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.BackgroundVariantProperty, variant);
@@ -131,10 +247,10 @@ public static class BootstrapExtensions
     // ══════════════════════════════════════════════════════════════════
 
     /// <summary>
-    /// Sets the Bootstrap margin level (0-5).
+    /// Sets the margin level (0-5).
     /// 0=0px, 1=4px, 2=8px, 3=16px, 4=24px, 5=48px
     /// </summary>
-    public static T BootstrapMargin<T>(this T node, int level) 
+    public static T MarginLevel<T>(this T node, int level) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.MarginLevelProperty, level);
@@ -142,150 +258,13 @@ public static class BootstrapExtensions
     }
 
     /// <summary>
-    /// Sets the Bootstrap padding level (0-5).
+    /// Sets the padding level (0-5).
     /// 0=0px, 1=4px, 2=8px, 3=16px, 4=24px, 5=48px
     /// </summary>
-    public static T BootstrapPadding<T>(this T node, int level) 
+    public static T PaddingLevel<T>(this T node, int level) 
         where T : VisualNode, IVisualNodeWithAttachedProperties
     {
         node.Set(Bootstrap.PaddingLevelProperty, level);
         return node;
     }
-
-    // ══════════════════════════════════════════════════════════════════
-    // CONVENIENCE SHORTCUTS
-    // ══════════════════════════════════════════════════════════════════
-
-    /// <summary>
-    /// Shortcut for BootstrapVariant(Primary).
-    /// </summary>
-    public static T BsPrimary<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapVariant(Theming.BootstrapVariant.Primary);
-
-    /// <summary>
-    /// Shortcut for BootstrapVariant(Secondary).
-    /// </summary>
-    public static T BsSecondary<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapVariant(Theming.BootstrapVariant.Secondary);
-
-    /// <summary>
-    /// Shortcut for BootstrapVariant(Success).
-    /// </summary>
-    public static T BsSuccess<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapVariant(Theming.BootstrapVariant.Success);
-
-    /// <summary>
-    /// Shortcut for BootstrapVariant(Danger).
-    /// </summary>
-    public static T BsDanger<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapVariant(Theming.BootstrapVariant.Danger);
-
-    /// <summary>
-    /// Shortcut for BootstrapVariant(Warning).
-    /// </summary>
-    public static T BsWarning<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapVariant(Theming.BootstrapVariant.Warning);
-
-    /// <summary>
-    /// Shortcut for BootstrapVariant(Info).
-    /// </summary>
-    public static T BsInfo<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapVariant(Theming.BootstrapVariant.Info);
-
-    /// <summary>
-    /// Shortcut for BootstrapSize(Small).
-    /// </summary>
-    public static T BsSmall<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapSize(Theming.BootstrapSize.Small);
-
-    /// <summary>
-    /// Shortcut for BootstrapSize(Large).
-    /// </summary>
-    public static T BsLarge<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapSize(Theming.BootstrapSize.Large);
-
-    /// <summary>
-    /// Shortcut for BootstrapHeading(1).
-    /// </summary>
-    public static T BsH1<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapHeading(1);
-
-    /// <summary>
-    /// Shortcut for BootstrapHeading(2).
-    /// </summary>
-    public static T BsH2<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapHeading(2);
-
-    /// <summary>
-    /// Shortcut for BootstrapHeading(3).
-    /// </summary>
-    public static T BsH3<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapHeading(3);
-
-    /// <summary>
-    /// Shortcut for BootstrapHeading(4).
-    /// </summary>
-    public static T BsH4<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapHeading(4);
-
-    /// <summary>
-    /// Shortcut for BootstrapHeading(5).
-    /// </summary>
-    public static T BsH5<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapHeading(5);
-
-    /// <summary>
-    /// Shortcut for BootstrapHeading(6).
-    /// </summary>
-    public static T BsH6<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapHeading(6);
-
-    /// <summary>
-    /// Shortcut for BootstrapTextStyle(Lead).
-    /// </summary>
-    public static T BsLead<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapTextStyle(Theming.BootstrapTextStyle.Lead);
-
-    /// <summary>
-    /// Shortcut for BootstrapTextStyle(Muted).
-    /// </summary>
-    public static T BsMuted<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapTextStyle(Theming.BootstrapTextStyle.Muted);
-
-    /// <summary>
-    /// Shortcut for BootstrapShadow(Small).
-    /// </summary>
-    public static T BsShadowSm<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapShadow(Theming.BootstrapShadow.Small);
-
-    /// <summary>
-    /// Shortcut for BootstrapShadow(Default).
-    /// </summary>
-    public static T BsShadow<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapShadow(Theming.BootstrapShadow.Default);
-
-    /// <summary>
-    /// Shortcut for BootstrapShadow(Large).
-    /// </summary>
-    public static T BsShadowLg<T>(this T node) 
-        where T : VisualNode, IVisualNodeWithAttachedProperties
-        => node.BootstrapShadow(Theming.BootstrapShadow.Large);
 }

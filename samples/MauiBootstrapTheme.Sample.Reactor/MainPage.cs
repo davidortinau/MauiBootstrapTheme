@@ -7,414 +7,350 @@ namespace MauiBootstrapTheme.Sample.Reactor;
 class MainPage : Component
 {
     public override VisualNode Render()
-    {
-        return new Shell
-        {
-            new FlyoutItem("Controls")
-            {
-                new ShellContent()
+        => Shell(
+            FlyoutItem("Controls",
+                ShellContent()
                     .RenderContent(() => new ControlsPage())
-            },
-            new FlyoutItem("Typography")
-            {
-                new ShellContent()
+            ),
+            FlyoutItem("Typography",
+                ShellContent()
                     .RenderContent(() => new TypographyPage())
-            },
-            new FlyoutItem("Cards")
-            {
-                new ShellContent()
+            ),
+            FlyoutItem("Cards",
+                ShellContent()
                     .RenderContent(() => new CardsPage())
-            }
-        }
+            )
+        )
         .Title("Bootstrap Theme")
         .FlyoutBehavior(FlyoutBehavior.Flyout);
-    }
 }
 
 class ControlsPage : Component
 {
     public override VisualNode Render()
-    {
-        return new ContentPage("Controls")
-        {
-            new ScrollView
-            {
-                new VStack(spacing: 20)
-                {
+        => ContentPage("Controls",
+            ScrollView(
+                VStack(spacing: 20,
                     // Header
-                    new Label("Bootstrap Themed Controls")
-                        .BsH2()
+                    Label("Bootstrap Themed Controls")
+                        .H2()
                         .HCenter(),
                     
-                    new Label("MauiReactor fluent API demo")
-                        .BsLead()
+                    Label("MauiReactor fluent API demo")
+                        .Lead()
                         .HCenter(),
 
                     // Buttons Section
-                    new Border
-                    {
-                        new VStack(spacing: 12)
-                        {
-                            new Label("Buttons").BsH4(),
+                    Border(
+                        VStack(spacing: 12,
+                            Label("Buttons").H4(),
                             
-                            new HStack(spacing: 8)
-                            {
-                                new Button("Primary").BsPrimary(),
-                                new Button("Secondary").BsSecondary(),
-                                new Button("Success").BsSuccess(),
-                            }.HCenter(),
+                            HStack(spacing: 8,
+                                Button("Primary").Primary(),
+                                Button("Secondary").Secondary(),
+                                Button("Success").Success()
+                            ).HCenter(),
                             
-                            new HStack(spacing: 8)
-                            {
-                                new Button("Danger").BsDanger(),
-                                new Button("Warning").BsWarning(),
-                                new Button("Info").BsInfo(),
-                            }.HCenter(),
+                            HStack(spacing: 8,
+                                Button("Danger").Danger(),
+                                Button("Warning").Warning(),
+                                Button("Info").Info()
+                            ).HCenter(),
                             
-                            new Label("Outline Buttons").BsMuted(),
+                            Label("Outline Buttons").Muted(),
                             
-                            new HStack(spacing: 8)
-                            {
-                                new Button("Primary")
-                                    .BootstrapVariant(BootstrapVariant.Primary)
-                                    .BootstrapOutlined(),
-                                new Button("Danger")
-                                    .BootstrapVariant(BootstrapVariant.Danger)
-                                    .BootstrapOutlined(),
-                            }.HCenter(),
+                            HStack(spacing: 8,
+                                Button("Primary")
+                                    .Variant(BootstrapVariant.Primary)
+                                    .Outlined(),
+                                Button("Danger")
+                                    .Variant(BootstrapVariant.Danger)
+                                    .Outlined()
+                            ).HCenter(),
                             
-                            new Label("Pill Buttons").BsMuted(),
+                            Label("Pill Buttons").Muted(),
                             
-                            new HStack(spacing: 8)
-                            {
-                                new Button("Pill Primary")
-                                    .BsPrimary()
-                                    .BootstrapPill(),
-                                new Button("Pill Success")
-                                    .BsSuccess()
-                                    .BootstrapPill(),
-                            }.HCenter(),
+                            HStack(spacing: 8,
+                                Button("Pill Primary")
+                                    .Primary()
+                                    .Pill(),
+                                Button("Pill Success")
+                                    .Success()
+                                    .Pill()
+                            ).HCenter(),
                             
-                            new Label("Button Sizes").BsMuted(),
+                            Label("Button Sizes").Muted(),
                             
-                            new HStack(spacing: 8)
-                            {
-                                new Button("Large").BsPrimary().BsLarge(),
-                                new Button("Default").BsPrimary(),
-                                new Button("Small").BsPrimary().BsSmall(),
-                            }.HCenter().VCenter(),
-                        }
+                            HStack(spacing: 8,
+                                Button("Large").Primary().Large(),
+                                Button("Default").Primary(),
+                                Button("Small").Primary().Small()
+                            ).HCenter().VCenter()
+                        )
                         .Padding(16)
-                    }
-                    .BsShadowSm(),
+                    )
+                    .ShadowSm(),
 
                     // Entry Section
-                    new Border
-                    {
-                        new VStack(spacing: 12)
-                        {
-                            new Label("Entry Controls").BsH4(),
+                    Border(
+                        VStack(spacing: 12,
+                            Label("Entry Controls").H4(),
                             
-                            new Entry()
+                            Entry()
                                 .Placeholder("Default Entry"),
                             
-                            new Entry()
+                            Entry()
                                 .Placeholder("Primary Entry")
-                                .BsPrimary(),
+                                .Primary(),
                             
-                            new Entry()
+                            Entry()
                                 .Placeholder("Danger Entry")
-                                .BsDanger(),
+                                .Danger(),
                             
-                            new Entry()
+                            Entry()
                                 .Placeholder("Large Entry")
-                                .BsLarge(),
+                                .Large(),
                             
-                            new Entry()
+                            Entry()
                                 .Placeholder("Small Entry")
-                                .BsSmall(),
-                        }
+                                .Small()
+                        )
                         .Padding(16)
-                    }
-                    .BsShadowSm(),
+                    )
+                    .ShadowSm(),
 
                     // Selection Controls
-                    new Border
-                    {
-                        new VStack(spacing: 12)
-                        {
-                            new Label("Selection Controls").BsH4(),
+                    Border(
+                        VStack(spacing: 12,
+                            Label("Selection Controls").H4(),
                             
-                            new HStack(spacing: 12)
-                            {
-                                new CheckBox().IsChecked(true).BsPrimary(),
-                                new Label("Primary CheckBox").VCenter(),
-                            },
+                            HStack(spacing: 12,
+                                CheckBox().IsChecked(true).Primary(),
+                                Label("Primary CheckBox").VCenter()
+                            ),
                             
-                            new HStack(spacing: 12)
-                            {
-                                new CheckBox().IsChecked(true).BsSuccess(),
-                                new Label("Success CheckBox").VCenter(),
-                            },
+                            HStack(spacing: 12,
+                                CheckBox().IsChecked(true).Success(),
+                                Label("Success CheckBox").VCenter()
+                            ),
                             
-                            new HStack(spacing: 12)
-                            {
-                                new Switch().IsToggled(true).BsPrimary(),
-                                new Label("Primary Switch").VCenter(),
-                            },
+                            HStack(spacing: 12,
+                                Switch().IsToggled(true).Primary(),
+                                Label("Primary Switch").VCenter()
+                            ),
                             
-                            new HStack(spacing: 12)
-                            {
-                                new Switch().IsToggled(true).BsSuccess(),
-                                new Label("Success Switch").VCenter(),
-                            },
-                        }
+                            HStack(spacing: 12,
+                                Switch().IsToggled(true).Success(),
+                                Label("Success Switch").VCenter()
+                            )
+                        )
                         .Padding(16)
-                    }
-                    .BsShadowSm(),
+                    )
+                    .ShadowSm(),
 
                     // Progress Section
-                    new Border
-                    {
-                        new VStack(spacing: 12)
-                        {
-                            new Label("Progress Indicators").BsH4(),
+                    Border(
+                        VStack(spacing: 12,
+                            Label("Progress Indicators").H4(),
                             
-                            new Label("Primary Progress").BsMuted(),
-                            new ProgressBar().Progress(0.75).BsPrimary(),
+                            Label("Primary Progress").Muted(),
+                            ProgressBar().Progress(0.75).Primary(),
                             
-                            new Label("Success Progress").BsMuted(),
-                            new ProgressBar().Progress(0.5).BsSuccess(),
+                            Label("Success Progress").Muted(),
+                            ProgressBar().Progress(0.5).Success(),
                             
-                            new Label("Danger Progress").BsMuted(),
-                            new ProgressBar().Progress(0.25).BsDanger(),
+                            Label("Danger Progress").Muted(),
+                            ProgressBar().Progress(0.25).Danger(),
                             
-                            new HStack(spacing: 20)
-                            {
-                                new ActivityIndicator().IsRunning(true).BsPrimary(),
-                                new ActivityIndicator().IsRunning(true).BsSuccess(),
-                                new ActivityIndicator().IsRunning(true).BsDanger(),
-                            }.HCenter(),
-                        }
+                            HStack(spacing: 20,
+                                ActivityIndicator().IsRunning(true).Primary(),
+                                ActivityIndicator().IsRunning(true).Success(),
+                                ActivityIndicator().IsRunning(true).Danger()
+                            ).HCenter()
+                        )
                         .Padding(16)
-                    }
-                    .BsShadowSm(),
-                }
+                    )
+                    .ShadowSm()
+                )
                 .Padding(20)
-            }
-        };
-    }
+            )
+        );
 }
 
 class TypographyPage : Component
 {
     public override VisualNode Render()
-    {
-        return new ContentPage("Typography")
-        {
-            new ScrollView
-            {
-                new VStack(spacing: 20)
-                {
+        => ContentPage("Typography",
+            ScrollView(
+                VStack(spacing: 20,
                     // Headings
-                    new Border
-                    {
-                        new VStack(spacing: 8)
-                        {
-                            new Label("Headings").BsH3(),
-                            new BoxView().HeightRequest(1).Color(Colors.LightGray),
+                    Border(
+                        VStack(spacing: 8,
+                            Label("Headings").H3(),
+                            BoxView().HeightRequest(1).Color(Colors.LightGray),
                             
-                            new Label("Heading 1 (h1)").BsH1(),
-                            new Label("Heading 2 (h2)").BsH2(),
-                            new Label("Heading 3 (h3)").BsH3(),
-                            new Label("Heading 4 (h4)").BsH4(),
-                            new Label("Heading 5 (h5)").BsH5(),
-                            new Label("Heading 6 (h6)").BsH6(),
-                        }
+                            Label("Heading 1 (h1)").H1(),
+                            Label("Heading 2 (h2)").H2(),
+                            Label("Heading 3 (h3)").H3(),
+                            Label("Heading 4 (h4)").H4(),
+                            Label("Heading 5 (h5)").H5(),
+                            Label("Heading 6 (h6)").H6()
+                        )
                         .Padding(20)
-                    }
-                    .BsShadowSm(),
+                    )
+                    .ShadowSm(),
 
                     // Text Styles
-                    new Border
-                    {
-                        new VStack(spacing: 12)
-                        {
-                            new Label("Text Styles").BsH3(),
-                            new BoxView().HeightRequest(1).Color(Colors.LightGray),
+                    Border(
+                        VStack(spacing: 12,
+                            Label("Text Styles").H3(),
+                            BoxView().HeightRequest(1).Color(Colors.LightGray),
                             
-                            new Label("This is lead text - larger and lighter for introductory content.")
-                                .BsLead(),
+                            Label("This is lead text - larger and lighter for introductory content.")
+                                .Lead(),
                             
-                            new Label("This is normal body text. Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+                            Label("This is normal body text. Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
                             
-                            new Label("This is small text for fine print.")
-                                .BootstrapTextStyle(BootstrapTextStyle.Small),
+                            Label("This is small text for fine print.")
+                                .TextStyle(BootstrapTextStyle.Small),
                             
-                            new Label("This is muted text for secondary content.")
-                                .BsMuted(),
-                        }
+                            Label("This is muted text for secondary content.")
+                                .Muted()
+                        )
                         .Padding(20)
-                    }
-                    .BsShadowSm(),
+                    )
+                    .ShadowSm(),
 
                     // Text Colors
-                    new Border
-                    {
-                        new VStack(spacing: 8)
-                        {
-                            new Label("Text Colors").BsH3(),
-                            new BoxView().HeightRequest(1).Color(Colors.LightGray),
+                    Border(
+                        VStack(spacing: 8,
+                            Label("Text Colors").H3(),
+                            BoxView().HeightRequest(1).Color(Colors.LightGray),
                             
-                            new Label("Primary text color").BootstrapTextColor(BootstrapVariant.Primary),
-                            new Label("Secondary text color").BootstrapTextColor(BootstrapVariant.Secondary),
-                            new Label("Success text color").BootstrapTextColor(BootstrapVariant.Success),
-                            new Label("Danger text color").BootstrapTextColor(BootstrapVariant.Danger),
-                            new Label("Warning text color").BootstrapTextColor(BootstrapVariant.Warning),
-                            new Label("Info text color").BootstrapTextColor(BootstrapVariant.Info),
-                        }
+                            Label("Primary text color").TextColor(BootstrapVariant.Primary),
+                            Label("Secondary text color").TextColor(BootstrapVariant.Secondary),
+                            Label("Success text color").TextColor(BootstrapVariant.Success),
+                            Label("Danger text color").TextColor(BootstrapVariant.Danger),
+                            Label("Warning text color").TextColor(BootstrapVariant.Warning),
+                            Label("Info text color").TextColor(BootstrapVariant.Info)
+                        )
                         .Padding(20)
-                    }
-                    .BsShadowSm(),
+                    )
+                    .ShadowSm(),
 
                     // Badges
-                    new Border
-                    {
-                        new VStack(spacing: 12)
-                        {
-                            new Label("Badges").BsH3(),
-                            new BoxView().HeightRequest(1).Color(Colors.LightGray),
+                    Border(
+                        VStack(spacing: 12,
+                            Label("Badges").H3(),
+                            BoxView().HeightRequest(1).Color(Colors.LightGray),
                             
-                            new FlexLayout
-                            {
-                                new Label("Primary").BootstrapBadge(BootstrapVariant.Primary),
-                                new Label("Secondary").BootstrapBadge(BootstrapVariant.Secondary),
-                                new Label("Success").BootstrapBadge(BootstrapVariant.Success),
-                                new Label("Danger").BootstrapBadge(BootstrapVariant.Danger),
-                            }.Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start),
+                            FlexLayout(
+                                Label("Primary").Badge(BootstrapVariant.Primary),
+                                Label("Secondary").Badge(BootstrapVariant.Secondary),
+                                Label("Success").Badge(BootstrapVariant.Success),
+                                Label("Danger").Badge(BootstrapVariant.Danger)
+                            ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start),
                             
-                            new HStack(spacing: 8)
-                            {
-                                new Label("Messages").BsH5().VCenter(),
-                                new Label("4").BootstrapBadge(BootstrapVariant.Primary).VCenter(),
-                            },
-                        }
+                            HStack(spacing: 8,
+                                Label("Messages").H5().VCenter(),
+                                Label("4").Badge(BootstrapVariant.Primary).VCenter()
+                            )
+                        )
                         .Padding(20)
-                    }
-                    .BsShadowSm(),
-                }
+                    )
+                    .ShadowSm()
+                )
                 .Padding(20)
-            }
-        };
-    }
+            )
+        );
 }
 
 class CardsPage : Component
 {
     public override VisualNode Render()
-    {
-        return new ContentPage("Cards")
-        {
-            new ScrollView
-            {
-                new VStack(spacing: 20)
-                {
-                    new Label("Cards & Containers").BsH2().HCenter(),
-                    new Label("Border control with Bootstrap card styling").BsLead().HCenter(),
+        => ContentPage("Cards",
+            ScrollView(
+                VStack(spacing: 20,
+                    Label("Cards & Containers").H2().HCenter(),
+                    Label("Border control with Bootstrap card styling").Lead().HCenter(),
 
                     // Shadow Variants
-                    new Label("Shadow Variants").BsH4(),
+                    Label("Shadow Variants").H4(),
                     
-                    new Border
-                    {
-                        new VStack
-                        {
-                            new Label("No Shadow").FontAttributes(FontAttributes.Bold),
-                            new Label("BootstrapShadow = None").BsMuted(),
-                        }.Padding(16)
-                    },
+                    Border(
+                        VStack(
+                            Label("No Shadow").FontAttributes(FontAttributes.Bold),
+                            Label("Shadow = None").Muted()
+                        ).Padding(16)
+                    ),
                     
-                    new Border
-                    {
-                        new VStack
-                        {
-                            new Label("Small Shadow").FontAttributes(FontAttributes.Bold),
-                            new Label("BsShadowSm()").BsMuted(),
-                        }.Padding(16)
-                    }
-                    .BsShadowSm(),
+                    Border(
+                        VStack(
+                            Label("Small Shadow").FontAttributes(FontAttributes.Bold),
+                            Label("ShadowSm()").Muted()
+                        ).Padding(16)
+                    )
+                    .ShadowSm(),
                     
-                    new Border
-                    {
-                        new VStack
-                        {
-                            new Label("Default Shadow").FontAttributes(FontAttributes.Bold),
-                            new Label("BsShadow()").BsMuted(),
-                        }.Padding(16)
-                    }
-                    .BsShadow(),
+                    Border(
+                        VStack(
+                            Label("Default Shadow").FontAttributes(FontAttributes.Bold),
+                            Label("ShadowMd()").Muted()
+                        ).Padding(16)
+                    )
+                    .ShadowMd(),
                     
-                    new Border
-                    {
-                        new VStack
-                        {
-                            new Label("Large Shadow").FontAttributes(FontAttributes.Bold),
-                            new Label("BsShadowLg()").BsMuted(),
-                        }.Padding(16)
-                    }
-                    .BsShadowLg(),
+                    Border(
+                        VStack(
+                            Label("Large Shadow").FontAttributes(FontAttributes.Bold),
+                            Label("ShadowLg()").Muted()
+                        ).Padding(16)
+                    )
+                    .ShadowLg(),
 
                     // Border Variants
-                    new Label("Border Color Variants").BsH4(),
+                    Label("Border Color Variants").H4(),
                     
-                    new FlexLayout
-                    {
-                        new Border { new Label("Primary").HCenter() }
-                            .BsPrimary().Padding(16).WidthRequest(100),
-                        new Border { new Label("Success").HCenter() }
-                            .BsSuccess().Padding(16).WidthRequest(100),
-                        new Border { new Label("Danger").HCenter() }
-                            .BsDanger().Padding(16).WidthRequest(100),
-                    }.Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start),
+                    FlexLayout(
+                        Border(Label("Primary").HCenter())
+                            .Primary().Padding(16).WidthRequest(100),
+                        Border(Label("Success").HCenter())
+                            .Success().Padding(16).WidthRequest(100),
+                        Border(Label("Danger").HCenter())
+                            .Danger().Padding(16).WidthRequest(100)
+                    ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start),
 
                     // Background Variants
-                    new Label("Background Variants").BsH4(),
+                    Label("Background Variants").H4(),
                     
-                    new Border
-                    {
-                        new VStack
-                        {
-                            new Label("Primary Background").FontAttributes(FontAttributes.Bold).TextColor(Colors.White),
-                            new Label("BootstrapBackground(Primary)").TextColor(Colors.White),
-                        }.Padding(16)
-                    }
-                    .BootstrapBackground(BootstrapVariant.Primary)
-                    .BsShadowSm(),
+                    Border(
+                        VStack(
+                            Label("Primary Background").FontAttributes(FontAttributes.Bold).TextColor(Colors.White),
+                            Label("Background(Primary)").TextColor(Colors.White)
+                        ).Padding(16)
+                    )
+                    .Background(BootstrapVariant.Primary)
+                    .ShadowSm(),
                     
-                    new Border
-                    {
-                        new VStack
-                        {
-                            new Label("Success Background").FontAttributes(FontAttributes.Bold).TextColor(Colors.White),
-                            new Label("BootstrapBackground(Success)").TextColor(Colors.White),
-                        }.Padding(16)
-                    }
-                    .BootstrapBackground(BootstrapVariant.Success)
-                    .BsShadowSm(),
+                    Border(
+                        VStack(
+                            Label("Success Background").FontAttributes(FontAttributes.Bold).TextColor(Colors.White),
+                            Label("Background(Success)").TextColor(Colors.White)
+                        ).Padding(16)
+                    )
+                    .Background(BootstrapVariant.Success)
+                    .ShadowSm(),
                     
-                    new Border
-                    {
-                        new VStack
-                        {
-                            new Label("Dark Background").FontAttributes(FontAttributes.Bold).TextColor(Colors.White),
-                            new Label("BootstrapBackground(Dark)").TextColor(Colors.White),
-                        }.Padding(16)
-                    }
-                    .BootstrapBackground(BootstrapVariant.Dark)
-                    .BsShadowSm(),
-                }
+                    Border(
+                        VStack(
+                            Label("Dark Background").FontAttributes(FontAttributes.Bold).TextColor(Colors.White),
+                            Label("Background(Dark)").TextColor(Colors.White)
+                        ).Padding(16)
+                    )
+                    .Background(BootstrapVariant.Dark)
+                    .ShadowSm()
+                )
                 .Padding(20)
-            }
-        };
-    }
+            )
+        );
 }

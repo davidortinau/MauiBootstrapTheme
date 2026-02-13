@@ -119,113 +119,108 @@ using MauiBootstrapTheme.Reactor;
 class MainPage : Component
 {
     public override VisualNode Render()
-    {
-        return new ContentPage
-        {
-            new VStack(spacing: 12)
-            {
+        => ContentPage(
+            VStack(spacing: 12,
                 // Buttons with variants
-                new Button("Primary").BsPrimary(),
-                new Button("Success").BsSuccess(),
-                new Button("Danger Outlined")
-                    .BootstrapVariant(BootstrapVariant.Danger)
-                    .BootstrapOutlined(),
-                new Button("Pill Button")
-                    .BsPrimary()
-                    .BootstrapPill(),
+                Button("Primary").Primary(),
+                Button("Success").Success(),
+                Button("Danger Outlined")
+                    .Danger()
+                    .Outlined(),
+                Button("Pill Button")
+                    .Primary()
+                    .Pill(),
                 
                 // Button sizes
-                new Button("Large").BsPrimary().BsLarge(),
-                new Button("Small").BsPrimary().BsSmall(),
+                Button("Large").Primary().Large(),
+                Button("Small").Primary().Small(),
                 
                 // Entry controls
-                new Entry().Placeholder("Primary Entry").BsPrimary(),
-                new Entry().Placeholder("Danger Entry").BsDanger(),
+                Entry().Placeholder("Primary Entry").Primary(),
+                Entry().Placeholder("Danger Entry").Danger(),
                 
                 // Typography
-                new Label("Heading 1").BsH1(),
-                new Label("Heading 2").BsH2(),
-                new Label("Lead text for introductions").BsLead(),
-                new Label("Muted helper text").BsMuted(),
+                Label("Heading 1").H1(),
+                Label("Heading 2").H2(),
+                Label("Lead text for introductions").Lead(),
+                Label("Muted helper text").Muted(),
                 
                 // Badges
-                new Label("New").BootstrapBadge(BootstrapVariant.Success),
-                new Label("99+").BootstrapBadge(BootstrapVariant.Danger),
+                Label("New").Badge(BootstrapVariant.Success),
+                Label("99+").Badge(BootstrapVariant.Danger),
                 
                 // Cards with shadows
-                new Border
-                {
-                    new Label("Card with small shadow")
-                }
-                .BsShadowSm()
+                Border(
+                    Label("Card with small shadow")
+                )
+                .ShadowSm()
                 .Padding(16),
                 
-                new Border
-                {
-                    new Label("Card with large shadow")
-                }
-                .BsShadowLg()
+                Border(
+                    Label("Card with large shadow")
+                )
+                .ShadowLg()
                 .Padding(16),
                 
                 // Background variants
-                new Border
-                {
-                    new Label("Primary Background").TextColor(Colors.White)
-                }
-                .BootstrapBackground(BootstrapVariant.Primary)
-                .Padding(16),
-            }
-        };
-    }
+                Border(
+                    Label("Primary Background").TextColor(Colors.White)
+                )
+                .Background(BootstrapVariant.Primary)
+                .Padding(16)
+            )
+        );
 }
 ```
 
 ### MauiReactor Extension Methods
 
-#### Variant Shortcuts
+#### Variants
 ```csharp
-.BsPrimary()      // BootstrapVariant.Primary
-.BsSecondary()    // BootstrapVariant.Secondary
-.BsSuccess()      // BootstrapVariant.Success
-.BsDanger()       // BootstrapVariant.Danger
-.BsWarning()      // BootstrapVariant.Warning
-.BsInfo()         // BootstrapVariant.Info
+.Primary()        // Primary color
+.Secondary()      // Secondary color
+.Success()        // Success color
+.Danger()         // Danger color
+.Warning()        // Warning color
+.Info()           // Info color
+.Light()          // Light color
+.Dark()           // Dark color
 ```
 
-#### Size Shortcuts
+#### Sizes
 ```csharp
-.BsSmall()        // BootstrapSize.Small
-.BsLarge()        // BootstrapSize.Large
+.Small()          // Small size
+.Large()          // Large size
 ```
 
-#### Typography Shortcuts
+#### Typography
 ```csharp
-.BsH1() to .BsH6()  // Heading levels 1-6
-.BsLead()           // Lead text style
-.BsMuted()          // Muted text style
+.H1() to .H6()    // Heading levels 1-6
+.Lead()           // Lead text style
+.Muted()          // Muted text style
 ```
 
-#### Shadow Shortcuts
+#### Shadows
 ```csharp
-.BsShadowSm()     // Small shadow
-.BsShadow()       // Default shadow
-.BsShadowLg()     // Large shadow
+.ShadowSm()       // Small shadow
+.ShadowMd()       // Default shadow
+.ShadowLg()       // Large shadow
 ```
 
 #### Full Methods
 ```csharp
-.BootstrapVariant(BootstrapVariant variant)
-.BootstrapSize(BootstrapSize size)
-.BootstrapOutlined(bool isOutlined = true)
-.BootstrapPill(bool isPill = true)
-.BootstrapHeading(int level)
-.BootstrapTextStyle(BootstrapTextStyle style)
-.BootstrapTextColor(BootstrapVariant variant)
-.BootstrapBadge(BootstrapVariant variant)
-.BootstrapShadow(BootstrapShadow shadow)
-.BootstrapBackground(BootstrapVariant variant)
-.BootstrapMargin(int level)
-.BootstrapPadding(int level)
+.Variant(BootstrapVariant variant)
+.Size(BootstrapSize size)
+.Outlined(bool isOutlined = true)
+.Pill(bool isPill = true)
+.Heading(int level)
+.TextStyle(BootstrapTextStyle style)
+.TextColor(BootstrapVariant variant)
+.Badge(BootstrapVariant variant)
+.Shadow(BootstrapShadow shadow)
+.Background(BootstrapVariant variant)
+.MarginLevel(int level)
+.PaddingLevel(int level)
 ```
 
 ## Supported Controls
