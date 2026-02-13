@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#222222"/>
+  <rect x="20" y="20" width="360" height="60" rx="8" fill="#375a7f"/>
+  <text x="200" y="60" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle">Darkly Theme</text>
+  <text x="200" y="160" font-family="Arial" font-size="18" fill="#375a7f" text-anchor="middle">Dark Mode Teal</text>
+  <rect x="50" y="200" width="100" height="40" rx="6" fill="#375a7f"/>
+  <text x="100" y="226" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Primary</text>
+  <rect x="160" y="200" width="100" height="40" rx="6" fill="#198754"/>
+  <text x="210" y="226" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Success</text>
+  <rect x="270" y="200" width="100" height="40" rx="6" fill="#dc3545"/>
+  <text x="320" y="226" font-family="Arial" font-size="14" fill="white" text-anchor="middle">Danger</text>
+</svg>

@@ -9,11 +9,11 @@ Style stock .NET MAUI controls with Bootstrap themes — no custom control wrapp
 
 | Default | Darkly | Minty |
 |---------|--------|-------|
-| ![Default Theme](screenshots/default.png) | ![Darkly Theme](screenshots/darkly.png) | ![Minty Theme](screenshots/minty.png) |
+| ![Default Theme](screenshots/default.svg) | ![Darkly Theme](screenshots/darkly.svg) | ![Minty Theme](screenshots/minty.svg) |
 
 | Cyborg | Slate |
 |--------|-------|
-| ![Cyborg Theme](screenshots/cyborg.png) | ![Slate Theme](screenshots/slate.png) |
+| ![Cyborg Theme](screenshots/cyborg.svg) | ![Slate Theme](screenshots/slate.svg) |
 
 ## Features
 
