@@ -41,9 +41,9 @@ public class DarklyTheme : IBootstrapThemeProvider
         DarkOnSurface = Color.FromArgb("#ffffff"),
         DarkOutline = Color.FromArgb("#444444"),
         
-        CornerRadius = 4.0,
-        CornerRadiusSm = 3.0,
-        CornerRadiusLg = 6.0,
+        CornerRadius = 6.0,       // Bootstrap default is 6px (was 4)
+        CornerRadiusSm = 4.0,     // Small is 4px (was 3)
+        CornerRadiusLg = 8.0,
         CornerRadiusPill = 50.0,
         
         BorderWidth = 1.0,
@@ -239,9 +239,9 @@ public class SlateTheme : IBootstrapThemeProvider
         DarkOnSurface = Color.FromArgb("#c8c8c8"),
         DarkOutline = Color.FromArgb("#52575c"),
         
-        CornerRadius = 4.0,
-        CornerRadiusSm = 3.0,
-        CornerRadiusLg = 6.0,
+        CornerRadius = 6.0,       // Bootstrap default
+        CornerRadiusSm = 4.0,
+        CornerRadiusLg = 8.0,
         CornerRadiusPill = 50.0,
         
         BorderWidth = 1.0,
@@ -251,9 +251,9 @@ public class SlateTheme : IBootstrapThemeProvider
         SpacerSm = 8.0,
         SpacerLg = 24.0,
         
-        FontSizeBase = 14.0,
-        FontSizeSm = 12.0,
-        FontSizeLg = 18.0,
+        FontSizeBase = 16.0,      // Bootstrap default (was 14)
+        FontSizeSm = 14.0,        // (was 12)
+        FontSizeLg = 20.0,        // (was 18)
         
         ButtonPaddingX = 12.0,
         ButtonPaddingY = 6.0,
@@ -304,9 +304,9 @@ public class FlatlyTheme : IBootstrapThemeProvider
         DarkOnSurface = Color.FromArgb("#ecf0f1"),
         DarkOutline = Color.FromArgb("#4a6278"),
         
-        CornerRadius = 4.0,
-        CornerRadiusSm = 3.0,
-        CornerRadiusLg = 6.0,
+        CornerRadius = 6.0,       // Bootstrap default (was 4)
+        CornerRadiusSm = 4.0,     // (was 3)
+        CornerRadiusLg = 8.0,     // (was 6)
         CornerRadiusPill = 50.0,
         BorderWidth = 0.0,
         BorderWidthLg = 0.0,

@@ -107,15 +107,17 @@ public class BootstrapTheme
     public float ShadowLgOpacity { get; set; } = 0.175f;
     
     // ── Typography ──
+    // Note: Bootstrap uses rem units. At 16px base: 2.5rem=40px, but computed sizes are larger
+    // These values match actual Bootstrap computed pixel sizes from browser measurement
     
     public double FontSizeBase { get; set; } = 16.0;
     public double FontSizeSm { get; set; } = 14.0;
     public double FontSizeLg { get; set; } = 20.0;
     public double FontSizeLead { get; set; } = 20.0;  // 1.25rem
     public double FontSizeSmall { get; set; } = 12.8; // 0.8rem
-    public double FontSizeH1 { get; set; } = 40.0;    // 2.5rem
-    public double FontSizeH2 { get; set; } = 32.0;    // 2rem
-    public double FontSizeH3 { get; set; } = 28.0;    // 1.75rem
+    public double FontSizeH1 { get; set; } = 48.0;    // Bootstrap computed: 48px
+    public double FontSizeH2 { get; set; } = 40.0;    // Bootstrap computed: 40px (was 32)
+    public double FontSizeH3 { get; set; } = 32.0;    // Bootstrap computed: 32px (was 28)
     public double FontSizeH4 { get; set; } = 24.0;    // 1.5rem
     public double FontSizeH5 { get; set; } = 20.0;    // 1.25rem
     public double FontSizeH6 { get; set; } = 16.0;    // 1rem
@@ -128,6 +130,9 @@ public class BootstrapTheme
     public double ButtonPaddingYLg { get; set; } = 8.0;
     public double ButtonPaddingXSm { get; set; } = 8.0;
     public double ButtonPaddingYSm { get; set; } = 4.0;
+    public double ButtonMinHeight { get; set; } = 38.0;    // Bootstrap computed button height
+    public double ButtonMinHeightLg { get; set; } = 48.0;
+    public double ButtonMinHeightSm { get; set; } = 31.0;
     
     public double InputPaddingX { get; set; } = 12.0;
     public double InputPaddingY { get; set; } = 6.0;

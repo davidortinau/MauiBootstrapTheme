@@ -4,6 +4,7 @@ using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Platform;
 #elif IOS || MACCATALYST
 using UIKit;
+using CoreGraphics;
 using Microsoft.Maui.Platform;
 #elif WINDOWS
 using Microsoft.Maui.Platform;
@@ -28,7 +29,8 @@ public static class BootstrapProgressBarHandler
         
         var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
         var progressColor = GetProgressColor(variant, theme);
-        var trackColor = theme.GetOutline().WithAlpha(0.3f);
+        // Use solid track color for visibility (Bootstrap uses solid gray background)
+        var trackColor = theme.ProgressBackground;
 
 #if ANDROID
         ApplyAndroid(handler, progressColor, trackColor, theme);
@@ -47,6 +49,10 @@ public static class BootstrapProgressBarHandler
 
         progressBar.ProgressTintList = Android.Content.Res.ColorStateList.ValueOf(progressColor.ToPlatform());
         progressBar.ProgressBackgroundTintList = Android.Content.Res.ColorStateList.ValueOf(trackColor.ToPlatform());
+        
+        // Set minimum height to match Bootstrap (16px)
+        var density = progressBar.Context?.Resources?.DisplayMetrics?.Density ?? 1;
+        progressBar.SetMinimumHeight((int)(theme.ProgressHeight * density));
     }
 #endif
 
@@ -58,6 +64,14 @@ public static class BootstrapProgressBarHandler
 
         progressView.ProgressTintColor = progressColor.ToPlatform();
         progressView.TrackTintColor = trackColor.ToPlatform();
+        
+        // iOS UIProgressView is very thin by default (4px)
+        // Scale transform to make it match Bootstrap's 16px height
+        // 16px / 4px = 4x scale on Y axis
+        var scale = theme.ProgressHeight / 4.0;
+        progressView.Transform = CGAffineTransform.MakeScale(1.0f, (nfloat)scale);
+        progressView.ClipsToBounds = true;
+        progressView.Layer.CornerRadius = (nfloat)(theme.CornerRadius / 2.0);
     }
 #endif
 
@@ -68,6 +82,8 @@ public static class BootstrapProgressBarHandler
         if (progressBar == null) return;
 
         progressBar.Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(progressColor.ToWindowsColor());
+        progressBar.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(trackColor.ToWindowsColor());
+        progressBar.MinHeight = theme.ProgressHeight;
     }
 #endif
 

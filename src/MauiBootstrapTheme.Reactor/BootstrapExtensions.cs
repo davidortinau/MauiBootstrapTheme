@@ -267,4 +267,35 @@ public static class BootstrapExtensions
         node.Set(Bootstrap.PaddingLevelProperty, level);
         return node;
     }
+
+    // ══════════════════════════════════════════════════════════════════
+    // BOOTSTRAP SIZING HELPERS
+    // ══════════════════════════════════════════════════════════════════
+
+    /// <summary>
+    /// Sets Bootstrap-standard height for buttons (38px default, 48px large, 31px small).
+    /// </summary>
+    public static MauiReactor.Button BootstrapHeight(this MauiReactor.Button node)
+    {
+        var theme = BootstrapTheme.Current;
+        return node.HeightRequest(theme.ButtonMinHeight);
+    }
+
+    /// <summary>
+    /// Sets Bootstrap-standard height for entries (38px default, 48px large, 31px small).
+    /// </summary>
+    public static MauiReactor.Entry BootstrapHeight(this MauiReactor.Entry node)
+    {
+        var theme = BootstrapTheme.Current;
+        return node.HeightRequest(theme.InputMinHeight);
+    }
+
+    /// <summary>
+    /// Sets Bootstrap-standard height for progress bars (16px).
+    /// </summary>
+    public static MauiReactor.ProgressBar BootstrapHeight(this MauiReactor.ProgressBar node)
+    {
+        var theme = BootstrapTheme.Current;
+        return node.HeightRequest(theme.ProgressHeight);
+    }
 }

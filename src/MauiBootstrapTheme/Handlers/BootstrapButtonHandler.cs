@@ -43,19 +43,22 @@ public static class BootstrapButtonHandler
         var borderColor = isOutlined ? Bootstrap.GetOutlineBorderColor(variant, theme) : backgroundColor;
         var borderWidth = isOutlined ? theme.BorderWidth : 0;
         var (paddingX, paddingY) = GetPaddingForSize(size, theme);
+        var fontSize = GetFontSizeForSize(size, theme);
+        var minHeight = GetMinHeightForSize(size, theme);
 
 #if ANDROID
-        ApplyAndroid(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY);
+        ApplyAndroid(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight);
 #elif IOS || MACCATALYST
-        ApplyiOS(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY);
+        ApplyiOS(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, isPill);
 #elif WINDOWS
-        ApplyWindows(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY);
+        ApplyWindows(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight);
 #endif
     }
 
 #if ANDROID
     private static void ApplyAndroid(IButtonHandler handler, double cornerRadius, Color borderColor, 
-        Color backgroundColor, Color textColor, double borderWidth, double paddingX, double paddingY)
+        Color backgroundColor, Color textColor, double borderWidth, double paddingX, double paddingY,
+        double fontSize, double minHeight)
     {
         var button = handler.PlatformView;
         if (button == null) return;
@@ -76,6 +79,12 @@ public static class BootstrapButtonHandler
         button.Background = drawable;
         button.SetTextColor(textColor.ToPlatform());
         
+        // Apply font size
+        button.SetTextSize(Android.Util.ComplexUnitType.Sp, (float)fontSize);
+        
+        // Apply min height
+        button.SetMinHeight((int)(minHeight * density));
+        
         // Apply padding
         var px = (int)(paddingX * density);
         var py = (int)(paddingY * density);
@@ -88,12 +97,16 @@ public static class BootstrapButtonHandler
 
 #if IOS || MACCATALYST
     private static void ApplyiOS(IButtonHandler handler, double cornerRadius, Color borderColor, 
-        Color backgroundColor, Color textColor, double borderWidth, double paddingX, double paddingY)
+        Color backgroundColor, Color textColor, double borderWidth, double paddingX, double paddingY,
+        double fontSize, double minHeight, bool isPill)
     {
         var button = handler.PlatformView;
         if (button == null) return;
 
-        button.Layer.CornerRadius = (nfloat)cornerRadius;
+        // For pill buttons, calculate corner radius based on actual height
+        var effectiveCornerRadius = isPill ? minHeight / 2.0 : cornerRadius;
+        
+        button.Layer.CornerRadius = (nfloat)effectiveCornerRadius;
         button.Layer.MasksToBounds = true;
         button.BackgroundColor = backgroundColor.ToPlatform();
         
@@ -105,16 +118,27 @@ public static class BootstrapButtonHandler
         
         button.SetTitleColor(textColor.ToPlatform(), UIControlState.Normal);
         
-        // Content insets for padding
+        // Apply font size
+        if (button.TitleLabel != null)
+        {
+            button.TitleLabel.Font = UIFont.SystemFontOfSize((nfloat)fontSize);
+        }
+        
+        // Set minimum height constraint via intrinsic content size won't work directly
+        // Instead, ensure frame height through content insets calculation
+        var verticalPadding = Math.Max(paddingY, (minHeight - fontSize - 4) / 2.0);
+        
+        // Content insets for padding - use Configuration on newer iOS
         button.ContentEdgeInsets = new UIEdgeInsets(
-            (nfloat)paddingY, (nfloat)paddingX, 
-            (nfloat)paddingY, (nfloat)paddingX);
+            (nfloat)verticalPadding, (nfloat)paddingX, 
+            (nfloat)verticalPadding, (nfloat)paddingX);
     }
 #endif
 
 #if WINDOWS
     private static void ApplyWindows(IButtonHandler handler, double cornerRadius, Color borderColor, 
-        Color backgroundColor, Color textColor, double borderWidth, double paddingX, double paddingY)
+        Color backgroundColor, Color textColor, double borderWidth, double paddingX, double paddingY,
+        double fontSize, double minHeight)
     {
         var button = handler.PlatformView;
         if (button == null) return;
@@ -130,6 +154,8 @@ public static class BootstrapButtonHandler
         }
         
         button.Padding = new Microsoft.UI.Xaml.Thickness(paddingX, paddingY, paddingX, paddingY);
+        button.MinHeight = minHeight;
+        button.FontSize = fontSize;
     }
 #endif
 
@@ -158,5 +184,19 @@ public static class BootstrapButtonHandler
         BootstrapSize.Small => (theme.ButtonPaddingXSm, theme.ButtonPaddingYSm),
         BootstrapSize.Large => (theme.ButtonPaddingXLg, theme.ButtonPaddingYLg),
         _ => (theme.ButtonPaddingX, theme.ButtonPaddingY)
+    };
+
+    private static double GetFontSizeForSize(BootstrapSize size, BootstrapTheme theme) => size switch
+    {
+        BootstrapSize.Small => theme.FontSizeSm,
+        BootstrapSize.Large => theme.FontSizeLg,
+        _ => theme.FontSizeBase
+    };
+
+    private static double GetMinHeightForSize(BootstrapSize size, BootstrapTheme theme) => size switch
+    {
+        BootstrapSize.Small => theme.ButtonMinHeightSm,
+        BootstrapSize.Large => theme.ButtonMinHeightLg,
+        _ => theme.ButtonMinHeight
     };
 }

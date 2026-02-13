@@ -44,33 +44,33 @@ class ControlsPage : Component
                         VStack(spacing: 12,
                             Label("Buttons").H4(),
                             HStack(spacing: 8,
-                                Button("Primary").Primary(),
-                                Button("Secondary").Secondary(),
-                                Button("Success").Success()
+                                Button("Primary").Primary().HeightRequest(38),
+                                Button("Secondary").Secondary().HeightRequest(38),
+                                Button("Success").Success().HeightRequest(38)
                             ).HCenter(),
                             HStack(spacing: 8,
-                                Button("Danger").Danger(),
-                                Button("Warning").Warning(),
-                                Button("Info").Info()
+                                Button("Danger").Danger().HeightRequest(38),
+                                Button("Warning").Warning().HeightRequest(38),
+                                Button("Info").Info().HeightRequest(38)
                             ).HCenter(),
                             
                             Label("Outline Buttons").Muted(),
                             HStack(spacing: 8,
-                                Button("Primary").Primary().Outlined(),
-                                Button("Danger").Danger().Outlined()
+                                Button("Primary").Primary().Outlined().HeightRequest(38),
+                                Button("Danger").Danger().Outlined().HeightRequest(38)
                             ).HCenter(),
                             
                             Label("Pill Buttons").Muted(),
                             HStack(spacing: 8,
-                                Button("Pill Primary").Primary().Pill(),
-                                Button("Pill Success").Success().Pill()
+                                Button("Pill Primary").Primary().Pill().HeightRequest(38),
+                                Button("Pill Success").Success().Pill().HeightRequest(38)
                             ).HCenter(),
                             
                             Label("Button Sizes").Muted(),
                             HStack(spacing: 8,
-                                Button("Large").Primary().Large(),
-                                Button("Default").Primary(),
-                                Button("Small").Primary().Small()
+                                Button("Large").Primary().Large().HeightRequest(48),
+                                Button("Default").Primary().HeightRequest(38),
+                                Button("Small").Primary().Small().HeightRequest(31)
                             ).HCenter().VCenter()
                         ).Padding(16)
                     ).ShadowSm(),
@@ -80,11 +80,11 @@ class ControlsPage : Component
                         VStack(spacing: 12,
                             Label("Progress Indicators").H4(),
                             Label("Primary Progress (75%)").Muted(),
-                            ProgressBar().Progress(0.75).Primary(),
+                            ProgressBar().Progress(0.75).Primary().BootstrapHeight(),
                             Label("Success Progress (50%)").Muted(),
-                            ProgressBar().Progress(0.5).Success(),
+                            ProgressBar().Progress(0.5).Success().BootstrapHeight(),
                             Label("Danger Progress (25%)").Muted(),
-                            ProgressBar().Progress(0.25).Danger(),
+                            ProgressBar().Progress(0.25).Danger().BootstrapHeight(),
                             HStack(spacing: 20,
                                 ActivityIndicator().IsRunning(true).Primary(),
                                 ActivityIndicator().IsRunning(true).Success(),
@@ -110,11 +110,11 @@ class InputsPage : Component
                     Border(
                         VStack(spacing: 12,
                             Label("Text Inputs").H4(),
-                            Entry().Placeholder("Default Entry"),
-                            Entry().Placeholder("Primary Entry").Primary(),
-                            Entry().Placeholder("Danger Entry").Danger(),
-                            Entry().Placeholder("Large Entry").Large(),
-                            Entry().Placeholder("Small Entry").Small()
+                            Entry().Placeholder("Default Entry").BootstrapHeight(),
+                            Entry().Placeholder("Primary Entry").Primary().BootstrapHeight(),
+                            Entry().Placeholder("Danger Entry").Danger().BootstrapHeight(),
+                            Entry().Placeholder("Large Entry").Large().HeightRequest(48),
+                            Entry().Placeholder("Small Entry").Small().HeightRequest(31)
                         ).Padding(16)
                     ).ShadowSm(),
 
