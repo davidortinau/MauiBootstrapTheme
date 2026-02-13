@@ -6,135 +6,116 @@
              Title="Controls">
     
     <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20">
+        <VerticalStackLayout Spacing="24" Padding="20">
             
-            <!-- Header -->
-            <Label Text="Bootstrap Themed Controls"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+            <!-- Page Header (left-aligned like Blazor) -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Bootstrap Controls"
+                       FontSize="32"
+                       FontAttributes="Bold" />
+                <Label Text="Stock MAUI controls styled with Bootstrap 5 theme values."
+                       FontSize="18"
+                       TextColor="Gray" />
+            </VerticalStackLayout>
             
-            <Label Text="Stock MAUI controls styled with Bootstrap 5 theme values."
-                   FontSize="14"
-                   TextColor="Gray"
-                   HorizontalOptions="Center" />
+            <!-- Buttons Section -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Buttons" FontSize="24" />
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Primary" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Primary" />
+                    <Button Text="Secondary" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Secondary" />
+                    <Button Text="Success" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Success" />
+                    <Button Text="Danger" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Danger" />
+                    <Button Text="Warning" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Warning" />
+                    <Button Text="Info" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Info" />
+                </FlexLayout>
+            </VerticalStackLayout>
             
-            <!-- Entry Controls Section -->
-            <Frame Padding="16" CornerRadius="8" BorderColor="LightGray">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="Entry Controls" FontAttributes="Bold" FontSize="18" />
-                    
-                    <Entry Placeholder="Default Entry" HeightRequest="38" />
-                    
-                    <Entry Placeholder="Primary Entry" HeightRequest="38"
-                           theme:Bootstrap.Variant="Primary" />
-                    
-                    <Entry Placeholder="Danger Entry" HeightRequest="38"
-                           theme:Bootstrap.Variant="Danger" />
-                    
-                    <Entry Placeholder="Large Entry" HeightRequest="48"
-                           theme:Bootstrap.Size="Large" />
-                    
-                    <Entry Placeholder="Small Entry" HeightRequest="31"
-                           theme:Bootstrap.Size="Small" />
-                </VerticalStackLayout>
-            </Frame>
+            <!-- Outline Buttons Section -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Outline Buttons" FontSize="20" />
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Primary" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Primary" 
+                            theme:Bootstrap.IsOutlined="True" />
+                    <Button Text="Secondary" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Secondary" 
+                            theme:Bootstrap.IsOutlined="True" />
+                    <Button Text="Success" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Success" 
+                            theme:Bootstrap.IsOutlined="True" />
+                    <Button Text="Danger" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Danger" 
+                            theme:Bootstrap.IsOutlined="True" />
+                </FlexLayout>
+            </VerticalStackLayout>
             
-            <!-- Button Controls Section -->
-            <Frame Padding="16" CornerRadius="8" BorderColor="LightGray">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="Button Controls" FontAttributes="Bold" FontSize="18" />
-                    
-                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
-                        <Button Text="Primary" HeightRequest="38"
-                                theme:Bootstrap.Variant="Primary" />
-                        <Button Text="Secondary" HeightRequest="38"
-                                theme:Bootstrap.Variant="Secondary" />
-                        <Button Text="Success" HeightRequest="38"
-                                theme:Bootstrap.Variant="Success" />
-                    </HorizontalStackLayout>
-                    
-                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
-                        <Button Text="Danger" HeightRequest="38"
-                                theme:Bootstrap.Variant="Danger" />
-                        <Button Text="Warning" HeightRequest="38" 
-                                theme:Bootstrap.Variant="Warning" />
-                        <Button Text="Info" HeightRequest="38"
-                                theme:Bootstrap.Variant="Info" />
-                    </HorizontalStackLayout>
-                    
-                    <Label Text="Outline Buttons" FontSize="14" TextColor="Gray" />
-                    
-                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
-                        <Button Text="Primary" HeightRequest="38"
-                                theme:Bootstrap.Variant="Primary" 
-                                theme:Bootstrap.IsOutlined="True" />
-                        <Button Text="Secondary" HeightRequest="38"
-                                theme:Bootstrap.Variant="Secondary" 
-                                theme:Bootstrap.IsOutlined="True" />
-                        <Button Text="Danger" HeightRequest="38"
-                                theme:Bootstrap.Variant="Danger" 
-                                theme:Bootstrap.IsOutlined="True" />
-                    </HorizontalStackLayout>
-                    
-                    <Label Text="Pill Buttons" FontSize="14" TextColor="Gray" />
-                    
-                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
-                        <Button Text="Pill Primary" HeightRequest="38"
-                                theme:Bootstrap.Variant="Primary"
-                                theme:Bootstrap.IsPill="True" />
-                        <Button Text="Pill Success" HeightRequest="38"
-                                theme:Bootstrap.Variant="Success"
-                                theme:Bootstrap.IsPill="True" />
-                    </HorizontalStackLayout>
-                    
-                    <Label Text="Button Sizes" FontSize="14" TextColor="Gray" />
-                    
-                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
-                        <Button Text="Large" HeightRequest="48"
-                                theme:Bootstrap.Variant="Primary"
-                                theme:Bootstrap.Size="Large" />
-                        <Button Text="Default" HeightRequest="38"
-                                theme:Bootstrap.Variant="Primary" />
-                        <Button Text="Small" HeightRequest="31"
-                                theme:Bootstrap.Variant="Primary"
-                                theme:Bootstrap.Size="Small" />
-                    </HorizontalStackLayout>
-                </VerticalStackLayout>
-            </Frame>
+            <!-- Button Sizes Section -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Button Sizes" FontSize="20" />
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Large" HeightRequest="48" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Primary"
+                            theme:Bootstrap.Size="Large" />
+                    <Button Text="Default" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Primary" />
+                    <Button Text="Small" HeightRequest="31" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Primary"
+                            theme:Bootstrap.Size="Small" />
+                </FlexLayout>
+            </VerticalStackLayout>
             
-            <!-- Progress Bar Section -->
-            <Frame Padding="16" CornerRadius="8" BorderColor="LightGray">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="Progress Bars" FontAttributes="Bold" FontSize="18" />
-                    
-                    <Label Text="Primary (75%)" FontSize="14" TextColor="Gray" />
+            <!-- Pill Buttons Section -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Pill Buttons" FontSize="20" />
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Primary Pill" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Primary"
+                            theme:Bootstrap.IsPill="True" />
+                    <Button Text="Success Pill" HeightRequest="38" Margin="0,0,8,8"
+                            theme:Bootstrap.Variant="Success"
+                            theme:Bootstrap.IsPill="True" />
+                </FlexLayout>
+            </VerticalStackLayout>
+            
+            <!-- Progress Section -->
+            <VerticalStackLayout Spacing="12">
+                <Label Text="Progress" FontSize="24" />
+                
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Primary (75%)" FontSize="14" />
                     <ProgressBar Progress="0.75" HeightRequest="16"
                                  theme:Bootstrap.Variant="Primary" />
-                    
-                    <Label Text="Success (50%)" FontSize="14" TextColor="Gray" />
+                </VerticalStackLayout>
+                
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Success (50%)" FontSize="14" />
                     <ProgressBar Progress="0.5" HeightRequest="16"
                                  theme:Bootstrap.Variant="Success" />
-                    
-                    <Label Text="Danger (25%)" FontSize="14" TextColor="Gray" />
+                </VerticalStackLayout>
+                
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Danger (25%)" FontSize="14" />
                     <ProgressBar Progress="0.25" HeightRequest="16"
                                  theme:Bootstrap.Variant="Danger" />
                 </VerticalStackLayout>
-            </Frame>
+            </VerticalStackLayout>
             
-            <!-- Editor Controls Section -->
-            <Frame Padding="16" CornerRadius="8" BorderColor="LightGray">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="Editor Controls" FontAttributes="Bold" FontSize="18" />
-                    
-                    <Editor Placeholder="Default Editor" 
-                            HeightRequest="80" />
-                    
-                    <Editor Placeholder="Primary Editor"
-                            HeightRequest="80"
-                            theme:Bootstrap.Variant="Primary" />
-                </VerticalStackLayout>
-            </Frame>
+            <!-- Spinners Section -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Spinners" FontSize="24" />
+                <HorizontalStackLayout Spacing="16">
+                    <ActivityIndicator IsRunning="True" Color="{x:Static theme:BootstrapTheme.Primary}" />
+                    <ActivityIndicator IsRunning="True" Color="{x:Static theme:BootstrapTheme.Success}" />
+                    <ActivityIndicator IsRunning="True" Color="{x:Static theme:BootstrapTheme.Danger}" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
             
         </VerticalStackLayout>
     </ScrollView>

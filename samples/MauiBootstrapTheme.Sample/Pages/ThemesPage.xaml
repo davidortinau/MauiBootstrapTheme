@@ -6,53 +6,94 @@
              Title="Themes">
     
     <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20">
+        <VerticalStackLayout Spacing="24" Padding="20">
             
-            <Label Text="Theme Switcher" theme:Bootstrap.Heading="2" HorizontalOptions="Center" />
-            <Label Text="Switch between Bootstrap themes at runtime" theme:Bootstrap.TextStyle="Lead" HorizontalOptions="Center" />
+            <!-- Page Header (left-aligned like Blazor) -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Theme Switcher"
+                       FontSize="32"
+                       FontAttributes="Bold" />
+                <Label Text="Switch between Bootstrap themes at runtime"
+                       FontSize="18"
+                       TextColor="Gray" />
+            </VerticalStackLayout>
             
-            <!-- Theme Selection -->
-            <Border theme:Bootstrap.Shadow="Small" Padding="16">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="Select Theme" theme:Bootstrap.Heading="4" />
-                    
-                    <FlexLayout Wrap="Wrap" JustifyContent="Start">
-                        <Button Text="Default" Clicked="OnDefaultThemeClicked" theme:Bootstrap.Variant="Primary" Margin="4" />
-                        <Button Text="Darkly" Clicked="OnDarklyThemeClicked" theme:Bootstrap.Variant="Dark" Margin="4" />
-                        <Button Text="Cyborg" Clicked="OnCyborgThemeClicked" theme:Bootstrap.Variant="Secondary" Margin="4" />
-                        <Button Text="Minty" Clicked="OnMintyThemeClicked" theme:Bootstrap.Variant="Success" Margin="4" />
-                        <Button Text="Slate" Clicked="OnSlateThemeClicked" theme:Bootstrap.Variant="Info" Margin="4" />
-                        <Button Text="Flatly" Clicked="OnFlatlyThemeClicked" theme:Bootstrap.Variant="Primary" Margin="4" />
-                        <Button Text="Sketchy" Clicked="OnSketchyThemeClicked" theme:Bootstrap.Variant="Warning" Margin="4" />
-                        <Button Text="Vapor" Clicked="OnVaporThemeClicked" theme:Bootstrap.Variant="Danger" Margin="4" />
-                        <Button Text="Brite" Clicked="OnBriteThemeClicked" theme:Bootstrap.Variant="Success" Margin="4" />
-                    </FlexLayout>
-                </VerticalStackLayout>
-            </Border>
+            <!-- Select Theme Section -->
+            <VerticalStackLayout Spacing="12">
+                <Label Text="Select Theme" FontSize="24" />
+                <FlexLayout Wrap="Wrap" JustifyContent="Start">
+                    <Button Text="Default" Clicked="OnDefaultThemeClicked" theme:Bootstrap.Variant="Primary" HeightRequest="38" Margin="0,0,8,8" />
+                    <Button Text="Darkly" Clicked="OnDarklyThemeClicked" theme:Bootstrap.Variant="Dark" HeightRequest="38" Margin="0,0,8,8" />
+                    <Button Text="Slate" Clicked="OnSlateThemeClicked" theme:Bootstrap.Variant="Secondary" HeightRequest="38" Margin="0,0,8,8" />
+                    <Button Text="Flatly" Clicked="OnFlatlyThemeClicked" theme:Bootstrap.Variant="Info" HeightRequest="38" Margin="0,0,8,8" />
+                    <Button Text="Sketchy" Clicked="OnSketchyThemeClicked" theme:Bootstrap.Variant="Warning" HeightRequest="38" Margin="0,0,8,8" />
+                    <Button Text="Vapor" Clicked="OnVaporThemeClicked" theme:Bootstrap.Variant="Danger" HeightRequest="38" Margin="0,0,8,8" />
+                    <Button Text="Brite" Clicked="OnBriteThemeClicked" theme:Bootstrap.Variant="Success" HeightRequest="38" Margin="0,0,8,8" />
+                </FlexLayout>
+                <Label x:Name="CurrentThemeLabel" Text="Current: bootstrap" TextColor="Gray" />
+            </VerticalStackLayout>
             
-            <!-- Preview Controls -->
-            <Border Padding="16" x:Name="PreviewFrame" theme:Bootstrap.Shadow="Default">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="Preview" theme:Bootstrap.Heading="4" x:Name="PreviewLabel" />
-                    
-                    <Entry x:Name="PreviewEntry" Placeholder="Sample Entry" theme:Bootstrap.Variant="Primary" />
-                    
-                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
-                        <Button x:Name="PreviewBtn1" Text="Primary" theme:Bootstrap.Variant="Primary" />
-                        <Button x:Name="PreviewBtn2" Text="Success" theme:Bootstrap.Variant="Success" />
-                        <Button x:Name="PreviewBtn3" Text="Danger" theme:Bootstrap.Variant="Danger" />
-                    </HorizontalStackLayout>
-                    
-                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
-                        <Button x:Name="PreviewBtn4" Text="Outline" theme:Bootstrap.Variant="Primary" theme:Bootstrap.IsOutlined="True" />
-                        <Button x:Name="PreviewBtn5" Text="Pill" theme:Bootstrap.Variant="Info" theme:Bootstrap.IsPill="True" />
-                    </HorizontalStackLayout>
-                    
-                    <Editor x:Name="PreviewEditor" Placeholder="Sample Editor" HeightRequest="60" theme:Bootstrap.Variant="Default" />
-                </VerticalStackLayout>
-            </Border>
+            <!-- Preview Section -->
+            <VerticalStackLayout Spacing="12">
+                <Label Text="Preview" FontSize="24" />
+                <Border Padding="16" x:Name="PreviewFrame" theme:Bootstrap.Shadow="Default" StrokeShape="RoundRectangle 6">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Theme Preview" FontSize="18" FontAttributes="Bold" x:Name="PreviewLabel" />
+                        
+                        <Entry x:Name="PreviewEntry" Placeholder="Sample input" HeightRequest="38" />
+                        
+                        <FlexLayout Wrap="Wrap" JustifyContent="Start">
+                            <Button x:Name="PreviewBtn1" Text="Primary" theme:Bootstrap.Variant="Primary" HeightRequest="38" Margin="0,0,8,8" />
+                            <Button x:Name="PreviewBtn2" Text="Success" theme:Bootstrap.Variant="Success" HeightRequest="38" Margin="0,0,8,8" />
+                            <Button x:Name="PreviewBtn3" Text="Danger" theme:Bootstrap.Variant="Danger" HeightRequest="38" Margin="0,0,8,8" />
+                        </FlexLayout>
+                        
+                        <FlexLayout Wrap="Wrap" JustifyContent="Start">
+                            <Button x:Name="PreviewBtn4" Text="Outline" theme:Bootstrap.Variant="Primary" theme:Bootstrap.IsOutlined="True" HeightRequest="38" Margin="0,0,8,8" />
+                            <Button x:Name="PreviewBtn5" Text="Pill" theme:Bootstrap.Variant="Info" theme:Bootstrap.IsPill="True" HeightRequest="38" Margin="0,0,8,8" />
+                        </FlexLayout>
+                        
+                        <ProgressBar Progress="0.65" HeightRequest="16" theme:Bootstrap.Variant="Primary" />
+                        
+                        <FlexLayout Wrap="Wrap" JustifyContent="Start">
+                            <Label Text="Badge" theme:Bootstrap.Badge="Primary" Margin="0,0,8,8" />
+                            <Label Text="Success" theme:Bootstrap.Badge="Success" Margin="0,0,8,8" />
+                            <Label Text="Alert" theme:Bootstrap.Badge="Danger" Margin="0,0,8,8" />
+                        </FlexLayout>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
             
-            <Label x:Name="CurrentThemeLabel" Text="Current: Default" theme:Bootstrap.TextStyle="Muted" HorizontalOptions="Center" />
+            <!-- All Color Variants Section -->
+            <VerticalStackLayout Spacing="12">
+                <Label Text="All Color Variants" FontSize="24" />
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="*,*" RowSpacing="8" ColumnSpacing="8">
+                    <Border theme:Bootstrap.BackgroundVariant="Primary" Padding="16" Grid.Row="0" Grid.Column="0">
+                        <Label Text="Primary" HorizontalOptions="Center" TextColor="White" />
+                    </Border>
+                    <Border theme:Bootstrap.BackgroundVariant="Secondary" Padding="16" Grid.Row="0" Grid.Column="1">
+                        <Label Text="Secondary" HorizontalOptions="Center" TextColor="White" />
+                    </Border>
+                    <Border theme:Bootstrap.BackgroundVariant="Success" Padding="16" Grid.Row="1" Grid.Column="0">
+                        <Label Text="Success" HorizontalOptions="Center" TextColor="White" />
+                    </Border>
+                    <Border theme:Bootstrap.BackgroundVariant="Danger" Padding="16" Grid.Row="1" Grid.Column="1">
+                        <Label Text="Danger" HorizontalOptions="Center" TextColor="White" />
+                    </Border>
+                    <Border theme:Bootstrap.BackgroundVariant="Warning" Padding="16" Grid.Row="2" Grid.Column="0">
+                        <Label Text="Warning" HorizontalOptions="Center" />
+                    </Border>
+                    <Border theme:Bootstrap.BackgroundVariant="Info" Padding="16" Grid.Row="2" Grid.Column="1">
+                        <Label Text="Info" HorizontalOptions="Center" />
+                    </Border>
+                    <Border theme:Bootstrap.BackgroundVariant="Light" Padding="16" Grid.Row="3" Grid.Column="0" Stroke="LightGray">
+                        <Label Text="Light" HorizontalOptions="Center" />
+                    </Border>
+                    <Border theme:Bootstrap.BackgroundVariant="Dark" Padding="16" Grid.Row="3" Grid.Column="1">
+                        <Label Text="Dark" HorizontalOptions="Center" TextColor="White" />
+                    </Border>
+                </Grid>
+            </VerticalStackLayout>
             
         </VerticalStackLayout>
     </ScrollView>

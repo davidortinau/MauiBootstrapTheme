@@ -11,31 +11,25 @@ public partial class ThemesPage : ContentPage
     }
 
     private void OnDefaultThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new DefaultTheme().GetTheme(), "Default Bootstrap 5");
+        => ApplyTheme(new DefaultTheme().GetTheme(), "bootstrap");
 
     private void OnDarklyThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new DarklyTheme().GetTheme(), "Darkly");
-
-    private void OnCyborgThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new CyborgTheme().GetTheme(), "Cyborg");
-
-    private void OnMintyThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new MintyTheme().GetTheme(), "Minty");
+        => ApplyTheme(new DarklyTheme().GetTheme(), "darkly");
 
     private void OnSlateThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new SlateTheme().GetTheme(), "Slate");
+        => ApplyTheme(new SlateTheme().GetTheme(), "slate");
 
     private void OnFlatlyThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new FlatlyTheme().GetTheme(), "Flatly");
+        => ApplyTheme(new FlatlyTheme().GetTheme(), "flatly");
 
     private void OnSketchyThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new SketchyTheme().GetTheme(), "Sketchy");
+        => ApplyTheme(new SketchyTheme().GetTheme(), "sketchy");
 
     private void OnVaporThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new VaporTheme().GetTheme(), "Vapor");
+        => ApplyTheme(new VaporTheme().GetTheme(), "vapor");
 
     private void OnBriteThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new BriteTheme().GetTheme(), "Brite");
+        => ApplyTheme(new BriteTheme().GetTheme(), "brite");
 
     private void ApplyTheme(BootstrapTheme theme, string themeName)
     {
@@ -53,7 +47,6 @@ public partial class ThemesPage : ContentPage
         RefreshControl(PreviewBtn3);
         RefreshControl(PreviewBtn4);
         RefreshControl(PreviewBtn5);
-        RefreshControl(PreviewEditor);
     }
 
     private void RefreshControl(VisualElement control)
