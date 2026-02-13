@@ -401,7 +401,10 @@ class ThemesPage : Component
     private string _currentTheme = "Default";
 
     public override VisualNode Render()
-        => ContentPage("Themes",
+    {
+        var theme = BootstrapTheme.Current;
+        
+        return ContentPage("Themes",
             ScrollView(
                 VStack(spacing: 24,
                     // Page Header
@@ -425,49 +428,50 @@ class ThemesPage : Component
                         Label($"Current: {_currentTheme}").TextColor(Colors.Gray)
                     ),
 
-                    // Preview
+                    // Preview - render controls with current theme colors directly
                     VStack(spacing: 12,
                         Label("Preview").FontSize(24),
                         Border(
                             VStack(spacing: 12,
                                 Label("Theme Preview").FontSize(18).FontAttributes(FontAttributes.Bold),
-                                Entry().Placeholder("Sample input").BootstrapHeight(),
+                                Entry().Placeholder("Sample input").HeightRequest(theme.InputMinHeight),
                                 FlexLayout(
-                                    Button("Primary").Primary().HeightRequest(38).Margin(0, 0, 8, 8),
-                                    Button("Success").Success().HeightRequest(38).Margin(0, 0, 8, 8),
-                                    Button("Danger").Danger().HeightRequest(38).Margin(0, 0, 8, 8)
+                                    Button("Primary").BackgroundColor(theme.Primary).TextColor(theme.OnPrimary).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).Margin(0, 0, 8, 8),
+                                    Button("Success").BackgroundColor(theme.Success).TextColor(theme.OnSuccess).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).Margin(0, 0, 8, 8),
+                                    Button("Danger").BackgroundColor(theme.Danger).TextColor(theme.OnDanger).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).Margin(0, 0, 8, 8)
                                 ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap),
                                 FlexLayout(
-                                    Button("Outline").Primary().Outlined().HeightRequest(38).Margin(0, 0, 8, 8),
-                                    Button("Pill").Info().Pill().HeightRequest(38).Margin(0, 0, 8, 8)
+                                    Button("Outline").BackgroundColor(Colors.Transparent).TextColor(theme.Primary).BorderColor(theme.Primary).BorderWidth(1).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).Margin(0, 0, 8, 8),
+                                    Button("Pill").BackgroundColor(theme.Info).TextColor(theme.OnInfo).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadiusPill).Margin(0, 0, 8, 8)
                                 ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap),
-                                ProgressBar().Progress(0.65).Primary().BootstrapHeight(),
+                                ProgressBar().Progress(0.65).ProgressColor(theme.Primary).HeightRequest(theme.ProgressHeight),
                                 FlexLayout(
-                                    Label("Badge").Badge(BootstrapVariant.Primary).Margin(0, 0, 8, 8),
-                                    Label("Success").Badge(BootstrapVariant.Success).Margin(0, 0, 8, 8),
-                                    Label("Alert").Badge(BootstrapVariant.Danger).Margin(0, 0, 8, 8)
+                                    Label("Badge").BackgroundColor(theme.Primary).TextColor(theme.OnPrimary).Padding(8, 4).Margin(0, 0, 8, 8),
+                                    Label("Success").BackgroundColor(theme.Success).TextColor(theme.OnSuccess).Padding(8, 4).Margin(0, 0, 8, 8),
+                                    Label("Alert").BackgroundColor(theme.Danger).TextColor(theme.OnDanger).Padding(8, 4).Margin(0, 0, 8, 8)
                                 ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap)
                             ).Padding(16)
-                        ).ShadowMd()
+                        ).Stroke(theme.GetOutline())
                     ),
 
                     // All Color Variants
                     VStack(spacing: 12,
                         Label("All Color Variants").FontSize(24),
                         Grid("*,*", "Auto,Auto,Auto,Auto",
-                            Border(Label("Primary").HCenter().TextColor(Colors.White)).Background(BootstrapVariant.Primary).Padding(16).GridRow(0).GridColumn(0),
-                            Border(Label("Secondary").HCenter().TextColor(Colors.White)).Background(BootstrapVariant.Secondary).Padding(16).GridRow(0).GridColumn(1),
-                            Border(Label("Success").HCenter().TextColor(Colors.White)).Background(BootstrapVariant.Success).Padding(16).GridRow(1).GridColumn(0),
-                            Border(Label("Danger").HCenter().TextColor(Colors.White)).Background(BootstrapVariant.Danger).Padding(16).GridRow(1).GridColumn(1),
-                            Border(Label("Warning").HCenter()).Background(BootstrapVariant.Warning).Padding(16).GridRow(2).GridColumn(0),
-                            Border(Label("Info").HCenter()).Background(BootstrapVariant.Info).Padding(16).GridRow(2).GridColumn(1),
-                            Border(Label("Light").HCenter()).Background(BootstrapVariant.Light).Padding(16).GridRow(3).GridColumn(0),
-                            Border(Label("Dark").HCenter().TextColor(Colors.White)).Background(BootstrapVariant.Dark).Padding(16).GridRow(3).GridColumn(1)
+                            Border(Label("Primary").HCenter().TextColor(theme.OnPrimary)).BackgroundColor(theme.Primary).Padding(16).GridRow(0).GridColumn(0),
+                            Border(Label("Secondary").HCenter().TextColor(theme.OnSecondary)).BackgroundColor(theme.Secondary).Padding(16).GridRow(0).GridColumn(1),
+                            Border(Label("Success").HCenter().TextColor(theme.OnSuccess)).BackgroundColor(theme.Success).Padding(16).GridRow(1).GridColumn(0),
+                            Border(Label("Danger").HCenter().TextColor(theme.OnDanger)).BackgroundColor(theme.Danger).Padding(16).GridRow(1).GridColumn(1),
+                            Border(Label("Warning").HCenter().TextColor(theme.OnWarning)).BackgroundColor(theme.Warning).Padding(16).GridRow(2).GridColumn(0),
+                            Border(Label("Info").HCenter().TextColor(theme.OnInfo)).BackgroundColor(theme.Info).Padding(16).GridRow(2).GridColumn(1),
+                            Border(Label("Light").HCenter().TextColor(theme.OnBackground)).BackgroundColor(theme.Light).Padding(16).GridRow(3).GridColumn(0),
+                            Border(Label("Dark").HCenter().TextColor(theme.OnPrimary)).BackgroundColor(theme.Dark).Padding(16).GridRow(3).GridColumn(1)
                         ).RowSpacing(8).ColumnSpacing(8)
                     )
                 ).Padding(20)
             )
-        );
+        ).BackgroundColor(theme.Background);
+    }
 
     private void ApplyTheme(IBootstrapThemeProvider provider, string name)
     {
