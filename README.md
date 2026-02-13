@@ -84,6 +84,150 @@ public static MauiApp CreateMauiApp()
 </ContentPage>
 ```
 
+## MauiReactor Support
+
+MauiBootstrapTheme includes a separate package for MauiReactor with fluent C# extension methods.
+
+### Install MauiReactor Package
+
+```bash
+dotnet add package MauiBootstrapTheme.Reactor
+```
+
+### Register in MauiProgram.cs
+
+```csharp
+using MauiReactor;
+using MauiBootstrapTheme.Extensions;
+using MauiBootstrapTheme.Themes.Default;
+
+public static MauiApp CreateMauiApp()
+{
+    return MauiApp.CreateBuilder()
+        .UseMauiReactorApp<MainPage>()
+        .UseBootstrapTheme<DefaultTheme>()
+        .Build();
+}
+```
+
+### Use Fluent Extensions
+
+```csharp
+using MauiReactor;
+using MauiBootstrapTheme.Reactor;
+
+class MainPage : Component
+{
+    public override VisualNode Render()
+    {
+        return new ContentPage
+        {
+            new VStack(spacing: 12)
+            {
+                // Buttons with variants
+                new Button("Primary").BsPrimary(),
+                new Button("Success").BsSuccess(),
+                new Button("Danger Outlined")
+                    .BootstrapVariant(BootstrapVariant.Danger)
+                    .BootstrapOutlined(),
+                new Button("Pill Button")
+                    .BsPrimary()
+                    .BootstrapPill(),
+                
+                // Button sizes
+                new Button("Large").BsPrimary().BsLarge(),
+                new Button("Small").BsPrimary().BsSmall(),
+                
+                // Entry controls
+                new Entry().Placeholder("Primary Entry").BsPrimary(),
+                new Entry().Placeholder("Danger Entry").BsDanger(),
+                
+                // Typography
+                new Label("Heading 1").BsH1(),
+                new Label("Heading 2").BsH2(),
+                new Label("Lead text for introductions").BsLead(),
+                new Label("Muted helper text").BsMuted(),
+                
+                // Badges
+                new Label("New").BootstrapBadge(BootstrapVariant.Success),
+                new Label("99+").BootstrapBadge(BootstrapVariant.Danger),
+                
+                // Cards with shadows
+                new Border
+                {
+                    new Label("Card with small shadow")
+                }
+                .BsShadowSm()
+                .Padding(16),
+                
+                new Border
+                {
+                    new Label("Card with large shadow")
+                }
+                .BsShadowLg()
+                .Padding(16),
+                
+                // Background variants
+                new Border
+                {
+                    new Label("Primary Background").TextColor(Colors.White)
+                }
+                .BootstrapBackground(BootstrapVariant.Primary)
+                .Padding(16),
+            }
+        };
+    }
+}
+```
+
+### MauiReactor Extension Methods
+
+#### Variant Shortcuts
+```csharp
+.BsPrimary()      // BootstrapVariant.Primary
+.BsSecondary()    // BootstrapVariant.Secondary
+.BsSuccess()      // BootstrapVariant.Success
+.BsDanger()       // BootstrapVariant.Danger
+.BsWarning()      // BootstrapVariant.Warning
+.BsInfo()         // BootstrapVariant.Info
+```
+
+#### Size Shortcuts
+```csharp
+.BsSmall()        // BootstrapSize.Small
+.BsLarge()        // BootstrapSize.Large
+```
+
+#### Typography Shortcuts
+```csharp
+.BsH1() to .BsH6()  // Heading levels 1-6
+.BsLead()           // Lead text style
+.BsMuted()          // Muted text style
+```
+
+#### Shadow Shortcuts
+```csharp
+.BsShadowSm()     // Small shadow
+.BsShadow()       // Default shadow
+.BsShadowLg()     // Large shadow
+```
+
+#### Full Methods
+```csharp
+.BootstrapVariant(BootstrapVariant variant)
+.BootstrapSize(BootstrapSize size)
+.BootstrapOutlined(bool isOutlined = true)
+.BootstrapPill(bool isPill = true)
+.BootstrapHeading(int level)
+.BootstrapTextStyle(BootstrapTextStyle style)
+.BootstrapTextColor(BootstrapVariant variant)
+.BootstrapBadge(BootstrapVariant variant)
+.BootstrapShadow(BootstrapShadow shadow)
+.BootstrapBackground(BootstrapVariant variant)
+.BootstrapMargin(int level)
+.BootstrapPadding(int level)
+```
+
 ## Supported Controls
 
 | Control | Variants | Sizes | Features |
@@ -323,14 +467,22 @@ EntryHandler.Mapper.AppendToMapping("BootstrapStyle", (handler, view) =>
 
 ## Sample App
 
-The repository includes a sample app demonstrating all features:
+The repository includes sample apps demonstrating all features:
 
+### XAML Sample
 ```bash
 cd samples/MauiBootstrapTheme.Sample
 dotnet build -f net10.0-maccatalyst -t:Run
 ```
 
-The sample app includes pages for:
+### MauiReactor Sample
+```bash
+cd samples/MauiBootstrapTheme.Sample.Reactor
+dotnet build -f net10.0-maccatalyst
+open "bin/Debug/net10.0-maccatalyst/maccatalyst-arm64/Bootstrap Theme Reactor.app"
+```
+
+The sample apps include pages for:
 - **Controls** — Buttons, Entries, Editors
 - **Inputs** — All input control types
 - **Typography** — Headings, text styles, badges
