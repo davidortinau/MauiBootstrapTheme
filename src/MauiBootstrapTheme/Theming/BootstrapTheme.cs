@@ -18,6 +18,12 @@ public class BootstrapTheme
     /// </summary>
     public static void SetTheme(BootstrapTheme theme) => _current = theme;
 
+    /// <summary>
+    /// Whether to respect system dark/light mode preference. Default is true.
+    /// Set to false to force the theme's light mode colors regardless of system setting.
+    /// </summary>
+    public static bool RespectSystemTheme { get; set; } = true;
+
     // ── Colors ──
     
     public Color Primary { get; set; } = Color.FromArgb("#0d6efd");
@@ -43,6 +49,12 @@ public class BootstrapTheme
     public Color OnWarning { get; set; } = Color.FromArgb("#212529");
     public Color OnInfo { get; set; } = Color.FromArgb("#212529");
     
+    /// <summary>Muted text color (Bootstrap's text-muted).</summary>
+    public Color Muted { get; set; } = Color.FromArgb("#6c757d");
+    
+    /// <summary>Mark/highlight background color.</summary>
+    public Color Mark { get; set; } = Color.FromArgb("#fcf8e3");
+    
     // ── Dark Mode Colors ──
     
     public Color DarkBackground { get; set; } = Color.FromArgb("#212529");
@@ -65,17 +77,48 @@ public class BootstrapTheme
     public double SpacerSm { get; set; } = 8.0;
     public double SpacerLg { get; set; } = 24.0;
     
+    // ── Bootstrap Spacing Scale (0-5) ──
+    // 0 = 0, 1 = 0.25rem (4px), 2 = 0.5rem (8px), 3 = 1rem (16px), 4 = 1.5rem (24px), 5 = 3rem (48px)
+    
+    /// <summary>Gets the pixel value for a Bootstrap spacing level (0-5).</summary>
+    public static double GetSpacingValue(int level) => level switch
+    {
+        0 => 0,
+        1 => 4,    // 0.25rem
+        2 => 8,    // 0.5rem
+        3 => 16,   // 1rem
+        4 => 24,   // 1.5rem
+        5 => 48,   // 3rem
+        _ => 16
+    };
+    
+    // ── Shadow Values ──
+    
+    /// <summary>Small shadow (Bootstrap shadow-sm).</summary>
+    public float ShadowSmRadius { get; set; } = 2f;
+    public float ShadowSmOpacity { get; set; } = 0.075f;
+    
+    /// <summary>Default shadow (Bootstrap shadow).</summary>
+    public float ShadowRadius { get; set; } = 8f;
+    public float ShadowOpacity { get; set; } = 0.15f;
+    
+    /// <summary>Large shadow (Bootstrap shadow-lg).</summary>
+    public float ShadowLgRadius { get; set; } = 16f;
+    public float ShadowLgOpacity { get; set; } = 0.175f;
+    
     // ── Typography ──
     
     public double FontSizeBase { get; set; } = 16.0;
     public double FontSizeSm { get; set; } = 14.0;
     public double FontSizeLg { get; set; } = 20.0;
-    public double FontSizeH1 { get; set; } = 40.0;
-    public double FontSizeH2 { get; set; } = 32.0;
-    public double FontSizeH3 { get; set; } = 28.0;
-    public double FontSizeH4 { get; set; } = 24.0;
-    public double FontSizeH5 { get; set; } = 20.0;
-    public double FontSizeH6 { get; set; } = 16.0;
+    public double FontSizeLead { get; set; } = 20.0;  // 1.25rem
+    public double FontSizeSmall { get; set; } = 12.8; // 0.8rem
+    public double FontSizeH1 { get; set; } = 40.0;    // 2.5rem
+    public double FontSizeH2 { get; set; } = 32.0;    // 2rem
+    public double FontSizeH3 { get; set; } = 28.0;    // 1.75rem
+    public double FontSizeH4 { get; set; } = 24.0;    // 1.5rem
+    public double FontSizeH5 { get; set; } = 20.0;    // 1.25rem
+    public double FontSizeH6 { get; set; } = 16.0;    // 1rem
     
     // ── Control-Specific ──
     
@@ -91,6 +134,18 @@ public class BootstrapTheme
     public double InputMinHeight { get; set; } = 38.0;
     public double InputMinHeightLg { get; set; } = 48.0;
     public double InputMinHeightSm { get; set; } = 31.0;
+    
+    // ── Progress Bar ──
+    
+    public double ProgressHeight { get; set; } = 16.0;
+    public double ProgressHeightSm { get; set; } = 8.0;
+    public Color ProgressBackground { get; set; } = Color.FromArgb("#e9ecef");
+    
+    // ── Switch/CheckBox ──
+    
+    public double SwitchWidth { get; set; } = 48.0;
+    public double SwitchHeight { get; set; } = 24.0;
+    public double CheckBoxSize { get; set; } = 20.0;
 
     // ── Helper Methods ──
     
@@ -102,8 +157,41 @@ public class BootstrapTheme
     public Color GetSurface() => IsDarkMode ? DarkSurface : Surface;
     public Color GetOnSurface() => IsDarkMode ? DarkOnSurface : OnSurface;
     public Color GetOutline() => IsDarkMode ? DarkOutline : Outline;
+    public Color GetMuted() => IsDarkMode ? DarkOnSurface.WithAlpha(0.6f) : Muted;
+    public Color GetText() => IsDarkMode ? DarkOnSurface : OnSurface;
     
-    private static bool IsDarkMode => Application.Current?.RequestedTheme == AppTheme.Dark;
+    private static bool IsDarkMode => 
+        RespectSystemTheme && Application.Current?.RequestedTheme == AppTheme.Dark;
+
+    /// <summary>
+    /// Gets the font size for a heading level (1-6).
+    /// </summary>
+    public double GetHeadingFontSize(int level) => level switch
+    {
+        1 => FontSizeH1,
+        2 => FontSizeH2,
+        3 => FontSizeH3,
+        4 => FontSizeH4,
+        5 => FontSizeH5,
+        6 => FontSizeH6,
+        _ => FontSizeBase
+    };
+
+    /// <summary>
+    /// Gets the color for a variant.
+    /// </summary>
+    public Color GetVariantColor(BootstrapVariant variant) => variant switch
+    {
+        BootstrapVariant.Primary => Primary,
+        BootstrapVariant.Secondary => Secondary,
+        BootstrapVariant.Success => Success,
+        BootstrapVariant.Danger => Danger,
+        BootstrapVariant.Warning => Warning,
+        BootstrapVariant.Info => Info,
+        BootstrapVariant.Light => Light,
+        BootstrapVariant.Dark => Dark,
+        _ => GetOnSurface()
+    };
 
     /// <summary>
     /// Creates a default Bootstrap 5 theme.

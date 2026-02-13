@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
+             x:Class="MauiBootstrapTheme.Sample.Pages.CardsPage"
+             Title="Cards">
+    
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            
+            <!-- Header -->
+            <Label Text="Cards &amp; Containers"
+                   theme:Bootstrap.Heading="2"
+                   HorizontalOptions="Center" />
+            
+            <Label Text="Border control with Bootstrap card styling"
+                   theme:Bootstrap.TextStyle="Lead"
+                   HorizontalOptions="Center" />
+            
+            <!-- Basic Cards -->
+            <Label Text="Basic Cards" theme:Bootstrap.Heading="4" />
+            
+            <Border Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="Default Card" FontAttributes="Bold" />
+                    <Label Text="This is a basic card with default Bootstrap styling - border, rounded corners, and surface background." />
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- Shadow Variants -->
+            <Label Text="Shadow Variants" theme:Bootstrap.Heading="4" />
+            
+            <Border theme:Bootstrap.Shadow="None" Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="No Shadow" FontAttributes="Bold" />
+                    <Label Text="Shadow='None' - flat appearance" theme:Bootstrap.TextStyle="Muted" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="Small Shadow" FontAttributes="Bold" />
+                    <Label Text="Shadow='Small' - subtle elevation" theme:Bootstrap.TextStyle="Muted" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <Border theme:Bootstrap.Shadow="Default" Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="Default Shadow" FontAttributes="Bold" />
+                    <Label Text="Shadow='Default' - standard card elevation" theme:Bootstrap.TextStyle="Muted" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <Border theme:Bootstrap.Shadow="Large" Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="Large Shadow" FontAttributes="Bold" />
+                    <Label Text="Shadow='Large' - prominent elevation" theme:Bootstrap.TextStyle="Muted" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- Border Color Variants -->
+            <Label Text="Border Color Variants" theme:Bootstrap.Heading="4" />
+            
+            <FlexLayout Wrap="Wrap" JustifyContent="SpaceBetween">
+                <Border theme:Bootstrap.Variant="Primary" Padding="16" WidthRequest="150" Margin="4">
+                    <Label Text="Primary" HorizontalOptions="Center" />
+                </Border>
+                
+                <Border theme:Bootstrap.Variant="Secondary" Padding="16" WidthRequest="150" Margin="4">
+                    <Label Text="Secondary" HorizontalOptions="Center" />
+                </Border>
+                
+                <Border theme:Bootstrap.Variant="Success" Padding="16" WidthRequest="150" Margin="4">
+                    <Label Text="Success" HorizontalOptions="Center" />
+                </Border>
+                
+                <Border theme:Bootstrap.Variant="Danger" Padding="16" WidthRequest="150" Margin="4">
+                    <Label Text="Danger" HorizontalOptions="Center" />
+                </Border>
+                
+                <Border theme:Bootstrap.Variant="Warning" Padding="16" WidthRequest="150" Margin="4">
+                    <Label Text="Warning" HorizontalOptions="Center" />
+                </Border>
+                
+                <Border theme:Bootstrap.Variant="Info" Padding="16" WidthRequest="150" Margin="4">
+                    <Label Text="Info" HorizontalOptions="Center" />
+                </Border>
+            </FlexLayout>
+            
+            <!-- Background Variants -->
+            <Label Text="Background Variants" theme:Bootstrap.Heading="4" />
+            
+            <Border theme:Bootstrap.BackgroundVariant="Primary" theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="Primary Background" FontAttributes="Bold" TextColor="White" />
+                    <Label Text="BackgroundVariant='Primary'" TextColor="White" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <Border theme:Bootstrap.BackgroundVariant="Success" theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="Success Background" FontAttributes="Bold" TextColor="White" />
+                    <Label Text="BackgroundVariant='Success'" TextColor="White" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <Border theme:Bootstrap.BackgroundVariant="Danger" theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="Danger Background" FontAttributes="Bold" TextColor="White" />
+                    <Label Text="BackgroundVariant='Danger'" TextColor="White" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <Border theme:Bootstrap.BackgroundVariant="Warning" theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="Warning Background" FontAttributes="Bold" TextColor="Black" />
+                    <Label Text="BackgroundVariant='Warning'" TextColor="Black" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <Border theme:Bootstrap.BackgroundVariant="Info" theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="Info Background" FontAttributes="Bold" />
+                    <Label Text="BackgroundVariant='Info'" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <Border theme:Bootstrap.BackgroundVariant="Dark" theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout>
+                    <Label Text="Dark Background" FontAttributes="Bold" TextColor="White" />
+                    <Label Text="BackgroundVariant='Dark'" TextColor="White" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- Complex Card Example -->
+            <Label Text="Complex Card Example" theme:Bootstrap.Heading="4" />
+            
+            <Border theme:Bootstrap.Shadow="Default" Padding="0" StrokeThickness="0">
+                <VerticalStackLayout>
+                    <BoxView Color="#0d6efd" HeightRequest="100" />
+                    <VerticalStackLayout Padding="16" Spacing="8">
+                        <Label Text="Card Title" theme:Bootstrap.Heading="5" />
+                        <Label Text="Some quick example text to build on the card title and make up the bulk of the card's content." 
+                               theme:Bootstrap.TextStyle="Muted" />
+                        <Button Text="Go somewhere" 
+                                theme:Bootstrap.Variant="Primary"
+                                HorizontalOptions="Start" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>

@@ -5,7 +5,9 @@ namespace MauiBootstrapTheme.Theming;
 /// </summary>
 public static class Bootstrap
 {
-    // ── Variant Property ──
+    // ══════════════════════════════════════════════════════════════════
+    // VARIANT & SIZE (Existing)
+    // ══════════════════════════════════════════════════════════════════
     
     public static readonly BindableProperty VariantProperty =
         BindableProperty.CreateAttached(
@@ -13,7 +15,7 @@ public static class Bootstrap
             typeof(BootstrapVariant),
             typeof(Bootstrap),
             BootstrapVariant.Default,
-            propertyChanged: OnVariantChanged);
+            propertyChanged: OnStylePropertyChanged);
 
     public static BootstrapVariant GetVariant(BindableObject view) =>
         (BootstrapVariant)view.GetValue(VariantProperty);
@@ -21,15 +23,13 @@ public static class Bootstrap
     public static void SetVariant(BindableObject view, BootstrapVariant value) =>
         view.SetValue(VariantProperty, value);
 
-    // ── Size Property ──
-    
     public static readonly BindableProperty SizeProperty =
         BindableProperty.CreateAttached(
             "Size",
             typeof(BootstrapSize),
             typeof(Bootstrap),
             BootstrapSize.Default,
-            propertyChanged: OnSizeChanged);
+            propertyChanged: OnStylePropertyChanged);
 
     public static BootstrapSize GetSize(BindableObject view) =>
         (BootstrapSize)view.GetValue(SizeProperty);
@@ -37,15 +37,13 @@ public static class Bootstrap
     public static void SetSize(BindableObject view, BootstrapSize value) =>
         view.SetValue(SizeProperty, value);
 
-    // ── IsOutlined Property (shorthand for outline variants) ──
-    
     public static readonly BindableProperty IsOutlinedProperty =
         BindableProperty.CreateAttached(
             "IsOutlined",
             typeof(bool),
             typeof(Bootstrap),
             false,
-            propertyChanged: OnIsOutlinedChanged);
+            propertyChanged: OnStylePropertyChanged);
 
     public static bool GetIsOutlined(BindableObject view) =>
         (bool)view.GetValue(IsOutlinedProperty);
@@ -53,14 +51,13 @@ public static class Bootstrap
     public static void SetIsOutlined(BindableObject view, bool value) =>
         view.SetValue(IsOutlinedProperty, value);
 
-    // ── IsPill Property (full rounded corners) ──
-    
     public static readonly BindableProperty IsPillProperty =
         BindableProperty.CreateAttached(
             "IsPill",
             typeof(bool),
             typeof(Bootstrap),
-            false);
+            false,
+            propertyChanged: OnStylePropertyChanged);
 
     public static bool GetIsPill(BindableObject view) =>
         (bool)view.GetValue(IsPillProperty);
@@ -68,53 +65,355 @@ public static class Bootstrap
     public static void SetIsPill(BindableObject view, bool value) =>
         view.SetValue(IsPillProperty, value);
 
-    // ── Property Changed Handlers ──
-    
-    private static void OnVariantChanged(BindableObject bindable, object oldValue, object newValue)
+    // ══════════════════════════════════════════════════════════════════
+    // TYPOGRAPHY (Labels)
+    // ══════════════════════════════════════════════════════════════════
+
+    /// <summary>Heading level 1-6 (like h1-h6 in HTML).</summary>
+    public static readonly BindableProperty HeadingProperty =
+        BindableProperty.CreateAttached(
+            "Heading",
+            typeof(int),
+            typeof(Bootstrap),
+            0,
+            propertyChanged: OnTypographyChanged);
+
+    public static int GetHeading(BindableObject view) =>
+        (int)view.GetValue(HeadingProperty);
+
+    public static void SetHeading(BindableObject view, int value) =>
+        view.SetValue(HeadingProperty, value);
+
+    /// <summary>Text style (Lead, Small, Muted, Mark).</summary>
+    public static readonly BindableProperty TextStyleProperty =
+        BindableProperty.CreateAttached(
+            "TextStyle",
+            typeof(BootstrapTextStyle),
+            typeof(Bootstrap),
+            BootstrapTextStyle.Normal,
+            propertyChanged: OnTypographyChanged);
+
+    public static BootstrapTextStyle GetTextStyle(BindableObject view) =>
+        (BootstrapTextStyle)view.GetValue(TextStyleProperty);
+
+    public static void SetTextStyle(BindableObject view, BootstrapTextStyle value) =>
+        view.SetValue(TextStyleProperty, value);
+
+    /// <summary>Text color variant.</summary>
+    public static readonly BindableProperty TextColorVariantProperty =
+        BindableProperty.CreateAttached(
+            "TextColorVariant",
+            typeof(BootstrapVariant),
+            typeof(Bootstrap),
+            BootstrapVariant.Default,
+            propertyChanged: OnTypographyChanged);
+
+    public static BootstrapVariant GetTextColorVariant(BindableObject view) =>
+        (BootstrapVariant)view.GetValue(TextColorVariantProperty);
+
+    public static void SetTextColorVariant(BindableObject view, BootstrapVariant value) =>
+        view.SetValue(TextColorVariantProperty, value);
+
+    // ══════════════════════════════════════════════════════════════════
+    // SPACING (Margin & Padding 0-5)
+    // ══════════════════════════════════════════════════════════════════
+
+    /// <summary>Bootstrap margin level (0-5). -1 means not set.</summary>
+    public static readonly BindableProperty MarginLevelProperty =
+        BindableProperty.CreateAttached(
+            "MarginLevel",
+            typeof(int),
+            typeof(Bootstrap),
+            -1,
+            propertyChanged: OnSpacingChanged);
+
+    public static int GetMarginLevel(BindableObject view) =>
+        (int)view.GetValue(MarginLevelProperty);
+
+    public static void SetMarginLevel(BindableObject view, int value) =>
+        view.SetValue(MarginLevelProperty, value);
+
+    /// <summary>Bootstrap padding level (0-5). -1 means not set.</summary>
+    public static readonly BindableProperty PaddingLevelProperty =
+        BindableProperty.CreateAttached(
+            "PaddingLevel",
+            typeof(int),
+            typeof(Bootstrap),
+            -1,
+            propertyChanged: OnSpacingChanged);
+
+    public static int GetPaddingLevel(BindableObject view) =>
+        (int)view.GetValue(PaddingLevelProperty);
+
+    public static void SetPaddingLevel(BindableObject view, int value) =>
+        view.SetValue(PaddingLevelProperty, value);
+
+    // ══════════════════════════════════════════════════════════════════
+    // CONTAINERS (Background, Shadow)
+    // ══════════════════════════════════════════════════════════════════
+
+    /// <summary>Background color variant.</summary>
+    public static readonly BindableProperty BackgroundVariantProperty =
+        BindableProperty.CreateAttached(
+            "BackgroundVariant",
+            typeof(BootstrapVariant),
+            typeof(Bootstrap),
+            BootstrapVariant.Default,
+            propertyChanged: OnContainerChanged);
+
+    public static BootstrapVariant GetBackgroundVariant(BindableObject view) =>
+        (BootstrapVariant)view.GetValue(BackgroundVariantProperty);
+
+    public static void SetBackgroundVariant(BindableObject view, BootstrapVariant value) =>
+        view.SetValue(BackgroundVariantProperty, value);
+
+    /// <summary>Shadow level.</summary>
+    public static readonly BindableProperty ShadowProperty =
+        BindableProperty.CreateAttached(
+            "Shadow",
+            typeof(BootstrapShadow),
+            typeof(Bootstrap),
+            BootstrapShadow.None,
+            propertyChanged: OnContainerChanged);
+
+    public static BootstrapShadow GetShadow(BindableObject view) =>
+        (BootstrapShadow)view.GetValue(ShadowProperty);
+
+    public static void SetShadow(BindableObject view, BootstrapShadow value) =>
+        view.SetValue(ShadowProperty, value);
+
+    // ══════════════════════════════════════════════════════════════════
+    // BADGES
+    // ══════════════════════════════════════════════════════════════════
+
+    /// <summary>Badge variant (makes Label display as a badge).</summary>
+    public static readonly BindableProperty BadgeProperty =
+        BindableProperty.CreateAttached(
+            "Badge",
+            typeof(BootstrapVariant),
+            typeof(Bootstrap),
+            BootstrapVariant.Default,
+            propertyChanged: OnBadgeChanged);
+
+    public static BootstrapVariant GetBadge(BindableObject view) =>
+        (BootstrapVariant)view.GetValue(BadgeProperty);
+
+    public static void SetBadge(BindableObject view, BootstrapVariant value) =>
+        view.SetValue(BadgeProperty, value);
+
+    // ══════════════════════════════════════════════════════════════════
+    // NAVIGATION
+    // ══════════════════════════════════════════════════════════════════
+
+    /// <summary>Navigation style (Light or Dark).</summary>
+    public static readonly BindableProperty NavStyleProperty =
+        BindableProperty.CreateAttached(
+            "NavStyle",
+            typeof(BootstrapNavStyle),
+            typeof(Bootstrap),
+            BootstrapNavStyle.Light,
+            propertyChanged: OnNavStyleChanged);
+
+    public static BootstrapNavStyle GetNavStyle(BindableObject view) =>
+        (BootstrapNavStyle)view.GetValue(NavStyleProperty);
+
+    public static void SetNavStyle(BindableObject view, BootstrapNavStyle value) =>
+        view.SetValue(NavStyleProperty, value);
+
+    // ══════════════════════════════════════════════════════════════════
+    // PROPERTY CHANGED HANDLERS
+    // ══════════════════════════════════════════════════════════════════
+
+    private static void OnStylePropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is Button button)
-            ApplyButtonVariant(button, (BootstrapVariant)newValue);
+            ApplyButtonVariant(button);
         else if (bindable is Entry entry)
-            ApplyEntryVariant(entry, (BootstrapVariant)newValue);
-        // Handler updates will be triggered via the handler mapper
-        if (bindable is VisualElement ve)
-            ve.Handler?.UpdateValue(nameof(VariantProperty));
+            ApplyEntryVariant(entry);
+        
+        TriggerHandlerUpdate(bindable);
     }
 
-    private static void OnSizeChanged(BindableObject bindable, object oldValue, object newValue)
+    private static void OnTypographyChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Label label)
+            ApplyLabelTypography(label);
+    }
+
+    private static void OnSpacingChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is View view)
+            ApplySpacing(view);
+    }
+
+    private static void OnContainerChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is View view)
+            ApplyContainerStyle(view);
+    }
+
+    private static void OnBadgeChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Label label)
+            ApplyBadgeStyle(label);
+    }
+
+    private static void OnNavStyleChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        TriggerHandlerUpdate(bindable);
+    }
+
+    private static void TriggerHandlerUpdate(BindableObject bindable)
     {
         if (bindable is VisualElement ve)
-            ve.Handler?.UpdateValue(nameof(SizeProperty));
+            ve.Handler?.UpdateValue("BootstrapStyle");
     }
 
-    private static void OnIsOutlinedChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is VisualElement ve)
-            ve.Handler?.UpdateValue(nameof(IsOutlinedProperty));
-    }
+    // ══════════════════════════════════════════════════════════════════
+    // APPLY HELPERS
+    // ══════════════════════════════════════════════════════════════════
 
-    // ── Apply Helpers ──
-    
-    private static void ApplyButtonVariant(Button button, BootstrapVariant variant)
+    private static void ApplyButtonVariant(Button button)
     {
         var theme = BootstrapTheme.Current;
-        var (bg, fg) = GetVariantColors(variant, theme);
+        var variant = GetVariant(button);
+        var isOutlined = GetIsOutlined(button);
         
-        button.BackgroundColor = bg;
-        button.TextColor = fg;
-        button.CornerRadius = (int)theme.CornerRadius;
+        if (isOutlined && variant != BootstrapVariant.Default)
+        {
+            button.BackgroundColor = Colors.Transparent;
+            button.TextColor = theme.GetVariantColor(variant);
+            button.BorderColor = theme.GetVariantColor(variant);
+            button.BorderWidth = theme.BorderWidth;
+        }
+        else
+        {
+            var (bg, fg) = GetVariantColors(variant, theme);
+            button.BackgroundColor = bg;
+            button.TextColor = fg;
+        }
+        
+        button.CornerRadius = GetIsPill(button) 
+            ? (int)theme.CornerRadiusPill 
+            : (int)theme.CornerRadius;
     }
 
-    private static void ApplyEntryVariant(Entry entry, BootstrapVariant variant)
+    private static void ApplyEntryVariant(Entry entry)
     {
         var theme = BootstrapTheme.Current;
+        var variant = GetVariant(entry);
         
-        // Entry variant typically affects border color on validation states
         if (variant == BootstrapVariant.Danger)
             entry.BackgroundColor = theme.Danger.WithAlpha(0.1f);
         else if (variant == BootstrapVariant.Success)
             entry.BackgroundColor = theme.Success.WithAlpha(0.1f);
     }
+
+    private static void ApplyLabelTypography(Label label)
+    {
+        var theme = BootstrapTheme.Current;
+        var heading = GetHeading(label);
+        var textStyle = GetTextStyle(label);
+        var colorVariant = GetTextColorVariant(label);
+
+        // Apply heading
+        if (heading >= 1 && heading <= 6)
+        {
+            label.FontSize = theme.GetHeadingFontSize(heading);
+            label.FontAttributes = FontAttributes.Bold;
+        }
+
+        // Apply text style
+        switch (textStyle)
+        {
+            case BootstrapTextStyle.Lead:
+                label.FontSize = theme.FontSizeLead;
+                break;
+            case BootstrapTextStyle.Small:
+                label.FontSize = theme.FontSizeSmall;
+                break;
+            case BootstrapTextStyle.Muted:
+                label.TextColor = theme.Muted;
+                break;
+            case BootstrapTextStyle.Mark:
+                label.BackgroundColor = theme.Mark;
+                break;
+        }
+
+        // Apply color variant
+        if (colorVariant != BootstrapVariant.Default)
+        {
+            label.TextColor = theme.GetVariantColor(colorVariant);
+        }
+    }
+
+    private static void ApplySpacing(View view)
+    {
+        var marginLevel = GetMarginLevel(view);
+        var paddingLevel = GetPaddingLevel(view);
+
+        if (marginLevel >= 0 && marginLevel <= 5)
+        {
+            var margin = BootstrapTheme.GetSpacingValue(marginLevel);
+            view.Margin = new Thickness(margin);
+        }
+
+        if (paddingLevel >= 0 && paddingLevel <= 5)
+        {
+            var padding = BootstrapTheme.GetSpacingValue(paddingLevel);
+            // Padding is only available on Layout and some controls
+            if (view is Layout layout)
+            {
+                layout.Padding = new Thickness(padding);
+            }
+            else if (view is Border border)
+            {
+                border.Padding = new Thickness(padding);
+            }
+            else if (view is Button button)
+            {
+                button.Padding = new Thickness(padding);
+            }
+            else if (view is Label label)
+            {
+                label.Padding = new Thickness(padding);
+            }
+        }
+    }
+
+    private static void ApplyContainerStyle(View view)
+    {
+        var theme = BootstrapTheme.Current;
+        var bgVariant = GetBackgroundVariant(view);
+        var shadow = GetShadow(view);
+
+        // Apply background
+        if (bgVariant != BootstrapVariant.Default)
+        {
+            view.BackgroundColor = theme.GetVariantColor(bgVariant);
+        }
+
+        // Shadow is applied via handler (platform-specific)
+    }
+
+    private static void ApplyBadgeStyle(Label label)
+    {
+        var theme = BootstrapTheme.Current;
+        var badgeVariant = GetBadge(label);
+
+        if (badgeVariant == BootstrapVariant.Default)
+            return;
+
+        var (bg, fg) = GetVariantColors(badgeVariant, theme);
+        label.BackgroundColor = bg;
+        label.TextColor = fg;
+        label.Padding = new Thickness(8, 4);
+        label.FontSize = theme.FontSizeSmall;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // PUBLIC HELPERS
+    // ══════════════════════════════════════════════════════════════════
 
     /// <summary>
     /// Gets background and foreground colors for a variant.
@@ -158,14 +457,14 @@ public static class Bootstrap
         
         return variant switch
         {
-            BootstrapVariant.OutlinePrimary => theme.Primary,
-            BootstrapVariant.OutlineSecondary => theme.Secondary,
-            BootstrapVariant.OutlineSuccess => theme.Success,
-            BootstrapVariant.OutlineDanger => theme.Danger,
-            BootstrapVariant.OutlineWarning => theme.Warning,
-            BootstrapVariant.OutlineInfo => theme.Info,
-            BootstrapVariant.OutlineLight => theme.Light,
-            BootstrapVariant.OutlineDark => theme.Dark,
+            BootstrapVariant.Primary or BootstrapVariant.OutlinePrimary => theme.Primary,
+            BootstrapVariant.Secondary or BootstrapVariant.OutlineSecondary => theme.Secondary,
+            BootstrapVariant.Success or BootstrapVariant.OutlineSuccess => theme.Success,
+            BootstrapVariant.Danger or BootstrapVariant.OutlineDanger => theme.Danger,
+            BootstrapVariant.Warning or BootstrapVariant.OutlineWarning => theme.Warning,
+            BootstrapVariant.Info or BootstrapVariant.OutlineInfo => theme.Info,
+            BootstrapVariant.Light or BootstrapVariant.OutlineLight => theme.Light,
+            BootstrapVariant.Dark or BootstrapVariant.OutlineDark => theme.Dark,
             _ => theme.GetOutline()
         };
     }

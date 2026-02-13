@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
+             x:Class="MauiBootstrapTheme.Sample.Pages.SpacingPage"
+             Title="Spacing">
+    
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            
+            <!-- Header -->
+            <Label Text="Spacing Utilities"
+                   theme:Bootstrap.Heading="2"
+                   HorizontalOptions="Center" />
+            
+            <Label Text="Bootstrap spacing scale (0-5) for margin and padding"
+                   theme:Bootstrap.TextStyle="Lead"
+                   HorizontalOptions="Center" />
+            
+            <!-- Spacing Scale Reference -->
+            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Spacing Scale" theme:Bootstrap.Heading="4" />
+                    <Label Text="• Level 0 = 0px" theme:Bootstrap.TextStyle="Small" />
+                    <Label Text="• Level 1 = 4px (0.25rem)" theme:Bootstrap.TextStyle="Small" />
+                    <Label Text="• Level 2 = 8px (0.5rem)" theme:Bootstrap.TextStyle="Small" />
+                    <Label Text="• Level 3 = 16px (1rem)" theme:Bootstrap.TextStyle="Small" />
+                    <Label Text="• Level 4 = 24px (1.5rem)" theme:Bootstrap.TextStyle="Small" />
+                    <Label Text="• Level 5 = 48px (3rem)" theme:Bootstrap.TextStyle="Small" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- Margin Examples -->
+            <Label Text="Margin Examples" theme:Bootstrap.Heading="4" />
+            
+            <Border BackgroundColor="LightGray" Padding="4">
+                <VerticalStackLayout Spacing="4">
+                    <Border BackgroundColor="White" theme:Bootstrap.MarginLevel="0">
+                        <Label Text="MarginLevel=0" Padding="8" />
+                    </Border>
+                    
+                    <Border BackgroundColor="White" theme:Bootstrap.MarginLevel="1">
+                        <Label Text="MarginLevel=1 (4px)" Padding="8" />
+                    </Border>
+                    
+                    <Border BackgroundColor="White" theme:Bootstrap.MarginLevel="2">
+                        <Label Text="MarginLevel=2 (8px)" Padding="8" />
+                    </Border>
+                    
+                    <Border BackgroundColor="White" theme:Bootstrap.MarginLevel="3">
+                        <Label Text="MarginLevel=3 (16px)" Padding="8" />
+                    </Border>
+                    
+                    <Border BackgroundColor="White" theme:Bootstrap.MarginLevel="4">
+                        <Label Text="MarginLevel=4 (24px)" Padding="8" />
+                    </Border>
+                    
+                    <Border BackgroundColor="White" theme:Bootstrap.MarginLevel="5">
+                        <Label Text="MarginLevel=5 (48px)" Padding="8" />
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- Padding Examples -->
+            <Label Text="Padding Examples" theme:Bootstrap.Heading="4" />
+            
+            <VerticalStackLayout Spacing="8">
+                <Border BackgroundColor="#e9ecef">
+                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="0" BackgroundColor="#0d6efd">
+                        <Label Text="PaddingLevel=0" TextColor="White" />
+                    </VerticalStackLayout>
+                </Border>
+                
+                <Border BackgroundColor="#e9ecef">
+                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="1" BackgroundColor="#0d6efd">
+                        <Label Text="PaddingLevel=1 (4px)" TextColor="White" />
+                    </VerticalStackLayout>
+                </Border>
+                
+                <Border BackgroundColor="#e9ecef">
+                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="2" BackgroundColor="#0d6efd">
+                        <Label Text="PaddingLevel=2 (8px)" TextColor="White" />
+                    </VerticalStackLayout>
+                </Border>
+                
+                <Border BackgroundColor="#e9ecef">
+                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="3" BackgroundColor="#0d6efd">
+                        <Label Text="PaddingLevel=3 (16px)" TextColor="White" />
+                    </VerticalStackLayout>
+                </Border>
+                
+                <Border BackgroundColor="#e9ecef">
+                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="4" BackgroundColor="#0d6efd">
+                        <Label Text="PaddingLevel=4 (24px)" TextColor="White" />
+                    </VerticalStackLayout>
+                </Border>
+                
+                <Border BackgroundColor="#e9ecef">
+                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="5" BackgroundColor="#0d6efd">
+                        <Label Text="PaddingLevel=5 (48px)" TextColor="White" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+            
+            <!-- Combined Example -->
+            <Label Text="Combined Example" theme:Bootstrap.Heading="4" />
+            
+            <Border theme:Bootstrap.Shadow="Default" Padding="0">
+                <VerticalStackLayout theme:Bootstrap.PaddingLevel="4">
+                    <Label Text="Card with PaddingLevel=4" theme:Bootstrap.Heading="5" />
+                    
+                    <Button Text="Button with MarginLevel=3" 
+                            theme:Bootstrap.Variant="Primary"
+                            theme:Bootstrap.MarginLevel="3" />
+                    
+                    <Label Text="Using Bootstrap spacing levels creates consistent visual rhythm throughout your app."
+                           theme:Bootstrap.TextStyle="Muted" />
+                </VerticalStackLayout>
+            </Border>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>

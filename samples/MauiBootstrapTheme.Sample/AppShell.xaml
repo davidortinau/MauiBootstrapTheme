@@ -5,29 +5,39 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MauiBootstrapTheme.Sample"
     xmlns:pages="clr-namespace:MauiBootstrapTheme.Sample.Pages"
-    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutBehavior="Flyout"
     Title="Bootstrap Theme">
 
-    <TabBar>
-        <ShellContent
-            Title="Controls"
-            ContentTemplate="{DataTemplate pages:ControlsPage}"
-            Icon="{OnPlatform Default='', iOS='square.grid.2x2'}" />
-        
-        <ShellContent
-            Title="Variants"
-            ContentTemplate="{DataTemplate pages:VariantsPage}"
-            Icon="{OnPlatform Default='', iOS='paintpalette'}" />
-        
-        <ShellContent
-            Title="Forms"
-            ContentTemplate="{DataTemplate pages:FormsPage}"
-            Icon="{OnPlatform Default='', iOS='doc.text'}" />
-        
-        <ShellContent
-            Title="Themes"
-            ContentTemplate="{DataTemplate pages:ThemesPage}"
-            Icon="{OnPlatform Default='', iOS='paintbrush'}" />
-    </TabBar>
+    <FlyoutItem Title="Controls" Icon="{OnPlatform Default='', iOS='square.grid.2x2'}">
+        <ShellContent ContentTemplate="{DataTemplate pages:ControlsPage}" />
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Inputs" Icon="{OnPlatform Default='', iOS='keyboard'}">
+        <ShellContent ContentTemplate="{DataTemplate pages:InputsPage}" />
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Typography" Icon="{OnPlatform Default='', iOS='textformat'}">
+        <ShellContent ContentTemplate="{DataTemplate pages:TypographyPage}" />
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Cards" Icon="{OnPlatform Default='', iOS='rectangle.stack'}">
+        <ShellContent ContentTemplate="{DataTemplate pages:CardsPage}" />
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Spacing" Icon="{OnPlatform Default='', iOS='ruler'}">
+        <ShellContent ContentTemplate="{DataTemplate pages:SpacingPage}" />
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Variants" Icon="{OnPlatform Default='', iOS='paintpalette'}">
+        <ShellContent ContentTemplate="{DataTemplate pages:VariantsPage}" />
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Forms" Icon="{OnPlatform Default='', iOS='doc.text'}">
+        <ShellContent ContentTemplate="{DataTemplate pages:FormsPage}" />
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Themes" Icon="{OnPlatform Default='', iOS='paintbrush'}">
+        <ShellContent ContentTemplate="{DataTemplate pages:ThemesPage}" />
+    </FlyoutItem>
 
 </Shell>

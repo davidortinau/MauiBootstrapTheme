@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
+             x:Class="MauiBootstrapTheme.Sample.Pages.InputsPage"
+             Title="Inputs">
+    
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            
+            <!-- Header -->
+            <Label Text="Input Controls"
+                   theme:Bootstrap.Heading="2"
+                   HorizontalOptions="Center" />
+            
+            <Label Text="All Bootstrap-styled input controls"
+                   theme:Bootstrap.TextStyle="Lead"
+                   HorizontalOptions="Center" />
+            
+            <!-- Text Inputs -->
+            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Text Inputs" theme:Bootstrap.Heading="4" />
+                    
+                    <Entry Placeholder="Default Entry" />
+                    <Entry Placeholder="Primary variant" theme:Bootstrap.Variant="Primary" />
+                    <Entry Placeholder="Success variant" theme:Bootstrap.Variant="Success" />
+                    <Entry Placeholder="Danger variant" theme:Bootstrap.Variant="Danger" />
+                    
+                    <Label Text="Sizes" theme:Bootstrap.TextStyle="Muted" />
+                    <Entry Placeholder="Small" theme:Bootstrap.Size="Small" />
+                    <Entry Placeholder="Default" />
+                    <Entry Placeholder="Large" theme:Bootstrap.Size="Large" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- SearchBar -->
+            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="SearchBar" theme:Bootstrap.Heading="4" />
+                    
+                    <SearchBar Placeholder="Search..." />
+                    <SearchBar Placeholder="Primary search" theme:Bootstrap.Variant="Primary" />
+                    <SearchBar Placeholder="Small search" theme:Bootstrap.Size="Small" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- Picker -->
+            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Picker" theme:Bootstrap.Heading="4" />
+                    
+                    <Picker Title="Select an option">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Option 1</x:String>
+                                <x:String>Option 2</x:String>
+                                <x:String>Option 3</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                    
+                    <Picker Title="Primary picker" theme:Bootstrap.Variant="Primary">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>First</x:String>
+                                <x:String>Second</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- Date & Time Pickers -->
+            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Date &amp; Time" theme:Bootstrap.Heading="4" />
+                    
+                    <Label Text="DatePicker" theme:Bootstrap.TextStyle="Small" />
+                    <DatePicker />
+                    
+                    <Label Text="TimePicker" theme:Bootstrap.TextStyle="Small" />
+                    <TimePicker />
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- Editor -->
+            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Editor (Multi-line)" theme:Bootstrap.Heading="4" />
+                    
+                    <Editor Placeholder="Enter multiple lines..." HeightRequest="80" />
+                    <Editor Placeholder="Primary editor" HeightRequest="80" theme:Bootstrap.Variant="Primary" />
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- Selection Controls -->
+            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Selection Controls" theme:Bootstrap.Heading="4" />
+                    
+                    <HorizontalStackLayout Spacing="12">
+                        <CheckBox IsChecked="True" theme:Bootstrap.Variant="Primary" />
+                        <Label Text="Primary CheckBox" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    
+                    <HorizontalStackLayout Spacing="12">
+                        <CheckBox IsChecked="True" theme:Bootstrap.Variant="Success" />
+                        <Label Text="Success CheckBox" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    
+                    <HorizontalStackLayout Spacing="12">
+                        <CheckBox theme:Bootstrap.Variant="Danger" />
+                        <Label Text="Danger CheckBox" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    
+                    <BoxView HeightRequest="1" Color="LightGray" />
+                    
+                    <HorizontalStackLayout Spacing="12">
+                        <Switch IsToggled="True" theme:Bootstrap.Variant="Primary" />
+                        <Label Text="Primary Switch" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    
+                    <HorizontalStackLayout Spacing="12">
+                        <Switch IsToggled="True" theme:Bootstrap.Variant="Success" />
+                        <Label Text="Success Switch" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    
+                    <HorizontalStackLayout Spacing="12">
+                        <Switch theme:Bootstrap.Variant="Danger" />
+                        <Label Text="Danger Switch" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- Sliders & Steppers -->
+            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Sliders &amp; Steppers" theme:Bootstrap.Heading="4" />
+                    
+                    <Label Text="Primary Slider" theme:Bootstrap.TextStyle="Small" />
+                    <Slider Minimum="0" Maximum="100" Value="50" theme:Bootstrap.Variant="Primary" />
+                    
+                    <Label Text="Success Slider" theme:Bootstrap.TextStyle="Small" />
+                    <Slider Minimum="0" Maximum="100" Value="75" theme:Bootstrap.Variant="Success" />
+                    
+                    <Label Text="Danger Slider" theme:Bootstrap.TextStyle="Small" />
+                    <Slider Minimum="0" Maximum="100" Value="25" theme:Bootstrap.Variant="Danger" />
+                    
+                    <BoxView HeightRequest="1" Color="LightGray" />
+                    
+                    <HorizontalStackLayout Spacing="12">
+                        <Stepper Minimum="0" Maximum="10" Value="5" theme:Bootstrap.Variant="Primary" />
+                        <Label Text="Stepper" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+            
+            <!-- Progress Indicators -->
+            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Progress Indicators" theme:Bootstrap.Heading="4" />
+                    
+                    <Label Text="Primary Progress" theme:Bootstrap.TextStyle="Small" />
+                    <ProgressBar Progress="0.75" theme:Bootstrap.Variant="Primary" />
+                    
+                    <Label Text="Success Progress" theme:Bootstrap.TextStyle="Small" />
+                    <ProgressBar Progress="0.5" theme:Bootstrap.Variant="Success" />
+                    
+                    <Label Text="Danger Progress" theme:Bootstrap.TextStyle="Small" />
+                    <ProgressBar Progress="0.25" theme:Bootstrap.Variant="Danger" />
+                    
+                    <BoxView HeightRequest="1" Color="LightGray" />
+                    
+                    <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
+                        <ActivityIndicator IsRunning="True" theme:Bootstrap.Variant="Primary" />
+                        <ActivityIndicator IsRunning="True" theme:Bootstrap.Variant="Success" />
+                        <ActivityIndicator IsRunning="True" theme:Bootstrap.Variant="Danger" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+    
+</ContentPage>

@@ -74,3 +74,54 @@ public enum BootstrapSize
     /// <summary>Large size.</summary>
     Large
 }
+
+/// <summary>
+/// Text style variants for labels.
+/// </summary>
+public enum BootstrapTextStyle
+{
+    /// <summary>Normal body text.</summary>
+    Normal,
+    
+    /// <summary>Lead paragraph (larger, lighter).</summary>
+    Lead,
+    
+    /// <summary>Small text.</summary>
+    Small,
+    
+    /// <summary>Muted/secondary text color.</summary>
+    Muted,
+    
+    /// <summary>Marked/highlighted text.</summary>
+    Mark
+}
+
+/// <summary>
+/// Shadow intensity levels.
+/// </summary>
+public enum BootstrapShadow
+{
+    /// <summary>No shadow.</summary>
+    None,
+    
+    /// <summary>Small shadow.</summary>
+    Small,
+    
+    /// <summary>Default shadow.</summary>
+    Default,
+    
+    /// <summary>Large shadow.</summary>
+    Large
+}
+
+/// <summary>
+/// Navigation bar style.
+/// </summary>
+public enum BootstrapNavStyle
+{
+    /// <summary>Light navigation (dark text on light background).</summary>
+    Light,
+    
+    /// <summary>Dark navigation (light text on dark background).</summary>
+    Dark
+}

@@ -76,9 +76,27 @@ public static class MauiAppBuilderExtensions
 
     private static void RegisterHandlers()
     {
+        // Input controls
         BootstrapEntryHandler.Register();
         BootstrapButtonHandler.Register();
         BootstrapEditorHandler.Register();
+        BootstrapSearchBarHandler.Register();
+        BootstrapPickerHandler.Register();
+        BootstrapDatePickerHandler.Register();
+        BootstrapTimePickerHandler.Register();
+        BootstrapCheckBoxHandler.Register();
+        BootstrapSwitchHandler.Register();
+        BootstrapRadioButtonHandler.Register();
+        BootstrapSliderHandler.Register();
+        BootstrapStepperHandler.Register();
+        
+        // Display controls
+        BootstrapLabelHandler.Register();
+        BootstrapProgressBarHandler.Register();
+        BootstrapActivityIndicatorHandler.Register();
+        
+        // Container controls
+        BootstrapBorderHandler.Register();
     }
 
     private static BootstrapTheme LoadThemeFromCss(string cssPath)
