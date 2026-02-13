@@ -14,9 +14,18 @@ public class BootstrapTheme
     public static BootstrapTheme Current => _current ??= CreateDefault();
 
     /// <summary>
-    /// Sets the current theme.
+    /// Event raised when the theme changes. Subscribe to refresh UI components.
     /// </summary>
-    public static void SetTheme(BootstrapTheme theme) => _current = theme;
+    public static event EventHandler? ThemeChanged;
+
+    /// <summary>
+    /// Sets the current theme and raises ThemeChanged event.
+    /// </summary>
+    public static void SetTheme(BootstrapTheme theme)
+    {
+        _current = theme;
+        ThemeChanged?.Invoke(null, EventArgs.Empty);
+    }
 
     /// <summary>
     /// Whether to respect system dark/light mode preference. Default is true.
@@ -93,17 +102,24 @@ public class BootstrapTheme
     };
     
     // ── Shadow Values ──
+    // Bootstrap shadow CSS: box-shadow: offsetX offsetY blurRadius spreadRadius color
+    // shadow-sm: 0 .125rem .25rem rgba(0,0,0,.075) = 0 2px 4px
+    // shadow:    0 .5rem 1rem rgba(0,0,0,.15)     = 0 8px 16px
+    // shadow-lg: 0 1rem 3rem rgba(0,0,0,.175)     = 0 16px 48px
     
-    /// <summary>Small shadow (Bootstrap shadow-sm).</summary>
-    public float ShadowSmRadius { get; set; } = 2f;
+    /// <summary>Small shadow (Bootstrap shadow-sm): blur=4, offset=2.</summary>
+    public float ShadowSmBlur { get; set; } = 4f;
+    public float ShadowSmOffsetY { get; set; } = 2f;
     public float ShadowSmOpacity { get; set; } = 0.075f;
     
-    /// <summary>Default shadow (Bootstrap shadow).</summary>
-    public float ShadowRadius { get; set; } = 8f;
+    /// <summary>Default shadow (Bootstrap shadow): blur=16, offset=8.</summary>
+    public float ShadowBlur { get; set; } = 16f;
+    public float ShadowOffsetY { get; set; } = 8f;
     public float ShadowOpacity { get; set; } = 0.15f;
     
-    /// <summary>Large shadow (Bootstrap shadow-lg).</summary>
-    public float ShadowLgRadius { get; set; } = 16f;
+    /// <summary>Large shadow (Bootstrap shadow-lg): blur=48, offset=16.</summary>
+    public float ShadowLgBlur { get; set; } = 48f;
+    public float ShadowLgOffsetY { get; set; } = 16f;
     public float ShadowLgOpacity { get; set; } = 0.175f;
     
     // ── Typography ──
@@ -126,6 +142,9 @@ public class BootstrapTheme
     public double LineHeightBase { get; set; } = 1.5;     // Bootstrap body line-height
     public double LineHeightHeading { get; set; } = 1.2;  // Bootstrap heading line-height
     public double LineHeightLead { get; set; } = 1.5;     // Bootstrap lead line-height
+    
+    // Font family (null = system default, set to specific font for themed look)
+    public string? FontFamily { get; set; } = null;
     
     // ── Control-Specific ──
     

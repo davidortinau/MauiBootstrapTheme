@@ -55,20 +55,21 @@ public static class BootstrapButtonHandler
         var (paddingX, paddingY) = GetPaddingForSize(size, theme);
         var fontSize = GetFontSizeForSize(size, theme);
         var minHeight = GetMinHeightForSize(size, theme);
+        var fontFamily = theme.FontFamily;
 
 #if ANDROID
-        ApplyAndroid(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight);
+        ApplyAndroid(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, fontFamily);
 #elif IOS || MACCATALYST
-        ApplyiOS(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, isPill);
+        ApplyiOS(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, isPill, fontFamily);
 #elif WINDOWS
-        ApplyWindows(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight);
+        ApplyWindows(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, fontFamily);
 #endif
     }
 
 #if ANDROID
     private static void ApplyAndroid(IButtonHandler handler, double cornerRadius, Color borderColor, 
         Color backgroundColor, Color textColor, double borderWidth, double paddingX, double paddingY,
-        double fontSize, double minHeight)
+        double fontSize, double minHeight, string? fontFamily)
     {
         var button = handler.PlatformView;
         if (button == null) return;
@@ -92,6 +93,13 @@ public static class BootstrapButtonHandler
         // Apply font size
         button.SetTextSize(Android.Util.ComplexUnitType.Sp, (float)fontSize);
         
+        // Apply font family if specified
+        if (!string.IsNullOrEmpty(fontFamily))
+        {
+            var typeface = Android.Graphics.Typeface.Create(fontFamily, Android.Graphics.TypefaceStyle.Normal);
+            button.SetTypeface(typeface, Android.Graphics.TypefaceStyle.Normal);
+        }
+        
         // Apply min height
         button.SetMinHeight((int)(minHeight * density));
         
@@ -108,7 +116,7 @@ public static class BootstrapButtonHandler
 #if IOS || MACCATALYST
     private static void ApplyiOS(IButtonHandler handler, double cornerRadius, Color borderColor, 
         Color backgroundColor, Color textColor, double borderWidth, double paddingX, double paddingY,
-        double fontSize, double minHeight, bool isPill)
+        double fontSize, double minHeight, bool isPill, string? fontFamily)
     {
         var button = handler.PlatformView;
         if (button == null) return;
@@ -128,10 +136,19 @@ public static class BootstrapButtonHandler
         
         button.SetTitleColor(textColor.ToPlatform(), UIControlState.Normal);
         
-        // Apply font size
+        // Apply font
         if (button.TitleLabel != null)
         {
-            button.TitleLabel.Font = UIFont.SystemFontOfSize((nfloat)fontSize);
+            UIFont font;
+            if (!string.IsNullOrEmpty(fontFamily))
+            {
+                font = UIFont.FromName(fontFamily, (nfloat)fontSize) ?? UIFont.SystemFontOfSize((nfloat)fontSize);
+            }
+            else
+            {
+                font = UIFont.SystemFontOfSize((nfloat)fontSize);
+            }
+            button.TitleLabel.Font = font;
         }
         
         // Set minimum height constraint via intrinsic content size won't work directly
@@ -148,7 +165,7 @@ public static class BootstrapButtonHandler
 #if WINDOWS
     private static void ApplyWindows(IButtonHandler handler, double cornerRadius, Color borderColor, 
         Color backgroundColor, Color textColor, double borderWidth, double paddingX, double paddingY,
-        double fontSize, double minHeight)
+        double fontSize, double minHeight, string? fontFamily)
     {
         var button = handler.PlatformView;
         if (button == null) return;
@@ -166,6 +183,11 @@ public static class BootstrapButtonHandler
         button.Padding = new Microsoft.UI.Xaml.Thickness(paddingX, paddingY, paddingX, paddingY);
         button.MinHeight = minHeight;
         button.FontSize = fontSize;
+        
+        if (!string.IsNullOrEmpty(fontFamily))
+        {
+            button.FontFamily = new Microsoft.UI.Xaml.Media.FontFamily(fontFamily);
+        }
     }
 #endif
 

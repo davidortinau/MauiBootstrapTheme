@@ -70,28 +70,31 @@ public static class BootstrapBorderHandler
             return;
         }
 
-        double radius, opacity;
+        float blur, offsetY, opacity;
         switch (shadowLevel)
         {
             case BootstrapShadow.Small:
-                radius = theme.ShadowSmRadius;
+                blur = theme.ShadowSmBlur;
+                offsetY = theme.ShadowSmOffsetY;
                 opacity = theme.ShadowSmOpacity;
                 break;
             case BootstrapShadow.Large:
-                radius = theme.ShadowLgRadius;
+                blur = theme.ShadowLgBlur;
+                offsetY = theme.ShadowLgOffsetY;
                 opacity = theme.ShadowLgOpacity;
                 break;
             default: // Default
-                radius = theme.ShadowRadius;
+                blur = theme.ShadowBlur;
+                offsetY = theme.ShadowOffsetY;
                 opacity = theme.ShadowOpacity;
                 break;
         }
 
         border.Shadow = new Shadow
         {
-            Brush = new SolidColorBrush(Colors.Black.WithAlpha((float)opacity)),
-            Offset = new Point(0, 4),
-            Radius = (float)radius
+            Brush = new SolidColorBrush(Colors.Black.WithAlpha(opacity)),
+            Offset = new Point(0, offsetY),
+            Radius = blur
         };
     }
 }

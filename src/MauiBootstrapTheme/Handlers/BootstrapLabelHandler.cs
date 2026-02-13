@@ -65,6 +65,13 @@ public static class BootstrapLabelHandler
         label.FontSize = fontSize;
         label.FontAttributes = FontAttributes.Bold;
         label.TextColor = theme.GetText();
+        label.LineHeight = theme.LineHeightHeading;
+        
+        // Apply font family if specified
+        if (!string.IsNullOrEmpty(theme.FontFamily))
+        {
+            label.FontFamily = theme.FontFamily;
+        }
         
         // Add bottom margin based on heading level
         var marginBottom = level <= 2 ? 16.0 : (level <= 4 ? 12.0 : 8.0);
@@ -76,11 +83,12 @@ public static class BootstrapLabelHandler
         switch (style)
         {
             case BootstrapTextStyle.Lead:
-                label.FontSize = 20;
+                label.FontSize = theme.FontSizeLead;
                 label.TextColor = theme.GetText();
+                label.LineHeight = theme.LineHeightLead;
                 break;
             case BootstrapTextStyle.Small:
-                label.FontSize = 12;
+                label.FontSize = theme.FontSizeSmall;
                 break;
             case BootstrapTextStyle.Muted:
                 label.TextColor = theme.GetMuted();
@@ -89,6 +97,12 @@ public static class BootstrapLabelHandler
                 label.BackgroundColor = Color.FromArgb("#fcf8e3");
                 label.Padding = new Thickness(4, 2);
                 break;
+        }
+        
+        // Apply font family if specified
+        if (!string.IsNullOrEmpty(theme.FontFamily))
+        {
+            label.FontFamily = theme.FontFamily;
         }
     }
 
