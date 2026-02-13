@@ -1,0 +1,108 @@
+@page "/themes"
+@inject IJSRuntime JS
+
+<div class="page-header">
+    <h1>Theme Switcher</h1>
+    <p class="lead">Switch between Bootstrap themes at runtime</p>
+</div>
+
+<div class="demo-section">
+    <h4>Select Theme</h4>
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <button class="btn btn-primary" @onclick='() => SetTheme("bootstrap")'>Default</button>
+        <button class="btn btn-dark" @onclick='() => SetTheme("darkly")'>Darkly</button>
+        <button class="btn btn-secondary" @onclick='() => SetTheme("slate")'>Slate</button>
+        <button class="btn btn-info" @onclick='() => SetTheme("flatly")'>Flatly</button>
+        <button class="btn btn-warning" @onclick='() => SetTheme("sketchy")'>Sketchy</button>
+        <button class="btn btn-danger" @onclick='() => SetTheme("vapor")'>Vapor</button>
+        <button class="btn btn-success" @onclick='() => SetTheme("brite")'>Brite</button>
+    </div>
+    <p class="text-muted">Current: @currentTheme</p>
+</div>
+
+<div class="demo-section">
+    <h4>Preview</h4>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Theme Preview</h5>
+            <div class="mb-3">
+                <input type="text" class="form-control" placeholder="Sample input" />
+            </div>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <button class="btn btn-primary">Primary</button>
+                <button class="btn btn-success">Success</button>
+                <button class="btn btn-danger">Danger</button>
+            </div>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <button class="btn btn-outline-primary">Outline</button>
+                <button class="btn btn-info rounded-pill">Pill</button>
+            </div>
+            <div class="mb-3">
+                <div class="progress">
+                    <div class="progress-bar" style="width: 65%"></div>
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <span class="badge bg-primary">Badge</span>
+                <span class="badge bg-success">Success</span>
+                <span class="badge bg-danger">Alert</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>All Color Variants</h4>
+    <div class="row g-3">
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-primary">
+                <div class="card-body text-center">Primary</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-secondary">
+                <div class="card-body text-center">Secondary</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-success">
+                <div class="card-body text-center">Success</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-danger">
+                <div class="card-body text-center">Danger</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-warning">
+                <div class="card-body text-center">Warning</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-info">
+                <div class="card-body text-center">Info</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-light">
+                <div class="card-body text-center">Light</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-bg-dark">
+                <div class="card-body text-center">Dark</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string currentTheme = "bootstrap";
+
+    private async Task SetTheme(string theme)
+    {
+        currentTheme = theme;
+        await JS.InvokeVoidAsync("setTheme", theme);
+    }
+}

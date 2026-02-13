@@ -8,48 +8,32 @@
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
             
-            <!-- Header -->
-            <Label Text="Theme Switcher"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
-            
-            <Label Text="Switch between different Bootstrap themes at runtime."
-                   FontSize="14"
-                   TextColor="Gray"
-                   HorizontalOptions="Center" />
+            <Label Text="Theme Switcher" theme:Bootstrap.Heading="2" HorizontalOptions="Center" />
+            <Label Text="Switch between Bootstrap themes at runtime" theme:Bootstrap.TextStyle="Lead" HorizontalOptions="Center" />
             
             <!-- Theme Selection -->
-            <Frame Padding="16" CornerRadius="8" BorderColor="LightGray">
-                <VerticalStackLayout Spacing="16">
-                    <Label Text="Select Theme" FontAttributes="Bold" FontSize="18" />
+            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Select Theme" theme:Bootstrap.Heading="4" />
                     
-                    <Button Text="Default (Bootstrap 5)" 
-                            Clicked="OnDefaultThemeClicked"
-                            theme:Bootstrap.Variant="Primary" />
-                    
-                    <Button Text="Darkly (Dark Mode)" 
-                            Clicked="OnDarklyThemeClicked"
-                            theme:Bootstrap.Variant="Dark" />
-                    
-                    <Button Text="Cyborg (Cyberpunk)" 
-                            Clicked="OnCyborgThemeClicked"
-                            theme:Bootstrap.Variant="Secondary" />
-                    
-                    <Button Text="Minty (Fresh Pastels)" 
-                            Clicked="OnMintyThemeClicked"
-                            theme:Bootstrap.Variant="Success" />
-                    
-                    <Button Text="Slate (Professional Gray)" 
-                            Clicked="OnSlateThemeClicked"
-                            theme:Bootstrap.Variant="Info" />
+                    <FlexLayout Wrap="Wrap" JustifyContent="Start">
+                        <Button Text="Default" Clicked="OnDefaultThemeClicked" theme:Bootstrap.Variant="Primary" Margin="4" />
+                        <Button Text="Darkly" Clicked="OnDarklyThemeClicked" theme:Bootstrap.Variant="Dark" Margin="4" />
+                        <Button Text="Cyborg" Clicked="OnCyborgThemeClicked" theme:Bootstrap.Variant="Secondary" Margin="4" />
+                        <Button Text="Minty" Clicked="OnMintyThemeClicked" theme:Bootstrap.Variant="Success" Margin="4" />
+                        <Button Text="Slate" Clicked="OnSlateThemeClicked" theme:Bootstrap.Variant="Info" Margin="4" />
+                        <Button Text="Flatly" Clicked="OnFlatlyThemeClicked" theme:Bootstrap.Variant="Primary" Margin="4" />
+                        <Button Text="Sketchy" Clicked="OnSketchyThemeClicked" theme:Bootstrap.Variant="Warning" Margin="4" />
+                        <Button Text="Vapor" Clicked="OnVaporThemeClicked" theme:Bootstrap.Variant="Danger" Margin="4" />
+                        <Button Text="Brite" Clicked="OnBriteThemeClicked" theme:Bootstrap.Variant="Success" Margin="4" />
+                    </FlexLayout>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
             
             <!-- Preview Controls -->
-            <Frame Padding="16" CornerRadius="8" BorderColor="LightGray" x:Name="PreviewFrame">
+            <Border Padding="16" x:Name="PreviewFrame" theme:Bootstrap.Shadow="Default">
                 <VerticalStackLayout Spacing="12">
-                    <Label Text="Preview" FontAttributes="Bold" FontSize="18" x:Name="PreviewLabel" />
+                    <Label Text="Preview" theme:Bootstrap.Heading="4" x:Name="PreviewLabel" />
                     
                     <Entry x:Name="PreviewEntry" Placeholder="Sample Entry" theme:Bootstrap.Variant="Primary" />
                     
@@ -66,13 +50,9 @@
                     
                     <Editor x:Name="PreviewEditor" Placeholder="Sample Editor" HeightRequest="60" theme:Bootstrap.Variant="Default" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
             
-            <Label x:Name="CurrentThemeLabel" 
-                   Text="Current: Default Bootstrap 5" 
-                   FontSize="12" 
-                   TextColor="Gray" 
-                   HorizontalOptions="Center" />
+            <Label x:Name="CurrentThemeLabel" Text="Current: Default" theme:Bootstrap.TextStyle="Muted" HorizontalOptions="Center" />
             
         </VerticalStackLayout>
     </ScrollView>

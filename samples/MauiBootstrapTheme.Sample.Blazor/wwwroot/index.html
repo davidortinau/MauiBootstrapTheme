@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bootstrap Theme Blazor</title>
+    <base href="/" />
+    <link id="theme-stylesheet" rel="stylesheet" href="css/themes/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+    <div id="app">Loading...</div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script src="_framework/blazor.webview.js" autostart="false"></script>
+    <script>
+        window.setTheme = (themeName) => {
+            const link = document.getElementById('theme-stylesheet');
+            link.href = `css/themes/${themeName}.min.css`;
+        };
+    </script>
+</body>
+</html>

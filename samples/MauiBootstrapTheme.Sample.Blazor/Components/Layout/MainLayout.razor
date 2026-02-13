@@ -1,0 +1,52 @@
+@inherits LayoutComponentBase
+
+<div class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="">Bootstrap Theme</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link @GetActiveClass("")" href="">Controls</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @GetActiveClass("inputs")" href="inputs">Inputs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @GetActiveClass("typography")" href="typography">Typography</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @GetActiveClass("cards")" href="cards">Cards</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @GetActiveClass("themes")" href="themes">Themes</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container flex-grow-1 py-4">
+        @Body
+    </main>
+
+    <footer class="bg-light py-3 mt-auto">
+        <div class="container text-center text-muted">
+            <small>Bootstrap Theme Blazor Sample - Pure CSS baseline</small>
+        </div>
+    </footer>
+</div>
+
+@code {
+    [Inject] NavigationManager? Navigation { get; set; }
+
+    string GetActiveClass(string page)
+    {
+        var uri = Navigation?.Uri ?? "";
+        var relativePath = Navigation?.ToBaseRelativePath(uri) ?? "";
+        return relativePath == page ? "active" : "";
+    }
+}

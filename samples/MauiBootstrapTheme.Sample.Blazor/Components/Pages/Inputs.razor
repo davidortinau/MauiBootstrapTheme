@@ -1,0 +1,107 @@
+@page "/inputs"
+
+<div class="page-header">
+    <h1>Input Controls</h1>
+    <p class="lead">Form inputs with Bootstrap styling</p>
+</div>
+
+<div class="demo-section">
+    <h4>Text Inputs</h4>
+    <div class="mb-3">
+        <label class="form-label">Default Input</label>
+        <input type="text" class="form-control" placeholder="Enter text..." />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Large Input</label>
+        <input type="text" class="form-control form-control-lg" placeholder="Large input" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Small Input</label>
+        <input type="text" class="form-control form-control-sm" placeholder="Small input" />
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Textarea</h4>
+    <div class="mb-3">
+        <label class="form-label">Default Textarea</label>
+        <textarea class="form-control" rows="3" placeholder="Enter multi-line text..."></textarea>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Select</h4>
+    <div class="mb-3">
+        <label class="form-label">Default Select</label>
+        <select class="form-select">
+            <option selected>Choose an option...</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+        </select>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Date & Time</h4>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Time</label>
+            <input type="time" class="form-control" />
+        </div>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Checkboxes & Switches</h4>
+    <div class="mb-3">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" checked id="check1">
+            <label class="form-check-label" for="check1">Default checkbox</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="check2">
+            <label class="form-check-label" for="check2">Unchecked checkbox</label>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" checked id="switch1">
+            <label class="form-check-label" for="switch1">Enabled switch</label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="switch2">
+            <label class="form-check-label" for="switch2">Disabled switch</label>
+        </div>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Radio Buttons</h4>
+    <div class="mb-3">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="radioGroup" id="radio1" checked>
+            <label class="form-check-label" for="radio1">Option 1</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="radioGroup" id="radio2">
+            <label class="form-check-label" for="radio2">Option 2</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="radioGroup" id="radio3">
+            <label class="form-check-label" for="radio3">Option 3</label>
+        </div>
+    </div>
+</div>
+
+<div class="demo-section">
+    <h4>Range Slider</h4>
+    <div class="mb-3">
+        <label class="form-label">Default Range</label>
+        <input type="range" class="form-range" min="0" max="100" value="50">
+    </div>
+</div>

@@ -267,3 +267,231 @@ public class SlateTheme : IBootstrapThemeProvider
         InputMinHeight = 38.0,
     };
 }
+
+/// <summary>
+/// Bootswatch Flatly theme - flat design with clean lines.
+/// </summary>
+public class FlatlyTheme : IBootstrapThemeProvider
+{
+    public BootstrapTheme GetTheme() => new()
+    {
+        Primary = Color.FromArgb("#2c3e50"),
+        Secondary = Color.FromArgb("#95a5a6"),
+        Success = Color.FromArgb("#18bc9c"),
+        Danger = Color.FromArgb("#e74c3c"),
+        Warning = Color.FromArgb("#f39c12"),
+        Info = Color.FromArgb("#3498db"),
+        Light = Color.FromArgb("#ecf0f1"),
+        Dark = Color.FromArgb("#7b8a8b"),
+        
+        Background = Color.FromArgb("#ffffff"),
+        OnBackground = Color.FromArgb("#212529"),
+        Surface = Color.FromArgb("#ffffff"),
+        OnSurface = Color.FromArgb("#212529"),
+        Outline = Color.FromArgb("#dee2e6"),
+        OutlineVariant = Color.FromArgb("#ced4da"),
+        
+        OnPrimary = Colors.White,
+        OnSecondary = Colors.White,
+        OnSuccess = Colors.White,
+        OnDanger = Colors.White,
+        OnWarning = Colors.White,
+        OnInfo = Colors.White,
+        
+        DarkBackground = Color.FromArgb("#2c3e50"),
+        DarkOnBackground = Color.FromArgb("#ecf0f1"),
+        DarkSurface = Color.FromArgb("#34495e"),
+        DarkOnSurface = Color.FromArgb("#ecf0f1"),
+        DarkOutline = Color.FromArgb("#4a6278"),
+        
+        CornerRadius = 4.0,
+        CornerRadiusSm = 3.0,
+        CornerRadiusLg = 6.0,
+        CornerRadiusPill = 50.0,
+        BorderWidth = 0.0,
+        BorderWidthLg = 0.0,
+        FontSizeBase = 16.0,
+        FontSizeSm = 14.0,
+        FontSizeLg = 20.0,
+        ButtonPaddingX = 16.0,
+        ButtonPaddingY = 8.0,
+        ButtonPaddingXLg = 20.0,
+        ButtonPaddingYLg = 10.0,
+        ButtonPaddingXSm = 12.0,
+        ButtonPaddingYSm = 6.0,
+        InputPaddingX = 12.0,
+        InputPaddingY = 8.0,
+        InputMinHeight = 40.0,
+    };
+}
+
+/// <summary>
+/// Bootswatch Sketchy theme - hand-drawn, playful look.
+/// </summary>
+public class SketchyTheme : IBootstrapThemeProvider
+{
+    public BootstrapTheme GetTheme() => new()
+    {
+        Primary = Color.FromArgb("#333333"),
+        Secondary = Color.FromArgb("#868e96"),
+        Success = Color.FromArgb("#28a745"),
+        Danger = Color.FromArgb("#dc3545"),
+        Warning = Color.FromArgb("#ffc107"),
+        Info = Color.FromArgb("#17a2b8"),
+        Light = Color.FromArgb("#f8f9fa"),
+        Dark = Color.FromArgb("#343a40"),
+        
+        Background = Color.FromArgb("#ffffff"),
+        OnBackground = Color.FromArgb("#333333"),
+        Surface = Color.FromArgb("#ffffff"),
+        OnSurface = Color.FromArgb("#333333"),
+        Outline = Color.FromArgb("#333333"),
+        OutlineVariant = Color.FromArgb("#666666"),
+        
+        OnPrimary = Colors.White,
+        OnSecondary = Colors.White,
+        OnSuccess = Colors.White,
+        OnDanger = Colors.White,
+        OnWarning = Color.FromArgb("#333333"),
+        OnInfo = Colors.White,
+        
+        DarkBackground = Color.FromArgb("#333333"),
+        DarkOnBackground = Color.FromArgb("#f8f9fa"),
+        DarkSurface = Color.FromArgb("#444444"),
+        DarkOnSurface = Color.FromArgb("#f8f9fa"),
+        DarkOutline = Color.FromArgb("#666666"),
+        
+        CornerRadius = 15.0,
+        CornerRadiusSm = 12.0,
+        CornerRadiusLg = 20.0,
+        CornerRadiusPill = 50.0,
+        BorderWidth = 2.0,
+        BorderWidthLg = 3.0,
+        FontSizeBase = 16.0,
+        FontSizeSm = 14.0,
+        FontSizeLg = 20.0,
+        ButtonPaddingX = 16.0,
+        ButtonPaddingY = 10.0,
+        ButtonPaddingXLg = 20.0,
+        ButtonPaddingYLg = 12.0,
+        ButtonPaddingXSm = 12.0,
+        ButtonPaddingYSm = 6.0,
+        InputPaddingX = 14.0,
+        InputPaddingY = 10.0,
+        InputMinHeight = 44.0,
+    };
+}
+
+/// <summary>
+/// Bootswatch Vapor theme - cyberpunk neon with purple/pink.
+/// </summary>
+public class VaporTheme : IBootstrapThemeProvider
+{
+    public BootstrapTheme GetTheme() => new()
+    {
+        Primary = Color.FromArgb("#6f42c1"),
+        Secondary = Color.FromArgb("#ea39b8"),
+        Success = Color.FromArgb("#3cf281"),
+        Danger = Color.FromArgb("#ff6f6f"),
+        Warning = Color.FromArgb("#fff787"),
+        Info = Color.FromArgb("#32fbe2"),
+        Light = Color.FromArgb("#44d9e8"),
+        Dark = Color.FromArgb("#1a1a2e"),
+        
+        Background = Color.FromArgb("#190831"),
+        OnBackground = Color.FromArgb("#ffffff"),
+        Surface = Color.FromArgb("#1a1a2e"),
+        OnSurface = Color.FromArgb("#ffffff"),
+        Outline = Color.FromArgb("#6f42c1"),
+        OutlineVariant = Color.FromArgb("#ea39b8"),
+        
+        OnPrimary = Colors.White,
+        OnSecondary = Colors.White,
+        OnSuccess = Color.FromArgb("#190831"),
+        OnDanger = Color.FromArgb("#190831"),
+        OnWarning = Color.FromArgb("#190831"),
+        OnInfo = Color.FromArgb("#190831"),
+        
+        DarkBackground = Color.FromArgb("#190831"),
+        DarkOnBackground = Color.FromArgb("#ffffff"),
+        DarkSurface = Color.FromArgb("#1a1a2e"),
+        DarkOnSurface = Color.FromArgb("#ffffff"),
+        DarkOutline = Color.FromArgb("#6f42c1"),
+        
+        CornerRadius = 0.0,
+        CornerRadiusSm = 0.0,
+        CornerRadiusLg = 0.0,
+        CornerRadiusPill = 50.0,
+        BorderWidth = 2.0,
+        BorderWidthLg = 3.0,
+        FontSizeBase = 16.0,
+        FontSizeSm = 14.0,
+        FontSizeLg = 20.0,
+        ButtonPaddingX = 16.0,
+        ButtonPaddingY = 8.0,
+        ButtonPaddingXLg = 20.0,
+        ButtonPaddingYLg = 10.0,
+        ButtonPaddingXSm = 12.0,
+        ButtonPaddingYSm = 6.0,
+        InputPaddingX = 14.0,
+        InputPaddingY = 8.0,
+        InputMinHeight = 40.0,
+    };
+}
+
+/// <summary>
+/// Bootswatch Brite theme - bold and bright colors.
+/// </summary>
+public class BriteTheme : IBootstrapThemeProvider
+{
+    public BootstrapTheme GetTheme() => new()
+    {
+        Primary = Color.FromArgb("#a2e436"),
+        Secondary = Color.FromArgb("#ff7518"),
+        Success = Color.FromArgb("#32cd32"),
+        Danger = Color.FromArgb("#ff4444"),
+        Warning = Color.FromArgb("#ffff00"),
+        Info = Color.FromArgb("#00bfff"),
+        Light = Color.FromArgb("#f5f5f5"),
+        Dark = Color.FromArgb("#333333"),
+        
+        Background = Color.FromArgb("#ffffff"),
+        OnBackground = Color.FromArgb("#333333"),
+        Surface = Color.FromArgb("#ffffff"),
+        OnSurface = Color.FromArgb("#333333"),
+        Outline = Color.FromArgb("#cccccc"),
+        OutlineVariant = Color.FromArgb("#dddddd"),
+        
+        OnPrimary = Color.FromArgb("#333333"),
+        OnSecondary = Colors.White,
+        OnSuccess = Color.FromArgb("#333333"),
+        OnDanger = Colors.White,
+        OnWarning = Color.FromArgb("#333333"),
+        OnInfo = Color.FromArgb("#333333"),
+        
+        DarkBackground = Color.FromArgb("#222222"),
+        DarkOnBackground = Color.FromArgb("#f5f5f5"),
+        DarkSurface = Color.FromArgb("#333333"),
+        DarkOnSurface = Color.FromArgb("#f5f5f5"),
+        DarkOutline = Color.FromArgb("#555555"),
+        
+        CornerRadius = 8.0,
+        CornerRadiusSm = 6.0,
+        CornerRadiusLg = 12.0,
+        CornerRadiusPill = 50.0,
+        BorderWidth = 2.0,
+        BorderWidthLg = 3.0,
+        FontSizeBase = 16.0,
+        FontSizeSm = 14.0,
+        FontSizeLg = 20.0,
+        ButtonPaddingX = 16.0,
+        ButtonPaddingY = 10.0,
+        ButtonPaddingXLg = 20.0,
+        ButtonPaddingYLg = 12.0,
+        ButtonPaddingXSm = 12.0,
+        ButtonPaddingYSm = 6.0,
+        InputPaddingX = 14.0,
+        InputPaddingY = 10.0,
+        InputMinHeight = 44.0,
+    };
+}
