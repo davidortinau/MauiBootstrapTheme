@@ -113,7 +113,7 @@ class ControlsPage : Component
                     )
                 ).Padding(20)
             )
-        );
+        ).BackgroundColor(BootstrapTheme.Current.Background);
 }
 
 class InputsPage : Component
@@ -209,7 +209,7 @@ class InputsPage : Component
                     )
                 ).Padding(20)
             )
-        );
+        ).BackgroundColor(BootstrapTheme.Current.Background);
 }
 
 class TypographyPage : Component
@@ -291,7 +291,7 @@ class TypographyPage : Component
                     )
                 ).Padding(20)
             )
-        );
+        ).BackgroundColor(BootstrapTheme.Current.Background);
 }
 
 class CardsPage : Component
@@ -393,7 +393,7 @@ class CardsPage : Component
                     )
                 ).Padding(20)
             )
-        );
+        ).BackgroundColor(BootstrapTheme.Current.Background);
 }
 
 class ThemesPage : Component
@@ -474,10 +474,22 @@ class ThemesPage : Component
         ).BackgroundColor(theme.Background);
     }
 
-    private void ApplyTheme(IBootstrapThemeProvider provider, string name)
+    private async void ApplyTheme(IBootstrapThemeProvider provider, string name)
     {
         _currentTheme = name;
         BootstrapTheme.SetTheme(provider.GetTheme());
-        Invalidate();
+        
+        // Force full app refresh by recreating the Shell
+        if (Application.Current?.Windows.FirstOrDefault()?.Page is Microsoft.Maui.Controls.Shell shell)
+        {
+            // Navigate to controls first, then back to themes to force full rebuild
+            await shell.GoToAsync("//controls");
+            await Task.Delay(50);
+            await shell.GoToAsync("//themes");
+        }
+        else
+        {
+            Invalidate();
+        }
     }
 }

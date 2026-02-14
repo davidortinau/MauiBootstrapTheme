@@ -8,6 +8,10 @@ public partial class ThemesPage : ContentPage
     public ThemesPage()
     {
         InitializeComponent();
+        
+        // Apply current theme to page background
+        var theme = BootstrapTheme.Current;
+        this.BackgroundColor = theme.Background;
     }
 
     private void OnDefaultThemeClicked(object sender, EventArgs e)
@@ -34,21 +38,8 @@ public partial class ThemesPage : ContentPage
     private void ApplyTheme(BootstrapTheme theme, string themeName)
     {
         BootstrapTheme.SetTheme(theme);
-        CurrentThemeLabel.Text = $"Current: {themeName}";
         
-        this.BackgroundColor = theme.Background;
-        PreviewFrame.BackgroundColor = theme.Surface;
-        PreviewFrame.Stroke = new SolidColorBrush(theme.GetOutline());
-        PreviewLabel.TextColor = theme.GetOnSurface();
-        
-        RefreshControl(PreviewEntry);
-        RefreshControl(PreviewBtn1);
-        RefreshControl(PreviewBtn2);
-        RefreshControl(PreviewBtn3);
-        RefreshControl(PreviewBtn4);
-        RefreshControl(PreviewBtn5);
+        // Refresh the entire app to apply theme globally
+        App.RefreshTheme();
     }
-
-    private void RefreshControl(VisualElement control)
-        => control.Handler?.UpdateValue("BootstrapStyle");
 }
