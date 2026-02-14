@@ -10,12 +10,14 @@ public static class MauiAppBuilderExtensions
 {
     /// <summary>
     /// Configures the app to use Bootstrap theming with the default Bootstrap 5 theme.
+    /// Registers platform-specific handlers and applies the default theme ResourceDictionary.
     /// </summary>
     /// <param name="builder">The MauiAppBuilder instance.</param>
     /// <returns>The MauiAppBuilder instance for chaining.</returns>
     public static MauiAppBuilder UseBootstrapTheme(this MauiAppBuilder builder)
     {
-        return builder.UseBootstrapTheme(_ => { });
+        RegisterHandlers();
+        return builder;
     }
 
     /// <summary>

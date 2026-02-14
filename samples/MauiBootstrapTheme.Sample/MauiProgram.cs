@@ -1,5 +1,4 @@
 using MauiBootstrapTheme.Extensions;
-using MauiBootstrapTheme.Themes.Default;
 using MauiDevFlow.Agent;
 
 namespace MauiBootstrapTheme.Sample;
@@ -11,8 +10,8 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
-            // Use the default Bootstrap 5 theme
-            .UseBootstrapTheme<DefaultTheme>()
+            // Register Bootstrap platform handlers (theme is set in App.xaml via ResourceDictionary)
+            .UseBootstrapTheme()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

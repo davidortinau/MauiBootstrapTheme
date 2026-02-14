@@ -34,7 +34,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\MauiBootstrapTheme\MauiBootstrapTheme.csproj" />
     <ProjectReference Include="..\..\src\MauiBootstrapTheme.Reactor\MauiBootstrapTheme.Reactor.csproj" />
-    <ProjectReference Include="..\..\src\MauiBootstrapTheme.Themes.Default\MauiBootstrapTheme.Themes.Default.csproj" />
   </ItemGroup>
 
 </Project>

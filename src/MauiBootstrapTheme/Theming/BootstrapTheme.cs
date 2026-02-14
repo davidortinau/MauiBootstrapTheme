@@ -295,11 +295,12 @@ public class BootstrapTheme
     }
 
     // ══════════════════════════════════════════════════════════════════
-    // NEW: ResourceDictionary-based theme switching
+    // ResourceDictionary-based theme switching
     // ══════════════════════════════════════════════════════════════════
 
     /// <summary>
     /// Applies a theme by replacing Application.Current.Resources with the theme's ResourceDictionary.
+    /// Also syncs BootstrapTheme.Current so handlers reading the singleton stay in sync.
     /// This is the recommended way to switch themes - all controls using DynamicResource will update instantly.
     /// </summary>
     /// <param name="themeName">Theme name: "default", "sketchy", "vapor", etc.</param>
@@ -319,6 +320,7 @@ public class BootstrapTheme
         };
 
         Application.Current.Resources = theme;
+        SyncFromResources(theme);
     }
 
     /// <summary>
@@ -328,5 +330,108 @@ public class BootstrapTheme
     {
         if (Application.Current == null) return;
         Application.Current.Resources = theme;
+        SyncFromResources(theme);
+    }
+
+    /// <summary>
+    /// Syncs BootstrapTheme.Current singleton from ResourceDictionary values
+    /// so handlers that read from Current stay in sync with the XAML theme.
+    /// </summary>
+    private static void SyncFromResources(ResourceDictionary resources)
+    {
+        var theme = new BootstrapTheme();
+
+        if (resources.TryGetValue("Primary", out var primary) && primary is Color pc)
+            theme.Primary = pc;
+        if (resources.TryGetValue("Secondary", out var secondary) && secondary is Color sc)
+            theme.Secondary = sc;
+        if (resources.TryGetValue("Success", out var success) && success is Color suc)
+            theme.Success = suc;
+        if (resources.TryGetValue("Danger", out var danger) && danger is Color dc)
+            theme.Danger = dc;
+        if (resources.TryGetValue("Warning", out var warning) && warning is Color wc)
+            theme.Warning = wc;
+        if (resources.TryGetValue("Info", out var info) && info is Color ic)
+            theme.Info = ic;
+        if (resources.TryGetValue("Light", out var light) && light is Color lc)
+            theme.Light = lc;
+        if (resources.TryGetValue("Dark", out var dark) && dark is Color dkc)
+            theme.Dark = dkc;
+
+        if (resources.TryGetValue("Background", out var bg) && bg is Color bgc)
+            theme.Background = bgc;
+        if (resources.TryGetValue("Surface", out var surf) && surf is Color sfc)
+            theme.Surface = sfc;
+        if (resources.TryGetValue("OnBackground", out var onBg) && onBg is Color obg)
+            theme.OnBackground = obg;
+        if (resources.TryGetValue("OnSurface", out var onSurf) && onSurf is Color osf)
+            theme.OnSurface = osf;
+        if (resources.TryGetValue("Outline", out var outline) && outline is Color olc)
+            theme.Outline = olc;
+        if (resources.TryGetValue("OutlineVariant", out var ov) && ov is Color ovc)
+            theme.OutlineVariant = ovc;
+        if (resources.TryGetValue("Muted", out var muted) && muted is Color mc)
+            theme.Muted = mc;
+
+        if (resources.TryGetValue("OnPrimary", out var onP) && onP is Color opc)
+            theme.OnPrimary = opc;
+        if (resources.TryGetValue("OnSecondary", out var onS) && onS is Color osc)
+            theme.OnSecondary = osc;
+        if (resources.TryGetValue("OnSuccess", out var onSuc) && onSuc is Color osuc)
+            theme.OnSuccess = osuc;
+        if (resources.TryGetValue("OnDanger", out var onD) && onD is Color odc)
+            theme.OnDanger = odc;
+        if (resources.TryGetValue("OnWarning", out var onW) && onW is Color owc)
+            theme.OnWarning = owc;
+        if (resources.TryGetValue("OnInfo", out var onI) && onI is Color oic)
+            theme.OnInfo = oic;
+
+        if (resources.TryGetValue("CornerRadius", out var cr) && cr is double crd)
+            theme.CornerRadius = crd;
+        if (resources.TryGetValue("CornerRadiusSm", out var crs) && crs is double crsd)
+            theme.CornerRadiusSm = crsd;
+        if (resources.TryGetValue("CornerRadiusLg", out var crl) && crl is double crld)
+            theme.CornerRadiusLg = crld;
+        if (resources.TryGetValue("CornerRadiusPill", out var crp) && crp is double crpd)
+            theme.CornerRadiusPill = crpd;
+        if (resources.TryGetValue("BorderWidth", out var bw) && bw is double bwd)
+            theme.BorderWidth = bwd;
+
+        if (resources.TryGetValue("FontSizeBase", out var fsb) && fsb is double fsbd)
+            theme.FontSizeBase = fsbd;
+        if (resources.TryGetValue("FontSizeSm", out var fss) && fss is double fssd)
+            theme.FontSizeSm = fssd;
+        if (resources.TryGetValue("FontSizeLg", out var fsl) && fsl is double fsld)
+            theme.FontSizeLg = fsld;
+        if (resources.TryGetValue("FontSizeH1", out var h1) && h1 is double h1d)
+            theme.FontSizeH1 = h1d;
+        if (resources.TryGetValue("FontSizeH2", out var h2) && h2 is double h2d)
+            theme.FontSizeH2 = h2d;
+        if (resources.TryGetValue("FontSizeH3", out var h3) && h3 is double h3d)
+            theme.FontSizeH3 = h3d;
+        if (resources.TryGetValue("FontSizeH4", out var h4) && h4 is double h4d)
+            theme.FontSizeH4 = h4d;
+        if (resources.TryGetValue("FontSizeH5", out var h5) && h5 is double h5d)
+            theme.FontSizeH5 = h5d;
+        if (resources.TryGetValue("FontSizeH6", out var h6) && h6 is double h6d)
+            theme.FontSizeH6 = h6d;
+
+        if (resources.TryGetValue("FontFamily", out var ff) && ff is string ffs && !string.IsNullOrEmpty(ffs))
+            theme.FontFamily = ffs;
+
+        if (resources.TryGetValue("ButtonHeight", out var bh) && bh is double bhd)
+            theme.ButtonMinHeight = bhd;
+        if (resources.TryGetValue("ButtonHeightSm", out var bhs) && bhs is double bhsd)
+            theme.ButtonMinHeightSm = bhsd;
+        if (resources.TryGetValue("ButtonHeightLg", out var bhl) && bhl is double bhld)
+            theme.ButtonMinHeightLg = bhld;
+        if (resources.TryGetValue("InputHeight", out var ih) && ih is double ihd)
+            theme.InputMinHeight = ihd;
+        if (resources.TryGetValue("InputHeightSm", out var ihs) && ihs is double ihsd)
+            theme.InputMinHeightSm = ihsd;
+        if (resources.TryGetValue("InputHeightLg", out var ihl) && ihl is double ihld)
+            theme.InputMinHeightLg = ihld;
+
+        SetTheme(theme);
     }
 }

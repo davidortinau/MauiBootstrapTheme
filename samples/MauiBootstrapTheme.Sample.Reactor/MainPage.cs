@@ -2,7 +2,6 @@ using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Reactor;
 using MauiBootstrapTheme.Theming;
-using MauiBootstrapTheme.Themes.Default;
 
 namespace MauiBootstrapTheme.Sample.Reactor;
 
@@ -415,14 +414,13 @@ class ThemesPage : Component
                     VStack(spacing: 12,
                         Label("Select Theme").FontSize(24),
                         FlexLayout(
-                            Button("Default").Primary().OnClicked(() => ApplyTheme(new DefaultTheme())).Margin(0, 0, 8, 8),
-                            Button("Darkly").Dark().OnClicked(() => ApplyTheme(new DarklyTheme())).Margin(0, 0, 8, 8),
-                            Button("Cyborg").Info().OnClicked(() => ApplyTheme(new CyborgTheme())).Margin(0, 0, 8, 8),
-                            Button("Slate").Secondary().OnClicked(() => ApplyTheme(new SlateTheme())).Margin(0, 0, 8, 8),
-                            Button("Flatly").Success().OnClicked(() => ApplyTheme(new FlatlyTheme())).Margin(0, 0, 8, 8),
-                            Button("Sketchy").Warning().OnClicked(() => ApplyTheme(new SketchyTheme())).Margin(0, 0, 8, 8),
-                            Button("Vapor").Danger().OnClicked(() => ApplyTheme(new VaporTheme())).Margin(0, 0, 8, 8),
-                            Button("Brite").Primary().OnClicked(() => ApplyTheme(new BriteTheme())).Margin(0, 0, 8, 8)
+                            Button("Default").Primary().OnClicked(() => ApplyTheme("default")).Margin(0, 0, 8, 8),
+                            Button("Darkly").Dark().OnClicked(() => ApplyTheme("darkly")).Margin(0, 0, 8, 8),
+                            Button("Slate").Secondary().OnClicked(() => ApplyTheme("slate")).Margin(0, 0, 8, 8),
+                            Button("Flatly").Success().OnClicked(() => ApplyTheme("flatly")).Margin(0, 0, 8, 8),
+                            Button("Sketchy").Warning().OnClicked(() => ApplyTheme("sketchy")).Margin(0, 0, 8, 8),
+                            Button("Vapor").Danger().OnClicked(() => ApplyTheme("vapor")).Margin(0, 0, 8, 8),
+                            Button("Brite").Primary().OnClicked(() => ApplyTheme("brite")).Margin(0, 0, 8, 8)
                         ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap),
                         Label($"Current: {theme.Name}").TextColor(Colors.Gray)
                     ),
@@ -472,19 +470,16 @@ class ThemesPage : Component
         ).BackgroundColor(theme.GetBackground());
     }
 
-    private async void ApplyTheme(IBootstrapThemeProvider provider)
+    private async void ApplyTheme(string themeName)
     {
-        var theme = provider.GetTheme();
-        BootstrapTheme.SetTheme(theme);
+        // Apply theme via unified API — updates ResourceDictionary AND BootstrapTheme.Current
+        BootstrapTheme.Apply(themeName);
         
-        // Small delay to ensure theme is set before navigation
+        // Small delay then force re-render since MauiReactor reads theme at render time
         await Task.Delay(50);
         
-        // Force refresh - navigate away and back to re-render all pages
-        // This is a workaround since MauiReactor components read from BootstrapTheme.Current at render time
         if (Application.Current?.Windows.FirstOrDefault()?.Page is Microsoft.Maui.Controls.Shell shell)
         {
-            // Navigate to controls first, then back to themes to force full rebuild
             await shell.GoToAsync("//controls");
             await Task.Delay(150);
             await shell.GoToAsync("//themes");

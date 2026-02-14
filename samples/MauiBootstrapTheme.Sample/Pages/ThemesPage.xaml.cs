@@ -39,11 +39,8 @@ public partial class ThemesPage : ContentPage
     {
         _currentThemeName = name;
         
-        // This is all it takes! DynamicResource bindings update automatically.
-        if (Application.Current != null)
-        {
-            Application.Current.Resources = theme;
-        }
+        // Apply theme via the unified API — updates both ResourceDictionary and BootstrapTheme.Current
+        BootstrapTheme.Apply(theme);
         
         UpdateThemeLabel();
     }

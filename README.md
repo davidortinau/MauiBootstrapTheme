@@ -26,24 +26,33 @@ Style stock .NET MAUI controls with Bootstrap themes — no custom control wrapp
 
 ```bash
 dotnet add package MauiBootstrapTheme
-dotnet add package MauiBootstrapTheme.Themes.Default
 ```
 
 ### 2. Register in MauiProgram.cs
 
 ```csharp
 using MauiBootstrapTheme.Extensions;
-using MauiBootstrapTheme.Themes.Default;
 
 public static MauiApp CreateMauiApp()
 {
     var builder = MauiApp.CreateBuilder();
     builder
         .UseMauiApp<App>()
-        .UseBootstrapTheme<DefaultTheme>();  // That's it!
+        .UseBootstrapTheme();  // Registers platform handlers
     
     return builder.Build();
 }
+```
+
+### 2b. Set Theme in App.xaml
+
+```xml
+<Application xmlns:themes="clr-namespace:MauiBootstrapTheme.Themes;assembly=MauiBootstrapTheme"
+             x:Class="YourApp.App">
+    <Application.Resources>
+        <themes:DefaultTheme />
+    </Application.Resources>
+</Application>
 ```
 
 ### 3. Use Bootstrap Styling in XAML
@@ -99,13 +108,12 @@ dotnet add package MauiBootstrapTheme.Reactor
 ```csharp
 using MauiReactor;
 using MauiBootstrapTheme.Extensions;
-using MauiBootstrapTheme.Themes.Default;
 
 public static MauiApp CreateMauiApp()
 {
     return MauiApp.CreateBuilder()
         .UseMauiReactorApp<MainPage>()
-        .UseBootstrapTheme<DefaultTheme>()
+        .UseBootstrapTheme()
         .Build();
 }
 ```
@@ -366,22 +374,25 @@ Bootstrap spacing scale (0-5).
 
 ## Included Themes
 
-The `MauiBootstrapTheme.Themes.Default` package includes several Bootswatch-inspired themes:
+MauiBootstrapTheme includes several Bootswatch-inspired themes as ResourceDictionary XAML files:
 
 | Theme | Description |
 |-------|-------------|
 | `DefaultTheme` | Standard Bootstrap 5 - blue primary, rounded corners |
-| `DarklyTheme` | Dark mode with teal accents |
-| `CyborgTheme` | Cyberpunk style - sharp edges, neon colors |
-| `MintyTheme` | Fresh pastels with very rounded corners |
-| `SlateTheme` | Professional dark gray theme |
+| `DarklyTheme` | Dark theme with muted blue tones |
+| `SlateTheme` | Dark gunmetal-gray theme |
+| `FlatlyTheme` | Flat and modern light theme |
+| `SketchyTheme` | Hand-drawn notebook style with Marker Felt font |
+| `VaporTheme` | Cyberpunk neon with Courier font and dark background |
+| `BriteTheme` | Vibrant neon-inspired light theme with bold colors |
 
 ```csharp
-// Use any included theme
-.UseBootstrapTheme<DarklyTheme>()
-.UseBootstrapTheme<MintyTheme>()
-.UseBootstrapTheme<CyborgTheme>()
-.UseBootstrapTheme<SlateTheme>()
+// Switch themes at runtime — instant update via DynamicResource
+using MauiBootstrapTheme.Theming;
+
+BootstrapTheme.Apply("darkly");
+BootstrapTheme.Apply("sketchy");
+BootstrapTheme.Apply("vapor");
 ```
 
 ## Dark Mode Support
@@ -395,17 +406,28 @@ BootstrapTheme.RespectSystemTheme = false;
 
 ## Adding Custom Themes
 
-### Option 1: Use a Pre-built Theme
+### Option 1: Use a Built-in Theme
 
-```bash
-dotnet add package MauiBootstrapTheme.Themes.Default
+```xml
+<!-- In App.xaml -->
+<Application.Resources>
+    <themes:DarklyTheme />
+</Application.Resources>
 ```
+
+### Option 2: Switch at Runtime
 
 ```csharp
-.UseBootstrapTheme<DefaultTheme>()
+using MauiBootstrapTheme.Theming;
+
+// By name
+BootstrapTheme.Apply("darkly");
+
+// Or with a ResourceDictionary instance
+BootstrapTheme.Apply(new MauiBootstrapTheme.Themes.VaporTheme());
 ```
 
-### Option 2: Create Your Own Theme
+### Option 3: Create Your Own Theme
 
 ```csharp
 using MauiBootstrapTheme.Theming;

@@ -1,5 +1,4 @@
 using MauiBootstrapTheme.Extensions;
-using MauiBootstrapTheme.Themes.Default;
 using MauiReactor;
 using Microsoft.Extensions.Logging;
 using MauiDevFlow.Agent;
@@ -13,7 +12,8 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiReactorApp<MainPage>()
-            .UseBootstrapTheme<DefaultTheme>()
+            // Register Bootstrap platform handlers (theme is set in App.xaml via ResourceDictionary)
+            .UseBootstrapTheme()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
