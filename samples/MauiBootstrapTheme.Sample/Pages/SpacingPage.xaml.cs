@@ -7,6 +7,6 @@ public partial class SpacingPage : ContentPage
     public SpacingPage()
     {
         InitializeComponent();
-        this.BackgroundColor = BootstrapTheme.Current.Background;
+        this.BackgroundColor = BootstrapTheme.Current.GetBackground();
     }
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MauiBootstrapTheme.Sample.Resources.Themes.SketchyTheme">
+    
+    <!-- Bootswatch Sketchy Theme - Hand-drawn playful look -->
+    
+    <!-- Semantic Colors -->
+    <Color x:Key="ThemePrimary">#333333</Color>
+    <Color x:Key="ThemeSecondary">#868e96</Color>
+    <Color x:Key="ThemeSuccess">#28a745</Color>
+    <Color x:Key="ThemeDanger">#dc3545</Color>
+    <Color x:Key="ThemeWarning">#ffc107</Color>
+    <Color x:Key="ThemeInfo">#17a2b8</Color>
+    <Color x:Key="ThemeLight">#f8f9fa</Color>
+    <Color x:Key="ThemeDark">#343a40</Color>
+    
+    <!-- Light Mode Surface Colors -->
+    <Color x:Key="ThemeLightBackground">#ffffff</Color>
+    <Color x:Key="ThemeLightSurface">#ffffff</Color>
+    <Color x:Key="ThemeLightOnBackground">#333333</Color>
+    <Color x:Key="ThemeLightOnSurface">#333333</Color>
+    <Color x:Key="ThemeLightOutline">#333333</Color>
+    <Color x:Key="ThemeLightMuted">#666666</Color>
+    
+    <!-- Dark Mode Surface Colors -->
+    <Color x:Key="ThemeDarkBackground">#333333</Color>
+    <Color x:Key="ThemeDarkSurface">#444444</Color>
+    <Color x:Key="ThemeDarkOnBackground">#f8f9fa</Color>
+    <Color x:Key="ThemeDarkOnSurface">#f8f9fa</Color>
+    <Color x:Key="ThemeDarkOutline">#666666</Color>
+    <Color x:Key="ThemeDarkMuted">#adb5bd</Color>
+    
+    <!-- Hand-drawn style font (MarkerFelt on iOS/Mac) -->
+    <x:String x:Key="ThemeFontFamily">MarkerFelt-Wide</x:String>
+    
+    <!-- Rounded corners for playful look -->
+    <x:Double x:Key="ThemeCornerRadius">15</x:Double>
+    <x:Double x:Key="ThemeCornerRadiusSm">12</x:Double>
+    <x:Double x:Key="ThemeCornerRadiusLg">20</x:Double>
+    
+</ResourceDictionary>

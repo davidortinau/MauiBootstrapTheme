@@ -33,6 +33,14 @@ public class BootstrapTheme
     /// </summary>
     public static bool RespectSystemTheme { get; set; } = true;
 
+    // ── Theme Identification ──
+    
+    /// <summary>
+    /// The name of the theme (e.g., "bootstrap", "darkly", "sketchy").
+    /// Used for display and persistence.
+    /// </summary>
+    public string Name { get; set; } = "bootstrap";
+
     // ── Colors ──
     
     public Color Primary { get; set; } = Color.FromArgb("#0d6efd");
@@ -187,7 +195,12 @@ public class BootstrapTheme
     public Color GetOnSurface() => IsDarkMode ? DarkOnSurface : OnSurface;
     public Color GetOutline() => IsDarkMode ? DarkOutline : Outline;
     public Color GetMuted() => IsDarkMode ? DarkOnSurface.WithAlpha(0.6f) : Muted;
-    public Color GetText() => IsDarkMode ? DarkOnSurface : OnSurface;
+    
+    /// <summary>
+    /// Gets the appropriate text color for the current theme.
+    /// Uses OnBackground directly (designed to contrast with Background).
+    /// </summary>
+    public Color GetText() => OnBackground;
     
     private static bool IsDarkMode => 
         RespectSystemTheme && Application.Current?.RequestedTheme == AppTheme.Dark;

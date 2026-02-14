@@ -113,7 +113,7 @@ class ControlsPage : Component
                     )
                 ).Padding(20)
             )
-        ).BackgroundColor(BootstrapTheme.Current.Background);
+        ).BackgroundColor(BootstrapTheme.Current.GetBackground());
 }
 
 class InputsPage : Component
@@ -209,7 +209,7 @@ class InputsPage : Component
                     )
                 ).Padding(20)
             )
-        ).BackgroundColor(BootstrapTheme.Current.Background);
+        ).BackgroundColor(BootstrapTheme.Current.GetBackground());
 }
 
 class TypographyPage : Component
@@ -291,7 +291,7 @@ class TypographyPage : Component
                     )
                 ).Padding(20)
             )
-        ).BackgroundColor(BootstrapTheme.Current.Background);
+        ).BackgroundColor(BootstrapTheme.Current.GetBackground());
 }
 
 class CardsPage : Component
@@ -393,13 +393,11 @@ class CardsPage : Component
                     )
                 ).Padding(20)
             )
-        ).BackgroundColor(BootstrapTheme.Current.Background);
+        ).BackgroundColor(BootstrapTheme.Current.GetBackground());
 }
 
 class ThemesPage : Component
 {
-    private string _currentTheme = "Default";
-
     public override VisualNode Render()
     {
         var theme = BootstrapTheme.Current;
@@ -417,16 +415,16 @@ class ThemesPage : Component
                     VStack(spacing: 12,
                         Label("Select Theme").FontSize(24),
                         FlexLayout(
-                            Button("Default").Primary().OnClicked(() => ApplyTheme(new DefaultTheme(), "Default")).Margin(0, 0, 8, 8),
-                            Button("Darkly").Dark().OnClicked(() => ApplyTheme(new DarklyTheme(), "Darkly")).Margin(0, 0, 8, 8),
-                            Button("Cyborg").Info().OnClicked(() => ApplyTheme(new CyborgTheme(), "Cyborg")).Margin(0, 0, 8, 8),
-                            Button("Slate").Secondary().OnClicked(() => ApplyTheme(new SlateTheme(), "Slate")).Margin(0, 0, 8, 8),
-                            Button("Flatly").Success().OnClicked(() => ApplyTheme(new FlatlyTheme(), "Flatly")).Margin(0, 0, 8, 8),
-                            Button("Sketchy").Warning().OnClicked(() => ApplyTheme(new SketchyTheme(), "Sketchy")).Margin(0, 0, 8, 8),
-                            Button("Vapor").Danger().OnClicked(() => ApplyTheme(new VaporTheme(), "Vapor")).Margin(0, 0, 8, 8),
-                            Button("Brite").Primary().OnClicked(() => ApplyTheme(new BriteTheme(), "Brite")).Margin(0, 0, 8, 8)
+                            Button("Default").Primary().OnClicked(() => ApplyTheme(new DefaultTheme())).Margin(0, 0, 8, 8),
+                            Button("Darkly").Dark().OnClicked(() => ApplyTheme(new DarklyTheme())).Margin(0, 0, 8, 8),
+                            Button("Cyborg").Info().OnClicked(() => ApplyTheme(new CyborgTheme())).Margin(0, 0, 8, 8),
+                            Button("Slate").Secondary().OnClicked(() => ApplyTheme(new SlateTheme())).Margin(0, 0, 8, 8),
+                            Button("Flatly").Success().OnClicked(() => ApplyTheme(new FlatlyTheme())).Margin(0, 0, 8, 8),
+                            Button("Sketchy").Warning().OnClicked(() => ApplyTheme(new SketchyTheme())).Margin(0, 0, 8, 8),
+                            Button("Vapor").Danger().OnClicked(() => ApplyTheme(new VaporTheme())).Margin(0, 0, 8, 8),
+                            Button("Brite").Primary().OnClicked(() => ApplyTheme(new BriteTheme())).Margin(0, 0, 8, 8)
                         ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap),
-                        Label($"Current: {_currentTheme}").TextColor(Colors.Gray)
+                        Label($"Current: {theme.Name}").TextColor(Colors.Gray)
                     ),
 
                     // Preview - render controls with current theme colors directly
@@ -471,20 +469,24 @@ class ThemesPage : Component
                     )
                 ).Padding(20)
             )
-        ).BackgroundColor(theme.Background);
+        ).BackgroundColor(theme.GetBackground());
     }
 
-    private async void ApplyTheme(IBootstrapThemeProvider provider, string name)
+    private async void ApplyTheme(IBootstrapThemeProvider provider)
     {
-        _currentTheme = name;
-        BootstrapTheme.SetTheme(provider.GetTheme());
+        var theme = provider.GetTheme();
+        BootstrapTheme.SetTheme(theme);
         
-        // Force full app refresh by recreating the Shell
+        // Small delay to ensure theme is set before navigation
+        await Task.Delay(50);
+        
+        // Force refresh - navigate away and back to re-render all pages
+        // This is a workaround since MauiReactor components read from BootstrapTheme.Current at render time
         if (Application.Current?.Windows.FirstOrDefault()?.Page is Microsoft.Maui.Controls.Shell shell)
         {
             // Navigate to controls first, then back to themes to force full rebuild
             await shell.GoToAsync("//controls");
-            await Task.Delay(50);
+            await Task.Delay(150);
             await shell.GoToAsync("//themes");
         }
         else

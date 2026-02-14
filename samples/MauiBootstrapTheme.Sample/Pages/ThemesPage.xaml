@@ -33,6 +33,20 @@
                 <Label x:Name="CurrentThemeLabel" Text="Current: bootstrap" TextColor="Gray" />
             </VerticalStackLayout>
             
+            <!-- Appearance Mode Section -->
+            <VerticalStackLayout Spacing="12">
+                <Label Text="Appearance Mode" FontSize="24" />
+                <FlexLayout Wrap="Wrap" JustifyContent="Start">
+                    <Button x:Name="LightModeBtn" Text="☀️ Light" Clicked="OnLightModeClicked" 
+                            theme:Bootstrap.Variant="Light" HeightRequest="38" Margin="0,0,8,8" />
+                    <Button x:Name="DarkModeBtn" Text="🌙 Dark" Clicked="OnDarkModeClicked" 
+                            theme:Bootstrap.Variant="Dark" HeightRequest="38" Margin="0,0,8,8" />
+                    <Button x:Name="SystemModeBtn" Text="🔄 System" Clicked="OnSystemModeClicked" 
+                            theme:Bootstrap.Variant="Secondary" HeightRequest="38" Margin="0,0,8,8" />
+                </FlexLayout>
+                <Label x:Name="CurrentModeLabel" Text="Mode: System" TextColor="Gray" />
+            </VerticalStackLayout>
+            
             <!-- Preview Section -->
             <VerticalStackLayout Spacing="12">
                 <Label Text="Preview" FontSize="24" />

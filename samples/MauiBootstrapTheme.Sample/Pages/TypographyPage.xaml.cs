@@ -7,6 +7,6 @@ public partial class TypographyPage : ContentPage
     public TypographyPage()
     {
         InitializeComponent();
-        this.BackgroundColor = BootstrapTheme.Current.Background;
+        this.BackgroundColor = BootstrapTheme.Current.GetBackground();
     }
 }

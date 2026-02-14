@@ -11,6 +11,8 @@ public class DefaultTheme : IBootstrapThemeProvider
     /// <inheritdoc />
     public BootstrapTheme GetTheme() => new()
     {
+        Name = "bootstrap",
+        
         // Bootstrap 5 Default Colors
         Primary = Color.FromArgb("#0d6efd"),
         Secondary = Color.FromArgb("#6c757d"),

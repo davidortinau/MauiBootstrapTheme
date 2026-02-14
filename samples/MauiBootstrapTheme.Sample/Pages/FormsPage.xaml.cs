@@ -7,6 +7,6 @@ public partial class FormsPage : ContentPage
     public FormsPage()
     {
         InitializeComponent();
-        this.BackgroundColor = BootstrapTheme.Current.Background;
+        this.BackgroundColor = BootstrapTheme.Current.GetBackground();
     }
 }

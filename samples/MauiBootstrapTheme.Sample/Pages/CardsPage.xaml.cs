@@ -7,6 +7,6 @@ public partial class CardsPage : ContentPage
     public CardsPage()
     {
         InitializeComponent();
-        this.BackgroundColor = BootstrapTheme.Current.Background;
+        this.BackgroundColor = BootstrapTheme.Current.GetBackground();
     }
 }

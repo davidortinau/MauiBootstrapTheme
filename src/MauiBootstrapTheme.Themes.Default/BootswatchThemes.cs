@@ -10,6 +10,8 @@ public class DarklyTheme : IBootstrapThemeProvider
 {
     public BootstrapTheme GetTheme() => new()
     {
+        Name = "darkly",
+        
         // Darkly Colors
         Primary = Color.FromArgb("#375a7f"),
         Secondary = Color.FromArgb("#444444"),
@@ -77,6 +79,8 @@ public class CyborgTheme : IBootstrapThemeProvider
 {
     public BootstrapTheme GetTheme() => new()
     {
+        Name = "cyborg",
+        
         // Cyborg Colors - neon accents on dark background
         Primary = Color.FromArgb("#2a9fd6"),
         Secondary = Color.FromArgb("#555555"),
@@ -144,6 +148,8 @@ public class MintyTheme : IBootstrapThemeProvider
 {
     public BootstrapTheme GetTheme() => new()
     {
+        Name = "minty",
+        
         // Minty Colors - fresh pastels
         Primary = Color.FromArgb("#78c2ad"),
         Secondary = Color.FromArgb("#f3969a"),
@@ -210,6 +216,8 @@ public class SlateTheme : IBootstrapThemeProvider
 {
     public BootstrapTheme GetTheme() => new()
     {
+        Name = "slate",
+        
         // Slate Colors - professional grays
         Primary = Color.FromArgb("#3a3f44"),
         Secondary = Color.FromArgb("#7a8288"),
@@ -276,6 +284,8 @@ public class FlatlyTheme : IBootstrapThemeProvider
 {
     public BootstrapTheme GetTheme() => new()
     {
+        Name = "flatly",
+        
         Primary = Color.FromArgb("#2c3e50"),
         Secondary = Color.FromArgb("#95a5a6"),
         Success = Color.FromArgb("#18bc9c"),
@@ -333,6 +343,8 @@ public class SketchyTheme : IBootstrapThemeProvider
 {
     public BootstrapTheme GetTheme() => new()
     {
+        Name = "sketchy",
+        
         Primary = Color.FromArgb("#333333"),
         Secondary = Color.FromArgb("#868e96"),
         Success = Color.FromArgb("#28a745"),
@@ -371,7 +383,7 @@ public class SketchyTheme : IBootstrapThemeProvider
         FontSizeBase = 16.0,
         FontSizeSm = 14.0,
         FontSizeLg = 20.0,
-        FontFamily = "MarkerFelt-Wide",  // Hand-drawn style font (available on macOS/iOS)
+        FontFamily = "Marker Felt",  // Hand-drawn style font (available on macOS/iOS)
         ButtonPaddingX = 16.0,
         ButtonPaddingY = 10.0,
         ButtonPaddingXLg = 20.0,
@@ -391,6 +403,8 @@ public class VaporTheme : IBootstrapThemeProvider
 {
     public BootstrapTheme GetTheme() => new()
     {
+        Name = "vapor",
+        
         Primary = Color.FromArgb("#6f42c1"),
         Secondary = Color.FromArgb("#ea39b8"),
         Success = Color.FromArgb("#3cf281"),
@@ -449,6 +463,8 @@ public class BriteTheme : IBootstrapThemeProvider
 {
     public BootstrapTheme GetTheme() => new()
     {
+        Name = "brite",
+        
         Primary = Color.FromArgb("#a2e436"),
         Secondary = Color.FromArgb("#ff7518"),
         Success = Color.FromArgb("#32cd32"),

@@ -8,23 +8,23 @@
     Shell.FlyoutBehavior="Flyout"
     Title="Bootstrap Theme">
 
-    <FlyoutItem Title="Controls" Icon="{OnPlatform Default='', iOS='square.grid.2x2'}">
+    <FlyoutItem Title="Controls" Route="controls" Icon="{OnPlatform Default='', iOS='square.grid.2x2'}">
         <ShellContent ContentTemplate="{DataTemplate pages:ControlsPage}" />
     </FlyoutItem>
     
-    <FlyoutItem Title="Inputs" Icon="{OnPlatform Default='', iOS='keyboard'}">
+    <FlyoutItem Title="Inputs" Route="inputs" Icon="{OnPlatform Default='', iOS='keyboard'}">
         <ShellContent ContentTemplate="{DataTemplate pages:InputsPage}" />
     </FlyoutItem>
     
-    <FlyoutItem Title="Typography" Icon="{OnPlatform Default='', iOS='textformat'}">
+    <FlyoutItem Title="Typography" Route="typography" Icon="{OnPlatform Default='', iOS='textformat'}">
         <ShellContent ContentTemplate="{DataTemplate pages:TypographyPage}" />
     </FlyoutItem>
     
-    <FlyoutItem Title="Cards" Icon="{OnPlatform Default='', iOS='rectangle.stack'}">
+    <FlyoutItem Title="Cards" Route="cards" Icon="{OnPlatform Default='', iOS='rectangle.stack'}">
         <ShellContent ContentTemplate="{DataTemplate pages:CardsPage}" />
     </FlyoutItem>
     
-    <FlyoutItem Title="Themes" Icon="{OnPlatform Default='', iOS='paintbrush'}">
+    <FlyoutItem Title="Themes" Route="themes" Icon="{OnPlatform Default='', iOS='paintbrush'}">
         <ShellContent ContentTemplate="{DataTemplate pages:ThemesPage}" />
     </FlyoutItem>
 

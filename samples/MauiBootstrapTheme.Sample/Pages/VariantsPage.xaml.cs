@@ -7,6 +7,6 @@ public partial class VariantsPage : ContentPage
     public VariantsPage()
     {
         InitializeComponent();
-        this.BackgroundColor = BootstrapTheme.Current.Background;
+        this.BackgroundColor = BootstrapTheme.Current.GetBackground();
     }
 }

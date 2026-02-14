@@ -7,6 +7,6 @@ public partial class InputsPage : ContentPage
     public InputsPage()
     {
         InitializeComponent();
-        this.BackgroundColor = BootstrapTheme.Current.Background;
+        this.BackgroundColor = BootstrapTheme.Current.GetBackground();
     }
 }

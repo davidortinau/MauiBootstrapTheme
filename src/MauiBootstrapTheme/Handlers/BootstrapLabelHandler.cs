@@ -57,6 +57,31 @@ public static class BootstrapLabelHandler
         {
             ApplyBadge(view, badgeVariant, theme);
         }
+        
+        // Apply font family to ALL labels if theme specifies one (and not already set)
+        if (!string.IsNullOrEmpty(theme.FontFamily) && string.IsNullOrEmpty(view.FontFamily))
+        {
+            view.FontFamily = theme.FontFamily;
+        }
+        
+        // Apply text color to ALL labels for proper theme contrast
+        // Skip if: it's a badge, has a variant color set
+        // Always apply OnBackground for regular labels to ensure contrast with theme background
+        if (badgeVariant == BootstrapVariant.Default && 
+            textColorVariant == BootstrapVariant.Default &&
+            heading == 0 && textStyle == BootstrapTextStyle.Normal)
+        {
+            // Check if color is default/dark (needs theme adaptation)
+            var tc = view.TextColor;
+            var isDefaultDarkText = tc == null || 
+                                    tc == Colors.Black ||
+                                    (tc.Red < 0.3 && tc.Green < 0.3 && tc.Blue < 0.3 && tc.Alpha > 0.9);
+            
+            if (isDefaultDarkText)
+            {
+                view.TextColor = theme.OnBackground;
+            }
+        }
     }
 
     private static void ApplyHeading(Label label, int level, BootstrapTheme theme)
