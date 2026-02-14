@@ -371,7 +371,7 @@ public class SketchyTheme : IBootstrapThemeProvider
         FontSizeBase = 16.0,
         FontSizeSm = 14.0,
         FontSizeLg = 20.0,
-        FontFamily = "Marker Felt",  // Hand-drawn style font (available on macOS/iOS)
+        FontFamily = "MarkerFelt-Wide",  // Hand-drawn style font (available on macOS/iOS)
         ButtonPaddingX = 16.0,
         ButtonPaddingY = 10.0,
         ButtonPaddingXLg = 20.0,
@@ -429,7 +429,7 @@ public class VaporTheme : IBootstrapThemeProvider
         FontSizeBase = 16.0,
         FontSizeSm = 14.0,
         FontSizeLg = 20.0,
-        FontFamily = "Courier New",  // Retro terminal aesthetic
+        FontFamily = "CourierNewPSMT",  // Retro terminal aesthetic
         ButtonPaddingX = 16.0,
         ButtonPaddingY = 8.0,
         ButtonPaddingXLg = 20.0,

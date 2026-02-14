@@ -1,28 +1,28 @@
 @inherits LayoutComponentBase
 
 <div class="d-flex flex-column min-vh-100">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="">Bootstrap Theme</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="@NavMenuCssClass" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link @GetActiveClass("")" href="">Controls</a>
+                        <a class="nav-link @GetActiveClass("")" href="" @onclick="CloseNavMenu">Controls</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @GetActiveClass("inputs")" href="inputs">Inputs</a>
+                        <a class="nav-link @GetActiveClass("inputs")" href="inputs" @onclick="CloseNavMenu">Inputs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @GetActiveClass("typography")" href="typography">Typography</a>
+                        <a class="nav-link @GetActiveClass("typography")" href="typography" @onclick="CloseNavMenu">Typography</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @GetActiveClass("cards")" href="cards">Cards</a>
+                        <a class="nav-link @GetActiveClass("cards")" href="cards" @onclick="CloseNavMenu">Cards</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @GetActiveClass("themes")" href="themes">Themes</a>
+                        <a class="nav-link @GetActiveClass("themes")" href="themes" @onclick="CloseNavMenu">Themes</a>
                     </li>
                 </ul>
             </div>
@@ -42,6 +42,19 @@
 
 @code {
     [Inject] NavigationManager? Navigation { get; set; }
+    
+    private bool collapseNavMenu = true;
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse navbar-collapse" : "navbar-collapse";
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void CloseNavMenu()
+    {
+        collapseNavMenu = true;
+    }
 
     string GetActiveClass(string page)
     {

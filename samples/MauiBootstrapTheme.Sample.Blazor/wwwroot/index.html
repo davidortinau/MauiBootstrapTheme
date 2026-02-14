@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>Bootstrap Theme Blazor</title>
     <base href="/" />
     <link id="theme-stylesheet" rel="stylesheet" href="css/themes/bootstrap.min.css" />
@@ -23,6 +23,14 @@
         window.setTheme = (themeName) => {
             const link = document.getElementById('theme-stylesheet');
             link.href = `css/themes/${themeName}.min.css`;
+        };
+        
+        // Toggle sidebar on mobile
+        window.toggleSidebar = () => {
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                sidebar.classList.toggle('show');
+            }
         };
     </script>
 </body>

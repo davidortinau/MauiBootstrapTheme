@@ -10,13 +10,18 @@
     <Nullable>enable</Nullable>
 
     <ApplicationTitle>Bootstrap Theme Reactor</ApplicationTitle>
-    <ApplicationId>com.davidortinau.mauibootstraptheme.reactor</ApplicationId>
+    <ApplicationId>com.simplyprofound.bootstrapreactor</ApplicationId>
     <ApplicationIdGuid>8E3F9A1C-2B5D-4E6F-9A8C-1D2E3F4A5B6C</ApplicationIdGuid>
 
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.31" />

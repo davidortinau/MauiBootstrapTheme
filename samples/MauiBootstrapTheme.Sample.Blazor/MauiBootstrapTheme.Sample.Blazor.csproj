@@ -11,13 +11,18 @@
     <EnableDefaultCssItems>false</EnableDefaultCssItems>
 
     <ApplicationTitle>Bootstrap Theme Blazor</ApplicationTitle>
-    <ApplicationId>com.davidortinau.mauibootstraptheme.blazor</ApplicationId>
+    <ApplicationId>com.simplyprofound.bootstrapblazor</ApplicationId>
     <ApplicationIdGuid>9F4E8B2C-3D6A-4F7E-8B9C-2E3F4A5B6C7D</ApplicationIdGuid>
 
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.31" />

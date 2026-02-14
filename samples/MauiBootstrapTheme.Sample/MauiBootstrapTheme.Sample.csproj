@@ -14,7 +14,7 @@
     <ApplicationTitle>Bootstrap Theme Sample</ApplicationTitle>
 
     <!-- App Identifier -->
-    <ApplicationId>com.davidortinau.mauibootstraptheme.sample</ApplicationId>
+    <ApplicationId>com.simplyprofound.bootstrapmaui</ApplicationId>
 
     <!-- Versions -->
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
