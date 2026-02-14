@@ -122,6 +122,7 @@ public class CyborgTheme : IBootstrapThemeProvider
         FontSizeBase = 14.0,
         FontSizeSm = 12.0,
         FontSizeLg = 18.0,
+        FontFamily = "Menlo",  // Monospace font for cyberpunk tech look
         
         ButtonPaddingX = 12.0,
         ButtonPaddingY = 6.0,
@@ -428,6 +429,7 @@ public class VaporTheme : IBootstrapThemeProvider
         FontSizeBase = 16.0,
         FontSizeSm = 14.0,
         FontSizeLg = 20.0,
+        FontFamily = "Courier New",  // Retro terminal aesthetic
         ButtonPaddingX = 16.0,
         ButtonPaddingY = 8.0,
         ButtonPaddingXLg = 20.0,

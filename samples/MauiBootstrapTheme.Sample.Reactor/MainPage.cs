@@ -11,20 +11,20 @@ class MainPage : Component
     public override VisualNode Render()
         => Shell(
             FlyoutItem("Controls",
-                ShellContent().RenderContent(() => new ControlsPage())
-            ),
+                ShellContent().RenderContent(() => new ControlsPage()).Route("controls")
+            ).Route("controls"),
             FlyoutItem("Inputs",
-                ShellContent().RenderContent(() => new InputsPage())
-            ),
+                ShellContent().RenderContent(() => new InputsPage()).Route("inputs")
+            ).Route("inputs"),
             FlyoutItem("Typography",
-                ShellContent().RenderContent(() => new TypographyPage())
-            ),
+                ShellContent().RenderContent(() => new TypographyPage()).Route("typography")
+            ).Route("typography"),
             FlyoutItem("Cards",
-                ShellContent().RenderContent(() => new CardsPage())
-            ),
+                ShellContent().RenderContent(() => new CardsPage()).Route("cards")
+            ).Route("cards"),
             FlyoutItem("Themes",
-                ShellContent().RenderContent(() => new ThemesPage())
-            )
+                ShellContent().RenderContent(() => new ThemesPage()).Route("themes")
+            ).Route("themes")
         )
         .Title("Bootstrap Theme")
         .FlyoutBehavior(FlyoutBehavior.Flyout);
@@ -419,11 +419,12 @@ class ThemesPage : Component
                         FlexLayout(
                             Button("Default").Primary().OnClicked(() => ApplyTheme(new DefaultTheme(), "Default")).Margin(0, 0, 8, 8),
                             Button("Darkly").Dark().OnClicked(() => ApplyTheme(new DarklyTheme(), "Darkly")).Margin(0, 0, 8, 8),
+                            Button("Cyborg").Info().OnClicked(() => ApplyTheme(new CyborgTheme(), "Cyborg")).Margin(0, 0, 8, 8),
                             Button("Slate").Secondary().OnClicked(() => ApplyTheme(new SlateTheme(), "Slate")).Margin(0, 0, 8, 8),
-                            Button("Flatly").Info().OnClicked(() => ApplyTheme(new FlatlyTheme(), "Flatly")).Margin(0, 0, 8, 8),
+                            Button("Flatly").Success().OnClicked(() => ApplyTheme(new FlatlyTheme(), "Flatly")).Margin(0, 0, 8, 8),
                             Button("Sketchy").Warning().OnClicked(() => ApplyTheme(new SketchyTheme(), "Sketchy")).Margin(0, 0, 8, 8),
                             Button("Vapor").Danger().OnClicked(() => ApplyTheme(new VaporTheme(), "Vapor")).Margin(0, 0, 8, 8),
-                            Button("Brite").Success().OnClicked(() => ApplyTheme(new BriteTheme(), "Brite")).Margin(0, 0, 8, 8)
+                            Button("Brite").Primary().OnClicked(() => ApplyTheme(new BriteTheme(), "Brite")).Margin(0, 0, 8, 8)
                         ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap),
                         Label($"Current: {_currentTheme}").TextColor(Colors.Gray)
                     ),
@@ -433,22 +434,22 @@ class ThemesPage : Component
                         Label("Preview").FontSize(24),
                         Border(
                             VStack(spacing: 12,
-                                Label("Theme Preview").FontSize(18).FontAttributes(FontAttributes.Bold),
-                                Entry().Placeholder("Sample input").HeightRequest(theme.InputMinHeight),
+                                Label("Theme Preview").FontSize(18).FontAttributes(FontAttributes.Bold).FontFamily(theme.FontFamily),
+                                Entry().Placeholder("Sample input").HeightRequest(theme.InputMinHeight).FontFamily(theme.FontFamily),
                                 FlexLayout(
-                                    Button("Primary").BackgroundColor(theme.Primary).TextColor(theme.OnPrimary).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).Margin(0, 0, 8, 8),
-                                    Button("Success").BackgroundColor(theme.Success).TextColor(theme.OnSuccess).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).Margin(0, 0, 8, 8),
-                                    Button("Danger").BackgroundColor(theme.Danger).TextColor(theme.OnDanger).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).Margin(0, 0, 8, 8)
+                                    Button("Primary").BackgroundColor(theme.Primary).TextColor(theme.OnPrimary).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).FontFamily(theme.FontFamily).Margin(0, 0, 8, 8),
+                                    Button("Success").BackgroundColor(theme.Success).TextColor(theme.OnSuccess).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).FontFamily(theme.FontFamily).Margin(0, 0, 8, 8),
+                                    Button("Danger").BackgroundColor(theme.Danger).TextColor(theme.OnDanger).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).FontFamily(theme.FontFamily).Margin(0, 0, 8, 8)
                                 ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap),
                                 FlexLayout(
-                                    Button("Outline").BackgroundColor(Colors.Transparent).TextColor(theme.Primary).BorderColor(theme.Primary).BorderWidth(1).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).Margin(0, 0, 8, 8),
-                                    Button("Pill").BackgroundColor(theme.Info).TextColor(theme.OnInfo).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadiusPill).Margin(0, 0, 8, 8)
+                                    Button("Outline").BackgroundColor(Colors.Transparent).TextColor(theme.Primary).BorderColor(theme.Primary).BorderWidth(1).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadius).FontFamily(theme.FontFamily).Margin(0, 0, 8, 8),
+                                    Button("Pill").BackgroundColor(theme.Info).TextColor(theme.OnInfo).HeightRequest(theme.ButtonMinHeight).CornerRadius((int)theme.CornerRadiusPill).FontFamily(theme.FontFamily).Margin(0, 0, 8, 8)
                                 ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap),
                                 ProgressBar().Progress(0.65).ProgressColor(theme.Primary).HeightRequest(theme.ProgressHeight),
                                 FlexLayout(
-                                    Label("Badge").BackgroundColor(theme.Primary).TextColor(theme.OnPrimary).Padding(8, 4).Margin(0, 0, 8, 8),
-                                    Label("Success").BackgroundColor(theme.Success).TextColor(theme.OnSuccess).Padding(8, 4).Margin(0, 0, 8, 8),
-                                    Label("Alert").BackgroundColor(theme.Danger).TextColor(theme.OnDanger).Padding(8, 4).Margin(0, 0, 8, 8)
+                                    Label("Badge").BackgroundColor(theme.Primary).TextColor(theme.OnPrimary).Padding(8, 4).FontFamily(theme.FontFamily).Margin(0, 0, 8, 8),
+                                    Label("Success").BackgroundColor(theme.Success).TextColor(theme.OnSuccess).Padding(8, 4).FontFamily(theme.FontFamily).Margin(0, 0, 8, 8),
+                                    Label("Alert").BackgroundColor(theme.Danger).TextColor(theme.OnDanger).Padding(8, 4).FontFamily(theme.FontFamily).Margin(0, 0, 8, 8)
                                 ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap)
                             ).Padding(16)
                         ).Stroke(theme.GetOutline())
@@ -456,16 +457,16 @@ class ThemesPage : Component
 
                     // All Color Variants
                     VStack(spacing: 12,
-                        Label("All Color Variants").FontSize(24),
+                        Label("All Color Variants").FontSize(24).FontFamily(theme.FontFamily),
                         Grid("*,*", "Auto,Auto,Auto,Auto",
-                            Border(Label("Primary").HCenter().TextColor(theme.OnPrimary)).BackgroundColor(theme.Primary).Padding(16).GridRow(0).GridColumn(0),
-                            Border(Label("Secondary").HCenter().TextColor(theme.OnSecondary)).BackgroundColor(theme.Secondary).Padding(16).GridRow(0).GridColumn(1),
-                            Border(Label("Success").HCenter().TextColor(theme.OnSuccess)).BackgroundColor(theme.Success).Padding(16).GridRow(1).GridColumn(0),
-                            Border(Label("Danger").HCenter().TextColor(theme.OnDanger)).BackgroundColor(theme.Danger).Padding(16).GridRow(1).GridColumn(1),
-                            Border(Label("Warning").HCenter().TextColor(theme.OnWarning)).BackgroundColor(theme.Warning).Padding(16).GridRow(2).GridColumn(0),
-                            Border(Label("Info").HCenter().TextColor(theme.OnInfo)).BackgroundColor(theme.Info).Padding(16).GridRow(2).GridColumn(1),
-                            Border(Label("Light").HCenter().TextColor(theme.OnBackground)).BackgroundColor(theme.Light).Padding(16).GridRow(3).GridColumn(0),
-                            Border(Label("Dark").HCenter().TextColor(theme.OnPrimary)).BackgroundColor(theme.Dark).Padding(16).GridRow(3).GridColumn(1)
+                            Border(Label("Primary").HCenter().TextColor(theme.OnPrimary).FontFamily(theme.FontFamily)).BackgroundColor(theme.Primary).Padding(16).GridRow(0).GridColumn(0),
+                            Border(Label("Secondary").HCenter().TextColor(theme.OnSecondary).FontFamily(theme.FontFamily)).BackgroundColor(theme.Secondary).Padding(16).GridRow(0).GridColumn(1),
+                            Border(Label("Success").HCenter().TextColor(theme.OnSuccess).FontFamily(theme.FontFamily)).BackgroundColor(theme.Success).Padding(16).GridRow(1).GridColumn(0),
+                            Border(Label("Danger").HCenter().TextColor(theme.OnDanger).FontFamily(theme.FontFamily)).BackgroundColor(theme.Danger).Padding(16).GridRow(1).GridColumn(1),
+                            Border(Label("Warning").HCenter().TextColor(theme.OnWarning).FontFamily(theme.FontFamily)).BackgroundColor(theme.Warning).Padding(16).GridRow(2).GridColumn(0),
+                            Border(Label("Info").HCenter().TextColor(theme.OnInfo).FontFamily(theme.FontFamily)).BackgroundColor(theme.Info).Padding(16).GridRow(2).GridColumn(1),
+                            Border(Label("Light").HCenter().TextColor(theme.OnBackground).FontFamily(theme.FontFamily)).BackgroundColor(theme.Light).Padding(16).GridRow(3).GridColumn(0),
+                            Border(Label("Dark").HCenter().TextColor(theme.OnPrimary).FontFamily(theme.FontFamily)).BackgroundColor(theme.Dark).Padding(16).GridRow(3).GridColumn(1)
                         ).RowSpacing(8).ColumnSpacing(8)
                     )
                 ).Padding(20)
