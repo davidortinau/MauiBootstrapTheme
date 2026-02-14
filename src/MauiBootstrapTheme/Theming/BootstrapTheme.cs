@@ -293,4 +293,39 @@ public class BootstrapTheme
         
         return double.TryParse(value, out var result) ? result : 6.0;
     }
+
+    // ══════════════════════════════════════════════════════════════════
+    // NEW: ResourceDictionary-based theme switching
+    // ══════════════════════════════════════════════════════════════════
+
+    /// <summary>
+    /// Applies a theme by replacing Application.Current.Resources with the theme's ResourceDictionary.
+    /// This is the recommended way to switch themes - all controls using DynamicResource will update instantly.
+    /// </summary>
+    /// <param name="themeName">Theme name: "default", "sketchy", "vapor", etc.</param>
+    public static void Apply(string themeName)
+    {
+        if (Application.Current == null) return;
+
+        ResourceDictionary theme = themeName.ToLowerInvariant() switch
+        {
+            "sketchy" => new Themes.SketchyTheme(),
+            "vapor" => new Themes.VaporTheme(),
+            "darkly" => new Themes.DarklyTheme(),
+            "slate" => new Themes.SlateTheme(),
+            "flatly" => new Themes.FlatlyTheme(),
+            _ => new Themes.DefaultTheme()
+        };
+
+        Application.Current.Resources = theme;
+    }
+
+    /// <summary>
+    /// Applies a theme using the specified ResourceDictionary instance.
+    /// </summary>
+    public static void Apply(ResourceDictionary theme)
+    {
+        if (Application.Current == null) return;
+        Application.Current.Resources = theme;
+    }
 }

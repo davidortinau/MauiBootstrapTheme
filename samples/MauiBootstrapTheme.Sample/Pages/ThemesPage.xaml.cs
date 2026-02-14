@@ -1,50 +1,56 @@
 using MauiBootstrapTheme.Theming;
-using MauiBootstrapTheme.Themes.Default;
+using MauiBootstrapTheme.Themes;
 
 namespace MauiBootstrapTheme.Sample.Pages;
 
 public partial class ThemesPage : ContentPage
 {
+    private static string _currentThemeName = "default";
+    
     public ThemesPage()
     {
         InitializeComponent();
-        
-        // Apply current theme to page background and update label
-        var theme = BootstrapTheme.Current;
-        this.BackgroundColor = theme.GetBackground();
-        CurrentThemeLabel.Text = $"Current: {theme.Name}";
-        
-        // Update mode label based on current setting
+        UpdateThemeLabel();
         UpdateModeLabel();
     }
 
     private void OnDefaultThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new DefaultTheme().GetTheme());
+        => ApplyTheme("default", new DefaultTheme());
 
     private void OnDarklyThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new DarklyTheme().GetTheme());
+        => ApplyTheme("darkly", new DarklyTheme());
 
     private void OnSlateThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new SlateTheme().GetTheme());
+        => ApplyTheme("slate", new SlateTheme());
 
     private void OnFlatlyThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new FlatlyTheme().GetTheme());
+        => ApplyTheme("flatly", new FlatlyTheme());
 
     private void OnSketchyThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new SketchyTheme().GetTheme());
+        => ApplyTheme("sketchy", new SketchyTheme());
 
     private void OnVaporThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new VaporTheme().GetTheme());
+        => ApplyTheme("vapor", new VaporTheme());
 
     private void OnBriteThemeClicked(object sender, EventArgs e)
-        => ApplyTheme(new BriteTheme().GetTheme());
+        => ApplyTheme("brite", new DefaultTheme()); // TODO: Create BriteTheme later
 
-    private void ApplyTheme(BootstrapTheme theme)
+    private void ApplyTheme(string name, ResourceDictionary theme)
     {
-        BootstrapTheme.SetTheme(theme);
+        _currentThemeName = name;
         
-        // Refresh the entire app to apply theme globally
-        App.RefreshTheme();
+        // This is all it takes! DynamicResource bindings update automatically.
+        if (Application.Current != null)
+        {
+            Application.Current.Resources = theme;
+        }
+        
+        UpdateThemeLabel();
+    }
+    
+    private void UpdateThemeLabel()
+    {
+        CurrentThemeLabel.Text = $"Current: {_currentThemeName}";
     }
     
     // Light/Dark/System mode handlers
@@ -53,8 +59,7 @@ public partial class ThemesPage : ContentPage
         if (Application.Current != null)
         {
             Application.Current.UserAppTheme = AppTheme.Light;
-            // Refresh to apply new mode
-            App.RefreshTheme();
+            UpdateModeLabel();
         }
     }
     
@@ -63,8 +68,7 @@ public partial class ThemesPage : ContentPage
         if (Application.Current != null)
         {
             Application.Current.UserAppTheme = AppTheme.Dark;
-            // Refresh to apply new mode
-            App.RefreshTheme();
+            UpdateModeLabel();
         }
     }
     
@@ -73,8 +77,7 @@ public partial class ThemesPage : ContentPage
         if (Application.Current != null)
         {
             Application.Current.UserAppTheme = AppTheme.Unspecified;
-            // Refresh to apply new mode
-            App.RefreshTheme();
+            UpdateModeLabel();
         }
     }
     

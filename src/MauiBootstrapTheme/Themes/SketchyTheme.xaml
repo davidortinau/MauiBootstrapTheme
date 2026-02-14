@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="MauiBootstrapTheme.Themes.SketchyTheme">
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         BOOTSWATCH SKETCHY THEME
+         Hand-drawn, notebook-style theme with irregular borders
+         https://bootswatch.com/sketchy/
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <!-- ═══ SEMANTIC COLORS ═══ -->
+    <Color x:Key="Primary">#333333</Color>
+    <Color x:Key="Secondary">#868e96</Color>
+    <Color x:Key="Success">#28a745</Color>
+    <Color x:Key="Danger">#dc3545</Color>
+    <Color x:Key="Warning">#ffc107</Color>
+    <Color x:Key="Info">#17a2b8</Color>
+    <Color x:Key="Light">#f8f9fa</Color>
+    <Color x:Key="Dark">#343a40</Color>
+
+    <!-- ═══ ON-COLORS ═══ -->
+    <Color x:Key="OnPrimary">White</Color>
+    <Color x:Key="OnSecondary">White</Color>
+    <Color x:Key="OnSuccess">White</Color>
+    <Color x:Key="OnDanger">White</Color>
+    <Color x:Key="OnWarning">#212529</Color>
+    <Color x:Key="OnInfo">White</Color>
+    <Color x:Key="OnLight">#212529</Color>
+    <Color x:Key="OnDark">White</Color>
+
+    <!-- ═══ SURFACE COLORS ═══ -->
+    <Color x:Key="Background">#ffffff</Color>
+    <Color x:Key="Surface">#ffffff</Color>
+    <Color x:Key="OnBackground">#333333</Color>
+    <Color x:Key="OnSurface">#333333</Color>
+    <Color x:Key="Outline">#333333</Color>
+    <Color x:Key="OutlineVariant">#666666</Color>
+    <Color x:Key="Muted">#666666</Color>
+
+    <!-- ═══ GRAY SCALE ═══ -->
+    <Color x:Key="Gray100">#f8f9fa</Color>
+    <Color x:Key="Gray200">#e9ecef</Color>
+    <Color x:Key="Gray300">#dee2e6</Color>
+    <Color x:Key="Gray400">#ced4da</Color>
+    <Color x:Key="Gray500">#adb5bd</Color>
+    <Color x:Key="Gray600">#868e96</Color>
+    <Color x:Key="Gray700">#495057</Color>
+    <Color x:Key="Gray800">#343a40</Color>
+    <Color x:Key="Gray900">#212529</Color>
+
+    <!-- ═══ TYPOGRAPHY - Hand-drawn style ═══ -->
+    <x:String x:Key="FontFamily">MarkerFelt-Wide</x:String>
+    <x:Double x:Key="FontSizeBase">16</x:Double>
+    <x:Double x:Key="FontSizeSm">14</x:Double>
+    <x:Double x:Key="FontSizeLg">20</x:Double>
+    <x:Double x:Key="FontSizeH1">40</x:Double>
+    <x:Double x:Key="FontSizeH2">32</x:Double>
+    <x:Double x:Key="FontSizeH3">28</x:Double>
+    <x:Double x:Key="FontSizeH4">24</x:Double>
+    <x:Double x:Key="FontSizeH5">20</x:Double>
+    <x:Double x:Key="FontSizeH6">16</x:Double>
+
+    <!-- ═══ SPACING & SIZING ═══ -->
+    <x:Double x:Key="CornerRadius">6</x:Double>
+    <x:Double x:Key="CornerRadiusSm">4</x:Double>
+    <x:Double x:Key="CornerRadiusLg">8</x:Double>
+    <x:Double x:Key="CornerRadiusPill">50</x:Double>
+    <x:Double x:Key="BorderWidth">2</x:Double>
+    <x:Double x:Key="ButtonHeight">38</x:Double>
+    <x:Double x:Key="ButtonHeightSm">31</x:Double>
+    <x:Double x:Key="ButtonHeightLg">48</x:Double>
+    <x:Double x:Key="InputHeight">38</x:Double>
+    <x:Double x:Key="InputHeightSm">31</x:Double>
+    <x:Double x:Key="InputHeightLg">48</x:Double>
+    <Thickness x:Key="ButtonPadding">12,6</Thickness>
+    <Thickness x:Key="ButtonPaddingSm">8,4</Thickness>
+    <Thickness x:Key="ButtonPaddingLg">16,8</Thickness>
+    <Thickness x:Key="InputPadding">12,6</Thickness>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         IMPLICIT STYLES
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <Style TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadius}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBase}"/>
+        <Setter Property="Padding" Value="{DynamicResource ButtonPadding}"/>
+        <Setter Property="MinimumHeightRequest" Value="{DynamicResource ButtonHeight}"/>
+        <Setter Property="BorderWidth" Value="{DynamicResource BorderWidth}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource Dark}"/>
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource OnBackground}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBase}"/>
+    </Style>
+
+    <Style TargetType="Entry">
+        <Setter Property="TextColor" Value="{DynamicResource OnSurface}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource Surface}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBase}"/>
+        <Setter Property="MinimumHeightRequest" Value="{DynamicResource InputHeight}"/>
+    </Style>
+
+    <Style TargetType="Editor">
+        <Setter Property="TextColor" Value="{DynamicResource OnSurface}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource Surface}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBase}"/>
+    </Style>
+
+    <Style TargetType="ProgressBar">
+        <Setter Property="ProgressColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="MinimumHeightRequest" Value="16"/>
+    </Style>
+
+    <Style TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Surface}"/>
+        <Setter Property="Stroke" Value="{DynamicResource Outline}"/>
+        <Setter Property="StrokeThickness" Value="{DynamicResource BorderWidth}"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 6"/>
+    </Style>
+
+    <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Background}"/>
+    </Style>
+
+    <!-- ═══ SHELL ═══ -->
+    <Style TargetType="Shell" ApplyToDerivedTypes="True">
+        <Setter Property="Shell.BackgroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="Shell.ForegroundColor" Value="White"/>
+        <Setter Property="Shell.TitleColor" Value="White"/>
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{DynamicResource Background}"/>
+        <Setter Property="Shell.TabBarForegroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{DynamicResource Gray500}"/>
+        <Setter Property="FlyoutBackgroundColor" Value="{DynamicResource Background}"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         BUTTON VARIANT STYLES
+         ═══════════════════════════════════════════════════════════════════ -->
+
+    <Style TargetType="Button" Class="btn-primary">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-secondary">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Secondary}"/>
+        <Setter Property="TextColor" Value="{DynamicResource OnSecondary}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-success">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Success}"/>
+        <Setter Property="TextColor" Value="{DynamicResource OnSuccess}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-danger">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Danger}"/>
+        <Setter Property="TextColor" Value="{DynamicResource OnDanger}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-warning">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Warning}"/>
+        <Setter Property="TextColor" Value="{DynamicResource OnWarning}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-info">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Info}"/>
+        <Setter Property="TextColor" Value="{DynamicResource OnInfo}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-light">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Light}"/>
+        <Setter Property="TextColor" Value="{DynamicResource OnLight}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-dark">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Dark}"/>
+        <Setter Property="TextColor" Value="{DynamicResource OnDark}"/>
+    </Style>
+
+    <!-- ═══ OUTLINE VARIANTS ═══ -->
+    <Style TargetType="Button" Class="btn-outline-primary">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="BorderWidth" Value="{DynamicResource BorderWidth}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-outline-secondary">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{DynamicResource Secondary}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource Secondary}"/>
+        <Setter Property="BorderWidth" Value="{DynamicResource BorderWidth}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-outline-success">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{DynamicResource Success}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource Success}"/>
+        <Setter Property="BorderWidth" Value="{DynamicResource BorderWidth}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-outline-danger">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{DynamicResource Danger}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource Danger}"/>
+        <Setter Property="BorderWidth" Value="{DynamicResource BorderWidth}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-outline-warning">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{DynamicResource Warning}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource Warning}"/>
+        <Setter Property="BorderWidth" Value="{DynamicResource BorderWidth}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-outline-info">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{DynamicResource Info}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource Info}"/>
+        <Setter Property="BorderWidth" Value="{DynamicResource BorderWidth}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-outline-light">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{DynamicResource Light}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource Light}"/>
+        <Setter Property="BorderWidth" Value="{DynamicResource BorderWidth}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-outline-dark">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{DynamicResource Dark}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource Dark}"/>
+        <Setter Property="BorderWidth" Value="{DynamicResource BorderWidth}"/>
+    </Style>
+
+    <!-- ═══ SIZE VARIANTS ═══ -->
+    <Style TargetType="Button" Class="btn-lg">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeLg}"/>
+        <Setter Property="Padding" Value="{DynamicResource ButtonPaddingLg}"/>
+        <Setter Property="MinimumHeightRequest" Value="{DynamicResource ButtonHeightLg}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusLg}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-sm">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSm}"/>
+        <Setter Property="Padding" Value="{DynamicResource ButtonPaddingSm}"/>
+        <Setter Property="MinimumHeightRequest" Value="{DynamicResource ButtonHeightSm}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusSm}"/>
+    </Style>
+
+    <Style TargetType="Button" Class="btn-pill">
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusPill}"/>
+    </Style>
+
+    <!-- ═══ LABEL STYLES ═══ -->
+    <Style TargetType="Label" Class="h1">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeH1}"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style TargetType="Label" Class="h2">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeH2}"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style TargetType="Label" Class="h3">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeH3}"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style TargetType="Label" Class="h4">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeH4}"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style TargetType="Label" Class="h5">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeH5}"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style TargetType="Label" Class="h6">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeH6}"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style TargetType="Label" Class="text-muted">
+        <Setter Property="TextColor" Value="{DynamicResource Muted}"/>
+    </Style>
+
+    <!-- ═══ PROGRESS BAR VARIANTS ═══ -->
+    <Style TargetType="ProgressBar" Class="progress-primary">
+        <Setter Property="ProgressColor" Value="{DynamicResource Primary}"/>
+    </Style>
+
+    <Style TargetType="ProgressBar" Class="progress-success">
+        <Setter Property="ProgressColor" Value="{DynamicResource Success}"/>
+    </Style>
+
+    <Style TargetType="ProgressBar" Class="progress-danger">
+        <Setter Property="ProgressColor" Value="{DynamicResource Danger}"/>
+    </Style>
+
+</ResourceDictionary>
