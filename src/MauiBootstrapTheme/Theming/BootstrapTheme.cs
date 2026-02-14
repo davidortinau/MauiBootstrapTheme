@@ -314,6 +314,7 @@ public class BootstrapTheme
             "darkly" => new Themes.DarklyTheme(),
             "slate" => new Themes.SlateTheme(),
             "flatly" => new Themes.FlatlyTheme(),
+            "brite" => new Themes.BriteTheme(),
             _ => new Themes.DefaultTheme()
         };
 

@@ -33,7 +33,7 @@ public partial class ThemesPage : ContentPage
         => ApplyTheme("vapor", new VaporTheme());
 
     private void OnBriteThemeClicked(object sender, EventArgs e)
-        => ApplyTheme("brite", new DefaultTheme()); // TODO: Create BriteTheme later
+        => ApplyTheme("brite", new BriteTheme());
 
     private void ApplyTheme(string name, ResourceDictionary theme)
     {
