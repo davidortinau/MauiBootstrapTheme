@@ -38,7 +38,7 @@
                 <Label Text="Preview" StyleClass="h4" />
                 <Border StyleClass="card,shadow">
                     <VerticalStackLayout Spacing="12">
-                        <Label Text="Theme Preview" FontSize="18" FontAttributes="Bold" />
+                        <Label Text="Theme Preview" StyleClass="h5" />
                         
                         <Entry Placeholder="Sample input" />
                         

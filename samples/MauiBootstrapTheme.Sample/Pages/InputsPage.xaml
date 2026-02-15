@@ -1,61 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
              x:Class="MauiBootstrapTheme.Sample.Pages.InputsPage"
              Title="Inputs">
     
     <ScrollView>
         <VerticalStackLayout Spacing="24" Padding="20">
             
-            <!-- Page Header (left-aligned like Blazor) -->
+            <!-- Page Header (matches Blazor h1 + lead) -->
             <VerticalStackLayout Spacing="4">
                 <Label Text="Input Controls"
-                       FontSize="32"
-                       FontAttributes="Bold" />
+                       StyleClass="h1" />
                 <Label Text="Form inputs with Bootstrap styling"
-                       FontSize="18"
-                       TextColor="Gray" />
+                       StyleClass="text-muted"
+                       FontSize="18" />
             </VerticalStackLayout>
             
             <!-- Text Inputs Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Text Inputs" FontSize="24" />
+                <Label Text="Text Inputs" StyleClass="h4" />
                 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Default Input" FontSize="14" />
-                    <Entry Placeholder="Enter text..." HeightRequest="38" />
+                    <Label Text="Default Input" />
+                    <Entry Placeholder="Enter text..." />
                 </VerticalStackLayout>
                 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Large Input" FontSize="14" />
-                    <Entry Placeholder="Large input" HeightRequest="48"
-                           theme:Bootstrap.Size="Large" />
+                    <Label Text="Large Input" />
+                    <Entry Placeholder="Large input" FontSize="20" />
                 </VerticalStackLayout>
                 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Small Input" FontSize="14" />
-                    <Entry Placeholder="Small input" HeightRequest="31"
-                           theme:Bootstrap.Size="Small" />
+                    <Label Text="Small Input" />
+                    <Entry Placeholder="Small input" FontSize="12" />
                 </VerticalStackLayout>
             </VerticalStackLayout>
             
             <!-- Textarea Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Textarea" FontSize="24" />
+                <Label Text="Textarea" StyleClass="h4" />
                 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Default Textarea" FontSize="14" />
+                    <Label Text="Default Textarea" />
                     <Editor Placeholder="Enter multi-line text..." HeightRequest="100" />
                 </VerticalStackLayout>
             </VerticalStackLayout>
             
             <!-- Select Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Select" FontSize="24" />
+                <Label Text="Select" StyleClass="h4" />
                 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Default Select" FontSize="14" />
+                    <Label Text="Default Select" />
                     <Picker Title="Choose an option...">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
@@ -70,16 +66,16 @@
             
             <!-- Date & Time Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Date &amp; Time" FontSize="24" />
+                <Label Text="Date &amp; Time" StyleClass="h4" />
                 
                 <HorizontalStackLayout Spacing="20">
                     <VerticalStackLayout Spacing="4" HorizontalOptions="FillAndExpand">
-                        <Label Text="Date" FontSize="14" />
+                        <Label Text="Date" />
                         <DatePicker />
                     </VerticalStackLayout>
                     
                     <VerticalStackLayout Spacing="4" HorizontalOptions="FillAndExpand">
-                        <Label Text="Time" FontSize="14" />
+                        <Label Text="Time" />
                         <TimePicker />
                     </VerticalStackLayout>
                 </HorizontalStackLayout>
@@ -87,32 +83,32 @@
             
             <!-- Checkboxes & Switches Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Checkboxes &amp; Switches" FontSize="24" />
+                <Label Text="Checkboxes &amp; Switches" StyleClass="h4" />
                 
                 <HorizontalStackLayout Spacing="8">
-                    <CheckBox IsChecked="True" theme:Bootstrap.Variant="Primary" />
+                    <CheckBox IsChecked="True" Color="{DynamicResource Primary}" />
                     <Label Text="Default checkbox" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 
                 <HorizontalStackLayout Spacing="8">
-                    <CheckBox theme:Bootstrap.Variant="Primary" />
+                    <CheckBox Color="{DynamicResource Primary}" />
                     <Label Text="Unchecked checkbox" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 
                 <HorizontalStackLayout Spacing="8">
-                    <Switch IsToggled="True" theme:Bootstrap.Variant="Primary" />
+                    <Switch IsToggled="True" OnColor="{DynamicResource Primary}" />
                     <Label Text="Enabled switch" VerticalOptions="Center" />
                 </HorizontalStackLayout>
                 
                 <HorizontalStackLayout Spacing="8">
-                    <Switch theme:Bootstrap.Variant="Primary" />
+                    <Switch OnColor="{DynamicResource Primary}" />
                     <Label Text="Disabled switch" VerticalOptions="Center" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
             
-            <!-- Radio Buttons Section (simulated with RadioButton) -->
+            <!-- Radio Buttons Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Radio Buttons" FontSize="24" />
+                <Label Text="Radio Buttons" StyleClass="h4" />
                 
                 <VerticalStackLayout RadioButtonGroup.GroupName="radioGroup">
                     <RadioButton Content="Option 1" IsChecked="True" />
@@ -123,12 +119,13 @@
             
             <!-- Range Slider Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Range Slider" FontSize="24" />
+                <Label Text="Range Slider" StyleClass="h4" />
                 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Default Range" FontSize="14" />
+                    <Label Text="Default Range" />
                     <Slider Minimum="0" Maximum="100" Value="50" 
-                            theme:Bootstrap.Variant="Primary" />
+                            MinimumTrackColor="{DynamicResource Primary}"
+                            ThumbColor="{DynamicResource Primary}" />
                 </VerticalStackLayout>
             </VerticalStackLayout>
             

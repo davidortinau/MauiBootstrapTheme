@@ -1,119 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
              x:Class="MauiBootstrapTheme.Sample.Pages.ControlsPage"
              Title="Controls">
     
     <ScrollView>
         <VerticalStackLayout Spacing="24" Padding="20">
             
-            <!-- Page Header (left-aligned like Blazor) -->
+            <!-- Page Header (matches Blazor h1 + lead) -->
             <VerticalStackLayout Spacing="4">
                 <Label Text="Bootstrap Controls"
-                       FontSize="32"
-                       FontAttributes="Bold" />
+                       StyleClass="h1" />
                 <Label Text="Stock MAUI controls styled with Bootstrap 5 theme values."
-                       FontSize="18"
-                       TextColor="Gray" />
+                       StyleClass="text-muted"
+                       FontSize="18" />
             </VerticalStackLayout>
             
             <!-- Buttons Section -->
             <VerticalStackLayout Spacing="8">
-                <Label Text="Buttons" FontSize="24" />
+                <Label Text="Buttons" StyleClass="h4" />
                 <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
-                    <Button Text="Primary" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Primary" />
-                    <Button Text="Secondary" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Secondary" />
-                    <Button Text="Success" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Success" />
-                    <Button Text="Danger" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Danger" />
-                    <Button Text="Warning" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Warning" />
-                    <Button Text="Info" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Info" />
+                    <Button Text="Primary" StyleClass="btn-primary" Margin="0,0,8,8" />
+                    <Button Text="Secondary" StyleClass="btn-secondary" Margin="0,0,8,8" />
+                    <Button Text="Success" StyleClass="btn-success" Margin="0,0,8,8" />
+                    <Button Text="Danger" StyleClass="btn-danger" Margin="0,0,8,8" />
+                    <Button Text="Warning" StyleClass="btn-warning" Margin="0,0,8,8" />
+                    <Button Text="Info" StyleClass="btn-info" Margin="0,0,8,8" />
                 </FlexLayout>
             </VerticalStackLayout>
             
             <!-- Outline Buttons Section -->
             <VerticalStackLayout Spacing="8">
-                <Label Text="Outline Buttons" FontSize="20" />
+                <Label Text="Outline Buttons" StyleClass="h5" />
                 <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
-                    <Button Text="Primary" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Primary" 
-                            theme:Bootstrap.IsOutlined="True" />
-                    <Button Text="Secondary" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Secondary" 
-                            theme:Bootstrap.IsOutlined="True" />
-                    <Button Text="Success" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Success" 
-                            theme:Bootstrap.IsOutlined="True" />
-                    <Button Text="Danger" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Danger" 
-                            theme:Bootstrap.IsOutlined="True" />
+                    <Button Text="Primary" StyleClass="btn-outline-primary" Margin="0,0,8,8" />
+                    <Button Text="Secondary" StyleClass="btn-outline-secondary" Margin="0,0,8,8" />
+                    <Button Text="Success" StyleClass="btn-outline-success" Margin="0,0,8,8" />
+                    <Button Text="Danger" StyleClass="btn-outline-danger" Margin="0,0,8,8" />
                 </FlexLayout>
             </VerticalStackLayout>
             
             <!-- Button Sizes Section -->
             <VerticalStackLayout Spacing="8">
-                <Label Text="Button Sizes" FontSize="20" />
+                <Label Text="Button Sizes" StyleClass="h5" />
                 <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
-                    <Button Text="Large" HeightRequest="48" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Primary"
-                            theme:Bootstrap.Size="Large" />
-                    <Button Text="Default" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Primary" />
-                    <Button Text="Small" HeightRequest="31" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Primary"
-                            theme:Bootstrap.Size="Small" />
+                    <Button Text="Large" StyleClass="btn-primary,btn-lg" Margin="0,0,8,8" />
+                    <Button Text="Default" StyleClass="btn-primary" Margin="0,0,8,8" />
+                    <Button Text="Small" StyleClass="btn-primary,btn-sm" Margin="0,0,8,8" />
                 </FlexLayout>
             </VerticalStackLayout>
             
             <!-- Pill Buttons Section -->
             <VerticalStackLayout Spacing="8">
-                <Label Text="Pill Buttons" FontSize="20" />
+                <Label Text="Pill Buttons" StyleClass="h5" />
                 <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
-                    <Button Text="Primary Pill" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Primary"
-                            theme:Bootstrap.IsPill="True" />
-                    <Button Text="Success Pill" HeightRequest="38" Margin="0,0,8,8"
-                            theme:Bootstrap.Variant="Success"
-                            theme:Bootstrap.IsPill="True" />
+                    <Button Text="Primary Pill" StyleClass="btn-primary,btn-pill" Margin="0,0,8,8" />
+                    <Button Text="Success Pill" StyleClass="btn-success,btn-pill" Margin="0,0,8,8" />
                 </FlexLayout>
             </VerticalStackLayout>
             
             <!-- Progress Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Progress" FontSize="24" />
+                <Label Text="Progress" StyleClass="h4" />
                 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Primary (75%)" FontSize="14" />
-                    <ProgressBar Progress="0.75" HeightRequest="16"
-                                 theme:Bootstrap.Variant="Primary" />
+                    <Label Text="Primary (75%)" />
+                    <ProgressBar Progress="0.75" />
                 </VerticalStackLayout>
                 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Success (50%)" FontSize="14" />
-                    <ProgressBar Progress="0.5" HeightRequest="16"
-                                 theme:Bootstrap.Variant="Success" />
+                    <Label Text="Success (50%)" />
+                    <ProgressBar Progress="0.5" StyleClass="progress-success" />
                 </VerticalStackLayout>
                 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Danger (25%)" FontSize="14" />
-                    <ProgressBar Progress="0.25" HeightRequest="16"
-                                 theme:Bootstrap.Variant="Danger" />
+                    <Label Text="Danger (25%)" />
+                    <ProgressBar Progress="0.25" StyleClass="progress-danger" />
                 </VerticalStackLayout>
             </VerticalStackLayout>
             
             <!-- Spinners Section -->
             <VerticalStackLayout Spacing="8">
-                <Label Text="Spinners" FontSize="24" />
+                <Label Text="Spinners" StyleClass="h4" />
                 <HorizontalStackLayout Spacing="16">
-                    <ActivityIndicator IsRunning="True" theme:Bootstrap.Variant="Primary" />
-                    <ActivityIndicator IsRunning="True" theme:Bootstrap.Variant="Success" />
-                    <ActivityIndicator IsRunning="True" theme:Bootstrap.Variant="Danger" />
+                    <ActivityIndicator IsRunning="True" Color="{DynamicResource Primary}" />
+                    <ActivityIndicator IsRunning="True" Color="{DynamicResource Success}" />
+                    <ActivityIndicator IsRunning="True" Color="{DynamicResource Danger}" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
             
