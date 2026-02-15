@@ -4,7 +4,10 @@
              xmlns:themes="clr-namespace:MauiBootstrapTheme.Themes;assembly=MauiBootstrapTheme"
              x:Class="MauiBootstrapTheme.Sample.App">
     <Application.Resources>
-        <!-- Load Bootstrap Default theme - all controls using DynamicResource will update -->
-        <themes:DefaultTheme />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <themes:DefaultTheme />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

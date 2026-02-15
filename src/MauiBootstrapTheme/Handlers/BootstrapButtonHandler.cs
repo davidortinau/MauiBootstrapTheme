@@ -38,14 +38,17 @@ public static class BootstrapButtonHandler
         var isPill = view != null && Bootstrap.GetIsPill(view);
         var isOutlined = IsOutlineVariant(variant) || (view != null && Bootstrap.GetIsOutlined(view));
         
+        // Only apply platform-level color overrides when an explicit variant is set.
+        // When variant is Default, let MAUI-level styles (StyleClass, DynamicResource) handle colors.
+        if (variant == BootstrapVariant.Default && !isPill)
+            return;
+        
         var cornerRadius = isPill ? theme.CornerRadiusPill : GetCornerRadiusForSize(size, theme);
         var (backgroundColor, textColor) = Bootstrap.GetVariantColors(variant, theme);
         
         // For outline buttons, use transparent background and variant color for text
         if (isOutlined && !IsOutlineVariant(variant))
         {
-            // User set IsOutlined=True on a regular variant like Primary
-            // Override to transparent background with colored text
             backgroundColor = Colors.Transparent;
             textColor = Bootstrap.GetOutlineBorderColor(variant, theme);
         }

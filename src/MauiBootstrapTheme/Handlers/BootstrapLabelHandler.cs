@@ -64,24 +64,10 @@ public static class BootstrapLabelHandler
             view.FontFamily = theme.FontFamily;
         }
         
-        // Apply text color to ALL labels for proper theme contrast
-        // Skip if: it's a badge, has a variant color set
-        // Always apply OnBackground for regular labels to ensure contrast with theme background
-        if (badgeVariant == BootstrapVariant.Default && 
-            textColorVariant == BootstrapVariant.Default &&
-            heading == 0 && textStyle == BootstrapTextStyle.Normal)
-        {
-            // Check if color is default/dark (needs theme adaptation)
-            var tc = view.TextColor;
-            var isDefaultDarkText = tc == null || 
-                                    tc == Colors.Black ||
-                                    (tc.Red < 0.3 && tc.Green < 0.3 && tc.Blue < 0.3 && tc.Alpha > 0.9);
-            
-            if (isDefaultDarkText)
-            {
-                view.TextColor = theme.OnBackground;
-            }
-        }
+        // Apply text color for labels that don't have any specific variant/badge/heading
+        // Only apply if the handler's theme OnBackground differs from what the style set
+        // Skip this — the implicit Label style in ResourceDictionary already sets TextColor
+        // via {DynamicResource OnBackground}. We should not override it here.
     }
 
     private static void ApplyHeading(Label label, int level, BootstrapTheme theme)
@@ -116,10 +102,10 @@ public static class BootstrapLabelHandler
                 label.FontSize = theme.FontSizeSmall;
                 break;
             case BootstrapTextStyle.Muted:
-                label.TextColor = theme.GetMuted();
+                label.TextColor = theme.Muted;
                 break;
             case BootstrapTextStyle.Mark:
-                label.BackgroundColor = Color.FromArgb("#fcf8e3");
+                label.Background = new SolidColorBrush(Color.FromArgb("#fcf8e3"));
                 label.Padding = new Thickness(4, 2);
                 break;
         }
@@ -136,7 +122,7 @@ public static class BootstrapLabelHandler
         var bgColor = theme.GetVariantColor(variant == BootstrapVariant.Default ? BootstrapVariant.Primary : variant);
         var textColor = ShouldUseDarkText(bgColor) ? Colors.Black : Colors.White;
         
-        label.BackgroundColor = bgColor;
+        label.Background = new SolidColorBrush(bgColor);
         label.TextColor = textColor;
         label.FontSize = 12;
         label.Padding = new Thickness(8, 4);

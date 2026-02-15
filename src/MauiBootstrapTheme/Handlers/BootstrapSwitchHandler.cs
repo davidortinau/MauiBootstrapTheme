@@ -28,7 +28,7 @@ public static class BootstrapSwitchHandler
         
         var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
         var onColor = GetOnColor(variant, theme);
-        var offColor = theme.GetOutline();
+        var offColor = theme.Outline;
 
 #if ANDROID
         ApplyAndroid(handler, onColor, offColor, theme);
@@ -65,7 +65,7 @@ public static class BootstrapSwitchHandler
             },
             new int[] {
                 onColor.ToPlatform(),
-                theme.GetSurface().ToPlatform()
+                theme.Surface.ToPlatform()
             });
         sw.ThumbTintList = thumbColors;
     }
@@ -78,7 +78,7 @@ public static class BootstrapSwitchHandler
         if (sw == null) return;
 
         sw.OnTintColor = onColor.ToPlatform();
-        sw.ThumbTintColor = theme.GetSurface().ToPlatform();
+        sw.ThumbTintColor = theme.Surface.ToPlatform();
     }
 #endif
 

@@ -55,7 +55,7 @@ public static class BootstrapTimePickerHandler
         drawable.SetShape(ShapeType.Rectangle);
         drawable.SetCornerRadius((float)(cornerRadius * density));
         drawable.SetStroke((int)(theme.BorderWidth * density), borderColor.ToPlatform());
-        drawable.SetColor(theme.GetSurface().ToPlatform());
+        drawable.SetColor(theme.InputBackground.ToPlatform());
         
         editText.Background = drawable;
         
@@ -101,6 +101,6 @@ public static class BootstrapTimePickerHandler
         BootstrapVariant.Danger => theme.Danger,
         BootstrapVariant.Success => theme.Success,
         BootstrapVariant.Warning => theme.Warning,
-        _ => theme.GetOutline()
+        _ => theme.Outline
     };
 }

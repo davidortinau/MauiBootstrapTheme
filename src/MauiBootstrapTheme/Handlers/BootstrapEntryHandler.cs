@@ -41,8 +41,9 @@ public static class BootstrapEntryHandler
         
         var cornerRadius = isPill ? theme.CornerRadiusPill : GetCornerRadiusForSize(size, theme);
         var borderColor = GetBorderColorForVariant(variant, theme);
-        var backgroundColor = theme.GetSurface();
-        var textColor = theme.GetOnSurface();
+        // Use theme-defined InputBackground/InputText (matches Bootstrap form-control colors)
+        var backgroundColor = theme.InputBackground;
+        var textColor = theme.InputText;
         var minHeight = GetMinHeightForSize(size, theme);
         var fontSize = GetFontSizeForSize(size, theme);
         var (paddingX, paddingY) = GetPaddingForSize(size, theme);
@@ -154,7 +155,7 @@ public static class BootstrapEntryHandler
         BootstrapVariant.Danger => theme.Danger,
         BootstrapVariant.Success => theme.Success,
         BootstrapVariant.Warning => theme.Warning,
-        _ => theme.GetOutline()
+        _ => theme.Outline
     };
 
     private static double GetMinHeightForSize(BootstrapSize size, BootstrapTheme theme) => size switch

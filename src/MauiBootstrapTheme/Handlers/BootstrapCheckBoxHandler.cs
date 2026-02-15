@@ -53,7 +53,7 @@ public static class BootstrapCheckBoxHandler
             },
             new int[] {
                 accentColor.ToPlatform(),
-                theme.GetOutline().ToPlatform()
+                theme.Outline.ToPlatform()
             });
         
         checkBox.ButtonTintList = colorStateList;

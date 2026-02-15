@@ -5,17 +5,16 @@ namespace MauiBootstrapTheme.Sample.Pages;
 
 public partial class ThemesPage : ContentPage
 {
-    private static string _currentThemeName = "default";
+    private static string _currentThemeName = "bootstrap";
     
     public ThemesPage()
     {
         InitializeComponent();
         UpdateThemeLabel();
-        UpdateModeLabel();
     }
 
     private void OnDefaultThemeClicked(object sender, EventArgs e)
-        => ApplyTheme("default", new DefaultTheme());
+        => ApplyTheme("bootstrap", new DefaultTheme());
 
     private void OnDarklyThemeClicked(object sender, EventArgs e)
         => ApplyTheme("darkly", new DarklyTheme());
@@ -38,55 +37,12 @@ public partial class ThemesPage : ContentPage
     private void ApplyTheme(string name, ResourceDictionary theme)
     {
         _currentThemeName = name;
-        
-        // Apply theme via the unified API — updates both ResourceDictionary and BootstrapTheme.Current
         BootstrapTheme.Apply(theme);
-        
         UpdateThemeLabel();
     }
     
     private void UpdateThemeLabel()
     {
         CurrentThemeLabel.Text = $"Current: {_currentThemeName}";
-    }
-    
-    // Light/Dark/System mode handlers
-    private void OnLightModeClicked(object sender, EventArgs e)
-    {
-        if (Application.Current != null)
-        {
-            Application.Current.UserAppTheme = AppTheme.Light;
-            UpdateModeLabel();
-        }
-    }
-    
-    private void OnDarkModeClicked(object sender, EventArgs e)
-    {
-        if (Application.Current != null)
-        {
-            Application.Current.UserAppTheme = AppTheme.Dark;
-            UpdateModeLabel();
-        }
-    }
-    
-    private void OnSystemModeClicked(object sender, EventArgs e)
-    {
-        if (Application.Current != null)
-        {
-            Application.Current.UserAppTheme = AppTheme.Unspecified;
-            UpdateModeLabel();
-        }
-    }
-    
-    private void UpdateModeLabel()
-    {
-        var appTheme = Application.Current?.UserAppTheme ?? AppTheme.Unspecified;
-        var modeText = appTheme switch
-        {
-            AppTheme.Light => "Light",
-            AppTheme.Dark => "Dark",
-            _ => "System"
-        };
-        CurrentModeLabel.Text = $"Mode: {modeText}";
     }
 }

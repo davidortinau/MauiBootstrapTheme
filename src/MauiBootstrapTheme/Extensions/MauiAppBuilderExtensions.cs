@@ -10,13 +10,19 @@ public static class MauiAppBuilderExtensions
 {
     /// <summary>
     /// Configures the app to use Bootstrap theming with the default Bootstrap 5 theme.
-    /// Registers platform-specific handlers and applies the default theme ResourceDictionary.
+    /// Registers platform-specific handlers and syncs BootstrapTheme.Current from Application.Resources on startup.
     /// </summary>
     /// <param name="builder">The MauiAppBuilder instance.</param>
     /// <returns>The MauiAppBuilder instance for chaining.</returns>
     public static MauiAppBuilder UseBootstrapTheme(this MauiAppBuilder builder)
     {
         RegisterHandlers();
+
+        // Sync BootstrapTheme.Current from Application.Resources once the app is created.
+        // This ensures handlers reading from the singleton get the correct theme values
+        // even before the user switches themes via BootstrapTheme.Apply().
+        builder.Services.AddSingleton<IMauiInitializeService>(new BootstrapThemeSyncService());
+
         return builder;
     }
 
@@ -173,4 +179,24 @@ public interface IBootstrapThemeProvider
     /// Gets the Bootstrap theme provided by this package.
     /// </summary>
     BootstrapTheme GetTheme();
+}
+
+/// <summary>
+/// Syncs BootstrapTheme.Current from Application.Resources on app startup.
+/// </summary>
+internal class BootstrapThemeSyncService : IMauiInitializeService
+{
+    public void Initialize(IServiceProvider services)
+    {
+        // Defer to after Application is created so Resources are available
+        Microsoft.Maui.Dispatching.DispatcherProvider.Current.GetForCurrentThread()?.DispatchDelayed(
+            TimeSpan.FromMilliseconds(50),
+            () =>
+            {
+                if (Application.Current?.Resources != null)
+                {
+                    BootstrapTheme.SyncFromResources(Application.Current.Resources);
+                }
+            });
+    }
 }

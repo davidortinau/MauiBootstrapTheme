@@ -28,7 +28,7 @@ public static class BootstrapSliderHandler
         
         var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
         var accentColor = GetAccentColor(variant, theme);
-        var trackColor = theme.GetOutline();
+        var trackColor = theme.Outline;
 
 #if ANDROID
         ApplyAndroid(handler, accentColor, trackColor, theme);

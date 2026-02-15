@@ -281,7 +281,7 @@ public static class Bootstrap
         
         if (isOutlined && variant != BootstrapVariant.Default)
         {
-            button.BackgroundColor = Colors.Transparent;
+            button.Background = Colors.Transparent;
             button.TextColor = theme.GetVariantColor(variant);
             button.BorderColor = theme.GetVariantColor(variant);
             button.BorderWidth = theme.BorderWidth;
@@ -289,7 +289,7 @@ public static class Bootstrap
         else
         {
             var (bg, fg) = GetVariantColors(variant, theme);
-            button.BackgroundColor = bg;
+            button.Background = bg;
             button.TextColor = fg;
         }
         
@@ -304,9 +304,9 @@ public static class Bootstrap
         var variant = GetVariant(entry);
         
         if (variant == BootstrapVariant.Danger)
-            entry.BackgroundColor = theme.Danger.WithAlpha(0.1f);
+            entry.Background = new SolidColorBrush(theme.Danger.WithAlpha(0.1f));
         else if (variant == BootstrapVariant.Success)
-            entry.BackgroundColor = theme.Success.WithAlpha(0.1f);
+            entry.Background = new SolidColorBrush(theme.Success.WithAlpha(0.1f));
     }
 
     private static void ApplyLabelTypography(Label label)
@@ -338,7 +338,7 @@ public static class Bootstrap
                 label.TextColor = theme.Muted;
                 break;
             case BootstrapTextStyle.Mark:
-                label.BackgroundColor = theme.Mark;
+                label.Background = theme.Mark;
                 break;
         }
 
@@ -392,7 +392,7 @@ public static class Bootstrap
         // Apply background
         if (bgVariant != BootstrapVariant.Default)
         {
-            view.BackgroundColor = theme.GetVariantColor(bgVariant);
+            view.Background = theme.GetVariantColor(bgVariant);
         }
 
         // Shadow is applied via handler (platform-specific)
@@ -407,7 +407,7 @@ public static class Bootstrap
             return;
 
         var (bg, fg) = GetVariantColors(badgeVariant, theme);
-        label.BackgroundColor = bg;
+        label.Background = bg;
         label.TextColor = fg;
         label.Padding = new Thickness(8, 4);
         label.FontSize = theme.FontSizeSmall;
@@ -446,7 +446,7 @@ public static class Bootstrap
             
             BootstrapVariant.Link => (Colors.Transparent, theme.Primary),
             
-            _ => (theme.GetSurface(), theme.GetOnSurface())
+            _ => (theme.Surface, theme.OnSurface)
         };
     }
 
@@ -467,7 +467,7 @@ public static class Bootstrap
             BootstrapVariant.Info or BootstrapVariant.OutlineInfo => theme.Info,
             BootstrapVariant.Light or BootstrapVariant.OutlineLight => theme.Light,
             BootstrapVariant.Dark or BootstrapVariant.OutlineDark => theme.Dark,
-            _ => theme.GetOutline()
+            _ => theme.Outline
         };
     }
 }

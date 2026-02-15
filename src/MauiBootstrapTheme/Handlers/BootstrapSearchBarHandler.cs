@@ -55,7 +55,7 @@ public static class BootstrapSearchBarHandler
         drawable.SetShape(ShapeType.Rectangle);
         drawable.SetCornerRadius((float)(cornerRadius * density));
         drawable.SetStroke((int)(theme.BorderWidth * density), borderColor.ToPlatform());
-        drawable.SetColor(theme.GetSurface().ToPlatform());
+        drawable.SetColor(theme.InputBackground.ToPlatform());
         
         searchView.Background = drawable;
     }
@@ -75,7 +75,7 @@ public static class BootstrapSearchBarHandler
             searchBar.SearchTextField.Layer.BorderWidth = (nfloat)theme.BorderWidth;
             searchBar.SearchTextField.Layer.CornerRadius = (nfloat)cornerRadius;
             searchBar.SearchTextField.Layer.MasksToBounds = true;
-            searchBar.SearchTextField.BackgroundColor = theme.GetSurface().ToPlatform();
+            searchBar.SearchTextField.BackgroundColor = theme.InputBackground.ToPlatform();
         }
     }
 #endif
@@ -105,6 +105,6 @@ public static class BootstrapSearchBarHandler
         BootstrapVariant.Success => theme.Success,
         BootstrapVariant.Warning => theme.Warning,
         BootstrapVariant.Primary => theme.Primary,
-        _ => theme.GetOutline()
+        _ => theme.Outline
     };
 }

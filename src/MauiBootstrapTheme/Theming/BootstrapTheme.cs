@@ -171,6 +171,8 @@ public class BootstrapTheme
     public double InputMinHeight { get; set; } = 38.0;
     public double InputMinHeightLg { get; set; } = 48.0;
     public double InputMinHeightSm { get; set; } = 31.0;
+    public Color InputBackground { get; set; } = Color.FromArgb("#ffffff");
+    public Color InputText { get; set; } = Color.FromArgb("#212529");
     
     // ── Progress Bar ──
     
@@ -232,7 +234,7 @@ public class BootstrapTheme
         BootstrapVariant.Info => Info,
         BootstrapVariant.Light => Light,
         BootstrapVariant.Dark => Dark,
-        _ => GetOnSurface()
+        _ => OnSurface
     };
 
     /// <summary>
@@ -319,25 +321,36 @@ public class BootstrapTheme
             _ => new Themes.DefaultTheme()
         };
 
-        Application.Current.Resources = theme;
-        SyncFromResources(theme);
+        Apply(theme);
     }
 
     /// <summary>
-    /// Applies a theme using the specified ResourceDictionary instance.
+    /// Applies a theme by swapping MergedDictionaries on the existing Application.Current.Resources.
+    /// This preserves the ResourceDictionary instance that DynamicResource bindings are subscribed to,
+    /// ensuring all bindings re-resolve when the theme changes.
+    /// Also syncs BootstrapTheme.Current for handlers.
     /// </summary>
     public static void Apply(ResourceDictionary theme)
     {
-        if (Application.Current == null) return;
-        Application.Current.Resources = theme;
-        SyncFromResources(theme);
+        if (Application.Current == null)
+            return;
+
+        var resources = Application.Current.Resources;
+
+        // Swap MergedDictionaries on the EXISTING Resources object.
+        // DynamicResource bindings are subscribed to this instance, so modifying it in-place
+        // triggers re-resolution. Replacing the entire Resources object breaks subscriptions.
+        resources.MergedDictionaries.Clear();
+        resources.MergedDictionaries.Add(theme);
+
+        SyncFromResources(resources);
     }
 
     /// <summary>
     /// Syncs BootstrapTheme.Current singleton from ResourceDictionary values
     /// so handlers that read from Current stay in sync with the XAML theme.
     /// </summary>
-    private static void SyncFromResources(ResourceDictionary resources)
+    public static void SyncFromResources(ResourceDictionary resources)
     {
         var theme = new BootstrapTheme();
 
@@ -431,6 +444,14 @@ public class BootstrapTheme
             theme.InputMinHeightSm = ihsd;
         if (resources.TryGetValue("InputHeightLg", out var ihl) && ihl is double ihld)
             theme.InputMinHeightLg = ihld;
+
+        if (resources.TryGetValue("ProgressBackground", out var pbg) && pbg is Color pbgc)
+            theme.ProgressBackground = pbgc;
+
+        if (resources.TryGetValue("InputBackground", out var ibg) && ibg is Color ibgc)
+            theme.InputBackground = ibgc;
+        if (resources.TryGetValue("InputText", out var itx) && itx is Color itxc)
+            theme.InputText = itxc;
 
         SetTheme(theme);
     }

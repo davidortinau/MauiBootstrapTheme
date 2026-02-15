@@ -38,8 +38,8 @@ public static class BootstrapEditorHandler
         
         var cornerRadius = GetCornerRadiusForSize(size, theme);
         var borderColor = GetBorderColorForVariant(variant, theme);
-        var backgroundColor = theme.GetSurface();
-        var textColor = theme.GetOnSurface();
+        var backgroundColor = theme.InputBackground;
+        var textColor = theme.InputText;
 
 #if ANDROID
         ApplyAndroid(handler, cornerRadius, borderColor, backgroundColor, textColor, theme);
@@ -125,6 +125,6 @@ public static class BootstrapEditorHandler
         BootstrapVariant.Danger => theme.Danger,
         BootstrapVariant.Success => theme.Success,
         BootstrapVariant.Warning => theme.Warning,
-        _ => theme.GetOutline()
+        _ => theme.Outline
     };
 }

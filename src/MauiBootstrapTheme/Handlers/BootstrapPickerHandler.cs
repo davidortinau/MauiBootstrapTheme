@@ -55,7 +55,7 @@ public static class BootstrapPickerHandler
         drawable.SetShape(ShapeType.Rectangle);
         drawable.SetCornerRadius((float)(cornerRadius * density));
         drawable.SetStroke((int)(theme.BorderWidth * density), borderColor.ToPlatform());
-        drawable.SetColor(theme.GetSurface().ToPlatform());
+        drawable.SetColor(theme.InputBackground.ToPlatform());
         
         picker.Background = drawable;
         
@@ -76,7 +76,7 @@ public static class BootstrapPickerHandler
         textField.Layer.BorderWidth = (nfloat)theme.BorderWidth;
         textField.Layer.CornerRadius = (nfloat)cornerRadius;
         textField.Layer.MasksToBounds = true;
-        textField.BackgroundColor = theme.GetSurface().ToPlatform();
+        textField.BackgroundColor = theme.InputBackground.ToPlatform();
     }
 #endif
 
@@ -105,6 +105,6 @@ public static class BootstrapPickerHandler
         BootstrapVariant.Success => theme.Success,
         BootstrapVariant.Warning => theme.Warning,
         BootstrapVariant.Primary => theme.Primary,
-        _ => theme.GetOutline()
+        _ => theme.Outline
     };
 }
