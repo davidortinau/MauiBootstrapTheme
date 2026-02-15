@@ -37,7 +37,7 @@ jobs:
         run: dotnet test tests/MauiBootstrapTheme.Build.Tests -c Release --no-restore
 
       - name: Build sample app
-        run: dotnet build samples/MauiBootstrapTheme.Sample -c Release -f net10.0-maccatalyst --no-restore
+        run: dotnet build samples/MauiBootstrapTheme.Sample -c Release -f net10.0-android --no-restore
 
   pack:
     runs-on: macos-latest
