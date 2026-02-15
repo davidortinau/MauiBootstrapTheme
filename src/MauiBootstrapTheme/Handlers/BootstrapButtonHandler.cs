@@ -1,5 +1,6 @@
 using MauiBootstrapTheme.Theming;
 using Microsoft.Maui.Handlers;
+using System.Collections.Concurrent;
 #if ANDROID
 using Android.Graphics.Drawables;
 using Microsoft.Maui.Platform;
@@ -20,6 +21,10 @@ namespace MauiBootstrapTheme.Handlers;
 /// </summary>
 public static class BootstrapButtonHandler
 {
+#if ANDROID
+    private static readonly ConcurrentDictionary<string, Android.Graphics.Typeface> TypefaceCache = new(StringComparer.OrdinalIgnoreCase);
+#endif
+
     /// <summary>
     /// Registers the Bootstrap Button handler customizations.
     /// </summary>
@@ -99,7 +104,8 @@ public static class BootstrapButtonHandler
         // Apply font family if specified
         if (!string.IsNullOrEmpty(fontFamily))
         {
-            var typeface = Android.Graphics.Typeface.Create(fontFamily, Android.Graphics.TypefaceStyle.Normal);
+            var typeface = TypefaceCache.GetOrAdd(fontFamily,
+                static family => Android.Graphics.Typeface.Create(family, Android.Graphics.TypefaceStyle.Normal));
             button.SetTypeface(typeface, Android.Graphics.TypefaceStyle.Normal);
         }
         

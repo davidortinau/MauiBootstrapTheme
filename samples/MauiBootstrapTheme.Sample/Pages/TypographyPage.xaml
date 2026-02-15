@@ -1,104 +1,131 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
              x:Class="MauiBootstrapTheme.Sample.Pages.TypographyPage"
              Title="Typography">
-    
+
     <ScrollView>
-        <VerticalStackLayout Spacing="24" Padding="20">
-            
+        <VerticalStackLayout Spacing="24"
+                             Padding="20">
+
             <!-- Page Header (left-aligned like Blazor) -->
             <VerticalStackLayout Spacing="4">
                 <Label Text="Typography"
-                       FontSize="32"
-                       FontAttributes="Bold" />
+                       StyleClass="h1"/>
                 <Label Text="Bootstrap typography utilities"
-                       FontSize="18"
-                       TextColor="Gray" />
+                       StyleClass="lead"/>
             </VerticalStackLayout>
-            
+
+            <BoxView HeightRequest="1"
+                     Color="{DynamicResource OutlineVariant}"
+                     Margin="0,4"/>
+
             <!-- Headings Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Headings" FontSize="24" />
-                <Border Padding="16" StrokeShape="RoundRectangle 6" Stroke="LightGray">
+                <Label Text="Headings"
+                       StyleClass="h4"/>
+                <Border StyleClass="card">
                     <VerticalStackLayout Spacing="8">
-                        <Label Text="Heading 1 (h1)" theme:Bootstrap.Heading="1" />
-                        <Label Text="Heading 2 (h2)" theme:Bootstrap.Heading="2" />
-                        <Label Text="Heading 3 (h3)" theme:Bootstrap.Heading="3" />
-                        <Label Text="Heading 4 (h4)" theme:Bootstrap.Heading="4" />
-                        <Label Text="Heading 5 (h5)" theme:Bootstrap.Heading="5" />
-                        <Label Text="Heading 6 (h6)" theme:Bootstrap.Heading="6" />
+                        <Label Text="Heading 1 (h1)"
+                               StyleClass="h1"/>
+                        <Label Text="Heading 2 (h2)"
+                               StyleClass="h2"/>
+                        <Label Text="Heading 3 (h3)"
+                               StyleClass="h3"/>
+                        <Label Text="Heading 4 (h4)"
+                               StyleClass="h4"/>
+                        <Label Text="Heading 5 (h5)"
+                               StyleClass="h5"/>
+                        <Label Text="Heading 6 (h6)"
+                               StyleClass="h6"/>
                     </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>
-            
+
             <!-- Text Styles Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Text Styles" FontSize="24" />
-                <Border Padding="16" StrokeShape="RoundRectangle 6" Stroke="LightGray">
+                <Label Text="Text Styles"
+                       StyleClass="h4"/>
+                <Border StyleClass="card">
                     <VerticalStackLayout Spacing="8">
-                        <Label Text="This is lead text - larger and lighter for introductory content." 
-                               theme:Bootstrap.TextStyle="Lead" />
-                        <Label Text="This is normal body text. Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+                        <Label Text="This is lead text - larger and lighter for introductory content."
+                               StyleClass="lead"/>
+                        <Label Text="This is normal body text. Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
                         <Label Text="This is small text for fine print."
-                               theme:Bootstrap.TextStyle="Small" />
+                               StyleClass="small"/>
                         <Label Text="This is muted text for secondary content."
-                               theme:Bootstrap.TextStyle="Muted" />
+                               StyleClass="text-muted"/>
                         <Label Text="This is marked/highlighted text."
-                               theme:Bootstrap.TextStyle="Mark" />
+                               StyleClass="mark"/>
                     </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>
-            
+
             <!-- Text Colors Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Text Colors" FontSize="24" />
-                <Border Padding="16" StrokeShape="RoundRectangle 6" Stroke="LightGray">
+                <Label Text="Text Colors"
+                       StyleClass="h4"/>
+                <Border StyleClass="card">
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Primary text color" theme:Bootstrap.TextColorVariant="Primary" />
-                        <Label Text="Secondary text color" theme:Bootstrap.TextColorVariant="Secondary" />
-                        <Label Text="Success text color" theme:Bootstrap.TextColorVariant="Success" />
-                        <Label Text="Danger text color" theme:Bootstrap.TextColorVariant="Danger" />
-                        <Label Text="Warning text color" theme:Bootstrap.TextColorVariant="Warning" BackgroundColor="#212529" Padding="4" />
-                        <Label Text="Info text color" theme:Bootstrap.TextColorVariant="Info" BackgroundColor="#212529" Padding="4" />
+                        <Label Text="Primary text color"
+                               StyleClass="text-primary"/>
+                        <Label Text="Secondary text color"
+                               StyleClass="text-secondary"/>
+                        <Label Text="Success text color"
+                               StyleClass="text-success"/>
+                        <Label Text="Danger text color"
+                               StyleClass="text-danger"/>
+                        <Label Text="Warning text color"
+                               StyleClass="text-warning"/>
+                        <Label Text="Info text color"
+                               StyleClass="text-info"/>
                     </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>
-            
+
             <!-- Badges Section -->
             <VerticalStackLayout Spacing="12">
-                <Label Text="Badges" FontSize="24" />
-                <Border Padding="16" StrokeShape="RoundRectangle 6" Stroke="LightGray">
+                <Label Text="Badges"
+                       StyleClass="h4"/>
+                <Border StyleClass="card">
                     <VerticalStackLayout Spacing="12">
-                        <FlexLayout Wrap="Wrap" AlignItems="Center" JustifyContent="Start">
-                            <Label Text="Primary" theme:Bootstrap.Badge="Primary" Margin="0,0,8,8" />
-                            <Label Text="Secondary" theme:Bootstrap.Badge="Secondary" Margin="0,0,8,8" />
-                            <Label Text="Success" theme:Bootstrap.Badge="Success" Margin="0,0,8,8" />
-                            <Label Text="Danger" theme:Bootstrap.Badge="Danger" Margin="0,0,8,8" />
-                            <Label Text="Warning" theme:Bootstrap.Badge="Warning" Margin="0,0,8,8" />
-                            <Label Text="Info" theme:Bootstrap.Badge="Info" Margin="0,0,8,8" />
+                        <FlexLayout Wrap="Wrap"
+                                    AlignItems="Center"
+                                    JustifyContent="Start">
+                            <Border StyleClass="badge,bg-primary" Margin="0,0,8,8"><Label Text="Primary" StyleClass="on-primary,small"/></Border>
+                            <Border StyleClass="badge,bg-secondary" Margin="0,0,8,8"><Label Text="Secondary" StyleClass="on-secondary,small"/></Border>
+                            <Border StyleClass="badge,bg-success" Margin="0,0,8,8"><Label Text="Success" StyleClass="on-success,small"/></Border>
+                            <Border StyleClass="badge,bg-danger" Margin="0,0,8,8"><Label Text="Danger" StyleClass="on-danger,small"/></Border>
+                            <Border StyleClass="badge,bg-warning" Margin="0,0,8,8"><Label Text="Warning" StyleClass="on-warning,small"/></Border>
+                            <Border StyleClass="badge,bg-info" Margin="0,0,8,8"><Label Text="Info" StyleClass="on-info,small"/></Border>
                         </FlexLayout>
-                        
-                        <Label Text="Pill Badges" FontSize="18" />
-                        <FlexLayout Wrap="Wrap" AlignItems="Center" JustifyContent="Start">
-                            <Label Text="Primary" theme:Bootstrap.Badge="Primary" Margin="0,0,8,8" />
-                            <Label Text="Success" theme:Bootstrap.Badge="Success" Margin="0,0,8,8" />
-                            <Label Text="Danger" theme:Bootstrap.Badge="Danger" Margin="0,0,8,8" />
+
+                        <Label Text="Pill Badges"
+                               StyleClass="h6"/>
+                        <FlexLayout Wrap="Wrap"
+                                    AlignItems="Center"
+                                    JustifyContent="Start">
+                            <Border StyleClass="badge,bg-primary" Margin="0,0,8,8"><Label Text="Primary" StyleClass="on-primary,small"/></Border>
+                            <Border StyleClass="badge,bg-success" Margin="0,0,8,8"><Label Text="Success" StyleClass="on-success,small"/></Border>
+                            <Border StyleClass="badge,bg-danger" Margin="0,0,8,8"><Label Text="Danger" StyleClass="on-danger,small"/></Border>
                         </FlexLayout>
-                        
-                        <Label Text="Badge with Text" FontSize="18" />
+
+                        <Label Text="Badge with Text"
+                               StyleClass="h6"/>
                         <HorizontalStackLayout Spacing="8">
-                            <Label Text="Messages" VerticalOptions="Center" />
-                            <Label Text="4" theme:Bootstrap.Badge="Primary" VerticalOptions="Center" />
-                            <Label Text="Notifications" VerticalOptions="Center" Margin="12,0,0,0" />
-                            <Label Text="99+" theme:Bootstrap.Badge="Danger" VerticalOptions="Center" />
+                            <Label Text="Messages"
+                                   VerticalOptions="Center"/>
+                            <Border StyleClass="badge,bg-primary" VerticalOptions="Center"><Label Text="4" StyleClass="on-primary,small"/></Border>
+                            <Label Text="Notifications"
+                                   VerticalOptions="Center"
+                                   Margin="12,0,0,0"/>
+                            <Border StyleClass="badge,bg-danger" VerticalOptions="Center"><Label Text="99+" StyleClass="on-danger,small"/></Border>
                         </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>
-            
+
         </VerticalStackLayout>
     </ScrollView>
-    
+
 </ContentPage>

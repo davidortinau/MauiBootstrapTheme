@@ -40,7 +40,7 @@ public static class BootstrapBorderHandler
             view.Background = new SolidColorBrush(theme.GetVariantColor(backgroundVariant));
             // Also set text color for child labels
             var onColor = Bootstrap.GetVariantColors(backgroundVariant, theme).Foreground;
-            foreach (var child in GetDescendants(view))
+            foreach (var child in GetDescendants(view, 0, 10))
             {
                 if (child is Label lbl)
                     lbl.TextColor = onColor;
@@ -75,18 +75,24 @@ public static class BootstrapBorderHandler
         ApplyShadow(view, shadow, theme);
     }
 
-    private static IEnumerable<VisualElement> GetDescendants(View view)
+    private static IEnumerable<VisualElement> GetDescendants(View view, int depth, int maxDepth)
     {
+        if (depth >= maxDepth)
+            yield break;
+
         if (view is IVisualTreeElement tree)
         {
             foreach (var child in tree.GetVisualChildren())
             {
                 if (child is VisualElement ve)
                 {
+                    if (depth > 0 && ve is Border)
+                        continue;
+
                     yield return ve;
                     if (ve is View childView)
                     {
-                        foreach (var desc in GetDescendants(childView))
+                        foreach (var desc in GetDescendants(childView, depth + 1, maxDepth))
                             yield return desc;
                     }
                 }

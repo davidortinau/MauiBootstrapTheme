@@ -10,32 +10,28 @@
             
             <!-- Header -->
             <Label Text="Form Examples"
-                   FontSize="24"
-                   FontAttributes="Bold"
+                   StyleClass="h1"
                    HorizontalOptions="Center" />
             
             <Label Text="Real-world form layouts using Bootstrap-themed controls."
-                   FontSize="14"
-                   TextColor="Gray"
+                   StyleClass="lead,text-muted"
                    HorizontalOptions="Center" />
             
             <!-- Login Form -->
-            <Frame Padding="20" CornerRadius="8" BorderColor="LightGray">
+            <Border StyleClass="card">
                 <VerticalStackLayout Spacing="16">
-                    <Label Text="Login" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" />
+                    <Label Text="Login" StyleClass="h4" HorizontalOptions="Center" />
                     
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Email address" FontSize="14" />
+                        <Label Text="Email address" StyleClass="small" />
                         <Entry Placeholder="name@example.com" 
-                               Keyboard="Email"
-                               theme:Bootstrap.Variant="Default" />
+                               Keyboard="Email" />
                     </VerticalStackLayout>
                     
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Password" FontSize="14" />
+                        <Label Text="Password" StyleClass="small" />
                         <Entry Placeholder="Password" 
-                               IsPassword="True"
-                               theme:Bootstrap.Variant="Default" />
+                               IsPassword="True" />
                     </VerticalStackLayout>
                     
                     <HorizontalStackLayout Spacing="8">
@@ -43,37 +39,37 @@
                         <Label Text="Remember me" VerticalOptions="Center" />
                     </HorizontalStackLayout>
                     
-                    <Button Text="Sign In" 
-                            theme:Bootstrap.Variant="Primary" 
+                    <Button Text="Sign In"
+                            StyleClass="btn-primary"
                             HorizontalOptions="Fill" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
             
             <!-- Contact Form -->
-            <Frame Padding="20" CornerRadius="8" BorderColor="LightGray">
+            <Border StyleClass="card">
                 <VerticalStackLayout Spacing="16">
-                    <Label Text="Contact Us" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" />
+                    <Label Text="Contact Us" StyleClass="h4" HorizontalOptions="Center" />
                     
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
                         <VerticalStackLayout Spacing="4">
-                            <Label Text="First Name" FontSize="14" />
+                            <Label Text="First Name" StyleClass="small" />
                             <Entry Placeholder="John" />
                         </VerticalStackLayout>
                         
                         <VerticalStackLayout Spacing="4" Grid.Column="1">
-                            <Label Text="Last Name" FontSize="14" />
+                            <Label Text="Last Name" StyleClass="small" />
                             <Entry Placeholder="Doe" />
                         </VerticalStackLayout>
                     </Grid>
                     
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Email" FontSize="14" />
+                        <Label Text="Email" StyleClass="small" />
                         <Entry Placeholder="john.doe@example.com" 
                                Keyboard="Email" />
                     </VerticalStackLayout>
                     
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Subject" FontSize="14" />
+                        <Label Text="Subject" StyleClass="small" />
                         <Picker Title="Select a topic">
                             <Picker.ItemsSource>
                                 <x:Array Type="{x:Type x:String}">
@@ -87,49 +83,46 @@
                     </VerticalStackLayout>
                     
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Message" FontSize="14" />
+                        <Label Text="Message" StyleClass="small" />
                         <Editor Placeholder="Your message here..."
-                                HeightRequest="120"
-                                theme:Bootstrap.Variant="Default" />
+                                HeightRequest="120" />
                     </VerticalStackLayout>
                     
                     <HorizontalStackLayout Spacing="12" HorizontalOptions="End">
-                        <Button Text="Cancel" 
-                                theme:Bootstrap.Variant="Secondary"
-                                theme:Bootstrap.IsOutlined="True" />
+                        <Button Text="Cancel" StyleClass="btn-outline-secondary" />
                         <Button Text="Send Message" 
-                                theme:Bootstrap.Variant="Success" />
+                                StyleClass="btn-success" />
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
             
             <!-- Validation Example -->
-            <Frame Padding="20" CornerRadius="8" BorderColor="LightGray">
+            <Border StyleClass="card">
                 <VerticalStackLayout Spacing="16">
-                    <Label Text="Validation States" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" />
+                    <Label Text="Validation States" StyleClass="h4" HorizontalOptions="Center" />
                     
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Valid Input" FontSize="14" />
+                        <Label Text="Valid Input" StyleClass="small" />
                         <Entry Text="Valid entry"
                                theme:Bootstrap.Variant="Success" />
-                        <Label Text="✓ Looks good!" FontSize="12" TextColor="#198754" />
+                        <Label Text="✓ Looks good!" StyleClass="small,text-success" />
                     </VerticalStackLayout>
                     
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Invalid Input" FontSize="14" />
+                        <Label Text="Invalid Input" StyleClass="small" />
                         <Entry Placeholder="Required field"
                                theme:Bootstrap.Variant="Danger" />
-                        <Label Text="✗ This field is required." FontSize="12" TextColor="#dc3545" />
+                        <Label Text="✗ This field is required." StyleClass="small,text-danger" />
                     </VerticalStackLayout>
                     
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Warning Input" FontSize="14" />
+                        <Label Text="Warning Input" StyleClass="small" />
                         <Entry Text="Check this value"
                                theme:Bootstrap.Variant="Warning" />
-                        <Label Text="⚠ Please verify this value." FontSize="12" TextColor="#ffc107" />
+                        <Label Text="⚠ Please verify this value." StyleClass="small,text-warning" />
                     </VerticalStackLayout>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
             
         </VerticalStackLayout>
     </ScrollView>

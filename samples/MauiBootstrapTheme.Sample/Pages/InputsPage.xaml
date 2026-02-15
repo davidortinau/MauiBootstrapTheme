@@ -13,8 +13,7 @@
                 <Label Text="Input Controls"
                        StyleClass="h1"/>
                 <Label Text="Form inputs with Bootstrap styling"
-                       StyleClass="text-muted"
-                       FontSize="18"/>
+                       StyleClass="lead,text-muted"/>
             </VerticalStackLayout>
 
             <BoxView HeightRequest="1"

@@ -7,6 +7,7 @@ namespace MauiBootstrapTheme.Theming;
 public class BootstrapTheme
 {
     private static BootstrapTheme? _current;
+    private static readonly Microsoft.Maui.WeakEventManager ThemeChangedEventManager = new();
     
     /// <summary>
     /// Gets the current active theme. Returns default Bootstrap 5 values if no theme is set.
@@ -16,7 +17,11 @@ public class BootstrapTheme
     /// <summary>
     /// Event raised when the theme changes. Subscribe to refresh UI components.
     /// </summary>
-    public static event EventHandler? ThemeChanged;
+    public static event EventHandler? ThemeChanged
+    {
+        add => ThemeChangedEventManager.AddEventHandler(value);
+        remove => ThemeChangedEventManager.RemoveEventHandler(value);
+    }
 
     /// <summary>
     /// Sets the current theme and raises ThemeChanged event.
@@ -24,7 +29,7 @@ public class BootstrapTheme
     public static void SetTheme(BootstrapTheme theme)
     {
         _current = theme;
-        ThemeChanged?.Invoke(null, EventArgs.Empty);
+        ThemeChangedEventManager.HandleEvent(null, EventArgs.Empty, nameof(ThemeChanged));
     }
 
     /// <summary>

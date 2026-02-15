@@ -12,8 +12,7 @@
                 <Label Text="Theme Switcher"
                        StyleClass="h1" />
                 <Label Text="Switch between Bootstrap themes at runtime"
-                       FontSize="18"
-                       StyleClass="text-muted" />
+                       StyleClass="lead,text-muted" />
             </VerticalStackLayout>
             
             <BoxView HeightRequest="1" Color="{DynamicResource OutlineVariant}" Margin="0,4" />
@@ -57,13 +56,13 @@
                         
                         <FlexLayout Wrap="Wrap" JustifyContent="Start">
                             <Border StyleClass="badge,bg-primary" Margin="0,0,8,8">
-                                <Label Text="Badge" StyleClass="on-primary" FontSize="12" />
+                                <Label Text="Badge" StyleClass="on-primary,small" />
                             </Border>
                             <Border StyleClass="badge,bg-success" Margin="0,0,8,8">
-                                <Label Text="Success" StyleClass="on-success" FontSize="12" />
+                                <Label Text="Success" StyleClass="on-success,small" />
                             </Border>
                             <Border StyleClass="badge,bg-danger" Margin="0,0,8,8">
-                                <Label Text="Alert" StyleClass="on-danger" FontSize="12" />
+                                <Label Text="Alert" StyleClass="on-danger,small" />
                             </Border>
                         </FlexLayout>
                     </VerticalStackLayout>

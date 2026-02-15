@@ -14,6 +14,16 @@ public class ResourceDictionaryGenerator
     {
         { "Neucha", "MarkerFelt-Wide" },       // Sketchy → closest macOS/iOS hand-drawn font
         { "Cabin Sketch", "MarkerFelt-Wide" },  // Sketchy headings
+        { "Lato", "Avenir Next" },
+        { "Open Sans", "HelveticaNeue" },
+        { "Source Sans Pro", "HelveticaNeue" },
+        { "Nunito", "Avenir Next" },
+        { "Poppins", "Avenir Next" },
+        { "Montserrat", "Avenir Next" },
+        { "Inter", "HelveticaNeue" },
+        { "Fira Sans", "HelveticaNeue" },
+        { "IBM Plex Sans", "HelveticaNeue" },
+        { "Roboto", "HelveticaNeue" },
     };
 
     /// <summary>
@@ -256,6 +266,7 @@ public partial class {className} : ResourceDictionary
         EmitCsDouble(sb, "FontSizeBase", baseFontSize);
         EmitCsDouble(sb, "FontSizeSm", data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875);
         EmitCsDouble(sb, "FontSizeLg", data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25);
+        EmitCsDouble(sb, "FontSizeLead", baseFontSize * 1.25);
         EmitCsDouble(sb, "FontSizeH1", data.FontSizeH1 != null ? CssToDevicePixels(data.FontSizeH1) : baseFontSize * 2.5);
         EmitCsDouble(sb, "FontSizeH2", data.FontSizeH2 != null ? CssToDevicePixels(data.FontSizeH2) : baseFontSize * 2);
         EmitCsDouble(sb, "FontSizeH3", data.FontSizeH3 != null ? CssToDevicePixels(data.FontSizeH3) : baseFontSize * 1.75);
@@ -346,7 +357,12 @@ public partial class {className} : ResourceDictionary
             sb.AppendLine("        if (Application.Current != null)");
             sb.AppendLine("        {");
             sb.AppendLine("            ApplyThemeMode(Application.Current.RequestedTheme);");
-            sb.AppendLine("            Application.Current.RequestedThemeChanged += (s, e) => ApplyThemeMode(e.RequestedTheme);");
+            sb.AppendLine($"            var weakSelf = new WeakReference<{className}>(this);");
+            sb.AppendLine("            Application.Current.RequestedThemeChanged += (s, e) =>");
+            sb.AppendLine("            {");
+            sb.AppendLine("                if (weakSelf.TryGetTarget(out var self))");
+            sb.AppendLine("                    self.ApplyThemeMode(e.RequestedTheme);");
+            sb.AppendLine("            };");
             sb.AppendLine("        }");
         }
 
@@ -373,6 +389,12 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("    /// </summary>");
         sb.AppendLine("    private void ApplyThemeMode(AppTheme theme)");
         sb.AppendLine("    {");
+        sb.AppendLine("        if (!Microsoft.Maui.ApplicationModel.MainThread.IsMainThread)");
+        sb.AppendLine("        {");
+        sb.AppendLine("            Microsoft.Maui.ApplicationModel.MainThread.BeginInvokeOnMainThread(() => ApplyThemeMode(theme));");
+        sb.AppendLine("            return;");
+        sb.AppendLine("        }");
+        sb.AppendLine();
         sb.AppendLine("        if (theme == AppTheme.Dark)");
         sb.AppendLine("        {");
 
@@ -847,6 +869,25 @@ public partial class {className} : ResourceDictionary
     private void EmitCsTextStyles(StringBuilder sb)
     {
         sb.AppendLine("        // Text styles");
+        sb.AppendLine("        var style_lead = new Style(typeof(Label)) { Class = \"lead\" };");
+        sb.AppendLine("        style_lead.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeLead\") });");
+        sb.AppendLine("        style_lead.Setters.Add(new Setter { Property = Label.LineHeightProperty, Value = 1.5 });");
+        sb.AppendLine("        Add(style_lead);");
+        sb.AppendLine("        var style_small = new Style(typeof(Label)) { Class = \"small\" };");
+        sb.AppendLine("        style_small.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        Add(style_small);");
+        sb.AppendLine("        var style_mark = new Style(typeof(Label)) { Class = \"mark\" };");
+        sb.AppendLine("        style_mark.Setters.Add(new Setter { Property = Label.BackgroundProperty, Value = Color.FromArgb(\"#fcf8e3\") });");
+        sb.AppendLine("        style_mark.Setters.Add(new Setter { Property = Label.PaddingProperty, Value = new Thickness(4, 2) });");
+        sb.AppendLine("        Add(style_mark);");
+        var variants = new[] { "primary", "secondary", "success", "danger", "warning", "info" };
+        foreach (var v in variants)
+        {
+            var pascal = ToPascalCase(v);
+            sb.AppendLine($"        var style_text_{v} = new Style(typeof(Label)) {{ Class = \"text-{v}\" }};");
+            sb.AppendLine($"        style_text_{v}.Setters.Add(new Setter {{ Property = Label.TextColorProperty, Value = DR(\"{pascal}\") }});");
+            sb.AppendLine($"        Add(style_text_{v});");
+        }
         sb.AppendLine("        var style_text_muted = new Style(typeof(Label)) { Class = \"text-muted\" };");
         sb.AppendLine("        style_text_muted.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"Muted\") });");
         sb.AppendLine("        Add(style_text_muted);");
@@ -1042,6 +1083,7 @@ public partial class {className} : ResourceDictionary
         EmitDouble(sb, "FontSizeBase", 16);
         EmitDouble(sb, "FontSizeSm", 14);
         EmitDouble(sb, "FontSizeLg", 20);
+        EmitDouble(sb, "FontSizeLead", 20);
         EmitDouble(sb, "FontSizeH1", 40);
         EmitDouble(sb, "FontSizeH2", 32);
         EmitDouble(sb, "FontSizeH3", 28);
@@ -1344,6 +1386,35 @@ public partial class {className} : ResourceDictionary
 
     private void EmitTextStyles(StringBuilder sb)
     {
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"lead\">");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeLead}\"/>");
+        sb.AppendLine("        <Setter Property=\"LineHeight\" Value=\"1.5\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"small\">");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeSm}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"mark\">");
+        sb.AppendLine("        <Setter Property=\"Background\" Value=\"#fcf8e3\"/>");
+        sb.AppendLine("        <Setter Property=\"Padding\" Value=\"4,2\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-primary\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Primary}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-secondary\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Secondary}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-success\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Success}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-danger\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Danger}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-warning\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Warning}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-info\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Info}\"/>");
+        sb.AppendLine("    </Style>");
         sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-muted\">");
         sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Muted}\"/>");
         sb.AppendLine("    </Style>");
@@ -1403,7 +1474,7 @@ public partial class {className} : ResourceDictionary
         var stops = new List<(string, double)>();
 
         // Remove direction if present (e.g., "180deg," or just starts with colors)
-        var parts = gradient.Split(',').Select(p => p.Trim()).ToList();
+        var parts = SplitTopLevelByComma(gradient);
 
         // Filter out direction keywords
         var colorParts = new List<string>();
@@ -1441,6 +1512,30 @@ public partial class {className} : ResourceDictionary
         }
 
         return stops;
+    }
+
+    private static List<string> SplitTopLevelByComma(string value)
+    {
+        var parts = new List<string>();
+        var depth = 0;
+        var start = 0;
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            var ch = value[i];
+            if (ch == '(') depth++;
+            else if (ch == ')' && depth > 0) depth--;
+            else if (ch == ',' && depth == 0)
+            {
+                parts.Add(value[start..i].Trim());
+                start = i + 1;
+            }
+        }
+
+        if (start < value.Length)
+            parts.Add(value[start..].Trim());
+
+        return parts;
     }
 
     private bool IsDarkTheme(Parsing.BootstrapThemeData data)

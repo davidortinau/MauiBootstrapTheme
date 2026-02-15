@@ -102,7 +102,7 @@ public class BootstrapCssParser
             }
 
             // Extract gradient: .btn-{variant}{background-image:linear-gradient(...);...}
-            var gradPattern = $@"\.btn-{Regex.Escape(variant)}\{{[^}}]*background-image:\s*linear-gradient\(([^)]+)\)[^}}]*\}}";
+            var gradPattern = $@"\.btn-{Regex.Escape(variant)}\{{[^}}]*background-image:\s*linear-gradient\(([^;]+)\)\s*;[^}}]*\}}";
             var gradMatch = Regex.Match(css, gradPattern);
             if (gradMatch.Success)
             {
@@ -223,18 +223,9 @@ public class BootstrapCssParser
         // First check --bs-body-font-family
         if (rootVars.TryGetValue("--bs-body-font-family", out var ff))
         {
-            // If it references var(--bs-font-sans-serif), resolve that variable
-            if (ff.Contains("var(--bs-font-sans-serif)"))
-            {
-                if (rootVars.TryGetValue("--bs-font-sans-serif", out var sansSerif))
-                    ff = sansSerif;
-                else
-                    return null;
-            }
-            else if (ff.Contains("var("))
-            {
+            ff = ResolveCssVarValue(rootVars, ff) ?? ff;
+            if (ff.Contains("var("))
                 return null;
-            }
 
             // Extract the first font name
             var firstFont = ff.Split(',')[0].Trim().Trim('"').Trim('\'');
@@ -247,6 +238,7 @@ public class BootstrapCssParser
         // Also check --bs-font-sans-serif directly for themes that set custom fonts there
         if (rootVars.TryGetValue("--bs-font-sans-serif", out var sans))
         {
+            sans = ResolveCssVarValue(rootVars, sans) ?? sans;
             var firstFont = sans.Split(',')[0].Trim().Trim('"').Trim('\'');
             if (!IsSystemFont(firstFont) && !string.IsNullOrEmpty(firstFont))
                 return firstFont;
@@ -429,11 +421,6 @@ public class BootstrapCssParser
         var v = data.LightVariables;
         // --bs-progress-bg from :root is often var(--bs-secondary-bg)
         var progressBg = GetVar(v, "--bs-progress-bg");
-        if (progressBg != null && progressBg.StartsWith("var("))
-        {
-            var refKey = progressBg.Replace("var(", "").TrimEnd(')');
-            progressBg = GetVar(v, refKey);
-        }
         // Only set if found in :root — component rule override happens in ExtractProgressBgFromCss
         if (progressBg != null)
             data.ProgressBg = progressBg;
@@ -464,22 +451,63 @@ public class BootstrapCssParser
     {
         if (vars.TryGetValue(key, out var value))
         {
-            // Resolve simple var() references
-            if (value.StartsWith("var("))
-            {
-                var refKey = value.Replace("var(", "").TrimEnd(')');
-                if (vars.TryGetValue(refKey, out var resolved))
-                    return NormalizeColor(resolved);
+            var resolved = ResolveCssVarValue(vars, value);
+            if (string.IsNullOrWhiteSpace(resolved) || resolved.Contains("var("))
                 return null;
-            }
-            return NormalizeColor(value);
+            return NormalizeColor(resolved);
         }
         return null;
     }
 
     private string? GetVar(Dictionary<string, string> vars, string key)
     {
-        return vars.TryGetValue(key, out var value) ? value : null;
+        return vars.TryGetValue(key, out var value) ? ResolveCssVarValue(vars, value) : null;
+    }
+
+    private string? ResolveCssVarValue(Dictionary<string, string> vars, string value)
+    {
+        var current = value.Trim();
+        var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        for (var i = 0; i < 8; i++)
+        {
+            if (!current.StartsWith("var(", StringComparison.OrdinalIgnoreCase))
+                return current;
+
+            if (!current.EndsWith(")", StringComparison.Ordinal))
+                return current;
+
+            var inner = current.Substring(4, current.Length - 5).Trim();
+            string varName;
+            string? fallback = null;
+
+            var comma = inner.IndexOf(',');
+            if (comma >= 0)
+            {
+                varName = inner[..comma].Trim();
+                fallback = inner[(comma + 1)..].Trim();
+            }
+            else
+            {
+                varName = inner;
+            }
+
+            if (!varName.StartsWith("--", StringComparison.Ordinal))
+                return fallback;
+
+            if (!visited.Add(varName))
+                return fallback;
+
+            if (vars.TryGetValue(varName, out var next))
+            {
+                current = next.Trim();
+                continue;
+            }
+
+            return fallback;
+        }
+
+        return null;
     }
 
     private string NormalizeColor(string value)
