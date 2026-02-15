@@ -255,7 +255,7 @@ public class BootstrapCssParser
         var systemFonts = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "-apple-system", "system-ui", "BlinkMacSystemFont", "Segoe UI",
-            "Roboto", "Helvetica Neue", "Arial", "sans-serif", "Lato",
+            "Roboto", "Helvetica Neue", "Arial", "sans-serif",
             "Helvetica", "Times New Roman", "Georgia"
         };
         return systemFonts.Contains(fontName);
