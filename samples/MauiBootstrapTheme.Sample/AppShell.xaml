@@ -8,35 +8,35 @@
     Shell.FlyoutBehavior="Flyout"
     Title="Bootstrap Theme">
 
-    <FlyoutItem Title="Controls" Route="controls" Icon="{OnPlatform Default='', iOS='square.grid.2x2'}">
+    <FlyoutItem Title="Controls" Route="controls">
         <ShellContent ContentTemplate="{DataTemplate pages:ControlsPage}" />
     </FlyoutItem>
     
-    <FlyoutItem Title="Inputs" Route="inputs" Icon="{OnPlatform Default='', iOS='keyboard'}">
+    <FlyoutItem Title="Inputs" Route="inputs">
         <ShellContent ContentTemplate="{DataTemplate pages:InputsPage}" />
     </FlyoutItem>
     
-    <FlyoutItem Title="Typography" Route="typography" Icon="{OnPlatform Default='', iOS='textformat'}">
+    <FlyoutItem Title="Typography" Route="typography">
         <ShellContent ContentTemplate="{DataTemplate pages:TypographyPage}" />
     </FlyoutItem>
     
-    <FlyoutItem Title="Cards" Route="cards" Icon="{OnPlatform Default='', iOS='rectangle.stack'}">
+    <FlyoutItem Title="Cards" Route="cards">
         <ShellContent ContentTemplate="{DataTemplate pages:CardsPage}" />
     </FlyoutItem>
     
-    <FlyoutItem Title="Themes" Route="themes" Icon="{OnPlatform Default='', iOS='paintbrush'}">
+    <FlyoutItem Title="Themes" Route="themes">
         <ShellContent ContentTemplate="{DataTemplate pages:ThemesPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Forms" Route="forms" Icon="{OnPlatform Default='', iOS='doc.text'}">
+    <FlyoutItem Title="Forms" Route="forms">
         <ShellContent ContentTemplate="{DataTemplate pages:FormsPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Variants" Route="variants" Icon="{OnPlatform Default='', iOS='paintpalette'}">
+    <FlyoutItem Title="Variants" Route="variants">
         <ShellContent ContentTemplate="{DataTemplate pages:VariantsPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Spacing" Route="spacing" Icon="{OnPlatform Default='', iOS='arrow.up.left.and.arrow.down.right'}">
+    <FlyoutItem Title="Spacing" Route="spacing">
         <ShellContent ContentTemplate="{DataTemplate pages:SpacingPage}" />
     </FlyoutItem>
 
