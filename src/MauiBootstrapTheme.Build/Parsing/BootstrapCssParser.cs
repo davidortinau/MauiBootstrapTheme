@@ -304,6 +304,17 @@ public class BootstrapCssParser
         data.DarkHeadingColor = GetVar(dv, "--bs-heading-color");
         data.DarkBorderColor = GetColor(dv, "--bs-border-color");
         data.DarkSecondaryBg = GetColor(dv, "--bs-secondary-bg");
+
+        // Dark semantic colors
+        data.DarkPrimary = GetColor(dv, "--bs-primary");
+        data.DarkSecondary = GetColor(dv, "--bs-secondary");
+        data.DarkSuccess = GetColor(dv, "--bs-success");
+        data.DarkDanger = GetColor(dv, "--bs-danger");
+        data.DarkWarning = GetColor(dv, "--bs-warning");
+        data.DarkInfo = GetColor(dv, "--bs-info");
+        data.DarkLight = GetColor(dv, "--bs-light");
+        data.DarkDark = GetColor(dv, "--bs-dark");
+        data.DarkLinkColor = GetColor(dv, "--bs-link-color");
     }
 
     private string? GetColor(Dictionary<string, string> vars, string key)
@@ -382,6 +393,17 @@ public class BootstrapThemeData
     public string? DarkHeadingColor { get; set; }
     public string? DarkBorderColor { get; set; }
     public string? DarkSecondaryBg { get; set; }
+
+    // Dark mode semantic colors
+    public string? DarkPrimary { get; set; }
+    public string? DarkSecondary { get; set; }
+    public string? DarkSuccess { get; set; }
+    public string? DarkDanger { get; set; }
+    public string? DarkWarning { get; set; }
+    public string? DarkInfo { get; set; }
+    public string? DarkLight { get; set; }
+    public string? DarkDark { get; set; }
+    public string? DarkLinkColor { get; set; }
 
     // Sizing (raw CSS values, need unit conversion)
     public string? BorderWidth { get; set; }

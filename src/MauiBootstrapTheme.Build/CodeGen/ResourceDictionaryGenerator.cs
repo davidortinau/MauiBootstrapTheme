@@ -221,18 +221,14 @@ public partial class {className} : ResourceDictionary
         EmitCsColor(sb, "Muted", data.Secondary ?? "#6c757d");
         sb.AppendLine();
 
-        // Dark mode overrides
+        // Dark mode color keys stored for reference (used by ApplyThemeMode)
         if (data.HasDarkMode)
         {
+            sb.AppendLine("        // Dark mode override values stored as reference keys");
             if (data.DarkBodyBackground != null) EmitCsColor(sb, "DarkBackground", data.DarkBodyBackground);
             if (data.DarkBodyColor != null) EmitCsColor(sb, "DarkOnBackground", data.DarkBodyColor);
             if (data.DarkSecondaryBg != null) EmitCsColor(sb, "DarkSurface", data.DarkSecondaryBg);
             if (data.DarkBorderColor != null) EmitCsColor(sb, "DarkOutline", data.DarkBorderColor);
-            foreach (var kvp in data.DarkButtonRules)
-            {
-                if (kvp.Value.Background != null) EmitCsColor(sb, $"Dark{ToPascalCase(kvp.Key)}ButtonBg", kvp.Value.Background);
-                if (kvp.Value.Color != null) EmitCsColor(sb, $"Dark{ToPascalCase(kvp.Key)}ButtonColor", kvp.Value.Color);
-            }
             sb.AppendLine();
         }
 
@@ -268,10 +264,10 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine();
 
         // Spacing & sizing
-        EmitCsDouble(sb, "CornerRadius", CssToDevicePixels(data.BorderRadius ?? "0.375rem"));
-        EmitCsDouble(sb, "CornerRadiusSm", CssToDevicePixels(data.BorderRadiusSm ?? "0.25rem"));
-        EmitCsDouble(sb, "CornerRadiusLg", CssToDevicePixels(data.BorderRadiusLg ?? "0.5rem"));
-        EmitCsDouble(sb, "CornerRadiusPill", 50);
+        EmitCsInt(sb, "CornerRadius", (int)Math.Round(CssToDevicePixels(data.BorderRadius ?? "0.375rem")));
+        EmitCsInt(sb, "CornerRadiusSm", (int)Math.Round(CssToDevicePixels(data.BorderRadiusSm ?? "0.25rem")));
+        EmitCsInt(sb, "CornerRadiusLg", (int)Math.Round(CssToDevicePixels(data.BorderRadiusLg ?? "0.5rem")));
+        EmitCsInt(sb, "CornerRadiusPill", 50);
         EmitCsDouble(sb, "BorderWidth", CssToDevicePixels(data.BorderWidth ?? "1px"));
         EmitCsDouble(sb, "ButtonHeight", 38);
         EmitCsDouble(sb, "ButtonHeightSm", 31);
@@ -284,12 +280,10 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine($"        this[\"ButtonPaddingLg\"] = new Thickness(16, 8);");
         sb.AppendLine($"        this[\"InputPadding\"] = new Thickness(12, 6);");
 
-        var inputBg = IsDarkTheme(data) ? (data.DarkSecondaryBg ?? data.BodyBackground ?? "#303030") : (data.BodyBackground ?? "#ffffff");
-        var inputText = IsDarkTheme(data) ? "#ffffff" : (data.BodyColor ?? "#212529");
-        EmitCsColor(sb, "ProgressBackground", IsDarkTheme(data) ? "#464545" : "#e9ecef");
-        EmitCsColor(sb, "InputBackground", inputBg);
-        EmitCsColor(sb, "InputText", inputText);
-        EmitCsColor(sb, "PlaceholderColor", IsDarkTheme(data) ? "#999999" : "#6c757d");
+        EmitCsColor(sb, "ProgressBackground", "#e9ecef");
+        EmitCsColor(sb, "InputBackground", data.BodyBackground ?? "#ffffff");
+        EmitCsColor(sb, "InputText", data.BodyColor ?? "#212529");
+        EmitCsColor(sb, "PlaceholderColor", "#6c757d");
         sb.AppendLine();
 
         // Implicit styles
@@ -325,11 +319,137 @@ public partial class {className} : ResourceDictionary
         // Progress bar variants
         EmitCsProgressBarStyles(sb);
 
+        // Dark mode support
+        if (data.HasDarkMode)
+        {
+            sb.AppendLine();
+            sb.AppendLine("        // Apply initial theme mode based on current system theme");
+            sb.AppendLine("        if (Application.Current != null)");
+            sb.AppendLine("        {");
+            sb.AppendLine("            ApplyThemeMode(Application.Current.RequestedTheme);");
+            sb.AppendLine("            Application.Current.RequestedThemeChanged += (s, e) => ApplyThemeMode(e.RequestedTheme);");
+            sb.AppendLine("        }");
+        }
+
         sb.AppendLine("    }");
+
+        // Generate ApplyThemeMode method for themes with dark mode
+        if (data.HasDarkMode)
+        {
+            sb.AppendLine();
+            EmitApplyThemeModeMethod(sb, data);
+        }
+
         sb.AppendLine("}");
 
         return sb.ToString();
     }
+
+    #region Dark Mode Support
+
+    private void EmitApplyThemeModeMethod(StringBuilder sb, Parsing.BootstrapThemeData data)
+    {
+        sb.AppendLine("    /// <summary>");
+        sb.AppendLine("    /// Applies light or dark mode color overrides from the CSS [data-bs-theme=dark] block.");
+        sb.AppendLine("    /// </summary>");
+        sb.AppendLine("    private void ApplyThemeMode(AppTheme theme)");
+        sb.AppendLine("    {");
+        sb.AppendLine("        if (theme == AppTheme.Dark)");
+        sb.AppendLine("        {");
+
+        // Background and surface colors
+        EmitDarkOverride(sb, "Background", data.DarkBodyBackground, data.BodyBackground ?? "#ffffff");
+        EmitDarkOverride(sb, "OnBackground", data.DarkBodyColor, data.BodyColor ?? "#212529");
+        EmitDarkOverride(sb, "Surface", data.DarkSecondaryBg, data.CardRules.Background);
+        EmitDarkOverride(sb, "OnSurface", data.DarkBodyColor, data.BodyColor ?? "#212529");
+        EmitDarkOverride(sb, "Outline", data.DarkBorderColor, data.BorderColor ?? "#dee2e6");
+
+        var darkHeading = data.DarkHeadingColor;
+        if (darkHeading == null || darkHeading == "inherit") darkHeading = data.DarkBodyColor;
+        EmitDarkOverride(sb, "HeadingColor", darkHeading, null);
+        EmitDarkOverride(sb, "HeadingColorAlt", darkHeading, null);
+
+        // Input colors for dark mode
+        if (data.DarkBodyBackground != null || data.DarkSecondaryBg != null)
+        {
+            var darkInputBg = data.DarkSecondaryBg ?? data.DarkBodyBackground ?? "#303030";
+            sb.AppendLine($"            this[\"InputBackground\"] = Color.FromArgb(\"{NormalizeHexColor(darkInputBg)}\");");
+            sb.AppendLine($"            this[\"InputText\"] = Color.FromArgb(\"{NormalizeHexColor(data.DarkBodyColor ?? "#ffffff")}\");");
+            sb.AppendLine($"            this[\"PlaceholderColor\"] = Color.FromArgb(\"#FF999999\");");
+            sb.AppendLine($"            this[\"ProgressBackground\"] = Color.FromArgb(\"#FF464545\");");
+        }
+
+        // Dark-mode button overrides (e.g., Sketchy dark .btn-primary)
+        foreach (var kvp in data.DarkButtonRules)
+        {
+            var pascal = ToPascalCase(kvp.Key);
+            if (kvp.Value.Background != null)
+                sb.AppendLine($"            this[\"{pascal}\"] = Color.FromArgb(\"{NormalizeHexColor(kvp.Value.Background)}\");");
+            if (kvp.Value.Color != null)
+                sb.AppendLine($"            this[\"On{pascal}\"] = Color.FromArgb(\"{NormalizeHexColor(kvp.Value.Color)}\");");
+        }
+
+        sb.AppendLine("        }");
+        sb.AppendLine("        else");
+        sb.AppendLine("        {");
+
+        // Restore light mode colors
+        sb.AppendLine($"            this[\"Background\"] = Color.FromArgb(\"{NormalizeHexColor(data.BodyBackground ?? "#ffffff")}\");");
+        sb.AppendLine($"            this[\"OnBackground\"] = Color.FromArgb(\"{NormalizeHexColor(data.BodyColor ?? "#212529")}\");");
+        var surface = data.CardRules.Background ?? data.BodyBackground ?? "#ffffff";
+        if (surface.Contains("var(")) surface = data.BodyBackground ?? "#ffffff";
+        sb.AppendLine($"            this[\"Surface\"] = Color.FromArgb(\"{NormalizeHexColor(surface)}\");");
+        sb.AppendLine($"            this[\"OnSurface\"] = Color.FromArgb(\"{NormalizeHexColor(data.BodyColor ?? "#212529")}\");");
+        sb.AppendLine($"            this[\"Outline\"] = Color.FromArgb(\"{NormalizeHexColor(data.BorderColor ?? "#dee2e6")}\");");
+
+        var headingColor = data.HeadingColor;
+        if (headingColor == null || headingColor == "inherit") headingColor = data.BodyColor ?? "#212529";
+        sb.AppendLine($"            this[\"HeadingColor\"] = Color.FromArgb(\"{NormalizeHexColor(headingColor)}\");");
+        sb.AppendLine($"            this[\"HeadingColorAlt\"] = Color.FromArgb(\"{NormalizeHexColor(headingColor)}\");");
+
+        var inputBg = data.BodyBackground ?? "#ffffff";
+        sb.AppendLine($"            this[\"InputBackground\"] = Color.FromArgb(\"{NormalizeHexColor(inputBg)}\");");
+        sb.AppendLine($"            this[\"InputText\"] = Color.FromArgb(\"{NormalizeHexColor(data.BodyColor ?? "#212529")}\");");
+        sb.AppendLine($"            this[\"PlaceholderColor\"] = Color.FromArgb(\"#FF6c757d\");");
+        sb.AppendLine($"            this[\"ProgressBackground\"] = Color.FromArgb(\"#FFe9ecef\");");
+
+        // Restore light-mode button colors for any variants that had dark overrides
+        foreach (var kvp in data.DarkButtonRules)
+        {
+            var pascal = ToPascalCase(kvp.Key);
+            var lightColor = pascal switch
+            {
+                "Primary" => data.Primary,
+                "Secondary" => data.Secondary,
+                "Success" => data.Success,
+                "Danger" => data.Danger,
+                "Warning" => data.Warning,
+                "Info" => data.Info,
+                "Light" => data.Light,
+                "Dark" => data.Dark,
+                _ => null
+            };
+            if (lightColor != null)
+                sb.AppendLine($"            this[\"{pascal}\"] = Color.FromArgb(\"{NormalizeHexColor(lightColor)}\");");
+
+            var lightOnColor = data.OnColors.TryGetValue(kvp.Key, out var oc) ? oc : null;
+            if (lightOnColor != null)
+                sb.AppendLine($"            this[\"On{pascal}\"] = Color.FromArgb(\"{NormalizeHexColor(lightOnColor)}\");");
+        }
+
+        sb.AppendLine("        }");
+        sb.AppendLine("    }");
+    }
+
+    private void EmitDarkOverride(StringBuilder sb, string key, string? darkValue, string? fallback)
+    {
+        if (darkValue != null)
+        {
+            sb.AppendLine($"            this[\"{key}\"] = Color.FromArgb(\"{NormalizeHexColor(darkValue)}\");");
+        }
+    }
+
+    #endregion
 
     #region C# Emit Helpers
 
@@ -341,6 +461,11 @@ public partial class {className} : ResourceDictionary
     private void EmitCsDouble(StringBuilder sb, string key, double value)
     {
         sb.AppendLine($"        this[\"{key}\"] = {value.ToString(CultureInfo.InvariantCulture)}d;");
+    }
+
+    private void EmitCsInt(StringBuilder sb, string key, int value)
+    {
+        sb.AppendLine($"        this[\"{key}\"] = {value};");
     }
 
     private void EmitCsString(StringBuilder sb, string key, string value)

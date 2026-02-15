@@ -1,4 +1,5 @@
 using MauiBootstrapTheme.Extensions;
+using MauiBootstrapTheme.Theming;
 using MauiDevFlow.Agent;
 
 namespace MauiBootstrapTheme.Sample;
@@ -10,8 +11,16 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
-            // Register Bootstrap platform handlers (theme is set in App.xaml via ResourceDictionary)
-            .UseBootstrapTheme()
+            .UseBootstrapTheme(options =>
+            {
+                options.AddTheme<Themes.DefaultTheme>("default");
+                options.AddTheme<Themes.DarklyTheme>("darkly");
+                options.AddTheme<Themes.SlateTheme>("slate");
+                options.AddTheme<Themes.FlatlyTheme>("flatly");
+                options.AddTheme<Themes.SketchyTheme>("sketchy");
+                options.AddTheme<Themes.VaporTheme>("vapor");
+                options.AddTheme<Themes.BriteTheme>("brite");
+            })
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

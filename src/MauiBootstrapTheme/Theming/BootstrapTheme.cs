@@ -297,31 +297,50 @@ public class BootstrapTheme
     }
 
     // ══════════════════════════════════════════════════════════════════
+    // Theme Registry
+    // ══════════════════════════════════════════════════════════════════
+
+    private static readonly Dictionary<string, Func<ResourceDictionary>> _themeRegistry = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Registers a theme factory so it can be activated by name via <see cref="Apply(string)"/>.
+    /// Called automatically by <c>UseBootstrapTheme()</c> or manually by consumers.
+    /// </summary>
+    /// <param name="name">Theme name (e.g. "darkly", "default").</param>
+    /// <param name="factory">Factory that creates the theme ResourceDictionary.</param>
+    public static void RegisterTheme(string name, Func<ResourceDictionary> factory)
+    {
+        _themeRegistry[name.ToLowerInvariant()] = factory;
+    }
+
+    /// <summary>
+    /// Gets the names of all registered themes.
+    /// </summary>
+    public static IReadOnlyCollection<string> RegisteredThemes => _themeRegistry.Keys;
+
+    // ══════════════════════════════════════════════════════════════════
     // ResourceDictionary-based theme switching
     // ══════════════════════════════════════════════════════════════════
 
     /// <summary>
-    /// Applies a theme by replacing Application.Current.Resources with the theme's ResourceDictionary.
-    /// Also syncs BootstrapTheme.Current so handlers reading the singleton stay in sync.
-    /// This is the recommended way to switch themes - all controls using DynamicResource will update instantly.
+    /// Applies a theme by name. The theme must have been registered via <see cref="RegisterTheme"/>.
+    /// Falls back to the first registered theme or throws if none are registered.
     /// </summary>
     /// <param name="themeName">Theme name: "default", "sketchy", "vapor", etc.</param>
     public static void Apply(string themeName)
     {
         if (Application.Current == null) return;
 
-        ResourceDictionary theme = themeName.ToLowerInvariant() switch
+        var key = themeName.ToLowerInvariant();
+        if (_themeRegistry.TryGetValue(key, out var factory))
         {
-            "sketchy" => new Themes.SketchyTheme(),
-            "vapor" => new Themes.VaporTheme(),
-            "darkly" => new Themes.DarklyTheme(),
-            "slate" => new Themes.SlateTheme(),
-            "flatly" => new Themes.FlatlyTheme(),
-            "brite" => new Themes.BriteTheme(),
-            _ => new Themes.DefaultTheme()
-        };
-
-        Apply(theme);
+            Apply(factory());
+        }
+        else if (_themeRegistry.Count > 0)
+        {
+            // Fall back to the first registered theme
+            Apply(_themeRegistry.Values.First()());
+        }
     }
 
     /// <summary>
@@ -399,14 +418,14 @@ public class BootstrapTheme
         if (resources.TryGetValue("OnInfo", out var onI) && onI is Color oic)
             theme.OnInfo = oic;
 
-        if (resources.TryGetValue("CornerRadius", out var cr) && cr is double crd)
-            theme.CornerRadius = crd;
-        if (resources.TryGetValue("CornerRadiusSm", out var crs) && crs is double crsd)
-            theme.CornerRadiusSm = crsd;
-        if (resources.TryGetValue("CornerRadiusLg", out var crl) && crl is double crld)
-            theme.CornerRadiusLg = crld;
-        if (resources.TryGetValue("CornerRadiusPill", out var crp) && crp is double crpd)
-            theme.CornerRadiusPill = crpd;
+        if (resources.TryGetValue("CornerRadius", out var cr))
+            theme.CornerRadius = cr is int cri ? cri : cr is double crd ? crd : theme.CornerRadius;
+        if (resources.TryGetValue("CornerRadiusSm", out var crs))
+            theme.CornerRadiusSm = crs is int crsi ? crsi : crs is double crsd ? crsd : theme.CornerRadiusSm;
+        if (resources.TryGetValue("CornerRadiusLg", out var crl))
+            theme.CornerRadiusLg = crl is int crli ? crli : crl is double crld ? crld : theme.CornerRadiusLg;
+        if (resources.TryGetValue("CornerRadiusPill", out var crp))
+            theme.CornerRadiusPill = crp is int crpi ? crpi : crp is double crpd ? crpd : theme.CornerRadiusPill;
         if (resources.TryGetValue("BorderWidth", out var bw) && bw is double bwd)
             theme.BorderWidth = bwd;
 

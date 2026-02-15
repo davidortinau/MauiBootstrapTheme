@@ -1,11 +1,10 @@
 using MauiBootstrapTheme.Theming;
-using MauiBootstrapTheme.Sample.Themes;
 
 namespace MauiBootstrapTheme.Sample.Pages;
 
 public partial class ThemesPage : ContentPage
 {
-    private static string _currentThemeName = "bootstrap";
+    private static string _currentThemeName = "default";
     
     public ThemesPage()
     {
@@ -14,30 +13,30 @@ public partial class ThemesPage : ContentPage
     }
 
     private void OnDefaultThemeClicked(object sender, EventArgs e)
-        => ApplyTheme("bootstrap", new DefaultTheme());
+        => ApplyTheme("default");
 
     private void OnDarklyThemeClicked(object sender, EventArgs e)
-        => ApplyTheme("darkly", new DarklyTheme());
+        => ApplyTheme("darkly");
 
     private void OnSlateThemeClicked(object sender, EventArgs e)
-        => ApplyTheme("slate", new SlateTheme());
+        => ApplyTheme("slate");
 
     private void OnFlatlyThemeClicked(object sender, EventArgs e)
-        => ApplyTheme("flatly", new FlatlyTheme());
+        => ApplyTheme("flatly");
 
     private void OnSketchyThemeClicked(object sender, EventArgs e)
-        => ApplyTheme("sketchy", new SketchyTheme());
+        => ApplyTheme("sketchy");
 
     private void OnVaporThemeClicked(object sender, EventArgs e)
-        => ApplyTheme("vapor", new VaporTheme());
+        => ApplyTheme("vapor");
 
     private void OnBriteThemeClicked(object sender, EventArgs e)
-        => ApplyTheme("brite", new BriteTheme());
+        => ApplyTheme("brite");
 
-    private void ApplyTheme(string name, ResourceDictionary theme)
+    private void ApplyTheme(string name)
     {
         _currentThemeName = name;
-        BootstrapTheme.Apply(theme);
+        BootstrapTheme.Apply(name);
         UpdateThemeLabel();
     }
     
