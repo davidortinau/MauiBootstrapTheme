@@ -252,15 +252,16 @@ public partial class {className} : ResourceDictionary
             fontFamily = FontMapping.TryGetValue(data.FontFamily, out var mapped) ? mapped : data.FontFamily;
         }
         EmitCsString(sb, "FontFamily", fontFamily);
-        EmitCsDouble(sb, "FontSizeBase", 16);
-        EmitCsDouble(sb, "FontSizeSm", 14);
-        EmitCsDouble(sb, "FontSizeLg", 20);
-        EmitCsDouble(sb, "FontSizeH1", 40);
-        EmitCsDouble(sb, "FontSizeH2", 32);
-        EmitCsDouble(sb, "FontSizeH3", 28);
-        EmitCsDouble(sb, "FontSizeH4", 24);
-        EmitCsDouble(sb, "FontSizeH5", 20);
-        EmitCsDouble(sb, "FontSizeH6", 16);
+        var baseFontSize = data.BodyFontSize != null ? CssToDevicePixels(data.BodyFontSize) : 16;
+        EmitCsDouble(sb, "FontSizeBase", baseFontSize);
+        EmitCsDouble(sb, "FontSizeSm", data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875);
+        EmitCsDouble(sb, "FontSizeLg", data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25);
+        EmitCsDouble(sb, "FontSizeH1", data.FontSizeH1 != null ? CssToDevicePixels(data.FontSizeH1) : baseFontSize * 2.5);
+        EmitCsDouble(sb, "FontSizeH2", data.FontSizeH2 != null ? CssToDevicePixels(data.FontSizeH2) : baseFontSize * 2);
+        EmitCsDouble(sb, "FontSizeH3", data.FontSizeH3 != null ? CssToDevicePixels(data.FontSizeH3) : baseFontSize * 1.75);
+        EmitCsDouble(sb, "FontSizeH4", data.FontSizeH4 != null ? CssToDevicePixels(data.FontSizeH4) : baseFontSize * 1.5);
+        EmitCsDouble(sb, "FontSizeH5", data.FontSizeH5 != null ? CssToDevicePixels(data.FontSizeH5) : baseFontSize * 1.25);
+        EmitCsDouble(sb, "FontSizeH6", data.FontSizeH6 != null ? CssToDevicePixels(data.FontSizeH6) : baseFontSize);
         sb.AppendLine();
 
         // Spacing & sizing
@@ -269,21 +270,33 @@ public partial class {className} : ResourceDictionary
         EmitCsInt(sb, "CornerRadiusLg", (int)Math.Round(CssToDevicePixels(data.BorderRadiusLg ?? "0.5rem")));
         EmitCsInt(sb, "CornerRadiusPill", 50);
         EmitCsDouble(sb, "BorderWidth", CssToDevicePixels(data.BorderWidth ?? "1px"));
-        EmitCsDouble(sb, "ButtonHeight", 38);
-        EmitCsDouble(sb, "ButtonHeightSm", 31);
-        EmitCsDouble(sb, "ButtonHeightLg", 48);
-        EmitCsDouble(sb, "InputHeight", 38);
-        EmitCsDouble(sb, "InputHeightSm", 31);
-        EmitCsDouble(sb, "InputHeightLg", 48);
-        sb.AppendLine($"        this[\"ButtonPadding\"] = new Thickness(12, 6);");
-        sb.AppendLine($"        this[\"ButtonPaddingSm\"] = new Thickness(8, 4);");
-        sb.AppendLine($"        this[\"ButtonPaddingLg\"] = new Thickness(16, 8);");
-        sb.AppendLine($"        this[\"InputPadding\"] = new Thickness(12, 6);");
 
-        EmitCsColor(sb, "ProgressBackground", "#e9ecef");
+        var btnPadX = data.BtnPaddingX != null ? CssToDevicePixels(data.BtnPaddingX) : 12;
+        var btnPadY = data.BtnPaddingY != null ? CssToDevicePixels(data.BtnPaddingY) : 6;
+        var btnPadXSm = data.BtnPaddingXSm != null ? CssToDevicePixels(data.BtnPaddingXSm) : 8;
+        var btnPadYSm = data.BtnPaddingYSm != null ? CssToDevicePixels(data.BtnPaddingYSm) : 4;
+        var btnPadXLg = data.BtnPaddingXLg != null ? CssToDevicePixels(data.BtnPaddingXLg) : 16;
+        var btnPadYLg = data.BtnPaddingYLg != null ? CssToDevicePixels(data.BtnPaddingYLg) : 8;
+        var borderW = CssToDevicePixels(data.BorderWidth ?? "1px");
+
+        EmitCsDouble(sb, "ButtonHeight", btnPadY * 2 + baseFontSize + borderW * 2);
+        EmitCsDouble(sb, "ButtonHeightSm", btnPadYSm * 2 + (data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875) + borderW * 2);
+        EmitCsDouble(sb, "ButtonHeightLg", btnPadYLg * 2 + (data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25) + borderW * 2);
+        EmitCsDouble(sb, "InputHeight", btnPadY * 2 + baseFontSize + borderW * 2);
+        EmitCsDouble(sb, "InputHeightSm", btnPadYSm * 2 + baseFontSize * 0.875 + borderW * 2);
+        EmitCsDouble(sb, "InputHeightLg", btnPadYLg * 2 + baseFontSize * 1.25 + borderW * 2);
+        sb.AppendLine($"        this[\"ButtonPadding\"] = new Thickness({btnPadX.ToString(CultureInfo.InvariantCulture)}, {btnPadY.ToString(CultureInfo.InvariantCulture)});");
+        sb.AppendLine($"        this[\"ButtonPaddingSm\"] = new Thickness({btnPadXSm.ToString(CultureInfo.InvariantCulture)}, {btnPadYSm.ToString(CultureInfo.InvariantCulture)});");
+        sb.AppendLine($"        this[\"ButtonPaddingLg\"] = new Thickness({btnPadXLg.ToString(CultureInfo.InvariantCulture)}, {btnPadYLg.ToString(CultureInfo.InvariantCulture)});");
+        sb.AppendLine($"        this[\"InputPadding\"] = new Thickness({btnPadX.ToString(CultureInfo.InvariantCulture)}, {btnPadY.ToString(CultureInfo.InvariantCulture)});");
+
+        var progressBg = data.ProgressBg ?? data.SecondaryBg ?? "#e9ecef";
+        EmitCsColor(sb, "ProgressBackground", progressBg);
         EmitCsColor(sb, "InputBackground", data.BodyBackground ?? "#ffffff");
         EmitCsColor(sb, "InputText", data.BodyColor ?? "#212529");
-        EmitCsColor(sb, "PlaceholderColor", "#6c757d");
+        var placeholderColor = data.LightVariables.TryGetValue("--bs-secondary-color", out var sc)
+            ? NormalizeHexColor(sc) : "#6c757d";
+        EmitCsColor(sb, "PlaceholderColor", placeholderColor);
         sb.AppendLine();
 
         // Implicit styles
@@ -302,7 +315,7 @@ public partial class {className} : ResourceDictionary
         EmitCsComponentStyles(sb, data);
 
         // Color variant cards
-        EmitCsColorVariantCards(sb);
+        EmitCsColorVariantCards(sb, data);
 
         // Badge backgrounds
         EmitCsBadgeBackgrounds(sb);
@@ -410,8 +423,11 @@ public partial class {className} : ResourceDictionary
         var inputBg = data.BodyBackground ?? "#ffffff";
         sb.AppendLine($"            this[\"InputBackground\"] = Color.FromArgb(\"{NormalizeHexColor(inputBg)}\");");
         sb.AppendLine($"            this[\"InputText\"] = Color.FromArgb(\"{NormalizeHexColor(data.BodyColor ?? "#212529")}\");");
-        sb.AppendLine($"            this[\"PlaceholderColor\"] = Color.FromArgb(\"#FF6c757d\");");
-        sb.AppendLine($"            this[\"ProgressBackground\"] = Color.FromArgb(\"#FFe9ecef\");");
+        var lightPlaceholder = data.LightVariables.TryGetValue("--bs-secondary-color", out var lightSc)
+            ? NormalizeHexColor(lightSc) : "#FF6c757d";
+        sb.AppendLine($"            this[\"PlaceholderColor\"] = Color.FromArgb(\"{lightPlaceholder}\");");
+        var lightProgressBg = data.ProgressBg ?? data.SecondaryBg ?? "#e9ecef";
+        sb.AppendLine($"            this[\"ProgressBackground\"] = Color.FromArgb(\"{NormalizeHexColor(lightProgressBg)}\");");
 
         // Restore light-mode button colors for any variants that had dark overrides
         foreach (var kvp in data.DarkButtonRules)
@@ -521,7 +537,7 @@ public partial class {className} : ResourceDictionary
         if (hasBorder)
         {
             sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.BorderWidthProperty, Value = DR(\"BorderWidth\") });");
-            sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.BorderColorProperty, Value = DR(\"Dark\") });");
+            sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.BorderColorProperty, Value = Colors.Transparent });");
         }
         else
         {
@@ -618,6 +634,16 @@ public partial class {className} : ResourceDictionary
             }
             sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.TextColorProperty, Value = DR(\"On{pascal}\") }});");
 
+            // Set border color from CSS --bs-btn-border-color (matches background for solid buttons)
+            if (data.ButtonRules.TryGetValue(v, out var borderRule) && borderRule.BorderColor != null)
+            {
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = Color.FromArgb(\"{NormalizeHexColor(borderRule.BorderColor)}\") }});");
+            }
+            else
+            {
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = DR(\"{pascal}\") }});");
+            }
+
             if (data.ButtonRules.TryGetValue(v, out var glowRule) && glowRule.BoxShadow != null)
             {
                 var color = v switch
@@ -684,31 +710,45 @@ public partial class {className} : ResourceDictionary
 
     private void EmitCsComponentStyles(StringBuilder sb, Parsing.BootstrapThemeData data)
     {
+        var cardBorderRadius = data.CardRules.BorderRadius ?? data.BorderRadius ?? "0.375rem";
+        if (cardBorderRadius.Contains("var("))
+            cardBorderRadius = data.BorderRadius ?? "0.375rem";
+        var cardCornerRadius = (int)Math.Round(CssToDevicePixels(cardBorderRadius));
+        var cardPadX = data.CardSpacerX != null ? CssToDevicePixels(data.CardSpacerX) : 16;
+        var cardPadY = data.CardSpacerY != null ? CssToDevicePixels(data.CardSpacerY) : 16;
+
         sb.AppendLine("        // Card & component styles");
         sb.AppendLine("        var style_card = new Style(typeof(Border)) { Class = \"card\" };");
         sb.AppendLine("        style_card.Setters.Add(new Setter { Property = Border.BackgroundProperty, Value = DR(\"Surface\") });");
         sb.AppendLine("        style_card.Setters.Add(new Setter { Property = Border.StrokeProperty, Value = DR(\"Outline\") });");
         sb.AppendLine("        style_card.Setters.Add(new Setter { Property = Border.StrokeThicknessProperty, Value = DR(\"BorderWidth\") });");
-        sb.AppendLine("        style_card.Setters.Add(new Setter { Property = Border.StrokeShapeProperty, Value = new RoundRectangle { CornerRadius = 6 } });");
-        sb.AppendLine("        style_card.Setters.Add(new Setter { Property = Border.PaddingProperty, Value = new Thickness(16) });");
+        sb.AppendLine($"        style_card.Setters.Add(new Setter {{ Property = Border.StrokeShapeProperty, Value = new RoundRectangle {{ CornerRadius = {cardCornerRadius} }} }});");
+        sb.AppendLine($"        style_card.Setters.Add(new Setter {{ Property = Border.PaddingProperty, Value = new Thickness({cardPadX.ToString(CultureInfo.InvariantCulture)}, {cardPadY.ToString(CultureInfo.InvariantCulture)}) }});");
         sb.AppendLine("        Add(style_card);");
         sb.AppendLine();
 
         sb.AppendLine("        var style_shadow = new Style(typeof(Border)) { Class = \"shadow\" };");
-        sb.AppendLine("        style_shadow.Setters.Add(new Setter { Property = Border.ShadowProperty, Value = new Shadow { Brush = Colors.Black, Offset = new Point(0, 2), Radius = 8, Opacity = 0.15f } });");
+        sb.AppendLine("        style_shadow.Setters.Add(new Setter { Property = Border.ShadowProperty, Value = new Shadow { Brush = Colors.Black, Offset = new Point(0, 8), Radius = 16, Opacity = 0.15f } });");
         sb.AppendLine("        Add(style_shadow);");
         sb.AppendLine();
 
+        var badgeCornerRadius = (int)Math.Round(CssToDevicePixels(data.BorderRadius ?? "0.375rem"));
         sb.AppendLine("        var style_badge = new Style(typeof(Border)) { Class = \"badge\" };");
         sb.AppendLine("        style_badge.Setters.Add(new Setter { Property = Border.StrokeThicknessProperty, Value = 0d });");
-        sb.AppendLine("        style_badge.Setters.Add(new Setter { Property = Border.StrokeShapeProperty, Value = new RoundRectangle { CornerRadius = 50 } });");
+        sb.AppendLine($"        style_badge.Setters.Add(new Setter {{ Property = Border.StrokeShapeProperty, Value = new RoundRectangle {{ CornerRadius = {badgeCornerRadius} }} }});");
         sb.AppendLine("        style_badge.Setters.Add(new Setter { Property = Border.PaddingProperty, Value = new Thickness(8, 4) });");
         sb.AppendLine("        Add(style_badge);");
         sb.AppendLine();
     }
 
-    private void EmitCsColorVariantCards(StringBuilder sb)
+    private void EmitCsColorVariantCards(StringBuilder sb, Parsing.BootstrapThemeData data)
     {
+        var crVal = data.CardRules.BorderRadius ?? data.BorderRadius ?? "0.375rem";
+        if (crVal.Contains("var(")) crVal = data.BorderRadius ?? "0.375rem";
+        var cr = (int)Math.Round(CssToDevicePixels(crVal));
+        var padX = data.CardSpacerX != null ? CssToDevicePixels(data.CardSpacerX) : 16;
+        var padY = data.CardSpacerY != null ? CssToDevicePixels(data.CardSpacerY) : 16;
+
         sb.AppendLine("        // Color variant cards");
         var variants4 = new[] { "primary", "secondary", "success", "danger", "warning", "info", "light", "dark" };
         foreach (var v in variants4)
@@ -718,8 +758,8 @@ public partial class {className} : ResourceDictionary
             sb.AppendLine($"        var {varName} = new Style(typeof(Border)) {{ Class = \"text-bg-{v}\" }};");
             sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Border.BackgroundProperty, Value = DR(\"{pascal}\") }});");
             sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Border.StrokeThicknessProperty, Value = 0d }});");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Border.StrokeShapeProperty, Value = new RoundRectangle {{ CornerRadius = 6 }} }});");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Border.PaddingProperty, Value = new Thickness(16) }});");
+            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Border.StrokeShapeProperty, Value = new RoundRectangle {{ CornerRadius = {cr} }} }});");
+            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Border.PaddingProperty, Value = new Thickness({padX.ToString(CultureInfo.InvariantCulture)}, {padY.ToString(CultureInfo.InvariantCulture)}) }});");
             sb.AppendLine($"        Add({varName});");
         }
         sb.AppendLine();
@@ -1396,8 +1436,31 @@ public partial class {className} : ResourceDictionary
         if (value.Equals("transparent", StringComparison.OrdinalIgnoreCase)) return "Transparent";
         if (value.StartsWith("rgba("))
         {
-            // rgba(0, 0, 0, 0.6) → approximate as hex with alpha
-            return "#000000"; // simplified
+            // rgba(33, 37, 41, 0.75) → #BF212529 (ARGB hex)
+            var inner = value.Replace("rgba(", "").TrimEnd(')');
+            var parts = inner.Split(',');
+            if (parts.Length == 4
+                && int.TryParse(parts[0].Trim(), out var r)
+                && int.TryParse(parts[1].Trim(), out var g)
+                && int.TryParse(parts[2].Trim(), out var b)
+                && double.TryParse(parts[3].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out var a))
+            {
+                var alpha = (int)Math.Round(a * 255);
+                return $"#{alpha:X2}{r:X2}{g:X2}{b:X2}";
+            }
+            return "#000000";
+        }
+        if (value.StartsWith("rgb("))
+        {
+            var inner = value.Replace("rgb(", "").TrimEnd(')');
+            var parts = inner.Split(',');
+            if (parts.Length == 3
+                && int.TryParse(parts[0].Trim(), out var r)
+                && int.TryParse(parts[1].Trim(), out var g)
+                && int.TryParse(parts[2].Trim(), out var b))
+            {
+                return $"#{r:X2}{g:X2}{b:X2}";
+            }
         }
         return value;
     }

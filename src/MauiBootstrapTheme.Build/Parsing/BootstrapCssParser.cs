@@ -36,6 +36,11 @@ public class BootstrapCssParser
         // 7. Derive semantic colors from CSS variables
         DeriveSemanticColors(data);
 
+        // 8. Extract heading sizes/weight and button sizing from raw CSS rules
+        ExtractHeadingSizesFromCss(cssContent, data);
+        ExtractButtonSizingFromCss(cssContent, data);
+        ExtractProgressBgFromCss(cssContent, data);
+
         return data;
     }
 
@@ -288,6 +293,17 @@ public class BootstrapCssParser
         data.BorderRadiusSm = GetVar(v, "--bs-border-radius-sm");
         data.BorderRadiusLg = GetVar(v, "--bs-border-radius-lg");
 
+        // Typography
+        data.BodyFontSize = GetVar(v, "--bs-body-font-size");
+        data.SecondaryBg = GetColor(v, "--bs-secondary-bg");
+
+        // Card spacing
+        data.CardSpacerX = GetVar(v, "--bs-card-spacer-x");
+        data.CardSpacerY = GetVar(v, "--bs-card-spacer-y");
+
+        // Extract progress background
+        ExtractProgressBg(data);
+
         // Derive On-colors from button rules
         foreach (var variant in new[] { "primary", "secondary", "success", "danger", "warning", "info", "light", "dark" })
         {
@@ -315,6 +331,133 @@ public class BootstrapCssParser
         data.DarkLight = GetColor(dv, "--bs-light");
         data.DarkDark = GetColor(dv, "--bs-dark");
         data.DarkLinkColor = GetColor(dv, "--bs-link-color");
+    }
+
+    /// <summary>
+    /// Extracts heading font sizes and weight from the original CSS content.
+    /// Called from Parse() with the raw CSS.
+    /// </summary>
+    private void ExtractHeadingSizesFromCss(string css, BootstrapThemeData data)
+    {
+        // Look for the @media (min-width:1200px) fixed sizes first (desktop sizes)
+        // Pattern: .h1,h1{font-size:2.5rem}
+        for (int i = 1; i <= 6; i++)
+        {
+            // Try the @media block fixed size first (e.g., @media (min-width:1200px){.h1,h1{font-size:2.5rem}})
+            var mediaPattern = $@"@media[^{{]*min-width:\s*1200px\)[^{{]*\{{[^}}]*\.h{i},h{i}\{{font-size:([^}}]+)\}}";
+            var mediaMatch = Regex.Match(css, mediaPattern);
+            if (mediaMatch.Success)
+            {
+                var size = mediaMatch.Groups[1].Value.Trim();
+                SetHeadingSize(data, i, size);
+                continue;
+            }
+
+            // Fall back to the direct rule (e.g., .h5,h5{font-size:1.25rem})
+            var directPattern = $@"\.h{i},h{i}\{{font-size:([^}}]+)\}}";
+            var directMatch = Regex.Match(css, directPattern);
+            if (directMatch.Success)
+            {
+                var size = directMatch.Groups[1].Value.Trim();
+                // Skip calc() values — use the @media fixed fallback instead
+                if (!size.StartsWith("calc("))
+                    SetHeadingSize(data, i, size);
+            }
+        }
+
+        // Extract heading font-weight
+        var weightPattern = @"h[1-6](?:,\.h[1-6])*\{[^}]*font-weight:\s*(\d+)";
+        var weightMatch = Regex.Match(css, weightPattern);
+        if (weightMatch.Success)
+        {
+            data.HeadingFontWeight = weightMatch.Groups[1].Value;
+        }
+    }
+
+    private void SetHeadingSize(BootstrapThemeData data, int level, string size)
+    {
+        switch (level)
+        {
+            case 1: data.FontSizeH1 = size; break;
+            case 2: data.FontSizeH2 = size; break;
+            case 3: data.FontSizeH3 = size; break;
+            case 4: data.FontSizeH4 = size; break;
+            case 5: data.FontSizeH5 = size; break;
+            case 6: data.FontSizeH6 = size; break;
+        }
+    }
+
+    /// <summary>
+    /// Extracts button sizing from the .btn, .btn-sm, .btn-lg CSS rules.
+    /// </summary>
+    private void ExtractButtonSizingFromCss(string css, BootstrapThemeData data)
+    {
+        // .btn{--bs-btn-padding-x:0.75rem;--bs-btn-padding-y:0.375rem;...}
+        var btnMatch = Regex.Match(css, @"\.btn\{(--bs-btn-[^}]+)\}");
+        if (btnMatch.Success)
+        {
+            var block = btnMatch.Groups[1].Value;
+            var padX = ExtractCssVar(block, "--bs-btn-padding-x");
+            var padY = ExtractCssVar(block, "--bs-btn-padding-y");
+            if (padX != null) data.BtnPaddingX = padX;
+            if (padY != null) data.BtnPaddingY = padY;
+        }
+
+        // .btn-sm{--bs-btn-padding-y:0.25rem;--bs-btn-padding-x:0.5rem;--bs-btn-font-size:0.875rem;...}
+        var smMatch = Regex.Match(css, @"\.btn-sm\{(--bs-btn-[^}]+)\}");
+        if (smMatch.Success)
+        {
+            var block = smMatch.Groups[1].Value;
+            data.BtnPaddingXSm = ExtractCssVar(block, "--bs-btn-padding-x");
+            data.BtnPaddingYSm = ExtractCssVar(block, "--bs-btn-padding-y");
+            data.BtnFontSizeSm = ExtractCssVar(block, "--bs-btn-font-size");
+        }
+
+        // .btn-lg{--bs-btn-padding-y:0.5rem;--bs-btn-padding-x:1rem;--bs-btn-font-size:1.25rem;...}
+        var lgMatch = Regex.Match(css, @"\.btn-lg\{(--bs-btn-[^}]+)\}");
+        if (lgMatch.Success)
+        {
+            var block = lgMatch.Groups[1].Value;
+            data.BtnPaddingXLg = ExtractCssVar(block, "--bs-btn-padding-x");
+            data.BtnPaddingYLg = ExtractCssVar(block, "--bs-btn-padding-y");
+            data.BtnFontSizeLg = ExtractCssVar(block, "--bs-btn-font-size");
+        }
+    }
+
+    private void ExtractProgressBg(BootstrapThemeData data)
+    {
+        var v = data.LightVariables;
+        // --bs-progress-bg from :root is often var(--bs-secondary-bg)
+        var progressBg = GetVar(v, "--bs-progress-bg");
+        if (progressBg != null && progressBg.StartsWith("var("))
+        {
+            var refKey = progressBg.Replace("var(", "").TrimEnd(')');
+            progressBg = GetVar(v, refKey);
+        }
+        // Only set if found in :root — component rule override happens in ExtractProgressBgFromCss
+        if (progressBg != null)
+            data.ProgressBg = progressBg;
+        else
+            data.ProgressBg = data.SecondaryBg;
+    }
+
+    private void ExtractProgressBgFromCss(string css, BootstrapThemeData data)
+    {
+        // .progress,.progress-stacked{--bs-progress-bg:#250d49;...}
+        var match = Regex.Match(css, @"\.progress[,{][^}]*--bs-progress-bg:\s*([^;]+)");
+        if (match.Success)
+        {
+            var val = match.Groups[1].Value.Trim();
+            if (!val.StartsWith("var("))
+                data.ProgressBg = val;
+        }
+    }
+
+    private string? ExtractCssVar(string block, string varName)
+    {
+        var pattern = $@"{Regex.Escape(varName)}\s*:\s*([^;]+)";
+        var match = Regex.Match(block, pattern);
+        return match.Success ? match.Groups[1].Value.Trim() : null;
     }
 
     private string? GetColor(Dictionary<string, string> vars, string key)
@@ -413,6 +556,34 @@ public class BootstrapThemeData
 
     // Font
     public string? FontFamily { get; set; }
+
+    // Typography (raw CSS values)
+    public string? BodyFontSize { get; set; }
+    public string? HeadingFontWeight { get; set; }
+    public string? FontSizeH1 { get; set; }
+    public string? FontSizeH2 { get; set; }
+    public string? FontSizeH3 { get; set; }
+    public string? FontSizeH4 { get; set; }
+    public string? FontSizeH5 { get; set; }
+    public string? FontSizeH6 { get; set; }
+
+    // Button spacing (raw CSS values)
+    public string? BtnPaddingX { get; set; }
+    public string? BtnPaddingY { get; set; }
+    public string? BtnPaddingXSm { get; set; }
+    public string? BtnPaddingYSm { get; set; }
+    public string? BtnPaddingXLg { get; set; }
+    public string? BtnPaddingYLg { get; set; }
+    public string? BtnFontSizeSm { get; set; }
+    public string? BtnFontSizeLg { get; set; }
+
+    // Progress / Secondary background
+    public string? SecondaryBg { get; set; }
+    public string? ProgressBg { get; set; }
+
+    // Card spacing
+    public string? CardSpacerX { get; set; }
+    public string? CardSpacerY { get; set; }
 
     // Component rules
     public Dictionary<string, ButtonRule> ButtonRules { get; set; } = new();
