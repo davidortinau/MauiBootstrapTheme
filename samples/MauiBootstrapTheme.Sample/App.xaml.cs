@@ -8,7 +8,10 @@ public partial class App : Application
     {
         InitializeComponent();
         
-        // Sync BootstrapTheme.Current from the ResourceDictionary loaded in App.xaml
+        // Load the default generated theme from CSS
+        Resources.MergedDictionaries.Add(new Themes.DefaultTheme());
+        
+        // Sync BootstrapTheme.Current from the ResourceDictionary
         // so handlers reading the singleton have correct theme values on startup.
         BootstrapTheme.SyncFromResources(Resources);
     }

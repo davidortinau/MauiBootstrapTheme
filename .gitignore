@@ -85,3 +85,6 @@ __pycache__/
 # Generated files
 Generated/
 *.g.cs
+
+# Generated theme files
+**/obj/BootstrapTheme/

@@ -75,7 +75,7 @@ public static class BootstrapLabelHandler
         var fontSize = theme.GetHeadingFontSize(level);
         label.FontSize = fontSize;
         label.FontAttributes = FontAttributes.Bold;
-        label.TextColor = theme.GetText();
+        // TextColor is handled by StyleClass h1-h6 via {DynamicResource HeadingColor}
         label.LineHeight = theme.LineHeightHeading;
         
         // Apply font family if specified

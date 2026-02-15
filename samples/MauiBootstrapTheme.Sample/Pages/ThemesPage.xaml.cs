@@ -1,5 +1,5 @@
 using MauiBootstrapTheme.Theming;
-using MauiBootstrapTheme.Themes;
+using MauiBootstrapTheme.Sample.Themes;
 
 namespace MauiBootstrapTheme.Sample.Pages;
 

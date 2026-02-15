@@ -50,6 +50,20 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\MauiBootstrapTheme\MauiBootstrapTheme.csproj" />
+    <ProjectReference Include="..\..\src\MauiBootstrapTheme.Build\MauiBootstrapTheme.Build.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
+
+  <!-- Bootstrap CSS → ResourceDictionary generation -->
+  <ItemGroup>
+    <BootstrapCss Include="Resources\Themes\bootstrap.min.css" ThemeName="default" />
+    <BootstrapCss Include="Resources\Themes\darkly.min.css" />
+    <BootstrapCss Include="Resources\Themes\slate.min.css" />
+    <BootstrapCss Include="Resources\Themes\flatly.min.css" />
+    <BootstrapCss Include="Resources\Themes\sketchy.min.css" />
+    <BootstrapCss Include="Resources\Themes\vapor.min.css" />
+    <BootstrapCss Include="Resources\Themes\brite.min.css" />
+  </ItemGroup>
+
+  <Import Project="..\..\src\MauiBootstrapTheme.Build\build\MauiBootstrapTheme.Build.targets" />
 
 </Project>
