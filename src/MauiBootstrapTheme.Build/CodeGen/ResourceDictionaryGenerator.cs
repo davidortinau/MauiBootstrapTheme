@@ -280,11 +280,14 @@ public partial class {className} : ResourceDictionary
 
         var buttonHeight = btnPadY * 2 + baseFontSize + borderW * 2;
         EmitCsDouble(sb, "ButtonHeight", buttonHeight);
+        var buttonHeightSm = btnPadYSm * 2 + (data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875) + borderW * 2;
         var buttonHeightLg = btnPadYLg * 2 + (data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25) + borderW * 2;
-        EmitCsDouble(sb, "ButtonHeightSm", btnPadYSm * 2 + (data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875) + borderW * 2);
+        EmitCsDouble(sb, "ButtonHeightSm", buttonHeightSm);
         EmitCsDouble(sb, "ButtonHeightLg", buttonHeightLg);
-        // CSS uses 50rem to guarantee full rounding; use half of largest button height so pill works at all sizes
-        EmitCsInt(sb, "CornerRadiusPill", (int)Math.Ceiling(buttonHeightLg / 2));
+        // Pre-calculate pill radii per size (half of height for perfect pill shape)
+        EmitCsInt(sb, "CornerRadiusPill", (int)Math.Ceiling(buttonHeight / 2));
+        EmitCsInt(sb, "CornerRadiusPillSm", (int)Math.Ceiling(buttonHeightSm / 2));
+        EmitCsInt(sb, "CornerRadiusPillLg", (int)Math.Ceiling(buttonHeightLg / 2));
         EmitCsDouble(sb, "InputHeight", btnPadY * 2 + baseFontSize + borderW * 2);
         EmitCsDouble(sb, "InputHeightSm", btnPadYSm * 2 + baseFontSize * 0.875 + borderW * 2);
         EmitCsDouble(sb, "InputHeightLg", btnPadYLg * 2 + baseFontSize * 1.25 + borderW * 2);
@@ -708,6 +711,23 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("        var style_btn_pill = new Style(typeof(Button)) { Class = \"btn-pill\" };");
         sb.AppendLine("        style_btn_pill.Setters.Add(new Setter { Property = Button.CornerRadiusProperty, Value = DR(\"CornerRadiusPill\") });");
         sb.AppendLine("        Add(style_btn_pill);");
+        sb.AppendLine();
+
+        // Pill + size combos: correct corner radius for each button height
+        sb.AppendLine("        var style_btn_pill_lg = new Style(typeof(Button)) { Class = \"btn-pill-lg\" };");
+        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new Setter { Property = Button.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new Setter { Property = Button.PaddingProperty, Value = DR(\"ButtonPaddingLg\") });");
+        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new Setter { Property = Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeightLg\") });");
+        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new Setter { Property = Button.CornerRadiusProperty, Value = DR(\"CornerRadiusPillLg\") });");
+        sb.AppendLine("        Add(style_btn_pill_lg);");
+        sb.AppendLine();
+
+        sb.AppendLine("        var style_btn_pill_sm = new Style(typeof(Button)) { Class = \"btn-pill-sm\" };");
+        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new Setter { Property = Button.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new Setter { Property = Button.PaddingProperty, Value = DR(\"ButtonPaddingSm\") });");
+        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new Setter { Property = Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeightSm\") });");
+        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new Setter { Property = Button.CornerRadiusProperty, Value = DR(\"CornerRadiusPillSm\") });");
+        sb.AppendLine("        Add(style_btn_pill_sm);");
         sb.AppendLine();
     }
 
