@@ -213,22 +213,52 @@ public class BootstrapCssParser
 
     private string? ExtractFontFamily(string css)
     {
-        // Look for theme-specific body font-family in :root
-        // Bootswatch themes that use custom fonts set --bs-body-font-family directly (not var())
         var rootVars = ExtractRootVariables(css);
 
+        // First check --bs-body-font-family
         if (rootVars.TryGetValue("--bs-body-font-family", out var ff))
         {
-            // Skip if it's just var(--bs-font-sans-serif) — that's the system default
-            if (ff.Contains("var("))
+            // If it references var(--bs-font-sans-serif), resolve that variable
+            if (ff.Contains("var(--bs-font-sans-serif)"))
+            {
+                if (rootVars.TryGetValue("--bs-font-sans-serif", out var sansSerif))
+                    ff = sansSerif;
+                else
+                    return null;
+            }
+            else if (ff.Contains("var("))
+            {
                 return null;
+            }
 
             // Extract the first font name
             var firstFont = ff.Split(',')[0].Trim().Trim('"').Trim('\'');
+            // Skip system fonts
+            if (IsSystemFont(firstFont))
+                return null;
             return string.IsNullOrEmpty(firstFont) ? null : firstFont;
         }
 
+        // Also check --bs-font-sans-serif directly for themes that set custom fonts there
+        if (rootVars.TryGetValue("--bs-font-sans-serif", out var sans))
+        {
+            var firstFont = sans.Split(',')[0].Trim().Trim('"').Trim('\'');
+            if (!IsSystemFont(firstFont) && !string.IsNullOrEmpty(firstFont))
+                return firstFont;
+        }
+
         return null;
+    }
+
+    private bool IsSystemFont(string fontName)
+    {
+        var systemFonts = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "-apple-system", "system-ui", "BlinkMacSystemFont", "Segoe UI",
+            "Roboto", "Helvetica Neue", "Arial", "sans-serif", "Lato",
+            "Helvetica", "Times New Roman", "Georgia"
+        };
+        return systemFonts.Contains(fontName);
     }
 
     private void DeriveSemanticColors(BootstrapThemeData data)
