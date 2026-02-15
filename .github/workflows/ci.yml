@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          dotnet-quality: 'preview'
+
+      - name: Install MAUI workload
+        run: dotnet workload install maui
+
+      - name: Restore
+        run: dotnet restore MauiBootstrapTheme.sln
+
+      - name: Build MauiBootstrapTheme.Build
+        run: dotnet build src/MauiBootstrapTheme.Build -c Release --no-restore
+
+      - name: Build MauiBootstrapTheme
+        run: dotnet build src/MauiBootstrapTheme -c Release --no-restore
+
+      - name: Run tests
+        run: dotnet test tests/MauiBootstrapTheme.Build.Tests -c Release --no-restore
+
+      - name: Build sample app
+        run: dotnet build samples/MauiBootstrapTheme.Sample -c Release -f net10.0-maccatalyst --no-restore
+
+  pack:
+    runs-on: macos-latest
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          dotnet-quality: 'preview'
+
+      - name: Install MAUI workload
+        run: dotnet workload install maui
+
+      - name: Restore
+        run: dotnet restore MauiBootstrapTheme.sln
+
+      - name: Pack MauiBootstrapTheme.Build
+        run: dotnet pack src/MauiBootstrapTheme.Build -c Release --no-restore -o artifacts
+
+      - name: Pack MauiBootstrapTheme
+        run: dotnet pack src/MauiBootstrapTheme -c Release --no-restore -o artifacts
+
+      - name: Upload NuGet artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: artifacts/*.nupkg
+          retention-days: 30
