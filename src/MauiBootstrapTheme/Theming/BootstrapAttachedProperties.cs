@@ -395,7 +395,14 @@ public static class Bootstrap
             view.Background = theme.GetVariantColor(bgVariant);
         }
 
-        // Shadow is applied via handler (platform-specific)
+        // Apply shadow
+        view.Shadow = shadow switch
+        {
+            BootstrapShadow.Small => new Shadow { Brush = Colors.Black, Offset = new Point(0, 2), Radius = 4, Opacity = 0.075f },
+            BootstrapShadow.Default => new Shadow { Brush = Colors.Black, Offset = new Point(0, 8), Radius = 16, Opacity = 0.15f },
+            BootstrapShadow.Large => new Shadow { Brush = Colors.Black, Offset = new Point(0, 16), Radius = 48, Opacity = 0.175f },
+            _ => null
+        };
     }
 
     private static void ApplyBadgeStyle(Label label)

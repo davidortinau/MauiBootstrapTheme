@@ -727,9 +727,19 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("        Add(style_card);");
         sb.AppendLine();
 
-        sb.AppendLine("        var style_shadow = new Style(typeof(Border)) { Class = \"shadow\" };");
-        sb.AppendLine("        style_shadow.Setters.Add(new Setter { Property = Border.ShadowProperty, Value = new Shadow { Brush = Colors.Black, Offset = new Point(0, 8), Radius = 16, Opacity = 0.15f } });");
+        sb.AppendLine("        var style_shadow = new Style(typeof(VisualElement)) { Class = \"shadow\", ApplyToDerivedTypes = true };");
+        sb.AppendLine("        style_shadow.Setters.Add(new Setter { Property = VisualElement.ShadowProperty, Value = new Shadow { Brush = Colors.Black, Offset = new Point(0, 8), Radius = 16, Opacity = 0.15f } });");
         sb.AppendLine("        Add(style_shadow);");
+        sb.AppendLine();
+
+        sb.AppendLine("        var style_shadow_sm = new Style(typeof(VisualElement)) { Class = \"shadow-sm\", ApplyToDerivedTypes = true };");
+        sb.AppendLine("        style_shadow_sm.Setters.Add(new Setter { Property = VisualElement.ShadowProperty, Value = new Shadow { Brush = Colors.Black, Offset = new Point(0, 2), Radius = 4, Opacity = 0.075f } });");
+        sb.AppendLine("        Add(style_shadow_sm);");
+        sb.AppendLine();
+
+        sb.AppendLine("        var style_shadow_lg = new Style(typeof(VisualElement)) { Class = \"shadow-lg\", ApplyToDerivedTypes = true };");
+        sb.AppendLine("        style_shadow_lg.Setters.Add(new Setter { Property = VisualElement.ShadowProperty, Value = new Shadow { Brush = Colors.Black, Offset = new Point(0, 16), Radius = 48, Opacity = 0.175f } });");
+        sb.AppendLine("        Add(style_shadow_lg);");
         sb.AppendLine();
 
         var badgeCornerRadius = (int)Math.Round(CssToDevicePixels(data.BorderRadius ?? "0.375rem"));
