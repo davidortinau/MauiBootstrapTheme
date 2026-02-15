@@ -14,6 +14,16 @@ public class ResourceDictionaryGenerator
     {
         { "Neucha", "MarkerFelt-Wide" },       // Sketchy → closest macOS/iOS hand-drawn font
         { "Cabin Sketch", "MarkerFelt-Wide" },  // Sketchy headings
+        { "Lato", "Avenir Next" },
+        { "Open Sans", "HelveticaNeue" },
+        { "Source Sans Pro", "HelveticaNeue" },
+        { "Nunito", "Avenir Next" },
+        { "Poppins", "Avenir Next" },
+        { "Montserrat", "Avenir Next" },
+        { "Inter", "HelveticaNeue" },
+        { "Fira Sans", "HelveticaNeue" },
+        { "IBM Plex Sans", "HelveticaNeue" },
+        { "Roboto", "HelveticaNeue" },
     };
 
     /// <summary>
@@ -346,7 +356,12 @@ public partial class {className} : ResourceDictionary
             sb.AppendLine("        if (Application.Current != null)");
             sb.AppendLine("        {");
             sb.AppendLine("            ApplyThemeMode(Application.Current.RequestedTheme);");
-            sb.AppendLine("            Application.Current.RequestedThemeChanged += (s, e) => ApplyThemeMode(e.RequestedTheme);");
+            sb.AppendLine($"            var weakSelf = new WeakReference<{className}>(this);");
+            sb.AppendLine("            Application.Current.RequestedThemeChanged += (s, e) =>");
+            sb.AppendLine("            {");
+            sb.AppendLine("                if (weakSelf.TryGetTarget(out var self))");
+            sb.AppendLine("                    self.ApplyThemeMode(e.RequestedTheme);");
+            sb.AppendLine("            };");
             sb.AppendLine("        }");
         }
 
@@ -373,6 +388,12 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("    /// </summary>");
         sb.AppendLine("    private void ApplyThemeMode(AppTheme theme)");
         sb.AppendLine("    {");
+        sb.AppendLine("        if (!Microsoft.Maui.ApplicationModel.MainThread.IsMainThread)");
+        sb.AppendLine("        {");
+        sb.AppendLine("            Microsoft.Maui.ApplicationModel.MainThread.BeginInvokeOnMainThread(() => ApplyThemeMode(theme));");
+        sb.AppendLine("            return;");
+        sb.AppendLine("        }");
+        sb.AppendLine();
         sb.AppendLine("        if (theme == AppTheme.Dark)");
         sb.AppendLine("        {");
 
@@ -1403,7 +1424,7 @@ public partial class {className} : ResourceDictionary
         var stops = new List<(string, double)>();
 
         // Remove direction if present (e.g., "180deg," or just starts with colors)
-        var parts = gradient.Split(',').Select(p => p.Trim()).ToList();
+        var parts = SplitTopLevelByComma(gradient);
 
         // Filter out direction keywords
         var colorParts = new List<string>();
@@ -1441,6 +1462,30 @@ public partial class {className} : ResourceDictionary
         }
 
         return stops;
+    }
+
+    private static List<string> SplitTopLevelByComma(string value)
+    {
+        var parts = new List<string>();
+        var depth = 0;
+        var start = 0;
+
+        for (var i = 0; i < value.Length; i++)
+        {
+            var ch = value[i];
+            if (ch == '(') depth++;
+            else if (ch == ')' && depth > 0) depth--;
+            else if (ch == ',' && depth == 0)
+            {
+                parts.Add(value[start..i].Trim());
+                start = i + 1;
+            }
+        }
+
+        if (start < value.Length)
+            parts.Add(value[start..].Trim());
+
+        return parts;
     }
 
     private bool IsDarkTheme(Parsing.BootstrapThemeData data)
