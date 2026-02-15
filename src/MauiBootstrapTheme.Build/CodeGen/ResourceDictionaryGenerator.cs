@@ -873,6 +873,21 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("        style_lead.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeLead\") });");
         sb.AppendLine("        style_lead.Setters.Add(new Setter { Property = Label.LineHeightProperty, Value = 1.5 });");
         sb.AppendLine("        Add(style_lead);");
+        sb.AppendLine("        var style_small = new Style(typeof(Label)) { Class = \"small\" };");
+        sb.AppendLine("        style_small.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        Add(style_small);");
+        sb.AppendLine("        var style_mark = new Style(typeof(Label)) { Class = \"mark\" };");
+        sb.AppendLine("        style_mark.Setters.Add(new Setter { Property = Label.BackgroundProperty, Value = Color.FromArgb(\"#fcf8e3\") });");
+        sb.AppendLine("        style_mark.Setters.Add(new Setter { Property = Label.PaddingProperty, Value = new Thickness(4, 2) });");
+        sb.AppendLine("        Add(style_mark);");
+        var variants = new[] { "primary", "secondary", "success", "danger", "warning", "info" };
+        foreach (var v in variants)
+        {
+            var pascal = ToPascalCase(v);
+            sb.AppendLine($"        var style_text_{v} = new Style(typeof(Label)) {{ Class = \"text-{v}\" }};");
+            sb.AppendLine($"        style_text_{v}.Setters.Add(new Setter {{ Property = Label.TextColorProperty, Value = DR(\"{pascal}\") }});");
+            sb.AppendLine($"        Add(style_text_{v});");
+        }
         sb.AppendLine("        var style_text_muted = new Style(typeof(Label)) { Class = \"text-muted\" };");
         sb.AppendLine("        style_text_muted.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"Muted\") });");
         sb.AppendLine("        Add(style_text_muted);");
@@ -1374,6 +1389,31 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("    <Style TargetType=\"Label\" Class=\"lead\">");
         sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeLead}\"/>");
         sb.AppendLine("        <Setter Property=\"LineHeight\" Value=\"1.5\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"small\">");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeSm}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"mark\">");
+        sb.AppendLine("        <Setter Property=\"Background\" Value=\"#fcf8e3\"/>");
+        sb.AppendLine("        <Setter Property=\"Padding\" Value=\"4,2\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-primary\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Primary}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-secondary\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Secondary}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-success\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Success}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-danger\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Danger}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-warning\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Warning}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-info\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Info}\"/>");
         sb.AppendLine("    </Style>");
         sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-muted\">");
         sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Muted}\"/>");

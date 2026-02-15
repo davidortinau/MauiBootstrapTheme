@@ -10,28 +10,28 @@
             
             <!-- Header -->
             <Label Text="Spacing Utilities"
-                   theme:Bootstrap.Heading="2"
+                   StyleClass="h2"
                    HorizontalOptions="Center" />
             
             <Label Text="Bootstrap spacing scale (0-5) for margin and padding"
-                   theme:Bootstrap.TextStyle="Lead"
+                   StyleClass="lead"
                    HorizontalOptions="Center" />
             
             <!-- Spacing Scale Reference -->
-            <Border theme:Bootstrap.Shadow="Small" Padding="16">
+            <Border StyleClass="shadow-sm" Padding="16">
                 <VerticalStackLayout Spacing="8">
-                    <Label Text="Spacing Scale" theme:Bootstrap.Heading="4" />
-                    <Label Text="• Level 0 = 0px" theme:Bootstrap.TextStyle="Small" />
-                    <Label Text="• Level 1 = 4px (0.25rem)" theme:Bootstrap.TextStyle="Small" />
-                    <Label Text="• Level 2 = 8px (0.5rem)" theme:Bootstrap.TextStyle="Small" />
-                    <Label Text="• Level 3 = 16px (1rem)" theme:Bootstrap.TextStyle="Small" />
-                    <Label Text="• Level 4 = 24px (1.5rem)" theme:Bootstrap.TextStyle="Small" />
-                    <Label Text="• Level 5 = 48px (3rem)" theme:Bootstrap.TextStyle="Small" />
+                    <Label Text="Spacing Scale" StyleClass="h4" />
+                    <Label Text="• Level 0 = 0px" StyleClass="small" />
+                    <Label Text="• Level 1 = 4px (0.25rem)" StyleClass="small" />
+                    <Label Text="• Level 2 = 8px (0.5rem)" StyleClass="small" />
+                    <Label Text="• Level 3 = 16px (1rem)" StyleClass="small" />
+                    <Label Text="• Level 4 = 24px (1.5rem)" StyleClass="small" />
+                    <Label Text="• Level 5 = 48px (3rem)" StyleClass="small" />
                 </VerticalStackLayout>
             </Border>
             
             <!-- Margin Examples -->
-            <Label Text="Margin Examples" theme:Bootstrap.Heading="4" />
+            <Label Text="Margin Examples" StyleClass="h4" />
             
             <Border Background="LightGray" Padding="4">
                 <VerticalStackLayout Spacing="4">
@@ -62,7 +62,7 @@
             </Border>
             
             <!-- Padding Examples -->
-            <Label Text="Padding Examples" theme:Bootstrap.Heading="4" />
+            <Label Text="Padding Examples" StyleClass="h4" />
             
             <VerticalStackLayout Spacing="8">
                 <Border Background="#e9ecef">
@@ -103,18 +103,18 @@
             </VerticalStackLayout>
             
             <!-- Combined Example -->
-            <Label Text="Combined Example" theme:Bootstrap.Heading="4" />
+            <Label Text="Combined Example" StyleClass="h4" />
             
-            <Border theme:Bootstrap.Shadow="Default" Padding="0">
+            <Border StyleClass="shadow" Padding="0">
                 <VerticalStackLayout theme:Bootstrap.PaddingLevel="4">
-                    <Label Text="Card with PaddingLevel=4" theme:Bootstrap.Heading="5" />
+                    <Label Text="Card with PaddingLevel=4" StyleClass="h5" />
                     
                     <Button Text="Button with MarginLevel=3" 
-                            theme:Bootstrap.Variant="Primary"
+                            StyleClass="btn-primary"
                             theme:Bootstrap.MarginLevel="3" />
                     
                     <Label Text="Using Bootstrap spacing levels creates consistent visual rhythm throughout your app."
-                           theme:Bootstrap.TextStyle="Muted" />
+                           StyleClass="text-muted" />
                 </VerticalStackLayout>
             </Border>
             

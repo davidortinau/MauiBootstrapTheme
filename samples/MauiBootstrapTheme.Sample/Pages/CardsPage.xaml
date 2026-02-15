@@ -13,8 +13,7 @@
                 <Label Text="Cards &amp; Containers"
                        StyleClass="h1"/>
                 <Label Text="Bootstrap card components with shadows"
-                       StyleClass="text-muted"
-                       FontSize="18"/>
+                       StyleClass="lead,text-muted"/>
             </VerticalStackLayout>
 
             <BoxView HeightRequest="1"

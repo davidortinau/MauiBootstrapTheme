@@ -13,8 +13,7 @@
                 <Label Text="Bootstrap Controls"
                        StyleClass="h1"/>
                 <Label Text="Stock MAUI controls styled with Bootstrap 5 theme values."
-                       StyleClass="text-muted"
-                       FontSize="18"/>
+                       StyleClass="lead,text-muted"/>
             </VerticalStackLayout>
 
             <BoxView HeightRequest="1"
