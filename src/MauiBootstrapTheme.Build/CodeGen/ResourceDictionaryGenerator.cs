@@ -266,6 +266,7 @@ public partial class {className} : ResourceDictionary
         EmitCsDouble(sb, "FontSizeBase", baseFontSize);
         EmitCsDouble(sb, "FontSizeSm", data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875);
         EmitCsDouble(sb, "FontSizeLg", data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25);
+        EmitCsDouble(sb, "FontSizeLead", baseFontSize * 1.25);
         EmitCsDouble(sb, "FontSizeH1", data.FontSizeH1 != null ? CssToDevicePixels(data.FontSizeH1) : baseFontSize * 2.5);
         EmitCsDouble(sb, "FontSizeH2", data.FontSizeH2 != null ? CssToDevicePixels(data.FontSizeH2) : baseFontSize * 2);
         EmitCsDouble(sb, "FontSizeH3", data.FontSizeH3 != null ? CssToDevicePixels(data.FontSizeH3) : baseFontSize * 1.75);
@@ -868,6 +869,10 @@ public partial class {className} : ResourceDictionary
     private void EmitCsTextStyles(StringBuilder sb)
     {
         sb.AppendLine("        // Text styles");
+        sb.AppendLine("        var style_lead = new Style(typeof(Label)) { Class = \"lead\" };");
+        sb.AppendLine("        style_lead.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeLead\") });");
+        sb.AppendLine("        style_lead.Setters.Add(new Setter { Property = Label.LineHeightProperty, Value = 1.5 });");
+        sb.AppendLine("        Add(style_lead);");
         sb.AppendLine("        var style_text_muted = new Style(typeof(Label)) { Class = \"text-muted\" };");
         sb.AppendLine("        style_text_muted.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"Muted\") });");
         sb.AppendLine("        Add(style_text_muted);");
@@ -1063,6 +1068,7 @@ public partial class {className} : ResourceDictionary
         EmitDouble(sb, "FontSizeBase", 16);
         EmitDouble(sb, "FontSizeSm", 14);
         EmitDouble(sb, "FontSizeLg", 20);
+        EmitDouble(sb, "FontSizeLead", 20);
         EmitDouble(sb, "FontSizeH1", 40);
         EmitDouble(sb, "FontSizeH2", 32);
         EmitDouble(sb, "FontSizeH3", 28);
@@ -1365,6 +1371,10 @@ public partial class {className} : ResourceDictionary
 
     private void EmitTextStyles(StringBuilder sb)
     {
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"lead\">");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeLead}\"/>");
+        sb.AppendLine("        <Setter Property=\"LineHeight\" Value=\"1.5\"/>");
+        sb.AppendLine("    </Style>");
         sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-muted\">");
         sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Muted}\"/>");
         sb.AppendLine("    </Style>");
