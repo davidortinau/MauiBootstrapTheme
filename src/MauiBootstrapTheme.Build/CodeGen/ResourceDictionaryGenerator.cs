@@ -268,7 +268,6 @@ public partial class {className} : ResourceDictionary
         EmitCsInt(sb, "CornerRadius", (int)Math.Round(CssToDevicePixels(data.BorderRadius ?? "0.375rem")));
         EmitCsInt(sb, "CornerRadiusSm", (int)Math.Round(CssToDevicePixels(data.BorderRadiusSm ?? "0.25rem")));
         EmitCsInt(sb, "CornerRadiusLg", (int)Math.Round(CssToDevicePixels(data.BorderRadiusLg ?? "0.5rem")));
-        EmitCsInt(sb, "CornerRadiusPill", 50);
         EmitCsDouble(sb, "BorderWidth", CssToDevicePixels(data.BorderWidth ?? "1px"));
 
         var btnPadX = data.BtnPaddingX != null ? CssToDevicePixels(data.BtnPaddingX) : 12;
@@ -279,9 +278,13 @@ public partial class {className} : ResourceDictionary
         var btnPadYLg = data.BtnPaddingYLg != null ? CssToDevicePixels(data.BtnPaddingYLg) : 8;
         var borderW = CssToDevicePixels(data.BorderWidth ?? "1px");
 
-        EmitCsDouble(sb, "ButtonHeight", btnPadY * 2 + baseFontSize + borderW * 2);
+        var buttonHeight = btnPadY * 2 + baseFontSize + borderW * 2;
+        EmitCsDouble(sb, "ButtonHeight", buttonHeight);
+        var buttonHeightLg = btnPadYLg * 2 + (data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25) + borderW * 2;
         EmitCsDouble(sb, "ButtonHeightSm", btnPadYSm * 2 + (data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875) + borderW * 2);
-        EmitCsDouble(sb, "ButtonHeightLg", btnPadYLg * 2 + (data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25) + borderW * 2);
+        EmitCsDouble(sb, "ButtonHeightLg", buttonHeightLg);
+        // CSS uses 50rem to guarantee full rounding; use half of largest button height so pill works at all sizes
+        EmitCsInt(sb, "CornerRadiusPill", (int)Math.Ceiling(buttonHeightLg / 2));
         EmitCsDouble(sb, "InputHeight", btnPadY * 2 + baseFontSize + borderW * 2);
         EmitCsDouble(sb, "InputHeightSm", btnPadYSm * 2 + baseFontSize * 0.875 + borderW * 2);
         EmitCsDouble(sb, "InputHeightLg", btnPadYLg * 2 + baseFontSize * 1.25 + borderW * 2);
@@ -1032,7 +1035,7 @@ public partial class {className} : ResourceDictionary
         EmitDouble(sb, "CornerRadius", CssToDevicePixels(data.BorderRadius ?? "0.375rem"));
         EmitDouble(sb, "CornerRadiusSm", CssToDevicePixels(data.BorderRadiusSm ?? "0.25rem"));
         EmitDouble(sb, "CornerRadiusLg", CssToDevicePixels(data.BorderRadiusLg ?? "0.5rem"));
-        EmitDouble(sb, "CornerRadiusPill", 50);
+        EmitDouble(sb, "CornerRadiusPill", 19); // half of default ButtonHeight (38)
         EmitDouble(sb, "BorderWidth", CssToDevicePixels(data.BorderWidth ?? "1px"));
         EmitDouble(sb, "ButtonHeight", 38);
         EmitDouble(sb, "ButtonHeightSm", 31);
