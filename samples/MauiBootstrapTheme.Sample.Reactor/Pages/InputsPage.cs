@@ -54,7 +54,7 @@ class InputsPage : BasePage
                 // Date & Time
                 VStack(spacing: 12,
                     Label("Date & Time").H4(),
-                    Grid("*,*", "Auto",
+                    Grid("Auto", "*,*",
                         VStack(spacing: 4,
                             Label("Date"),
                             DatePicker()

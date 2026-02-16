@@ -29,7 +29,7 @@ class CardsPage : BasePage
                 // Shadow Variants
                 VStack(spacing: 12,
                     Label("Shadow Variants").H4(),
-                    Grid("*,*", "*",
+                    Grid("*", "*,*",
                         Card(
                             VStack(
                                 Label("No Shadow").H5(),
@@ -41,21 +41,21 @@ class CardsPage : BasePage
                                 Label("Small Shadow").H5(),
                                 Label("shadow-sm class").Muted()
                             )
-                        ).ShadowSm().GridColumn(1)
+                        ).Class("shadow-sm").GridColumn(1)
                     ).ColumnSpacing(16).RowSpacing(16),
-                    Grid("*,*", "*",
+                    Grid("*", "*,*",
                         Card(
                             VStack(
                                 Label("Default Shadow").H5(),
                                 Label("shadow class").Muted()
                             )
-                        ).ShadowMd().GridColumn(0),
+                        ).Class("shadow").GridColumn(0),
                         Card(
                             VStack(
                                 Label("Large Shadow").H5(),
                                 Label("shadow-lg class").Muted()
                             )
-                        ).ShadowLg().GridColumn(1)
+                        ).Class("shadow-lg").GridColumn(1)
                     ).ColumnSpacing(16)
                 ),
 
@@ -80,34 +80,34 @@ class CardsPage : BasePage
                 // Background Variants
                 VStack(spacing: 12,
                     Label("Background Variants").H4(),
-                    Grid("*,*,*", "*",
+                    Grid("*", "*,*,*",
                         Border(
                             VStack(
-                                Label("Primary Background").H5(),
-                                Label("text-bg-primary")
+                                Label("Primary Background").H5().Class("on-primary"),
+                                Label("text-bg-primary").Class("on-primary")
                             )
-                        ).Background(BootstrapVariant.Primary).ShadowSm().GridColumn(0),
+                        ).Class("text-bg-primary").Class("shadow-sm").GridColumn(0),
                         Border(
                             VStack(
-                                Label("Success Background").H5(),
-                                Label("text-bg-success")
+                                Label("Success Background").H5().Class("on-success"),
+                                Label("text-bg-success").Class("on-success")
                             )
-                        ).Background(BootstrapVariant.Success).ShadowSm().GridColumn(1),
+                        ).Class("text-bg-success").Class("shadow-sm").GridColumn(1),
                         Border(
                             VStack(
-                                Label("Dark Background").H5(),
-                                Label("text-bg-dark")
+                                Label("Dark Background").H5().Class("on-dark"),
+                                Label("text-bg-dark").Class("on-dark")
                             )
-                        ).Background(BootstrapVariant.Dark).ShadowSm().GridColumn(2)
+                        ).Class("text-bg-dark").Class("shadow-sm").GridColumn(2)
                     ).ColumnSpacing(12).RowSpacing(12)
                 ),
 
                 // Card with Header & Footer
                 VStack(spacing: 12,
                     Label("Card with Header & Footer").H4(),
-                    Card(
+                    Border(
                         VStack(
-                            Label("Featured").Padding(12, 8).BackgroundColor(BootstrapTheme.Current.Light),
+                            Label("Featured").Padding(12, 8).Background(GetResource<Color>("Gray100")),
                             BoxView().HeightRequest(1).Color(BootstrapTheme.Current.Outline),
                             VStack(spacing: 8,
                                 Label("Special Title").H5(),
@@ -115,9 +115,14 @@ class CardsPage : BasePage
                                 Button("Go somewhere").Primary().HorizontalOptions(LayoutOptions.Start)
                             ).Padding(16),
                             BoxView().HeightRequest(1).Color(BootstrapTheme.Current.Outline),
-                            Label("2 days ago").Muted().Padding(12, 8).BackgroundColor(BootstrapTheme.Current.Light)
+                            Label("2 days ago").Muted().Padding(12, 8).Background(GetResource<Color>("Gray100"))
                         )
-                    ).Padding(0).ShadowMd()
+                    ).Stroke(BootstrapTheme.Current.GetOutline())
+                        .BackgroundColor(BootstrapTheme.Current.GetSurface())
+                        .StrokeThickness(BootstrapTheme.Current.BorderWidth)
+                        .Set(Microsoft.Maui.Controls.Border.StrokeShapeProperty, new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = (float)BootstrapTheme.Current.CornerRadius })
+                        .Padding(0)
+                        .Class("shadow")
                 )
             ).Padding(20)
         );

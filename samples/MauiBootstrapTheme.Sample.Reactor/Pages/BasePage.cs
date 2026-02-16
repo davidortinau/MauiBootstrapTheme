@@ -23,6 +23,13 @@ abstract class BasePage : Component
         base.OnWillUnmount();
     }
 
+    protected static T GetResource<T>(string key, T fallback = default!)
+    {
+        if (Application.Current?.Resources.TryGetValue(key, out var value) == true && value is T typed)
+            return typed;
+        return fallback;
+    }
+
     public abstract VisualNode RenderContent();
 
     public override VisualNode Render()

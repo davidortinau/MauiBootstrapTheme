@@ -46,9 +46,9 @@ class ControlsPage : BasePage
                 VStack(spacing: 8,
                     Label("Button Sizes").H5(),
                     FlexLayout(
-                        Button("Large").Primary().Large().Margin(0, 0, 8, 8),
-                        Button("Default").Primary().Margin(0, 0, 8, 8),
-                        Button("Small").Primary().Small().Margin(0, 0, 8, 8)
+                        Button("Large").Class("btn-primary").Class("btn-lg").Margin(0, 0, 8, 8),
+                        Button("Default").Class("btn-primary").Margin(0, 0, 8, 8),
+                        Button("Small").Class("btn-primary").Class("btn-sm").Margin(0, 0, 8, 8)
                     ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start).AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
                 ),
 

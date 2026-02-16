@@ -76,21 +76,21 @@ class TypographyPage : BasePage
                     Card(
                         VStack(spacing: 12,
                             FlexLayout(
-                                Label("Primary").Badge(BootstrapVariant.Primary).Margin(0, 0, 8, 8),
-                                Label("Secondary").Badge(BootstrapVariant.Secondary).Margin(0, 0, 8, 8),
-                                Label("Success").Badge(BootstrapVariant.Success).Margin(0, 0, 8, 8),
-                                Label("Danger").Badge(BootstrapVariant.Danger).Margin(0, 0, 8, 8),
-                                Label("Warning").Badge(BootstrapVariant.Warning).Margin(0, 0, 8, 8),
-                                Label("Info").Badge(BootstrapVariant.Info).Margin(0, 0, 8, 8)
+                                Border(Label("Primary").Class("on-primary").Class("small")).Class("badge").Class("bg-primary").Margin(0, 0, 8, 8),
+                                Border(Label("Secondary").Class("on-secondary").Class("small")).Class("badge").Class("bg-secondary").Margin(0, 0, 8, 8),
+                                Border(Label("Success").Class("on-success").Class("small")).Class("badge").Class("bg-success").Margin(0, 0, 8, 8),
+                                Border(Label("Danger").Class("on-danger").Class("small")).Class("badge").Class("bg-danger").Margin(0, 0, 8, 8),
+                                Border(Label("Warning").Class("on-warning").Class("small")).Class("badge").Class("bg-warning").Margin(0, 0, 8, 8),
+                                Border(Label("Info").Class("on-info").Class("small")).Class("badge").Class("bg-info").Margin(0, 0, 8, 8)
                             ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap)
                                 .AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
                                 .JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start),
 
                             Label("Pill Badges").H6(),
                             FlexLayout(
-                                Label("Primary").Badge(BootstrapVariant.Primary).Margin(0, 0, 8, 8),
-                                Label("Success").Badge(BootstrapVariant.Success).Margin(0, 0, 8, 8),
-                                Label("Danger").Badge(BootstrapVariant.Danger).Margin(0, 0, 8, 8)
+                                Border(Label("Primary").Class("on-primary").Class("small")).Class("badge").Class("bg-primary").Margin(0, 0, 8, 8),
+                                Border(Label("Success").Class("on-success").Class("small")).Class("badge").Class("bg-success").Margin(0, 0, 8, 8),
+                                Border(Label("Danger").Class("on-danger").Class("small")).Class("badge").Class("bg-danger").Margin(0, 0, 8, 8)
                             ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap)
                                 .AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
                                 .JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start),
@@ -98,9 +98,9 @@ class TypographyPage : BasePage
                             Label("Badge with Text").H6(),
                             HStack(spacing: 8,
                                 Label("Messages").VCenter(),
-                                Label("4").Badge(BootstrapVariant.Primary).VCenter(),
+                                Border(Label("4").Class("on-primary").Class("small")).Class("badge").Class("bg-primary").VCenter(),
                                 Label("Notifications").VCenter().Margin(12, 0, 0, 0),
-                                Label("99+").Badge(BootstrapVariant.Danger).VCenter()
+                                Border(Label("99+").Class("on-danger").Class("small")).Class("badge").Class("bg-danger").VCenter()
                             )
                         )
                     )

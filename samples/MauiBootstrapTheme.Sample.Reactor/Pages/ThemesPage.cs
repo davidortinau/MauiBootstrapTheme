@@ -48,7 +48,7 @@ class ThemesPage : BasePage
                         VStack(spacing: 12,
                             Label("Theme Preview").H5(),
 
-                            Entry().Placeholder("Sample input"),
+                            Entry().Placeholder("Sample input").Class("form-control"),
 
                             FlexLayout(
                                 Button("Primary").Primary().Margin(0, 0, 8, 8),
@@ -64,9 +64,9 @@ class ThemesPage : BasePage
                             ProgressBar().Progress(0.65),
 
                             FlexLayout(
-                                Label("Badge").Badge(BootstrapVariant.Primary).Margin(0, 0, 8, 8),
-                                Label("Success").Badge(BootstrapVariant.Success).Margin(0, 0, 8, 8),
-                                Label("Alert").Badge(BootstrapVariant.Danger).Margin(0, 0, 8, 8)
+                                Border(Label("Badge").Class("on-primary").Class("small")).Class("badge").Class("bg-primary").Margin(0, 0, 8, 8),
+                                Border(Label("Success").Class("on-success").Class("small")).Class("badge").Class("bg-success").Margin(0, 0, 8, 8),
+                                Border(Label("Alert").Class("on-danger").Class("small")).Class("badge").Class("bg-danger").Margin(0, 0, 8, 8)
                             ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start)
                         )
                     ).Stroke(theme.GetOutline())
@@ -74,21 +74,21 @@ class ThemesPage : BasePage
                         .StrokeThickness(theme.BorderWidth)
                         .Set(Microsoft.Maui.Controls.Border.StrokeShapeProperty, new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = (float)theme.CornerRadius })
                         .Padding(16)
-                        .ShadowMd()
+                        .Class("shadow")
                 ),
 
                 // All Color Variants
                 VStack(spacing: 12,
                     Label("All Color Variants").H4(),
                     Grid("Auto,Auto,Auto,Auto", "*,*",
-                        Border(Label("Primary").HCenter()).Background(BootstrapVariant.Primary).GridRow(0).GridColumn(0),
-                        Border(Label("Secondary").HCenter()).Background(BootstrapVariant.Secondary).GridRow(0).GridColumn(1),
-                        Border(Label("Success").HCenter()).Background(BootstrapVariant.Success).GridRow(1).GridColumn(0),
-                        Border(Label("Danger").HCenter()).Background(BootstrapVariant.Danger).GridRow(1).GridColumn(1),
-                        Border(Label("Warning").HCenter()).Background(BootstrapVariant.Warning).GridRow(2).GridColumn(0),
-                        Border(Label("Info").HCenter()).Background(BootstrapVariant.Info).GridRow(2).GridColumn(1),
-                        Border(Label("Light").HCenter()).Background(BootstrapVariant.Light).GridRow(3).GridColumn(0),
-                        Border(Label("Dark").HCenter()).Background(BootstrapVariant.Dark).GridRow(3).GridColumn(1)
+                        Border(Label("Primary").HCenter().Class("on-primary")).Class("text-bg-primary").GridRow(0).GridColumn(0),
+                        Border(Label("Secondary").HCenter().Class("on-secondary")).Class("text-bg-secondary").GridRow(0).GridColumn(1),
+                        Border(Label("Success").HCenter().Class("on-success")).Class("text-bg-success").GridRow(1).GridColumn(0),
+                        Border(Label("Danger").HCenter().Class("on-danger")).Class("text-bg-danger").GridRow(1).GridColumn(1),
+                        Border(Label("Warning").HCenter().Class("on-warning")).Class("text-bg-warning").GridRow(2).GridColumn(0),
+                        Border(Label("Info").HCenter().Class("on-info")).Class("text-bg-info").GridRow(2).GridColumn(1),
+                        Border(Label("Light").HCenter().Class("on-light")).Class("text-bg-light").GridRow(3).GridColumn(0),
+                        Border(Label("Dark").HCenter().Class("on-dark")).Class("text-bg-dark").GridRow(3).GridColumn(1)
                     ).RowSpacing(8).ColumnSpacing(8)
                 )
             ).Padding(20)

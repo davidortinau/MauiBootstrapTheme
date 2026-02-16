@@ -48,7 +48,8 @@ public static class BootstrapButtonHandler
         
         // Only apply platform-level color overrides when an explicit variant is set.
         // When variant is Default, let MAUI-level styles (StyleClass, DynamicResource) handle colors.
-        if (variant == BootstrapVariant.Default && !isPill)
+        // Also skip when no size or pill override is set.
+        if (variant == BootstrapVariant.Default && !isPill && size == BootstrapSize.Default)
         {
 #if IOS || MACCATALYST
             // MAUI shadows are drawn outside the button bounds; clipping hides them.
