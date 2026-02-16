@@ -58,11 +58,17 @@ jobs:
       - name: Restore
         run: dotnet restore MauiBootstrapTheme.sln
 
-      - name: Pack MauiBootstrapTheme.Build
-        run: dotnet pack src/MauiBootstrapTheme.Build -c Release --no-restore -o artifacts
+      - name: Build MauiBootstrapTheme.Build
+        run: dotnet build src/MauiBootstrapTheme.Build -c Release --no-restore
 
-      - name: Pack MauiBootstrapTheme
-        run: dotnet pack src/MauiBootstrapTheme -c Release --no-restore -o artifacts
+      - name: Build Plugin.Maui.BootstrapTheme
+        run: dotnet build src/MauiBootstrapTheme -c Release --no-restore
+
+      - name: Pack MauiBootstrapTheme.Build
+        run: dotnet pack src/MauiBootstrapTheme.Build -c Release --no-build -o artifacts
+
+      - name: Pack Plugin.Maui.BootstrapTheme
+        run: dotnet pack src/MauiBootstrapTheme -c Release --no-build -o artifacts
 
       - name: Upload NuGet artifacts
         uses: actions/upload-artifact@v4
