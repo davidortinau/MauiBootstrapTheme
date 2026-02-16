@@ -593,6 +593,13 @@ public partial class {className} : ResourceDictionary
         {
             EmitCsShadowSetter(sb, "style_button", data.Primary ?? "#6f42c1");
         }
+        else
+        {
+            // Explicitly clear Shadow to prevent stale values persisting across theme switches.
+            // Use an invisible shadow (Opacity 0) because setting null via Style Setter
+            // does not reliably clear the property when switching from a theme that set it.
+            sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.ShadowProperty, Value = new Shadow { Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f } });");
+        }
 
         sb.AppendLine("        Add(style_button);");
         sb.AppendLine();
@@ -1376,6 +1383,14 @@ public partial class {className} : ResourceDictionary
         if (data.HasGlowButtons && data.ButtonRules.TryGetValue("primary", out var glowBtn) && glowBtn.BoxShadow != null)
         {
             EmitShadowFromBoxShadow(sb, glowBtn.BoxShadow, data.Primary ?? "#6f42c1");
+        }
+        else
+        {
+            // Explicitly clear Shadow to prevent stale values persisting across theme switches.
+            // Use an invisible shadow because {x:Null} doesn't reliably clear style-set properties.
+            sb.AppendLine("        <Setter Property=\"Shadow\">");
+            sb.AppendLine("            <Shadow Brush=\"Transparent\" Offset=\"0,0\" Radius=\"0\" Opacity=\"0\"/>");
+            sb.AppendLine("        </Setter>");
         }
 
         sb.AppendLine("    </Style>");
