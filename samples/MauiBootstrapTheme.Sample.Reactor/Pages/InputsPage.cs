@@ -20,16 +20,16 @@ class InputsPage : BasePage
                 VStack(spacing: 12,
                     Label("Text Inputs").H4(),
                     VStack(spacing: 4,
-                        Label("Default Input"),
-                        Entry().Placeholder("Enter text...")
+                        Label("Default Input").Class("form-label"),
+                        Entry().Placeholder("Enter text...").Class("form-control")
                     ),
                     VStack(spacing: 4,
-                        Label("Large Input"),
-                        Entry().Placeholder("Large input").Large()
+                        Label("Large Input").Class("form-label"),
+                        Entry().Placeholder("Large input").Class("form-control").Class("form-control-lg")
                     ),
                     VStack(spacing: 4,
-                        Label("Small Input"),
-                        Entry().Placeholder("Small input").Small()
+                        Label("Small Input").Class("form-label"),
+                        Entry().Placeholder("Small input").Class("form-control").Class("form-control-sm")
                     )
                 ),
 
@@ -37,8 +37,8 @@ class InputsPage : BasePage
                 VStack(spacing: 12,
                     Label("Textarea").H4(),
                     VStack(spacing: 4,
-                        Label("Default Textarea"),
-                        Editor().Placeholder("Enter multi-line text...").HeightRequest(100)
+                        Label("Default Textarea").Class("form-label"),
+                        Editor().Placeholder("Enter multi-line text...").HeightRequest(100).Class("form-control")
                     )
                 ),
 
@@ -46,8 +46,8 @@ class InputsPage : BasePage
                 VStack(spacing: 12,
                     Label("Select").H4(),
                     VStack(spacing: 4,
-                        Label("Default Select"),
-                        Picker().Title("Choose an option...").ItemsSource(new[] { "Option 1", "Option 2", "Option 3" })
+                        Label("Default Select").Class("form-label"),
+                        Picker().Title("Choose an option...").ItemsSource(new[] { "Option 1", "Option 2", "Option 3" }).Class("form-select")
                     )
                 ),
 
@@ -56,12 +56,12 @@ class InputsPage : BasePage
                     Label("Date & Time").H4(),
                     Grid("Auto", "*,*",
                         VStack(spacing: 4,
-                            Label("Date"),
-                            DatePicker()
+                            Label("Date").Class("form-label"),
+                            DatePicker().Class("form-control")
                         ).GridColumn(0),
                         VStack(spacing: 4,
-                            Label("Time"),
-                            TimePicker()
+                            Label("Time").Class("form-label"),
+                            TimePicker().Class("form-control")
                         ).GridColumn(1)
                     ).ColumnSpacing(20)
                 ),
@@ -70,20 +70,20 @@ class InputsPage : BasePage
                 VStack(spacing: 12,
                     Label("Checkboxes & Switches").H4(),
                     HStack(spacing: 8,
-                        CheckBox().IsChecked(true).Primary(),
-                        Label("Default checkbox").VCenter()
+                        CheckBox().IsChecked(true).Class("form-check-input").Color(GetResource<Color>("Primary")),
+                        Label("Default checkbox").Class("form-check-label").VCenter()
                     ),
                     HStack(spacing: 8,
-                        CheckBox().Primary(),
-                        Label("Unchecked checkbox").VCenter()
+                        CheckBox().Class("form-check-input").Color(GetResource<Color>("Primary")),
+                        Label("Unchecked checkbox").Class("form-check-label").VCenter()
                     ),
                     HStack(spacing: 8,
-                        Switch().IsToggled(true).Primary(),
-                        Label("Enabled switch").VCenter()
+                        Switch().IsToggled(true).Class("form-switch").OnColor(GetResource<Color>("Primary")),
+                        Label("Enabled switch").Class("form-check-label").VCenter()
                     ),
                     HStack(spacing: 8,
-                        Switch().Primary(),
-                        Label("Disabled switch").VCenter()
+                        Switch().Class("form-switch").OnColor(GetResource<Color>("Primary")),
+                        Label("Disabled switch").Class("form-check-label").VCenter()
                     )
                 ),
 
@@ -91,9 +91,9 @@ class InputsPage : BasePage
                 VStack(spacing: 12,
                     Label("Radio Buttons").H4(),
                     VStack(
-                        RadioButton().Content("Option 1").IsChecked(true),
-                        RadioButton().Content("Option 2"),
-                        RadioButton().Content("Option 3")
+                        RadioButton().Content("Option 1").IsChecked(true).Class("form-check-input"),
+                        RadioButton().Content("Option 2").Class("form-check-input"),
+                        RadioButton().Content("Option 3").Class("form-check-input")
                     ).Set(Microsoft.Maui.Controls.RadioButtonGroup.GroupNameProperty, "radioGroup")
                 ),
 
@@ -101,8 +101,10 @@ class InputsPage : BasePage
                 VStack(spacing: 12,
                     Label("Range Slider").H4(),
                     VStack(spacing: 4,
-                        Label("Default Range"),
-                        Slider().Minimum(0).Maximum(100).Value(50).Primary()
+                        Label("Default Range").Class("form-label"),
+                        Slider().Minimum(0).Maximum(100).Value(50).Class("form-range")
+                            .MinimumTrackColor(GetResource<Color>("Primary"))
+                            .ThumbColor(GetResource<Color>("Primary"))
                     )
                 )
             ).Padding(20)

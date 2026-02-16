@@ -30,15 +30,15 @@ class ThemesPage : BasePage
                 VStack(spacing: 12,
                     Label("Select Theme").H4(),
                     FlexLayout(
-                        Button("Default").Primary().OnClicked(() => ApplyTheme("default")).Margin(0, 0, 8, 8),
-                        Button("Darkly").Dark().OnClicked(() => ApplyTheme("darkly")).Margin(0, 0, 8, 8),
-                        Button("Slate").Secondary().OnClicked(() => ApplyTheme("slate")).Margin(0, 0, 8, 8),
-                        Button("Flatly").Info().OnClicked(() => ApplyTheme("flatly")).Margin(0, 0, 8, 8),
-                        Button("Sketchy").Warning().OnClicked(() => ApplyTheme("sketchy")).Margin(0, 0, 8, 8),
-                        Button("Vapor").Danger().OnClicked(() => ApplyTheme("vapor")).Margin(0, 0, 8, 8),
-                        Button("Brite").Success().OnClicked(() => ApplyTheme("brite")).Margin(0, 0, 8, 8)
+                        Button("Default").Class("btn-primary").OnClicked(() => ApplyTheme("default")).Margin(0, 0, 8, 8),
+                        Button("Darkly").Class("btn-dark").OnClicked(() => ApplyTheme("darkly")).Margin(0, 0, 8, 8),
+                        Button("Slate").Class("btn-secondary").OnClicked(() => ApplyTheme("slate")).Margin(0, 0, 8, 8),
+                        Button("Flatly").Class("btn-info").OnClicked(() => ApplyTheme("flatly")).Margin(0, 0, 8, 8),
+                        Button("Sketchy").Class("btn-warning").OnClicked(() => ApplyTheme("sketchy")).Margin(0, 0, 8, 8),
+                        Button("Vapor").Class("btn-danger").OnClicked(() => ApplyTheme("vapor")).Margin(0, 0, 8, 8),
+                        Button("Brite").Class("btn-success").OnClicked(() => ApplyTheme("brite")).Margin(0, 0, 8, 8)
                     ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start),
-                    Label($"Current: {theme.Name}").Muted()
+                    Label($"Current: {theme.Name}").Class("text-muted")
                 ),
 
                 // Preview
@@ -51,14 +51,14 @@ class ThemesPage : BasePage
                             Entry().Placeholder("Sample input").Class("form-control"),
 
                             FlexLayout(
-                                Button("Primary").Primary().Margin(0, 0, 8, 8),
-                                Button("Success").Success().Margin(0, 0, 8, 8),
-                                Button("Danger").Danger().Margin(0, 0, 8, 8)
+                                Button("Primary").Class("btn-primary").Margin(0, 0, 8, 8),
+                                Button("Success").Class("btn-success").Margin(0, 0, 8, 8),
+                                Button("Danger").Class("btn-danger").Margin(0, 0, 8, 8)
                             ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start),
 
                             FlexLayout(
-                                Button("Outline").Primary().Outlined().Margin(0, 0, 8, 8),
-                                Button("Pill").Info().Pill().Margin(0, 0, 8, 8)
+                                Button("Outline").Class("btn-outline-primary").Margin(0, 0, 8, 8),
+                                Button("Pill").Class("btn-info").Class("btn-pill").Margin(0, 0, 8, 8)
                             ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start),
 
                             ProgressBar().Progress(0.65),

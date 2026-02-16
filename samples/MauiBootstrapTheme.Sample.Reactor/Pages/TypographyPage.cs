@@ -44,9 +44,9 @@ class TypographyPage : BasePage
                         VStack(spacing: 8,
                             Label("This is lead text - larger and lighter for introductory content.").Lead(),
                             Label("This is normal body text. Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
-                            Label("This is small text for fine print.").TextStyle(BootstrapTextStyle.Small),
-                            Label("This is muted text for secondary content.").Muted(),
-                            Label("This is marked/highlighted text.").BackgroundColor(BootstrapTheme.Current.Mark)
+                            Label("This is small text for fine print.").Class("small"),
+                            Label("This is muted text for secondary content.").Class("text-muted"),
+                            Label("This is marked/highlighted text.").Class("mark")
                         )
                     )
                 ),
@@ -56,12 +56,12 @@ class TypographyPage : BasePage
                     Label("Text Colors").H4(),
                     Card(
                         VStack(spacing: 4,
-                            Label("Primary text color").TextColor(BootstrapVariant.Primary),
-                            Label("Secondary text color").TextColor(BootstrapVariant.Secondary),
-                            Label("Success text color").TextColor(BootstrapVariant.Success),
-                            Label("Danger text color").TextColor(BootstrapVariant.Danger),
-                            Label("Warning text color").TextColor(BootstrapVariant.Warning),
-                            Label("Info text color").TextColor(BootstrapVariant.Info)
+                            Label("Primary text color").Class("text-primary"),
+                            Label("Secondary text color").Class("text-secondary"),
+                            Label("Success text color").Class("text-success"),
+                            Label("Danger text color").Class("text-danger"),
+                            Label("Warning text color").Class("text-warning"),
+                            Label("Info text color").Class("text-info")
                         )
                     )
                 ),

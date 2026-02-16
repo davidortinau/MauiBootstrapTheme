@@ -22,12 +22,12 @@ class ControlsPage : BasePage
                 VStack(spacing: 8,
                     Label("Buttons").H4(),
                     FlexLayout(
-                        Button("Primary").Primary().Margin(0, 0, 8, 8),
-                        Button("Secondary").Secondary().Margin(0, 0, 8, 8),
-                        Button("Success").Success().Margin(0, 0, 8, 8),
-                        Button("Danger").Danger().Margin(0, 0, 8, 8),
-                        Button("Warning").Warning().Margin(0, 0, 8, 8),
-                        Button("Info").Info().Margin(0, 0, 8, 8)
+                        Button("Primary").Class("btn-primary").Margin(0, 0, 8, 8),
+                        Button("Secondary").Class("btn-secondary").Margin(0, 0, 8, 8),
+                        Button("Success").Class("btn-success").Margin(0, 0, 8, 8),
+                        Button("Danger").Class("btn-danger").Margin(0, 0, 8, 8),
+                        Button("Warning").Class("btn-warning").Margin(0, 0, 8, 8),
+                        Button("Info").Class("btn-info").Margin(0, 0, 8, 8)
                     ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start).AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
                 ),
 
@@ -35,10 +35,10 @@ class ControlsPage : BasePage
                 VStack(spacing: 8,
                     Label("Outline Buttons").H5(),
                     FlexLayout(
-                        Button("Primary").Primary().Outlined().Margin(0, 0, 8, 8),
-                        Button("Secondary").Secondary().Outlined().Margin(0, 0, 8, 8),
-                        Button("Success").Success().Outlined().Margin(0, 0, 8, 8),
-                        Button("Danger").Danger().Outlined().Margin(0, 0, 8, 8)
+                        Button("Primary").Class("btn-outline-primary").Margin(0, 0, 8, 8),
+                        Button("Secondary").Class("btn-outline-secondary").Margin(0, 0, 8, 8),
+                        Button("Success").Class("btn-outline-success").Margin(0, 0, 8, 8),
+                        Button("Danger").Class("btn-outline-danger").Margin(0, 0, 8, 8)
                     ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start).AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
                 ),
 
@@ -56,8 +56,8 @@ class ControlsPage : BasePage
                 VStack(spacing: 8,
                     Label("Pill Buttons").H5(),
                     FlexLayout(
-                        Button("Primary Pill").Primary().Pill().Margin(0, 0, 8, 8),
-                        Button("Success Pill").Success().Pill().Margin(0, 0, 8, 8)
+                        Button("Primary Pill").Class("btn-primary").Class("btn-pill").Margin(0, 0, 8, 8),
+                        Button("Success Pill").Class("btn-success").Class("btn-pill").Margin(0, 0, 8, 8)
                     ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start).AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
                 ),
 
@@ -66,15 +66,15 @@ class ControlsPage : BasePage
                     Label("Progress").H4(),
                     VStack(spacing: 4,
                         Label("Primary (75%)"),
-                        ProgressBar().Progress(0.75).Primary().BootstrapHeight()
+                        ProgressBar().Progress(0.75)
                     ),
                     VStack(spacing: 4,
                         Label("Success (50%)"),
-                        ProgressBar().Progress(0.5).Success().BootstrapHeight()
+                        ProgressBar().Progress(0.5).Class("progress-success")
                     ),
                     VStack(spacing: 4,
                         Label("Danger (25%)"),
-                        ProgressBar().Progress(0.25).Danger().BootstrapHeight()
+                        ProgressBar().Progress(0.25).Class("progress-danger")
                     )
                 ),
 
@@ -82,9 +82,9 @@ class ControlsPage : BasePage
                 VStack(spacing: 8,
                     Label("Spinners").H4(),
                     HStack(spacing: 16,
-                        ActivityIndicator().IsRunning(true).Primary(),
-                        ActivityIndicator().IsRunning(true).Success(),
-                        ActivityIndicator().IsRunning(true).Danger()
+                        ActivityIndicator().IsRunning(true).Color(GetResource<Color>("Primary")),
+                        ActivityIndicator().IsRunning(true).Color(GetResource<Color>("Success")),
+                        ActivityIndicator().IsRunning(true).Color(GetResource<Color>("Danger"))
                     )
                 )
             ).Padding(20)

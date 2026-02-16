@@ -28,32 +28,34 @@ class FormsPage : BasePage<FormsPageState>
                     Label("Overview").H4(),
 
                     VStack(spacing: 4,
-                        Label("Email address").TextStyle(BootstrapTextStyle.Small),
+                        Label("Email address").Class("form-label").Class("small"),
                         Entry()
                             .Placeholder("name@example.com")
                             .Keyboard(Keyboard.Email)
                             .Text(State.Email)
-                            .OnTextChanged(text => SetState(s => s.Email = text)),
-                        Label("We'll never share your email with anyone else.").Muted().TextStyle(BootstrapTextStyle.Small)
+                            .OnTextChanged(text => SetState(s => s.Email = text))
+                            .Class("form-control"),
+                        Label("We'll never share your email with anyone else.").Class("form-text")
                     ),
 
                     VStack(spacing: 4,
-                        Label("Password").TextStyle(BootstrapTextStyle.Small),
+                        Label("Password").Class("form-label").Class("small"),
                         Entry()
                             .IsPassword(true)
                             .Text(State.Password)
                             .OnTextChanged(text => SetState(s => s.Password = text))
+                            .Class("form-control")
                     ),
 
                     HStack(spacing: 8,
                         CheckBox()
                             .IsChecked(State.IsChecked)
                             .OnCheckedChanged(chk => SetState(s => s.IsChecked = chk))
-                            .Primary(),
-                        Label("Check me out").VCenter()
+                            .Class("form-check-input"),
+                        Label("Check me out").Class("form-check-label").VCenter()
                     ),
 
-                    Button("Submit").Primary().HorizontalOptions(LayoutOptions.Start)
+                    Button("Submit").Class("btn").Class("btn-primary").HorizontalOptions(LayoutOptions.Start)
                 ),
 
                 // Sizing
@@ -61,42 +63,43 @@ class FormsPage : BasePage<FormsPageState>
                     Label("Sizing").H4(),
 
                     VStack(spacing: 4,
-                        Label("Large input").TextStyle(BootstrapTextStyle.Small),
-                        Entry().Placeholder(".form-control-lg").Large()
+                        Label("Large input").Class("form-label").Class("small"),
+                        Entry().Placeholder(".form-control-lg").Class("form-control").Class("form-control-lg")
                     ),
 
                     VStack(spacing: 4,
-                        Label("Default input").TextStyle(BootstrapTextStyle.Small),
-                        Entry().Placeholder(".form-control")
+                        Label("Default input").Class("form-label").Class("small"),
+                        Entry().Placeholder(".form-control").Class("form-control")
                     ),
 
                     VStack(spacing: 4,
-                        Label("Small select").TextStyle(BootstrapTextStyle.Small),
+                        Label("Small select").Class("form-label").Class("small"),
                         Picker()
                             .Title(".form-select-sm")
                             .ItemsSource(new[] { "Option 1", "Option 2" })
-                            .Small()
+                            .Class("form-select").Class("form-select-sm")
                     )
                 ),
 
                 // Disabled forms
                 VStack(spacing: 12,
                     Label("Disabled forms").H4(),
-                    Label("Disabled fieldset example").TextStyle(BootstrapTextStyle.Small).Muted(),
+                    Label("Disabled fieldset example").Class("small").Muted(),
 
                     VStack(spacing: 4,
-                        Label("Disabled input").TextStyle(BootstrapTextStyle.Small),
-                        Entry().Placeholder("Disabled input")
+                        Label("Disabled input").Class("form-label").Class("small"),
+                        Entry().Placeholder("Disabled input").Class("form-control")
                     ),
 
                     VStack(spacing: 4,
-                        Label("Disabled select menu").TextStyle(BootstrapTextStyle.Small),
+                        Label("Disabled select menu").Class("form-label").Class("small"),
                         Picker()
                             .Title("Disabled select")
                             .ItemsSource(new[] { "Disabled select" })
+                            .Class("form-select")
                     ),
 
-                    Button("Submit").Primary().HorizontalOptions(LayoutOptions.Start)
+                    Button("Submit").Class("btn").Class("btn-primary").HorizontalOptions(LayoutOptions.Start)
                 ).IsEnabled(false),
 
                 // Form layout
@@ -105,23 +108,23 @@ class FormsPage : BasePage<FormsPageState>
 
                     Grid("Auto,Auto,Auto", "*,*",
                         VStack(spacing: 4,
-                            Label("First name").TextStyle(BootstrapTextStyle.Small),
-                            Entry()
+                            Label("First name").Class("form-label").Class("small"),
+                            Entry().Class("form-control")
                         ).GridRow(0).GridColumn(0),
 
                         VStack(spacing: 4,
-                            Label("Last name").TextStyle(BootstrapTextStyle.Small),
-                            Entry()
+                            Label("Last name").Class("form-label").Class("small"),
+                            Entry().Class("form-control")
                         ).GridRow(0).GridColumn(1),
 
                         VStack(spacing: 4,
-                            Label("Email").TextStyle(BootstrapTextStyle.Small),
-                            Entry().Keyboard(Keyboard.Email)
+                            Label("Email").Class("form-label").Class("small"),
+                            Entry().Keyboard(Keyboard.Email).Class("form-control")
                         ).GridRow(1).GridColumnSpan(2),
 
                         VStack(spacing: 4,
-                            Label("Message").TextStyle(BootstrapTextStyle.Small),
-                            Editor().HeightRequest(100)
+                            Label("Message").Class("form-label").Class("small"),
+                            Editor().HeightRequest(100).Class("form-control")
                         ).GridRow(2).GridColumnSpan(2)
                     ).ColumnSpacing(12).RowSpacing(8)
                 )
