@@ -1,6 +1,9 @@
 name: Publish Preview to NuGet
 
 on:
+  push:
+    tags:
+      - 'v*'
   workflow_dispatch:
     inputs:
       version:
@@ -34,6 +37,19 @@ jobs:
       - name: Restore
         run: dotnet restore MauiBootstrapTheme.sln
 
+      - name: Resolve publish settings
+        id: vars
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
+            echo "publish=${{ inputs.publish }}" >> "$GITHUB_OUTPUT"
+          else
+            TAG_VERSION="${GITHUB_REF_NAME#v}"
+            echo "version=$TAG_VERSION" >> "$GITHUB_OUTPUT"
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build MauiBootstrapTheme.Build
         run: dotnet build src/MauiBootstrapTheme.Build -c Release --no-restore
 
@@ -47,20 +63,20 @@ jobs:
         run: dotnet build samples/MauiBootstrapTheme.Sample -c Release -f net10.0-android --no-restore
 
       - name: Pack MauiBootstrapTheme.Build
-        run: dotnet pack src/MauiBootstrapTheme.Build -c Release --no-build -p:Version=${{ inputs.version }} -o artifacts
+        run: dotnet pack src/MauiBootstrapTheme.Build -c Release --no-build -p:Version=${{ steps.vars.outputs.version }} -o artifacts
 
       - name: Pack Plugin.Maui.BootstrapAdapter
-        run: dotnet pack src/MauiBootstrapTheme -c Release --no-build -p:Version=${{ inputs.version }} -o artifacts
+        run: dotnet pack src/MauiBootstrapTheme -c Release --no-build -p:Version=${{ steps.vars.outputs.version }} -o artifacts
 
       - name: Upload NuGet artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: preview-packages-${{ inputs.version }}
+          name: preview-packages-${{ steps.vars.outputs.version }}
           path: artifacts/*.nupkg
           retention-days: 30
 
       - name: Push to NuGet.org
-        if: ${{ inputs.publish }}
+        if: ${{ steps.vars.outputs.publish == 'true' }}
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
