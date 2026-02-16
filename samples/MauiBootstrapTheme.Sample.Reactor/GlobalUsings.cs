@@ -1,9 +1,11 @@
-// Prefer MauiReactor types over Microsoft.Maui.Controls types
+// MauiReactor core
 global using MauiReactor;
 global using Microsoft.Maui;
 global using Microsoft.Maui.Graphics;
 
-// Explicitly alias conflicting types to MauiReactor versions
+// Disambiguate types that exist in both MauiReactor and Microsoft.Maui.Controls
+// The generated theme code (obj/BootstrapTheme/*.g.cs) uses Microsoft.Maui.Controls types,
+// while page code uses MauiReactor types. These aliases resolve the ambiguity.
 global using Label = MauiReactor.Label;
 global using Button = MauiReactor.Button;
 global using Entry = MauiReactor.Entry;
@@ -30,3 +32,5 @@ global using FlyoutItem = MauiReactor.FlyoutItem;
 global using ShellContent = MauiReactor.ShellContent;
 global using FlexLayout = MauiReactor.FlexLayout;
 global using FlexWrap = Microsoft.Maui.Layouts.FlexWrap;
+global using Shadow = Microsoft.Maui.Controls.Shadow;
+global using Grid = MauiReactor.Grid;
