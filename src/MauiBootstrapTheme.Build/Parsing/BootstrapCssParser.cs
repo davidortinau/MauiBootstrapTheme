@@ -54,11 +54,11 @@ public class BootstrapCssParser
         var vars = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         // Match :root{...} or :root,[data-bs-theme=light]{...}
+        // Use Matches to capture all :root blocks (themes may have multiple)
         var rootPattern = @":root(?:,\[data-bs-theme=light\])?\s*\{([^}]+)\}";
-        var match = Regex.Match(css, rootPattern);
-        if (match.Success)
+        foreach (Match m in Regex.Matches(css, rootPattern))
         {
-            ParseCssVariableBlock(match.Groups[1].Value, vars);
+            ParseCssVariableBlock(m.Groups[1].Value, vars);
         }
 
         return vars;
@@ -99,9 +99,15 @@ public class BootstrapCssParser
             var rule = new ButtonRule { Variant = variant };
 
             // Extract CSS variable-based rule: .btn-{variant}{--bs-btn-color:...;--bs-btn-bg:...;...}
+            // Skip dark-mode overrides ([data-bs-theme=dark]) — only use light-mode values
             var varPattern = $@"\.btn-{Regex.Escape(variant)}\{{(--bs-btn-[^}}]+)\}}";
             foreach (Match m in Regex.Matches(css, varPattern))
             {
+                // Skip if preceded by [data-bs-theme=dark] selector
+                var precedingText = css.Substring(Math.Max(0, m.Index - 30), Math.Min(30, m.Index));
+                if (precedingText.Contains("[data-bs-theme=dark]"))
+                    continue;
+
                 var block = m.Groups[1].Value;
                 ParseButtonVars(block, rule);
             }
@@ -508,15 +514,28 @@ public class BootstrapCssParser
     private void ExtractButtonSizingFromCss(string css, BootstrapThemeData data)
     {
         // .btn{--bs-btn-padding-x:0.75rem;--bs-btn-padding-y:0.375rem;...}
-        var btnMatch = Regex.Match(css, @"\.btn\{(--bs-btn-[^}]+)\}");
-        if (btnMatch.Success)
+        // Use Matches to capture all .btn base blocks (themes may have multiple)
+        foreach (Match bm in Regex.Matches(css, @"\.btn\{(--bs-btn-[^}]+)\}"))
         {
-            var block = btnMatch.Groups[1].Value;
+            var block = bm.Groups[1].Value;
             var padX = ExtractCssVar(block, "--bs-btn-padding-x");
             var padY = ExtractCssVar(block, "--bs-btn-padding-y");
             if (padX != null) data.BtnPaddingX = padX;
             if (padY != null) data.BtnPaddingY = padY;
-            data.BtnBorderWidth = ExtractCssVar(block, "--bs-btn-border-width");
+            var bwVal = ExtractCssVar(block, "--bs-btn-border-width");
+            if (bwVal != null) data.BtnBorderWidth = bwVal;
+        }
+
+        // Extract resting-state box-shadow from .btn override rules (e.g., Brite's 3px 3px offset)
+        // Match .btn{...box-shadow:VALUE...} but NOT CSS variable definitions (--bs-btn-box-shadow)
+        foreach (Match bsm in Regex.Matches(css, @"(?<!\w)\.btn\{[^}]*(?<!-)box-shadow:([^;}]+)[;}]"))
+        {
+            var shadow = bsm.Groups[1].Value.Trim();
+            // Skip focus/hover shadows (var() references) and inset shadows
+            if (!shadow.StartsWith("var(") && !shadow.StartsWith("inset"))
+            {
+                data.BtnBaseBoxShadow = shadow;
+            }
         }
 
         // .btn-sm{--bs-btn-padding-y:0.25rem;--bs-btn-padding-x:0.5rem;--bs-btn-font-size:0.875rem;...}
@@ -755,6 +774,8 @@ public class BootstrapThemeData
     public string? BtnBorderWidth { get; set; }
     public string? BtnFontSizeSm { get; set; }
     public string? BtnFontSizeLg { get; set; }
+    /// <summary>Resting-state box-shadow on .btn base rule (e.g., Brite's 3px 3px offset).</summary>
+    public string? BtnBaseBoxShadow { get; set; }
 
     // Progress / Secondary background
     public string? SecondaryBg { get; set; }

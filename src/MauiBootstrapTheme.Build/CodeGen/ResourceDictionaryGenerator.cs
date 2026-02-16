@@ -281,7 +281,10 @@ public partial class {className} : ResourceDictionary
         EmitCsInt(sb, "CornerRadius", (int)Math.Round(CssToDevicePixels(data.BorderRadius ?? "0.375rem")));
         EmitCsInt(sb, "CornerRadiusSm", (int)Math.Round(CssToDevicePixels(data.BorderRadiusSm ?? "0.25rem")));
         EmitCsInt(sb, "CornerRadiusLg", (int)Math.Round(CssToDevicePixels(data.BorderRadiusLg ?? "0.5rem")));
-        var baseBorderW = CssToDevicePixels(data.BorderWidth ?? "1px");
+        // BtnBorderWidth may be a var() reference — skip it if so and fall back to BorderWidth
+        var effectiveBtnBorderWidth = data.BtnBorderWidth != null && !data.BtnBorderWidth.StartsWith("var(")
+            ? data.BtnBorderWidth : null;
+        var baseBorderW = CssToDevicePixels(effectiveBtnBorderWidth ?? data.BorderWidth ?? "1px");
         EmitCsDouble(sb, "BorderWidth", baseBorderW);
 
         var btnPadX = data.BtnPaddingX != null ? CssToDevicePixels(data.BtnPaddingX) : 12;
@@ -592,6 +595,11 @@ public partial class {className} : ResourceDictionary
         if (data.HasGlowButtons && data.ButtonRules.TryGetValue("primary", out var glowBtn) && glowBtn.BoxShadow != null)
         {
             EmitCsShadowSetter(sb, "style_button", data.Primary ?? "#6f42c1");
+        }
+        else if (data.BtnBaseBoxShadow != null)
+        {
+            // Resting-state offset shadow (e.g., Brite's "3px 3px 0 0 #000")
+            EmitCsBoxShadowSetter(sb, "style_button", data.BtnBaseBoxShadow, data.Dark ?? "#000");
         }
         else
         {
@@ -1133,6 +1141,37 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Color.FromArgb(\"{NormalizeHexColor(color)}\"), Offset = new Point(0, 0), Radius = 8, Opacity = 0.6f }} }});");
     }
 
+    /// <summary>
+    /// Parses a CSS box-shadow value like "3px 3px 0 0 #000" and emits a MAUI Shadow setter.
+    /// </summary>
+    private void EmitCsBoxShadowSetter(StringBuilder sb, string varName, string cssBoxShadow, string fallbackColor)
+    {
+        // Parse: offsetX offsetY [blurRadius] [spreadRadius] [color]
+        var parts = cssBoxShadow.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        double offsetX = 0, offsetY = 0, blur = 0;
+        var color = fallbackColor;
+
+        if (parts.Length >= 2)
+        {
+            offsetX = CssToDevicePixels(parts[0]);
+            offsetY = CssToDevicePixels(parts[1]);
+        }
+        if (parts.Length >= 3)
+            blur = CssToDevicePixels(parts[2]);
+        // parts[3] is spread (not supported in MAUI Shadow)
+        // Find color (last part that starts with # or is a color name)
+        for (int i = parts.Length - 1; i >= 2; i--)
+        {
+            if (parts[i].StartsWith("#") || parts[i].StartsWith("rgb"))
+            {
+                color = parts[i].StartsWith("#") ? NormalizeHexColor(parts[i]) : fallbackColor;
+                break;
+            }
+        }
+
+        sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Color.FromArgb(\"{color}\"), Offset = new Point({offsetX.ToString("F0", CultureInfo.InvariantCulture)}, {offsetY.ToString("F0", CultureInfo.InvariantCulture)}), Radius = {blur.ToString("F0", CultureInfo.InvariantCulture)}, Opacity = 0.8f }} }});");
+    }
+
     #endregion
 
     /// <summary>
@@ -1305,7 +1344,9 @@ public partial class {className} : ResourceDictionary
         var btnPadYSm = data.BtnPaddingYSm != null ? CssToDevicePixels(data.BtnPaddingYSm) : 4;
         var btnPadXLg = data.BtnPaddingXLg != null ? CssToDevicePixels(data.BtnPaddingXLg) : 16;
         var btnPadYLg = data.BtnPaddingYLg != null ? CssToDevicePixels(data.BtnPaddingYLg) : 8;
-        var baseBorderW = CssToDevicePixels(data.BorderWidth ?? "1px");
+        var effectiveBtnBorderWidth2 = data.BtnBorderWidth != null && !data.BtnBorderWidth.StartsWith("var(")
+            ? data.BtnBorderWidth : null;
+        var baseBorderW = CssToDevicePixels(effectiveBtnBorderWidth2 ?? data.BorderWidth ?? "1px");
         var borderW = baseBorderW;
         var buttonLineHeight = ParseLineHeightFactor(
             data.LightVariables.TryGetValue("--bs-btn-line-height", out var btnLh) ? btnLh
@@ -1383,6 +1424,11 @@ public partial class {className} : ResourceDictionary
         if (data.HasGlowButtons && data.ButtonRules.TryGetValue("primary", out var glowBtn) && glowBtn.BoxShadow != null)
         {
             EmitShadowFromBoxShadow(sb, glowBtn.BoxShadow, data.Primary ?? "#6f42c1");
+        }
+        else if (data.BtnBaseBoxShadow != null)
+        {
+            // Resting-state offset shadow (e.g., Brite's "3px 3px 0 0 #000")
+            EmitShadowFromBoxShadow(sb, data.BtnBaseBoxShadow, data.Dark ?? "#000");
         }
         else
         {
