@@ -94,7 +94,9 @@ public class BootstrapThemeOptions
 }
 
 /// <summary>
-/// Syncs BootstrapTheme.Current from Application.Resources on app startup.
+/// Applies the first registered Bootstrap theme on app startup, ensuring implicit styles
+/// (Button sizing, Label fonts, etc.) are merged into Application.Resources before any
+/// page renders. Falls back to syncing from existing resources if no themes are registered.
 /// </summary>
 internal class BootstrapThemeSyncService : IMauiInitializeService
 {
@@ -105,8 +107,18 @@ internal class BootstrapThemeSyncService : IMauiInitializeService
             TimeSpan.FromMilliseconds(50),
             () =>
             {
-                if (Application.Current?.Resources != null)
+                if (Application.Current == null) return;
+
+                if (BootstrapTheme.RegisteredThemes.Count > 0)
                 {
+                    // Apply the first registered theme — merges the ResourceDictionary
+                    // (implicit styles, DynamicResource values) and syncs BootstrapTheme.Current.
+                    BootstrapTheme.Apply(BootstrapTheme.RegisteredThemes.First());
+                }
+                else if (Application.Current.Resources != null)
+                {
+                    // No themes registered — just sync from whatever is already in Resources
+                    // (e.g., theme added manually in App.xaml or App.xaml.cs).
                     BootstrapTheme.SyncFromResources(Application.Current.Resources);
                 }
             });
