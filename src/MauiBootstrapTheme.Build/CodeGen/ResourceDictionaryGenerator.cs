@@ -177,6 +177,8 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("using Microsoft.Maui.Controls.Shapes;");
         sb.AppendLine("using Microsoft.Maui.Graphics;");
         sb.AppendLine("using MauiBootstrapTheme.Theming;");
+        sb.AppendLine("// Fully-qualified aliases to avoid ambiguity with MauiReactor global usings");
+        sb.AppendLine("using MauiControls = Microsoft.Maui.Controls;");
         sb.AppendLine("#pragma warning disable CS8604");
         sb.AppendLine();
         sb.AppendLine($"namespace {@namespace};");
@@ -576,9 +578,9 @@ public partial class {className} : ResourceDictionary
     private void EmitCsStyle(StringBuilder sb, string targetType, string? cssClass, Action<StringBuilder> emitSetters)
     {
         if (cssClass != null)
-            sb.AppendLine($"        var style_{cssClass.Replace("-", "_")}_{targetType} = new Style(typeof({targetType})) {{ Class = \"{cssClass}\" }};");
+            sb.AppendLine($"        var style_{cssClass.Replace("-", "_")}_{targetType} = new MauiControls.Style(typeof({targetType})) {{ Class = \"{cssClass}\" }};");
         else
-            sb.AppendLine($"        var style_{targetType.ToLower()} = new Style(typeof({targetType}));");
+            sb.AppendLine($"        var style_{targetType.ToLower()} = new MauiControls.Style(typeof({targetType}));");
 
         emitSetters(sb);
 
@@ -589,12 +591,12 @@ public partial class {className} : ResourceDictionary
 
     private void EmitCsSetter(StringBuilder sb, string varName, string property, string valueExpr)
     {
-        sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = {property}, Value = {valueExpr} }});");
+        sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = {property}, Value = {valueExpr} }});");
     }
 
     private void EmitCsDynamicSetter(StringBuilder sb, string varName, string targetType, string property, string resourceKey)
     {
-        sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = {targetType}.{property}Property, Value = DR(\"{resourceKey}\") }});");
+        sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = {targetType}.{property}Property, Value = DR(\"{resourceKey}\") }});");
     }
 
     private void EmitCsButtonShadowResources(StringBuilder sb, Parsing.BootstrapThemeData data)
@@ -670,10 +672,10 @@ public partial class {className} : ResourceDictionary
     }
 
     private string GetTransparentShadowExpression() =>
-        "new Shadow { Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }";
+        "new MauiControls.Shadow { Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }";
 
     private string GetGlowShadowExpression(string color) =>
-        $"new Shadow {{ Brush = Color.FromArgb(\"{NormalizeHexColor(color)}\"), Offset = new Point(0, 0), Radius = 8, Opacity = 0.6f }}";
+        $"new MauiControls.Shadow {{ Brush = Color.FromArgb(\"{NormalizeHexColor(color)}\"), Offset = new Point(0, 0), Radius = 8, Opacity = 0.6f }}";
 
     private string GetBoxShadowExpression(string cssBoxShadow, string fallbackColor)
     {
@@ -699,247 +701,247 @@ public partial class {className} : ResourceDictionary
             }
         }
 
-        return $"new Shadow {{ Brush = Color.FromArgb(\"{color}\"), Offset = new Point({offsetX.ToString("F0", CultureInfo.InvariantCulture)}, {offsetY.ToString("F0", CultureInfo.InvariantCulture)}), Radius = {blur.ToString("F0", CultureInfo.InvariantCulture)}, Opacity = 1f }}";
+        return $"new MauiControls.Shadow {{ Brush = Color.FromArgb(\"{color}\"), Offset = new Point({offsetX.ToString("F0", CultureInfo.InvariantCulture)}, {offsetY.ToString("F0", CultureInfo.InvariantCulture)}), Radius = {blur.ToString("F0", CultureInfo.InvariantCulture)}, Opacity = 1f }}";
     }
 
     private void EmitCsImplicitStyles(StringBuilder sb, Parsing.BootstrapThemeData data)
     {
         // Button implicit style
         sb.AppendLine("        // Implicit styles");
-        sb.AppendLine("        var style_button = new Style(typeof(Button));");
+        sb.AppendLine("        var style_button = new MauiControls.Style(typeof(MauiControls.Button));");
         if (data.HasGradientButtons && data.ButtonRules.TryGetValue("primary", out var pBtn) && pBtn.Gradient != null)
         {
             EmitCsGradientSetter(sb, "style_button", pBtn.Gradient);
         }
         else
         {
-            sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = DR(\"Primary\") });");
+            sb.AppendLine("        style_button.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.BackgroundProperty, Value = DR(\"Primary\") });");
         }
-        sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.TextColorProperty, Value = DR(\"OnPrimary\") });");
-        sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.CornerRadiusProperty, Value = DR(\"CornerRadius\") });");
-        sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.FontFamilyProperty, Value = DR(\"FontFamily\") });");
-        sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
-        sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.PaddingProperty, Value = DR(\"ButtonPadding\") });");
-        sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeight\") });");
+        sb.AppendLine("        style_button.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.TextColorProperty, Value = DR(\"OnPrimary\") });");
+        sb.AppendLine("        style_button.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.CornerRadiusProperty, Value = DR(\"CornerRadius\") });");
+        sb.AppendLine("        style_button.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.FontFamilyProperty, Value = DR(\"FontFamily\") });");
+        sb.AppendLine("        style_button.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_button.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.PaddingProperty, Value = DR(\"ButtonPadding\") });");
+        sb.AppendLine("        style_button.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeight\") });");
 
         var hasBorder = data.ButtonRules.TryGetValue("primary", out var primaryBtn) && primaryBtn.BorderColor != null;
         if (hasBorder)
         {
-            sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.BorderWidthProperty, Value = DR(\"BorderWidth\") });");
-            sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.BorderColorProperty, Value = Colors.Transparent });");
+            sb.AppendLine("        style_button.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.BorderWidthProperty, Value = DR(\"BorderWidth\") });");
+            sb.AppendLine("        style_button.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.BorderColorProperty, Value = Colors.Transparent });");
         }
         else
         {
-            sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.BorderWidthProperty, Value = 0d });");
+            sb.AppendLine("        style_button.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.BorderWidthProperty, Value = 0d });");
         }
 
-        sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.ShadowProperty, Value = DR(\"BtnShadowBase\") });");
+        sb.AppendLine("        style_button.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.ShadowProperty, Value = DR(\"BtnShadowBase\") });");
 
         sb.AppendLine("        Add(style_button);");
         sb.AppendLine();
 
         // Label
-        sb.AppendLine("        var style_label = new Style(typeof(Label));");
-        sb.AppendLine("        style_label.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"OnBackground\") });");
-        sb.AppendLine("        style_label.Setters.Add(new Setter { Property = Label.FontFamilyProperty, Value = DR(\"FontFamily\") });");
-        sb.AppendLine("        style_label.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        var style_label = new MauiControls.Style(typeof(MauiControls.Label));");
+        sb.AppendLine("        style_label.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.TextColorProperty, Value = DR(\"OnBackground\") });");
+        sb.AppendLine("        style_label.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.FontFamilyProperty, Value = DR(\"FontFamily\") });");
+        sb.AppendLine("        style_label.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
         sb.AppendLine("        Add(style_label);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_label = new Style(typeof(Label)) { Class = \"form-label\" };");
-        sb.AppendLine("        style_form_label.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"OnBackground\") });");
-        sb.AppendLine("        style_form_label.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        var style_form_label = new MauiControls.Style(typeof(MauiControls.Label)) { Class = \"form-label\" };");
+        sb.AppendLine("        style_form_label.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.TextColorProperty, Value = DR(\"OnBackground\") });");
+        sb.AppendLine("        style_form_label.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
         sb.AppendLine("        Add(style_form_label);");
         sb.AppendLine();
 
         // Entry
-        sb.AppendLine("        var style_entry = new Style(typeof(Entry));");
-        sb.AppendLine("        style_entry.Setters.Add(new Setter { Property = Entry.TextColorProperty, Value = DR(\"InputText\") });");
-        sb.AppendLine("        style_entry.Setters.Add(new Setter { Property = Entry.BackgroundProperty, Value = DR(\"InputBackground\") });");
-        sb.AppendLine("        style_entry.Setters.Add(new Setter { Property = Entry.PlaceholderColorProperty, Value = DR(\"PlaceholderColor\") });");
-        sb.AppendLine("        style_entry.Setters.Add(new Setter { Property = Entry.FontFamilyProperty, Value = DR(\"FontFamily\") });");
-        sb.AppendLine("        style_entry.Setters.Add(new Setter { Property = Entry.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
-        sb.AppendLine("        style_entry.Setters.Add(new Setter { Property = Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        var style_entry = new MauiControls.Style(typeof(MauiControls.Entry));");
+        sb.AppendLine("        style_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.TextColorProperty, Value = DR(\"InputText\") });");
+        sb.AppendLine("        style_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.BackgroundProperty, Value = DR(\"InputBackground\") });");
+        sb.AppendLine("        style_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.PlaceholderColorProperty, Value = DR(\"PlaceholderColor\") });");
+        sb.AppendLine("        style_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.FontFamilyProperty, Value = DR(\"FontFamily\") });");
+        sb.AppendLine("        style_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_entry);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_entry = new Style(typeof(Entry)) { Class = \"form-control\" };");
-        sb.AppendLine("        style_form_control_entry.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
-        sb.AppendLine("        style_form_control_entry.Setters.Add(new Setter { Property = Entry.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
-        sb.AppendLine("        style_form_control_entry.Setters.Add(new Setter { Property = Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        var style_form_control_entry = new MauiControls.Style(typeof(MauiControls.Entry)) { Class = \"form-control\" };");
+        sb.AppendLine("        style_form_control_entry.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
+        sb.AppendLine("        style_form_control_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_form_control_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_form_control_entry);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_lg_entry = new Style(typeof(Entry)) { Class = \"form-control-lg\" };");
-        sb.AppendLine("        style_form_control_lg_entry.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
-        sb.AppendLine("        style_form_control_lg_entry.Setters.Add(new Setter { Property = Entry.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
-        sb.AppendLine("        style_form_control_lg_entry.Setters.Add(new Setter { Property = Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
+        sb.AppendLine("        var style_form_control_lg_entry = new MauiControls.Style(typeof(MauiControls.Entry)) { Class = \"form-control-lg\" };");
+        sb.AppendLine("        style_form_control_lg_entry.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
+        sb.AppendLine("        style_form_control_lg_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_form_control_lg_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
         sb.AppendLine("        Add(style_form_control_lg_entry);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_sm_entry = new Style(typeof(Entry)) { Class = \"form-control-sm\" };");
-        sb.AppendLine("        style_form_control_sm_entry.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
-        sb.AppendLine("        style_form_control_sm_entry.Setters.Add(new Setter { Property = Entry.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
-        sb.AppendLine("        style_form_control_sm_entry.Setters.Add(new Setter { Property = Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
+        sb.AppendLine("        var style_form_control_sm_entry = new MauiControls.Style(typeof(MauiControls.Entry)) { Class = \"form-control-sm\" };");
+        sb.AppendLine("        style_form_control_sm_entry.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
+        sb.AppendLine("        style_form_control_sm_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_control_sm_entry.Setters.Add(new MauiControls.Setter { Property = MauiControls.Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
         sb.AppendLine("        Add(style_form_control_sm_entry);");
         sb.AppendLine();
 
         // Picker
-        sb.AppendLine("        var style_picker = new Style(typeof(Picker));");
-        sb.AppendLine("        style_picker.Setters.Add(new Setter { Property = Picker.TextColorProperty, Value = DR(\"InputText\") });");
-        sb.AppendLine("        style_picker.Setters.Add(new Setter { Property = Picker.TitleColorProperty, Value = DR(\"PlaceholderColor\") });");
-        sb.AppendLine("        style_picker.Setters.Add(new Setter { Property = Picker.FontFamilyProperty, Value = DR(\"FontFamily\") });");
-        sb.AppendLine("        style_picker.Setters.Add(new Setter { Property = Picker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
-        sb.AppendLine("        style_picker.Setters.Add(new Setter { Property = Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        var style_picker = new MauiControls.Style(typeof(MauiControls.Picker));");
+        sb.AppendLine("        style_picker.Setters.Add(new MauiControls.Setter { Property = MauiControls.Picker.TextColorProperty, Value = DR(\"InputText\") });");
+        sb.AppendLine("        style_picker.Setters.Add(new MauiControls.Setter { Property = MauiControls.Picker.TitleColorProperty, Value = DR(\"PlaceholderColor\") });");
+        sb.AppendLine("        style_picker.Setters.Add(new MauiControls.Setter { Property = MauiControls.Picker.FontFamilyProperty, Value = DR(\"FontFamily\") });");
+        sb.AppendLine("        style_picker.Setters.Add(new MauiControls.Setter { Property = MauiControls.Picker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_picker.Setters.Add(new MauiControls.Setter { Property = MauiControls.Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_picker);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_select_picker = new Style(typeof(Picker)) { Class = \"form-select\" };");
-        sb.AppendLine("        style_form_select_picker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
-        sb.AppendLine("        style_form_select_picker.Setters.Add(new Setter { Property = Picker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
-        sb.AppendLine("        style_form_select_picker.Setters.Add(new Setter { Property = Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        var style_form_select_picker = new MauiControls.Style(typeof(MauiControls.Picker)) { Class = \"form-select\" };");
+        sb.AppendLine("        style_form_select_picker.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
+        sb.AppendLine("        style_form_select_picker.Setters.Add(new MauiControls.Setter { Property = MauiControls.Picker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_form_select_picker.Setters.Add(new MauiControls.Setter { Property = MauiControls.Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_form_select_picker);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_select_lg_picker = new Style(typeof(Picker)) { Class = \"form-select-lg\" };");
-        sb.AppendLine("        style_form_select_lg_picker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
-        sb.AppendLine("        style_form_select_lg_picker.Setters.Add(new Setter { Property = Picker.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
-        sb.AppendLine("        style_form_select_lg_picker.Setters.Add(new Setter { Property = Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
+        sb.AppendLine("        var style_form_select_lg_picker = new MauiControls.Style(typeof(MauiControls.Picker)) { Class = \"form-select-lg\" };");
+        sb.AppendLine("        style_form_select_lg_picker.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
+        sb.AppendLine("        style_form_select_lg_picker.Setters.Add(new MauiControls.Setter { Property = MauiControls.Picker.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_form_select_lg_picker.Setters.Add(new MauiControls.Setter { Property = MauiControls.Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
         sb.AppendLine("        Add(style_form_select_lg_picker);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_select_sm_picker = new Style(typeof(Picker)) { Class = \"form-select-sm\" };");
-        sb.AppendLine("        style_form_select_sm_picker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
-        sb.AppendLine("        style_form_select_sm_picker.Setters.Add(new Setter { Property = Picker.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
-        sb.AppendLine("        style_form_select_sm_picker.Setters.Add(new Setter { Property = Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
+        sb.AppendLine("        var style_form_select_sm_picker = new MauiControls.Style(typeof(MauiControls.Picker)) { Class = \"form-select-sm\" };");
+        sb.AppendLine("        style_form_select_sm_picker.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
+        sb.AppendLine("        style_form_select_sm_picker.Setters.Add(new MauiControls.Setter { Property = MauiControls.Picker.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_select_sm_picker.Setters.Add(new MauiControls.Setter { Property = MauiControls.Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
         sb.AppendLine("        Add(style_form_select_sm_picker);");
         sb.AppendLine();
 
         // DatePicker
-        sb.AppendLine("        var style_datepicker = new Style(typeof(DatePicker));");
-        sb.AppendLine("        style_datepicker.Setters.Add(new Setter { Property = DatePicker.TextColorProperty, Value = DR(\"InputText\") });");
-        sb.AppendLine("        style_datepicker.Setters.Add(new Setter { Property = DatePicker.FontFamilyProperty, Value = DR(\"FontFamily\") });");
-        sb.AppendLine("        style_datepicker.Setters.Add(new Setter { Property = DatePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
-        sb.AppendLine("        style_datepicker.Setters.Add(new Setter { Property = DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        var style_datepicker = new MauiControls.Style(typeof(MauiControls.DatePicker));");
+        sb.AppendLine("        style_datepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.DatePicker.TextColorProperty, Value = DR(\"InputText\") });");
+        sb.AppendLine("        style_datepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.DatePicker.FontFamilyProperty, Value = DR(\"FontFamily\") });");
+        sb.AppendLine("        style_datepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.DatePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_datepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_datepicker);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_datepicker = new Style(typeof(DatePicker)) { Class = \"form-control\" };");
-        sb.AppendLine("        style_form_control_datepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
-        sb.AppendLine("        style_form_control_datepicker.Setters.Add(new Setter { Property = DatePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
-        sb.AppendLine("        style_form_control_datepicker.Setters.Add(new Setter { Property = DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        var style_form_control_datepicker = new MauiControls.Style(typeof(MauiControls.DatePicker)) { Class = \"form-control\" };");
+        sb.AppendLine("        style_form_control_datepicker.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
+        sb.AppendLine("        style_form_control_datepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.DatePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_form_control_datepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_form_control_datepicker);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_lg_datepicker = new Style(typeof(DatePicker)) { Class = \"form-control-lg\" };");
-        sb.AppendLine("        style_form_control_lg_datepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
-        sb.AppendLine("        style_form_control_lg_datepicker.Setters.Add(new Setter { Property = DatePicker.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
-        sb.AppendLine("        style_form_control_lg_datepicker.Setters.Add(new Setter { Property = DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
+        sb.AppendLine("        var style_form_control_lg_datepicker = new MauiControls.Style(typeof(MauiControls.DatePicker)) { Class = \"form-control-lg\" };");
+        sb.AppendLine("        style_form_control_lg_datepicker.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
+        sb.AppendLine("        style_form_control_lg_datepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.DatePicker.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_form_control_lg_datepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
         sb.AppendLine("        Add(style_form_control_lg_datepicker);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_sm_datepicker = new Style(typeof(DatePicker)) { Class = \"form-control-sm\" };");
-        sb.AppendLine("        style_form_control_sm_datepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
-        sb.AppendLine("        style_form_control_sm_datepicker.Setters.Add(new Setter { Property = DatePicker.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
-        sb.AppendLine("        style_form_control_sm_datepicker.Setters.Add(new Setter { Property = DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
+        sb.AppendLine("        var style_form_control_sm_datepicker = new MauiControls.Style(typeof(MauiControls.DatePicker)) { Class = \"form-control-sm\" };");
+        sb.AppendLine("        style_form_control_sm_datepicker.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
+        sb.AppendLine("        style_form_control_sm_datepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.DatePicker.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_control_sm_datepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
         sb.AppendLine("        Add(style_form_control_sm_datepicker);");
         sb.AppendLine();
 
         // TimePicker
-        sb.AppendLine("        var style_timepicker = new Style(typeof(TimePicker));");
-        sb.AppendLine("        style_timepicker.Setters.Add(new Setter { Property = TimePicker.TextColorProperty, Value = DR(\"InputText\") });");
-        sb.AppendLine("        style_timepicker.Setters.Add(new Setter { Property = TimePicker.FontFamilyProperty, Value = DR(\"FontFamily\") });");
-        sb.AppendLine("        style_timepicker.Setters.Add(new Setter { Property = TimePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
-        sb.AppendLine("        style_timepicker.Setters.Add(new Setter { Property = TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        var style_timepicker = new MauiControls.Style(typeof(MauiControls.TimePicker));");
+        sb.AppendLine("        style_timepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.TimePicker.TextColorProperty, Value = DR(\"InputText\") });");
+        sb.AppendLine("        style_timepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.TimePicker.FontFamilyProperty, Value = DR(\"FontFamily\") });");
+        sb.AppendLine("        style_timepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.TimePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_timepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_timepicker);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_timepicker = new Style(typeof(TimePicker)) { Class = \"form-control\" };");
-        sb.AppendLine("        style_form_control_timepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
-        sb.AppendLine("        style_form_control_timepicker.Setters.Add(new Setter { Property = TimePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
-        sb.AppendLine("        style_form_control_timepicker.Setters.Add(new Setter { Property = TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        var style_form_control_timepicker = new MauiControls.Style(typeof(MauiControls.TimePicker)) { Class = \"form-control\" };");
+        sb.AppendLine("        style_form_control_timepicker.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
+        sb.AppendLine("        style_form_control_timepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.TimePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_form_control_timepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_form_control_timepicker);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_lg_timepicker = new Style(typeof(TimePicker)) { Class = \"form-control-lg\" };");
-        sb.AppendLine("        style_form_control_lg_timepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
-        sb.AppendLine("        style_form_control_lg_timepicker.Setters.Add(new Setter { Property = TimePicker.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
-        sb.AppendLine("        style_form_control_lg_timepicker.Setters.Add(new Setter { Property = TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
+        sb.AppendLine("        var style_form_control_lg_timepicker = new MauiControls.Style(typeof(MauiControls.TimePicker)) { Class = \"form-control-lg\" };");
+        sb.AppendLine("        style_form_control_lg_timepicker.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
+        sb.AppendLine("        style_form_control_lg_timepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.TimePicker.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_form_control_lg_timepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
         sb.AppendLine("        Add(style_form_control_lg_timepicker);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_sm_timepicker = new Style(typeof(TimePicker)) { Class = \"form-control-sm\" };");
-        sb.AppendLine("        style_form_control_sm_timepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
-        sb.AppendLine("        style_form_control_sm_timepicker.Setters.Add(new Setter { Property = TimePicker.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
-        sb.AppendLine("        style_form_control_sm_timepicker.Setters.Add(new Setter { Property = TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
+        sb.AppendLine("        var style_form_control_sm_timepicker = new MauiControls.Style(typeof(MauiControls.TimePicker)) { Class = \"form-control-sm\" };");
+        sb.AppendLine("        style_form_control_sm_timepicker.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
+        sb.AppendLine("        style_form_control_sm_timepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.TimePicker.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_control_sm_timepicker.Setters.Add(new MauiControls.Setter { Property = MauiControls.TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
         sb.AppendLine("        Add(style_form_control_sm_timepicker);");
         sb.AppendLine();
 
         // Editor
-        sb.AppendLine("        var style_editor = new Style(typeof(Editor));");
-        sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.TextColorProperty, Value = DR(\"InputText\") });");
-        sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.BackgroundProperty, Value = DR(\"InputBackground\") });");
-        sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.FontFamilyProperty, Value = DR(\"FontFamily\") });");
-        sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
-        sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        var style_editor = new MauiControls.Style(typeof(MauiControls.Editor));");
+        sb.AppendLine("        style_editor.Setters.Add(new MauiControls.Setter { Property = MauiControls.Editor.TextColorProperty, Value = DR(\"InputText\") });");
+        sb.AppendLine("        style_editor.Setters.Add(new MauiControls.Setter { Property = MauiControls.Editor.BackgroundProperty, Value = DR(\"InputBackground\") });");
+        sb.AppendLine("        style_editor.Setters.Add(new MauiControls.Setter { Property = MauiControls.Editor.FontFamilyProperty, Value = DR(\"FontFamily\") });");
+        sb.AppendLine("        style_editor.Setters.Add(new MauiControls.Setter { Property = MauiControls.Editor.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_editor.Setters.Add(new MauiControls.Setter { Property = MauiControls.Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_editor);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_editor = new Style(typeof(Editor)) { Class = \"form-control\" };");
-        sb.AppendLine("        style_form_control_editor.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
-        sb.AppendLine("        style_form_control_editor.Setters.Add(new Setter { Property = Editor.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
-        sb.AppendLine("        style_form_control_editor.Setters.Add(new Setter { Property = Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        var style_form_control_editor = new MauiControls.Style(typeof(MauiControls.Editor)) { Class = \"form-control\" };");
+        sb.AppendLine("        style_form_control_editor.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
+        sb.AppendLine("        style_form_control_editor.Setters.Add(new MauiControls.Setter { Property = MauiControls.Editor.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_form_control_editor.Setters.Add(new MauiControls.Setter { Property = MauiControls.Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_form_control_editor);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_lg_editor = new Style(typeof(Editor)) { Class = \"form-control-lg\" };");
-        sb.AppendLine("        style_form_control_lg_editor.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
-        sb.AppendLine("        style_form_control_lg_editor.Setters.Add(new Setter { Property = Editor.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
-        sb.AppendLine("        style_form_control_lg_editor.Setters.Add(new Setter { Property = Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
+        sb.AppendLine("        var style_form_control_lg_editor = new MauiControls.Style(typeof(MauiControls.Editor)) { Class = \"form-control-lg\" };");
+        sb.AppendLine("        style_form_control_lg_editor.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
+        sb.AppendLine("        style_form_control_lg_editor.Setters.Add(new MauiControls.Setter { Property = MauiControls.Editor.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_form_control_lg_editor.Setters.Add(new MauiControls.Setter { Property = MauiControls.Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
         sb.AppendLine("        Add(style_form_control_lg_editor);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_control_sm_editor = new Style(typeof(Editor)) { Class = \"form-control-sm\" };");
-        sb.AppendLine("        style_form_control_sm_editor.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
-        sb.AppendLine("        style_form_control_sm_editor.Setters.Add(new Setter { Property = Editor.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
-        sb.AppendLine("        style_form_control_sm_editor.Setters.Add(new Setter { Property = Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
+        sb.AppendLine("        var style_form_control_sm_editor = new MauiControls.Style(typeof(MauiControls.Editor)) { Class = \"form-control-sm\" };");
+        sb.AppendLine("        style_form_control_sm_editor.Setters.Add(new MauiControls.Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
+        sb.AppendLine("        style_form_control_sm_editor.Setters.Add(new MauiControls.Setter { Property = MauiControls.Editor.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_control_sm_editor.Setters.Add(new MauiControls.Setter { Property = MauiControls.Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
         sb.AppendLine("        Add(style_form_control_sm_editor);");
         sb.AppendLine();
 
         // Check/Radio/Switch/Range classes
-        sb.AppendLine("        var style_form_check_checkbox = new Style(typeof(CheckBox)) { Class = \"form-check-input\" };");
-        sb.AppendLine("        style_form_check_checkbox.Setters.Add(new Setter { Property = CheckBox.ColorProperty, Value = DR(\"Primary\") });");
+        sb.AppendLine("        var style_form_check_checkbox = new MauiControls.Style(typeof(MauiControls.CheckBox)) { Class = \"form-check-input\" };");
+        sb.AppendLine("        style_form_check_checkbox.Setters.Add(new MauiControls.Setter { Property = MauiControls.CheckBox.ColorProperty, Value = DR(\"Primary\") });");
         sb.AppendLine("        Add(style_form_check_checkbox);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_check_radio = new Style(typeof(RadioButton)) { Class = \"form-check-input\" };");
-        sb.AppendLine("        style_form_check_radio.Setters.Add(new Setter { Property = RadioButton.TextColorProperty, Value = DR(\"OnBackground\") });");
+        sb.AppendLine("        var style_form_check_radio = new MauiControls.Style(typeof(MauiControls.RadioButton)) { Class = \"form-check-input\" };");
+        sb.AppendLine("        style_form_check_radio.Setters.Add(new MauiControls.Setter { Property = MauiControls.RadioButton.TextColorProperty, Value = DR(\"OnBackground\") });");
         sb.AppendLine("        Add(style_form_check_radio);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_switch = new Style(typeof(Switch)) { Class = \"form-switch\" };");
-        sb.AppendLine("        style_form_switch.Setters.Add(new Setter { Property = Switch.OnColorProperty, Value = DR(\"Primary\") });");
+        sb.AppendLine("        var style_form_switch = new MauiControls.Style(typeof(MauiControls.Switch)) { Class = \"form-switch\" };");
+        sb.AppendLine("        style_form_switch.Setters.Add(new MauiControls.Setter { Property = MauiControls.Switch.OnColorProperty, Value = DR(\"Primary\") });");
         sb.AppendLine("        Add(style_form_switch);");
         sb.AppendLine();
-        sb.AppendLine("        var style_form_range = new Style(typeof(Slider)) { Class = \"form-range\" };");
-        sb.AppendLine("        style_form_range.Setters.Add(new Setter { Property = Slider.MinimumTrackColorProperty, Value = DR(\"Primary\") });");
-        sb.AppendLine("        style_form_range.Setters.Add(new Setter { Property = Slider.ThumbColorProperty, Value = DR(\"Primary\") });");
-        sb.AppendLine("        style_form_range.Setters.Add(new Setter { Property = Slider.MaximumTrackColorProperty, Value = DR(\"OutlineVariant\") });");
+        sb.AppendLine("        var style_form_range = new MauiControls.Style(typeof(MauiControls.Slider)) { Class = \"form-range\" };");
+        sb.AppendLine("        style_form_range.Setters.Add(new MauiControls.Setter { Property = MauiControls.Slider.MinimumTrackColorProperty, Value = DR(\"Primary\") });");
+        sb.AppendLine("        style_form_range.Setters.Add(new MauiControls.Setter { Property = MauiControls.Slider.ThumbColorProperty, Value = DR(\"Primary\") });");
+        sb.AppendLine("        style_form_range.Setters.Add(new MauiControls.Setter { Property = MauiControls.Slider.MaximumTrackColorProperty, Value = DR(\"OutlineVariant\") });");
         sb.AppendLine("        Add(style_form_range);");
         sb.AppendLine();
 
         // ProgressBar
-        sb.AppendLine("        var style_progressbar = new Style(typeof(ProgressBar));");
-        sb.AppendLine("        style_progressbar.Setters.Add(new Setter { Property = ProgressBar.ProgressColorProperty, Value = DR(\"Primary\") });");
-        sb.AppendLine("        style_progressbar.Setters.Add(new Setter { Property = ProgressBar.MinimumHeightRequestProperty, Value = 16d });");
+        sb.AppendLine("        var style_progressbar = new MauiControls.Style(typeof(MauiControls.ProgressBar));");
+        sb.AppendLine("        style_progressbar.Setters.Add(new MauiControls.Setter { Property = MauiControls.ProgressBar.ProgressColorProperty, Value = DR(\"Primary\") });");
+        sb.AppendLine("        style_progressbar.Setters.Add(new MauiControls.Setter { Property = MauiControls.ProgressBar.MinimumHeightRequestProperty, Value = 16d });");
         sb.AppendLine("        Add(style_progressbar);");
         sb.AppendLine();
 
         // Border
-        sb.AppendLine("        var style_border = new Style(typeof(Border));");
-        sb.AppendLine("        style_border.Setters.Add(new Setter { Property = Border.BackgroundProperty, Value = Colors.Transparent });");
-        sb.AppendLine("        style_border.Setters.Add(new Setter { Property = Border.StrokeProperty, Value = Colors.Transparent });");
-        sb.AppendLine("        style_border.Setters.Add(new Setter { Property = Border.StrokeThicknessProperty, Value = 0d });");
+        sb.AppendLine("        var style_border = new MauiControls.Style(typeof(MauiControls.Border));");
+        sb.AppendLine("        style_border.Setters.Add(new MauiControls.Setter { Property = MauiControls.Border.BackgroundProperty, Value = Colors.Transparent });");
+        sb.AppendLine("        style_border.Setters.Add(new MauiControls.Setter { Property = MauiControls.Border.StrokeProperty, Value = Colors.Transparent });");
+        sb.AppendLine("        style_border.Setters.Add(new MauiControls.Setter { Property = MauiControls.Border.StrokeThicknessProperty, Value = 0d });");
         sb.AppendLine("        Add(style_border);");
         sb.AppendLine();
 
         // ContentPage
-        sb.AppendLine("        var style_page = new Style(typeof(ContentPage)) { ApplyToDerivedTypes = true };");
-        sb.AppendLine("        style_page.Setters.Add(new Setter { Property = ContentPage.BackgroundProperty, Value = DR(\"Background\") });");
+        sb.AppendLine("        var style_page = new MauiControls.Style(typeof(MauiControls.ContentPage)) { ApplyToDerivedTypes = true };");
+        sb.AppendLine("        style_page.Setters.Add(new MauiControls.Setter { Property = MauiControls.ContentPage.BackgroundProperty, Value = DR(\"Background\") });");
         sb.AppendLine("        Add(style_page);");
         sb.AppendLine();
 
         // Shell
-        sb.AppendLine("        var style_shell = new Style(typeof(Shell)) { ApplyToDerivedTypes = true };");
-        sb.AppendLine("        style_shell.Setters.Add(new Setter { Property = Shell.BackgroundColorProperty, Value = DR(\"Primary\") });");
-        sb.AppendLine("        style_shell.Setters.Add(new Setter { Property = Shell.ForegroundColorProperty, Value = DR(\"OnPrimary\") });");
-        sb.AppendLine("        style_shell.Setters.Add(new Setter { Property = Shell.TitleColorProperty, Value = DR(\"OnPrimary\") });");
-        sb.AppendLine("        style_shell.Setters.Add(new Setter { Property = Shell.TabBarBackgroundColorProperty, Value = DR(\"Background\") });");
-        sb.AppendLine("        style_shell.Setters.Add(new Setter { Property = Shell.TabBarForegroundColorProperty, Value = DR(\"Primary\") });");
-        sb.AppendLine("        style_shell.Setters.Add(new Setter { Property = Shell.TabBarUnselectedColorProperty, Value = DR(\"Gray500\") });");
-        sb.AppendLine("        style_shell.Setters.Add(new Setter { Property = Shell.FlyoutBackgroundColorProperty, Value = DR(\"Background\") });");
+        sb.AppendLine("        var style_shell = new MauiControls.Style(typeof(MauiControls.Shell)) { ApplyToDerivedTypes = true };");
+        sb.AppendLine("        style_shell.Setters.Add(new MauiControls.Setter { Property = MauiControls.Shell.BackgroundColorProperty, Value = DR(\"Primary\") });");
+        sb.AppendLine("        style_shell.Setters.Add(new MauiControls.Setter { Property = MauiControls.Shell.ForegroundColorProperty, Value = DR(\"OnPrimary\") });");
+        sb.AppendLine("        style_shell.Setters.Add(new MauiControls.Setter { Property = MauiControls.Shell.TitleColorProperty, Value = DR(\"OnPrimary\") });");
+        sb.AppendLine("        style_shell.Setters.Add(new MauiControls.Setter { Property = MauiControls.Shell.TabBarBackgroundColorProperty, Value = DR(\"Background\") });");
+        sb.AppendLine("        style_shell.Setters.Add(new MauiControls.Setter { Property = MauiControls.Shell.TabBarForegroundColorProperty, Value = DR(\"Primary\") });");
+        sb.AppendLine("        style_shell.Setters.Add(new MauiControls.Setter { Property = MauiControls.Shell.TabBarUnselectedColorProperty, Value = DR(\"Gray500\") });");
+        sb.AppendLine("        style_shell.Setters.Add(new MauiControls.Setter { Property = MauiControls.Shell.FlyoutBackgroundColorProperty, Value = DR(\"Background\") });");
         sb.AppendLine("        Add(style_shell);");
         sb.AppendLine();
     }
@@ -952,7 +954,7 @@ public partial class {className} : ResourceDictionary
         {
             var pascal = ToPascalCase(v);
             var varName = $"style_btn_{v}";
-            sb.AppendLine($"        var {varName} = new Style(typeof(Button)) {{ Class = \"btn-{v}\" }};");
+            sb.AppendLine($"        var {varName} = new MauiControls.Style(typeof(MauiControls.Button)) {{ Class = \"btn-{v}\" }};");
 
             if (data.ButtonRules.TryGetValue(v, out var rule) && rule.Gradient != null)
             {
@@ -960,14 +962,14 @@ public partial class {className} : ResourceDictionary
             }
             else
             {
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BackgroundProperty, Value = DR(\"{pascal}\") }});");
+                sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.BackgroundProperty, Value = DR(\"{pascal}\") }});");
             }
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.TextColorProperty, Value = DR(\"On{pascal}\") }});");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.TextColorProperty, Value = DR(\"On{pascal}\") }});");
 
             // Set border color from CSS --bs-btn-border-color via DynamicResource for theme switching
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = DR(\"BtnBorder{pascal}\") }});");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.BorderColorProperty, Value = DR(\"BtnBorder{pascal}\") }});");
 
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = DR(\"BtnShadow{pascal}\") }});");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.ShadowProperty, Value = DR(\"BtnShadow{pascal}\") }});");
 
             sb.AppendLine($"        Add({varName});");
             sb.AppendLine();
@@ -983,28 +985,28 @@ public partial class {className} : ResourceDictionary
             var pascal = ToPascalCase(v);
             var varName = $"style_btnout_{v}";
             data.ButtonRules.TryGetValue($"outline-{v}", out var rule);
-            sb.AppendLine($"        var {varName} = new Style(typeof(Button)) {{ Class = \"btn-outline-{v}\" }};");
+            sb.AppendLine($"        var {varName} = new MauiControls.Style(typeof(MauiControls.Button)) {{ Class = \"btn-outline-{v}\" }};");
             if (!string.IsNullOrWhiteSpace(rule?.Background))
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BackgroundProperty, Value = Color.FromArgb(\"{NormalizeHexColor(rule.Background)}\") }});");
+                sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.BackgroundProperty, Value = Color.FromArgb(\"{NormalizeHexColor(rule.Background)}\") }});");
             else
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BackgroundProperty, Value = Colors.Transparent }});");
+                sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.BackgroundProperty, Value = Colors.Transparent }});");
 
             if (!string.IsNullOrWhiteSpace(rule?.Color))
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.TextColorProperty, Value = DR(\"OutlineText{pascal}\") }});");
+                sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.TextColorProperty, Value = DR(\"OutlineText{pascal}\") }});");
             else
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.TextColorProperty, Value = DR(\"{pascal}\") }});");
+                sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.TextColorProperty, Value = DR(\"{pascal}\") }});");
 
             if (!string.IsNullOrWhiteSpace(rule?.BorderColor))
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = DR(\"OutlineBorder{pascal}\") }});");
+                sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.BorderColorProperty, Value = DR(\"OutlineBorder{pascal}\") }});");
             else
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = DR(\"{pascal}\") }});");
+                sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.BorderColorProperty, Value = DR(\"{pascal}\") }});");
 
             if (!string.IsNullOrWhiteSpace(rule?.BorderWidth))
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderWidthProperty, Value = {CssToDevicePixels(rule.BorderWidth).ToString(CultureInfo.InvariantCulture)}d }});");
+                sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.BorderWidthProperty, Value = {CssToDevicePixels(rule.BorderWidth).ToString(CultureInfo.InvariantCulture)}d }});");
             else
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderWidthProperty, Value = DR(\"BorderWidth\") }});");
+                sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.BorderWidthProperty, Value = DR(\"BorderWidth\") }});");
 
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = DR(\"BtnShadowOutline{pascal}\") }});");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.ShadowProperty, Value = DR(\"BtnShadowOutline{pascal}\") }});");
             sb.AppendLine($"        Add({varName});");
             sb.AppendLine();
         }
@@ -1013,41 +1015,41 @@ public partial class {className} : ResourceDictionary
     private void EmitCsSizeVariants(StringBuilder sb)
     {
         sb.AppendLine("        // Size variants");
-        sb.AppendLine("        var style_btn_lg = new Style(typeof(Button)) { Class = \"btn-lg\" };");
-        sb.AppendLine("        style_btn_lg.Setters.Add(new Setter { Property = Button.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
-        sb.AppendLine("        style_btn_lg.Setters.Add(new Setter { Property = Button.PaddingProperty, Value = DR(\"ButtonPaddingLg\") });");
-        sb.AppendLine("        style_btn_lg.Setters.Add(new Setter { Property = Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeightLg\") });");
-        sb.AppendLine("        style_btn_lg.Setters.Add(new Setter { Property = Button.CornerRadiusProperty, Value = DR(\"CornerRadiusLg\") });");
+        sb.AppendLine("        var style_btn_lg = new MauiControls.Style(typeof(MauiControls.Button)) { Class = \"btn-lg\" };");
+        sb.AppendLine("        style_btn_lg.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_btn_lg.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.PaddingProperty, Value = DR(\"ButtonPaddingLg\") });");
+        sb.AppendLine("        style_btn_lg.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeightLg\") });");
+        sb.AppendLine("        style_btn_lg.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.CornerRadiusProperty, Value = DR(\"CornerRadiusLg\") });");
         sb.AppendLine("        Add(style_btn_lg);");
         sb.AppendLine();
 
-        sb.AppendLine("        var style_btn_sm = new Style(typeof(Button)) { Class = \"btn-sm\" };");
-        sb.AppendLine("        style_btn_sm.Setters.Add(new Setter { Property = Button.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
-        sb.AppendLine("        style_btn_sm.Setters.Add(new Setter { Property = Button.PaddingProperty, Value = DR(\"ButtonPaddingSm\") });");
-        sb.AppendLine("        style_btn_sm.Setters.Add(new Setter { Property = Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeightSm\") });");
-        sb.AppendLine("        style_btn_sm.Setters.Add(new Setter { Property = Button.CornerRadiusProperty, Value = DR(\"CornerRadiusSm\") });");
+        sb.AppendLine("        var style_btn_sm = new MauiControls.Style(typeof(MauiControls.Button)) { Class = \"btn-sm\" };");
+        sb.AppendLine("        style_btn_sm.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_btn_sm.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.PaddingProperty, Value = DR(\"ButtonPaddingSm\") });");
+        sb.AppendLine("        style_btn_sm.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeightSm\") });");
+        sb.AppendLine("        style_btn_sm.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.CornerRadiusProperty, Value = DR(\"CornerRadiusSm\") });");
         sb.AppendLine("        Add(style_btn_sm);");
         sb.AppendLine();
 
-        sb.AppendLine("        var style_btn_pill = new Style(typeof(Button)) { Class = \"btn-pill\" };");
-        sb.AppendLine("        style_btn_pill.Setters.Add(new Setter { Property = Button.CornerRadiusProperty, Value = DR(\"CornerRadiusPill\") });");
+        sb.AppendLine("        var style_btn_pill = new MauiControls.Style(typeof(MauiControls.Button)) { Class = \"btn-pill\" };");
+        sb.AppendLine("        style_btn_pill.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.CornerRadiusProperty, Value = DR(\"CornerRadiusPill\") });");
         sb.AppendLine("        Add(style_btn_pill);");
         sb.AppendLine();
 
         // Pill + size combos: correct corner radius for each button height
-        sb.AppendLine("        var style_btn_pill_lg = new Style(typeof(Button)) { Class = \"btn-pill-lg\" };");
-        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new Setter { Property = Button.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
-        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new Setter { Property = Button.PaddingProperty, Value = DR(\"ButtonPaddingLg\") });");
-        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new Setter { Property = Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeightLg\") });");
-        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new Setter { Property = Button.CornerRadiusProperty, Value = DR(\"CornerRadiusPillLg\") });");
+        sb.AppendLine("        var style_btn_pill_lg = new MauiControls.Style(typeof(MauiControls.Button)) { Class = \"btn-pill-lg\" };");
+        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.PaddingProperty, Value = DR(\"ButtonPaddingLg\") });");
+        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeightLg\") });");
+        sb.AppendLine("        style_btn_pill_lg.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.CornerRadiusProperty, Value = DR(\"CornerRadiusPillLg\") });");
         sb.AppendLine("        Add(style_btn_pill_lg);");
         sb.AppendLine();
 
-        sb.AppendLine("        var style_btn_pill_sm = new Style(typeof(Button)) { Class = \"btn-pill-sm\" };");
-        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new Setter { Property = Button.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
-        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new Setter { Property = Button.PaddingProperty, Value = DR(\"ButtonPaddingSm\") });");
-        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new Setter { Property = Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeightSm\") });");
-        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new Setter { Property = Button.CornerRadiusProperty, Value = DR(\"CornerRadiusPillSm\") });");
+        sb.AppendLine("        var style_btn_pill_sm = new MauiControls.Style(typeof(MauiControls.Button)) { Class = \"btn-pill-sm\" };");
+        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.PaddingProperty, Value = DR(\"ButtonPaddingSm\") });");
+        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.MinimumHeightRequestProperty, Value = DR(\"ButtonHeightSm\") });");
+        sb.AppendLine("        style_btn_pill_sm.Setters.Add(new MauiControls.Setter { Property = MauiControls.Button.CornerRadiusProperty, Value = DR(\"CornerRadiusPillSm\") });");
         sb.AppendLine("        Add(style_btn_pill_sm);");
         sb.AppendLine();
     }
@@ -1062,35 +1064,35 @@ public partial class {className} : ResourceDictionary
         var cardPadY = data.CardSpacerY != null ? CssToDevicePixels(data.CardSpacerY) : 16;
 
         sb.AppendLine("        // Card & component styles");
-        sb.AppendLine("        var style_card = new Style(typeof(Border)) { Class = \"card\" };");
-        sb.AppendLine("        style_card.Setters.Add(new Setter { Property = Border.BackgroundProperty, Value = DR(\"Surface\") });");
-        sb.AppendLine("        style_card.Setters.Add(new Setter { Property = Border.StrokeProperty, Value = DR(\"Outline\") });");
-        sb.AppendLine("        style_card.Setters.Add(new Setter { Property = Border.StrokeThicknessProperty, Value = DR(\"BorderWidth\") });");
-        sb.AppendLine($"        style_card.Setters.Add(new Setter {{ Property = Border.StrokeShapeProperty, Value = new RoundRectangle {{ CornerRadius = {cardCornerRadius} }} }});");
-        sb.AppendLine($"        style_card.Setters.Add(new Setter {{ Property = Border.PaddingProperty, Value = new Thickness({cardPadX.ToString(CultureInfo.InvariantCulture)}, {cardPadY.ToString(CultureInfo.InvariantCulture)}) }});");
+        sb.AppendLine("        var style_card = new MauiControls.Style(typeof(MauiControls.Border)) { Class = \"card\" };");
+        sb.AppendLine("        style_card.Setters.Add(new MauiControls.Setter { Property = MauiControls.Border.BackgroundProperty, Value = DR(\"Surface\") });");
+        sb.AppendLine("        style_card.Setters.Add(new MauiControls.Setter { Property = MauiControls.Border.StrokeProperty, Value = DR(\"Outline\") });");
+        sb.AppendLine("        style_card.Setters.Add(new MauiControls.Setter { Property = MauiControls.Border.StrokeThicknessProperty, Value = DR(\"BorderWidth\") });");
+        sb.AppendLine($"        style_card.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Border.StrokeShapeProperty, Value = new RoundRectangle {{ CornerRadius = {cardCornerRadius} }} }});");
+        sb.AppendLine($"        style_card.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Border.PaddingProperty, Value = new Thickness({cardPadX.ToString(CultureInfo.InvariantCulture)}, {cardPadY.ToString(CultureInfo.InvariantCulture)}) }});");
         sb.AppendLine("        Add(style_card);");
         sb.AppendLine();
 
-        sb.AppendLine("        var style_shadow = new Style(typeof(VisualElement)) { Class = \"shadow\", ApplyToDerivedTypes = true };");
-        sb.AppendLine("        style_shadow.Setters.Add(new Setter { Property = VisualElement.ShadowProperty, Value = new Shadow { Brush = Colors.Black, Offset = new Point(0, 8), Radius = 16, Opacity = 0.15f } });");
+        sb.AppendLine("        var style_shadow = new MauiControls.Style(typeof(MauiControls.VisualElement)) { Class = \"shadow\", ApplyToDerivedTypes = true };");
+        sb.AppendLine("        style_shadow.Setters.Add(new MauiControls.Setter { Property = MauiControls.VisualElement.ShadowProperty, Value = new MauiControls.Shadow { Brush = Colors.Black, Offset = new Point(0, 8), Radius = 16, Opacity = 0.15f } });");
         sb.AppendLine("        Add(style_shadow);");
         sb.AppendLine();
 
-        sb.AppendLine("        var style_shadow_sm = new Style(typeof(VisualElement)) { Class = \"shadow-sm\", ApplyToDerivedTypes = true };");
-        sb.AppendLine("        style_shadow_sm.Setters.Add(new Setter { Property = VisualElement.ShadowProperty, Value = new Shadow { Brush = Colors.Black, Offset = new Point(0, 2), Radius = 4, Opacity = 0.075f } });");
+        sb.AppendLine("        var style_shadow_sm = new MauiControls.Style(typeof(MauiControls.VisualElement)) { Class = \"shadow-sm\", ApplyToDerivedTypes = true };");
+        sb.AppendLine("        style_shadow_sm.Setters.Add(new MauiControls.Setter { Property = MauiControls.VisualElement.ShadowProperty, Value = new MauiControls.Shadow { Brush = Colors.Black, Offset = new Point(0, 2), Radius = 4, Opacity = 0.075f } });");
         sb.AppendLine("        Add(style_shadow_sm);");
         sb.AppendLine();
 
-        sb.AppendLine("        var style_shadow_lg = new Style(typeof(VisualElement)) { Class = \"shadow-lg\", ApplyToDerivedTypes = true };");
-        sb.AppendLine("        style_shadow_lg.Setters.Add(new Setter { Property = VisualElement.ShadowProperty, Value = new Shadow { Brush = Colors.Black, Offset = new Point(0, 16), Radius = 48, Opacity = 0.175f } });");
+        sb.AppendLine("        var style_shadow_lg = new MauiControls.Style(typeof(MauiControls.VisualElement)) { Class = \"shadow-lg\", ApplyToDerivedTypes = true };");
+        sb.AppendLine("        style_shadow_lg.Setters.Add(new MauiControls.Setter { Property = MauiControls.VisualElement.ShadowProperty, Value = new MauiControls.Shadow { Brush = Colors.Black, Offset = new Point(0, 16), Radius = 48, Opacity = 0.175f } });");
         sb.AppendLine("        Add(style_shadow_lg);");
         sb.AppendLine();
 
         var badgeCornerRadius = (int)Math.Round(CssToDevicePixels(data.BorderRadius ?? "0.375rem"));
-        sb.AppendLine("        var style_badge = new Style(typeof(Border)) { Class = \"badge\" };");
-        sb.AppendLine("        style_badge.Setters.Add(new Setter { Property = Border.StrokeThicknessProperty, Value = 0d });");
-        sb.AppendLine($"        style_badge.Setters.Add(new Setter {{ Property = Border.StrokeShapeProperty, Value = new RoundRectangle {{ CornerRadius = {badgeCornerRadius} }} }});");
-        sb.AppendLine("        style_badge.Setters.Add(new Setter { Property = Border.PaddingProperty, Value = new Thickness(8, 4) });");
+        sb.AppendLine("        var style_badge = new MauiControls.Style(typeof(MauiControls.Border)) { Class = \"badge\" };");
+        sb.AppendLine("        style_badge.Setters.Add(new MauiControls.Setter { Property = MauiControls.Border.StrokeThicknessProperty, Value = 0d });");
+        sb.AppendLine($"        style_badge.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Border.StrokeShapeProperty, Value = new RoundRectangle {{ CornerRadius = {badgeCornerRadius} }} }});");
+        sb.AppendLine("        style_badge.Setters.Add(new MauiControls.Setter { Property = MauiControls.Border.PaddingProperty, Value = new Thickness(8, 4) });");
         sb.AppendLine("        Add(style_badge);");
         sb.AppendLine();
     }
@@ -1109,11 +1111,11 @@ public partial class {className} : ResourceDictionary
         {
             var pascal = ToPascalCase(v);
             var varName = $"style_textbg_{v}";
-            sb.AppendLine($"        var {varName} = new Style(typeof(Border)) {{ Class = \"text-bg-{v}\" }};");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Border.BackgroundProperty, Value = DR(\"{pascal}\") }});");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Border.StrokeThicknessProperty, Value = 0d }});");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Border.StrokeShapeProperty, Value = new RoundRectangle {{ CornerRadius = {cr} }} }});");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Border.PaddingProperty, Value = new Thickness({padX.ToString(CultureInfo.InvariantCulture)}, {padY.ToString(CultureInfo.InvariantCulture)}) }});");
+            sb.AppendLine($"        var {varName} = new MauiControls.Style(typeof(MauiControls.Border)) {{ Class = \"text-bg-{v}\" }};");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Border.BackgroundProperty, Value = DR(\"{pascal}\") }});");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Border.StrokeThicknessProperty, Value = 0d }});");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Border.StrokeShapeProperty, Value = new RoundRectangle {{ CornerRadius = {cr} }} }});");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Border.PaddingProperty, Value = new Thickness({padX.ToString(CultureInfo.InvariantCulture)}, {padY.ToString(CultureInfo.InvariantCulture)}) }});");
             sb.AppendLine($"        Add({varName});");
         }
         sb.AppendLine();
@@ -1127,8 +1129,8 @@ public partial class {className} : ResourceDictionary
         {
             var pascal = ToPascalCase(v);
             var varName = $"style_bg_{v}";
-            sb.AppendLine($"        var {varName} = new Style(typeof(Border)) {{ Class = \"bg-{v}\" }};");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Border.BackgroundProperty, Value = DR(\"{pascal}\") }});");
+            sb.AppendLine($"        var {varName} = new MauiControls.Style(typeof(MauiControls.Border)) {{ Class = \"bg-{v}\" }};");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Border.BackgroundProperty, Value = DR(\"{pascal}\") }});");
             sb.AppendLine($"        Add({varName});");
         }
         sb.AppendLine();
@@ -1142,8 +1144,8 @@ public partial class {className} : ResourceDictionary
         {
             var pascal = ToPascalCase(v);
             var varName = $"style_on_{v}";
-            sb.AppendLine($"        var {varName} = new Style(typeof(Label)) {{ Class = \"on-{v}\" }};");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Label.TextColorProperty, Value = DR(\"On{pascal}\") }});");
+            sb.AppendLine($"        var {varName} = new MauiControls.Style(typeof(MauiControls.Label)) {{ Class = \"on-{v}\" }};");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Label.TextColorProperty, Value = DR(\"On{pascal}\") }});");
             sb.AppendLine($"        Add({varName});");
         }
         sb.AppendLine();
@@ -1156,10 +1158,10 @@ public partial class {className} : ResourceDictionary
         {
             var colorKey = i == 1 ? "HeadingColor" : "HeadingColorAlt";
             var varName = $"style_h{i}";
-            sb.AppendLine($"        var {varName} = new Style(typeof(Label)) {{ Class = \"h{i}\" }};");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Label.FontSizeProperty, Value = DR(\"FontSizeH{i}\") }});");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Label.FontAttributesProperty, Value = FontAttributes.Bold }});");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Label.TextColorProperty, Value = DR(\"{colorKey}\") }});");
+            sb.AppendLine($"        var {varName} = new MauiControls.Style(typeof(MauiControls.Label)) {{ Class = \"h{i}\" }};");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Label.FontSizeProperty, Value = DR(\"FontSizeH{i}\") }});");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Label.FontAttributesProperty, Value = FontAttributes.Bold }});");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Label.TextColorProperty, Value = DR(\"{colorKey}\") }});");
             sb.AppendLine($"        Add({varName});");
             sb.AppendLine();
         }
@@ -1168,43 +1170,43 @@ public partial class {className} : ResourceDictionary
     private void EmitCsTextStyles(StringBuilder sb)
     {
         sb.AppendLine("        // Text styles");
-        sb.AppendLine("        var style_lead = new Style(typeof(Label)) { Class = \"lead\" };");
-        sb.AppendLine("        style_lead.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeLead\") });");
-        sb.AppendLine("        style_lead.Setters.Add(new Setter { Property = Label.LineHeightProperty, Value = 1.5 });");
+        sb.AppendLine("        var style_lead = new MauiControls.Style(typeof(MauiControls.Label)) { Class = \"lead\" };");
+        sb.AppendLine("        style_lead.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.FontSizeProperty, Value = DR(\"FontSizeLead\") });");
+        sb.AppendLine("        style_lead.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.LineHeightProperty, Value = 1.5 });");
         sb.AppendLine("        Add(style_lead);");
-        sb.AppendLine("        var style_small = new Style(typeof(Label)) { Class = \"small\" };");
-        sb.AppendLine("        style_small.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        var style_small = new MauiControls.Style(typeof(MauiControls.Label)) { Class = \"small\" };");
+        sb.AppendLine("        style_small.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
         sb.AppendLine("        Add(style_small);");
-        sb.AppendLine("        var style_form_text = new Style(typeof(Label)) { Class = \"form-text\" };");
-        sb.AppendLine("        style_form_text.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
-        sb.AppendLine("        style_form_text.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"Muted\") });");
+        sb.AppendLine("        var style_form_text = new MauiControls.Style(typeof(MauiControls.Label)) { Class = \"form-text\" };");
+        sb.AppendLine("        style_form_text.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_text.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.TextColorProperty, Value = DR(\"Muted\") });");
         sb.AppendLine("        Add(style_form_text);");
-        sb.AppendLine("        var style_form_check_label = new Style(typeof(Label)) { Class = \"form-check-label\" };");
-        sb.AppendLine("        style_form_check_label.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"OnBackground\") });");
+        sb.AppendLine("        var style_form_check_label = new MauiControls.Style(typeof(MauiControls.Label)) { Class = \"form-check-label\" };");
+        sb.AppendLine("        style_form_check_label.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.TextColorProperty, Value = DR(\"OnBackground\") });");
         sb.AppendLine("        Add(style_form_check_label);");
-        sb.AppendLine("        var style_mark = new Style(typeof(Label)) { Class = \"mark\" };");
-        sb.AppendLine("        style_mark.Setters.Add(new Setter { Property = Label.BackgroundProperty, Value = Color.FromArgb(\"#fcf8e3\") });");
-        sb.AppendLine("        style_mark.Setters.Add(new Setter { Property = Label.PaddingProperty, Value = new Thickness(4, 2) });");
+        sb.AppendLine("        var style_mark = new MauiControls.Style(typeof(MauiControls.Label)) { Class = \"mark\" };");
+        sb.AppendLine("        style_mark.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.BackgroundProperty, Value = Color.FromArgb(\"#fcf8e3\") });");
+        sb.AppendLine("        style_mark.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.PaddingProperty, Value = new Thickness(4, 2) });");
         sb.AppendLine("        Add(style_mark);");
         var variants = new[] { "primary", "secondary", "success", "danger", "warning", "info" };
         foreach (var v in variants)
         {
             var pascal = ToPascalCase(v);
-            sb.AppendLine($"        var style_text_{v} = new Style(typeof(Label)) {{ Class = \"text-{v}\" }};");
-            sb.AppendLine($"        style_text_{v}.Setters.Add(new Setter {{ Property = Label.TextColorProperty, Value = DR(\"{pascal}\") }});");
+            sb.AppendLine($"        var style_text_{v} = new MauiControls.Style(typeof(MauiControls.Label)) {{ Class = \"text-{v}\" }};");
+            sb.AppendLine($"        style_text_{v}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Label.TextColorProperty, Value = DR(\"{pascal}\") }});");
             sb.AppendLine($"        Add(style_text_{v});");
         }
-        sb.AppendLine("        var style_text_muted = new Style(typeof(Label)) { Class = \"text-muted\" };");
-        sb.AppendLine("        style_text_muted.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"Muted\") });");
+        sb.AppendLine("        var style_text_muted = new MauiControls.Style(typeof(MauiControls.Label)) { Class = \"text-muted\" };");
+        sb.AppendLine("        style_text_muted.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.TextColorProperty, Value = DR(\"Muted\") });");
         sb.AppendLine("        Add(style_text_muted);");
-        sb.AppendLine("        var style_text_dark = new Style(typeof(Label)) { Class = \"text-dark\" };");
-        sb.AppendLine("        style_text_dark.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"Dark\") });");
+        sb.AppendLine("        var style_text_dark = new MauiControls.Style(typeof(MauiControls.Label)) { Class = \"text-dark\" };");
+        sb.AppendLine("        style_text_dark.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.TextColorProperty, Value = DR(\"Dark\") });");
         sb.AppendLine("        Add(style_text_dark);");
-        sb.AppendLine("        var style_text_white = new Style(typeof(Label)) { Class = \"text-white\" };");
-        sb.AppendLine("        style_text_white.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = Colors.White });");
+        sb.AppendLine("        var style_text_white = new MauiControls.Style(typeof(MauiControls.Label)) { Class = \"text-white\" };");
+        sb.AppendLine("        style_text_white.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.TextColorProperty, Value = Colors.White });");
         sb.AppendLine("        Add(style_text_white);");
-        sb.AppendLine("        var style_text_center = new Style(typeof(Label)) { Class = \"text-center\" };");
-        sb.AppendLine("        style_text_center.Setters.Add(new Setter { Property = Label.HorizontalTextAlignmentProperty, Value = TextAlignment.Center });");
+        sb.AppendLine("        var style_text_center = new MauiControls.Style(typeof(MauiControls.Label)) { Class = \"text-center\" };");
+        sb.AppendLine("        style_text_center.Setters.Add(new MauiControls.Setter { Property = MauiControls.Label.HorizontalTextAlignmentProperty, Value = TextAlignment.Center });");
         sb.AppendLine("        Add(style_text_center);");
         sb.AppendLine();
     }
@@ -1217,8 +1219,8 @@ public partial class {className} : ResourceDictionary
         {
             var pascal = ToPascalCase(v);
             var varName = $"style_progress_{v}";
-            sb.AppendLine($"        var {varName} = new Style(typeof(ProgressBar)) {{ Class = \"progress-{v}\" }};");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = ProgressBar.ProgressColorProperty, Value = DR(\"{pascal}\") }});");
+            sb.AppendLine($"        var {varName} = new MauiControls.Style(typeof(MauiControls.ProgressBar)) {{ Class = \"progress-{v}\" }};");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.ProgressBar.ProgressColorProperty, Value = DR(\"{pascal}\") }});");
             sb.AppendLine($"        Add({varName});");
         }
         sb.AppendLine();
@@ -1229,7 +1231,7 @@ public partial class {className} : ResourceDictionary
         var stops = ParseGradientStops(cssGradient);
         if (stops.Count >= 2)
         {
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BackgroundProperty, Value = new LinearGradientBrush");
+            sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.BackgroundProperty, Value = new LinearGradientBrush");
             sb.AppendLine("        {");
             sb.AppendLine("            StartPoint = new Point(0, 0), EndPoint = new Point(0, 1),");
             sb.AppendLine("            GradientStops = new GradientStopCollection");
@@ -1245,7 +1247,7 @@ public partial class {className} : ResourceDictionary
 
     private void EmitCsShadowSetter(StringBuilder sb, string varName, string color)
     {
-        sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Color.FromArgb(\"{NormalizeHexColor(color)}\"), Offset = new Point(0, 0), Radius = 8, Opacity = 0.6f }} }});");
+        sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.ShadowProperty, Value = new MauiControls.Shadow {{ Brush = Color.FromArgb(\"{NormalizeHexColor(color)}\"), Offset = new Point(0, 0), Radius = 8, Opacity = 0.6f }} }});");
     }
 
     /// <summary>
@@ -1291,7 +1293,7 @@ public partial class {className} : ResourceDictionary
             }
         }
 
-        sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Color.FromArgb(\"{color}\"), Offset = new Point({offsetX.ToString("F0", CultureInfo.InvariantCulture)}, {offsetY.ToString("F0", CultureInfo.InvariantCulture)}), Radius = {blur.ToString("F0", CultureInfo.InvariantCulture)}, Opacity = 1f }} }});");
+        sb.AppendLine($"        {varName}.Setters.Add(new MauiControls.Setter {{ Property = MauiControls.Button.ShadowProperty, Value = new MauiControls.Shadow {{ Brush = Color.FromArgb(\"{color}\"), Offset = new Point({offsetX.ToString("F0", CultureInfo.InvariantCulture)}, {offsetY.ToString("F0", CultureInfo.InvariantCulture)}), Radius = {blur.ToString("F0", CultureInfo.InvariantCulture)}, Opacity = 1f }} }});");
     }
 
     #endregion
