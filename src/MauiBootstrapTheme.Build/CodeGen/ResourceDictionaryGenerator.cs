@@ -211,20 +211,23 @@ public partial class {className} : ResourceDictionary
         }
         sb.AppendLine();
 
-        // Button border colors (--bs-btn-border-color per variant, for solid buttons)
+        // Button border colors — prefer theme-level .btn{border-color:X} override (e.g., Slate/Brite)
+        // over per-variant --bs-btn-border-color, since the direct override wins in CSS cascade.
         foreach (var v in variants)
         {
             var pascal = ToPascalCase(v);
             var variantColor = v switch { "primary" => data.Primary ?? "#0d6efd", "secondary" => data.Secondary ?? "#6c757d",
                 "success" => data.Success ?? "#198754", "danger" => data.Danger ?? "#dc3545", "warning" => data.Warning ?? "#ffc107",
                 "info" => data.Info ?? "#0dcaf0", "light" => data.Light ?? "#f8f9fa", "dark" => data.Dark ?? "#212529", _ => "#000" };
-            var btnBorderColor = data.ButtonRules.TryGetValue(v, out var br) && br.BorderColor != null
-                ? NormalizeHexColor(br.BorderColor) : NormalizeHexColor(variantColor);
+            var btnBorderColor = data.BtnBaseBorderColor != null
+                ? NormalizeHexColor(data.BtnBaseBorderColor)
+                : data.ButtonRules.TryGetValue(v, out var br) && br.BorderColor != null
+                    ? NormalizeHexColor(br.BorderColor) : NormalizeHexColor(variantColor);
             EmitCsColor(sb, $"BtnBorder{pascal}", btnBorderColor);
         }
         sb.AppendLine();
 
-        // Outline button text/border colors (--bs-btn-color and --bs-btn-border-color per outline variant)
+        // Outline button text/border colors — prefer direct CSS overrides over --bs-btn-* vars
         foreach (var v in variants)
         {
             var pascal = ToPascalCase(v);
@@ -232,8 +235,12 @@ public partial class {className} : ResourceDictionary
                 "success" => data.Success ?? "#198754", "danger" => data.Danger ?? "#dc3545", "warning" => data.Warning ?? "#ffc107",
                 "info" => data.Info ?? "#0dcaf0", "light" => data.Light ?? "#f8f9fa", "dark" => data.Dark ?? "#212529", _ => "#000" };
             data.ButtonRules.TryGetValue($"outline-{v}", out var outRule);
-            var outTextColor = !string.IsNullOrWhiteSpace(outRule?.Color) ? NormalizeHexColor(outRule.Color) : NormalizeHexColor(variantColor);
-            var outBorderColor = !string.IsNullOrWhiteSpace(outRule?.BorderColor) ? NormalizeHexColor(outRule.BorderColor) : NormalizeHexColor(variantColor);
+            // Text: prefer DirectColor (e.g. Slate outline-primary{color:#fff}) > --bs-btn-color > variant
+            var outTextColor = !string.IsNullOrWhiteSpace(outRule?.DirectColor) ? NormalizeHexColor(outRule.DirectColor)
+                : !string.IsNullOrWhiteSpace(outRule?.Color) ? NormalizeHexColor(outRule.Color) : NormalizeHexColor(variantColor);
+            // Border: prefer .btn base border-color override > --bs-btn-border-color > variant
+            var outBorderColor = data.BtnBaseBorderColor != null ? NormalizeHexColor(data.BtnBaseBorderColor)
+                : !string.IsNullOrWhiteSpace(outRule?.BorderColor) ? NormalizeHexColor(outRule.BorderColor) : NormalizeHexColor(variantColor);
             EmitCsColor(sb, $"OutlineText{pascal}", outTextColor);
             EmitCsColor(sb, $"OutlineBorder{pascal}", outBorderColor);
         }
@@ -871,20 +878,28 @@ public partial class {className} : ResourceDictionary
 
             if (data.ButtonRules.TryGetValue(v, out var glowRule) && glowRule.BoxShadow != null)
             {
-                var color = v switch
+                // Extract the actual color from the CSS box-shadow value (e.g., rgba(111,66,193,.9))
+                // rather than using the semantic variant color, since glow shadows may use a different color
+                // (e.g., Vapor btn-dark uses purple glow, not the dark color).
+                var shadowColor = ExtractBoxShadowColor(glowRule.BoxShadow);
+                if (shadowColor == null)
                 {
-                    "primary" => data.Primary,
-                    "secondary" => data.Secondary,
-                    "success" => data.Success,
-                    "danger" => data.Danger,
-                    "warning" => data.Warning,
-                    "info" => data.Info,
-                    "light" => data.Light,
-                    "dark" => data.Dark,
-                    _ => null
-                };
-                if (color != null)
-                    EmitCsShadowSetter(sb, varName, color);
+                    // Fallback to semantic variant color
+                    shadowColor = v switch
+                    {
+                        "primary" => data.Primary,
+                        "secondary" => data.Secondary,
+                        "success" => data.Success,
+                        "danger" => data.Danger,
+                        "warning" => data.Warning,
+                        "info" => data.Info,
+                        "light" => data.Light,
+                        "dark" => data.Dark,
+                        _ => null
+                    };
+                }
+                if (shadowColor != null)
+                    EmitCsShadowSetter(sb, varName, shadowColor);
                 else
                     sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }} }});");
             }
@@ -1175,6 +1190,21 @@ public partial class {className} : ResourceDictionary
     private void EmitCsShadowSetter(StringBuilder sb, string varName, string color)
     {
         sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Color.FromArgb(\"{NormalizeHexColor(color)}\"), Offset = new Point(0, 0), Radius = 8, Opacity = 0.6f }} }});");
+    }
+
+    /// <summary>
+    /// Extracts the first rgba() or hex color from a CSS box-shadow value.
+    /// E.g., "0 0 2px rgba(111,66,193,.9),0 0 4px rgba(111,66,193,.4)" → "rgba(111,66,193,.9)"
+    /// </summary>
+    private string? ExtractBoxShadowColor(string boxShadow)
+    {
+        var rgbaMatch = System.Text.RegularExpressions.Regex.Match(boxShadow, @"rgba?\([^)]+\)");
+        if (rgbaMatch.Success)
+            return rgbaMatch.Value;
+        var hexMatch = System.Text.RegularExpressions.Regex.Match(boxShadow, @"#[0-9a-fA-F]{3,8}");
+        if (hexMatch.Success)
+            return hexMatch.Value;
+        return null;
     }
 
     /// <summary>

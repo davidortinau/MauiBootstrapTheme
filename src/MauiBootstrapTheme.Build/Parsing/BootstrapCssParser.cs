@@ -148,6 +148,28 @@ public class BootstrapCssParser
             {
                 ParseButtonVars(m.Groups[1].Value, rule);
             }
+
+            // Extract direct color overrides (e.g., Slate .btn-outline-primary{color:#fff})
+            // These are standalone blocks with direct CSS properties (no --bs-btn-* vars).
+            foreach (Match dcm in Regex.Matches(css, $@"\.btn-outline-{Regex.Escape(variant)}\{{([^}}]+)\}}"))
+            {
+                var block = dcm.Groups[1].Value;
+                // Skip blocks that contain CSS variable declarations (standard Bootstrap)
+                if (block.Contains("--bs-btn-")) continue;
+                // Skip dark-mode overrides
+                var precedingText = css.Substring(Math.Max(0, dcm.Index - 30), Math.Min(30, dcm.Index));
+                if (precedingText.Contains("[data-bs-theme=dark]")) continue;
+
+                // Extract direct color property
+                var colorMatch = Regex.Match(block, @"(?<![\w-])color:([^;}]+)");
+                if (colorMatch.Success)
+                {
+                    var directColor = colorMatch.Groups[1].Value.Trim();
+                    if (!directColor.StartsWith("var("))
+                        rule.DirectColor = directColor;
+                }
+            }
+
             rules[$"outline-{variant}"] = rule;
         }
 
@@ -538,6 +560,29 @@ public class BootstrapCssParser
             }
         }
 
+        // Extract direct border-color overrides on .btn (e.g., Slate's rgba(0,0,0,.6), Brite's #000)
+        // These are theme-level .btn{border-color:VALUE} rules that override var(--bs-btn-border-color).
+        // Skip var() references and blocks preceded by combinators (+, ~) or pseudo-state selectors.
+        foreach (Match bcm in Regex.Matches(css, @"(?<![+~\w])\.btn\{[^}]*(?<!-)border-color:([^;}]+)[;}]"))
+        {
+            var bc = bcm.Groups[1].Value.Trim();
+            if (!bc.StartsWith("var("))
+            {
+                data.BtnBaseBorderColor = bc;
+            }
+        }
+
+        // Extract direct color overrides on .btn (e.g., Slate's .btn{color:#fff})
+        // Skip var() references and combinator-preceded blocks.
+        foreach (Match cm in Regex.Matches(css, @"(?<![+~\w])\.btn\{[^}]*(?<![\w-])color:([^;}]+)[;}]"))
+        {
+            var c = cm.Groups[1].Value.Trim();
+            if (!c.StartsWith("var("))
+            {
+                data.BtnBaseColor = c;
+            }
+        }
+
         // .btn-sm{--bs-btn-padding-y:0.25rem;--bs-btn-padding-x:0.5rem;--bs-btn-font-size:0.875rem;...}
         var smMatch = Regex.Match(css, @"\.btn-sm\{(--bs-btn-[^}]+)\}");
         if (smMatch.Success)
@@ -776,6 +821,10 @@ public class BootstrapThemeData
     public string? BtnFontSizeLg { get; set; }
     /// <summary>Resting-state box-shadow on .btn base rule (e.g., Brite's 3px 3px offset).</summary>
     public string? BtnBaseBoxShadow { get; set; }
+    /// <summary>Direct border-color override on .btn base rule (e.g., Slate's rgba(0,0,0,.6), Brite's #000).</summary>
+    public string? BtnBaseBorderColor { get; set; }
+    /// <summary>Direct color override on .btn base rule (e.g., Slate's #fff).</summary>
+    public string? BtnBaseColor { get; set; }
 
     // Progress / Secondary background
     public string? SecondaryBg { get; set; }
@@ -812,6 +861,8 @@ public class ButtonRule
     public string? Gradient { get; set; }
     public string? BoxShadow { get; set; }
     public string? TextShadow { get; set; }
+    /// <summary>Direct CSS color property override (not --bs-btn-color variable). E.g., Slate .btn-outline-primary{color:#fff}.</summary>
+    public string? DirectColor { get; set; }
 }
 
 public class CardRule
