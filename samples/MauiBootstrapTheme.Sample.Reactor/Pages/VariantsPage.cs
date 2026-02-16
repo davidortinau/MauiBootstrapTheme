@@ -7,22 +7,62 @@ namespace MauiBootstrapTheme.Sample.Reactor.Pages;
 
 class VariantsPage : BasePage
 {
+    private static string TextBgClass(BootstrapVariant variant) => variant switch
+    {
+        BootstrapVariant.Primary => "text-bg-primary",
+        BootstrapVariant.Secondary => "text-bg-secondary",
+        BootstrapVariant.Success => "text-bg-success",
+        BootstrapVariant.Danger => "text-bg-danger",
+        BootstrapVariant.Warning => "text-bg-warning",
+        BootstrapVariant.Info => "text-bg-info",
+        _ => "text-bg-primary"
+    };
+
+    private static string OnClass(BootstrapVariant variant) => variant switch
+    {
+        BootstrapVariant.Primary => "on-primary",
+        BootstrapVariant.Secondary => "on-secondary",
+        BootstrapVariant.Success => "on-success",
+        BootstrapVariant.Danger => "on-danger",
+        BootstrapVariant.Warning => "on-warning",
+        BootstrapVariant.Info => "on-info",
+        _ => "on-primary"
+    };
+
+    private static string BtnClass(BootstrapVariant variant) => variant switch
+    {
+        BootstrapVariant.Primary => "btn-primary",
+        BootstrapVariant.Secondary => "btn-secondary",
+        BootstrapVariant.Success => "btn-success",
+        BootstrapVariant.Danger => "btn-danger",
+        BootstrapVariant.Warning => "btn-warning",
+        BootstrapVariant.Info => "btn-info",
+        _ => "btn-primary"
+    };
+
+    private static string BtnOutlineClass(BootstrapVariant variant) => variant switch
+    {
+        BootstrapVariant.Primary => "btn-outline-primary",
+        BootstrapVariant.Secondary => "btn-outline-secondary",
+        BootstrapVariant.Success => "btn-outline-success",
+        BootstrapVariant.Danger => "btn-outline-danger",
+        BootstrapVariant.Warning => "btn-outline-warning",
+        BootstrapVariant.Info => "btn-outline-info",
+        _ => "btn-outline-primary"
+    };
+
     private static VisualNode RenderVariantSection(string title, BootstrapVariant variant)
     {
         return Border(
             VStack(spacing: 12,
-                Label(title).H5(),
-                Entry().Placeholder($"{title} Entry"),
+                Label(title).H5().Class(OnClass(variant)),
+                Entry().Placeholder($"{title} Entry").Class("form-control"),
                 FlexLayout(
-                    Button($"{title} Button").Variant(variant).Margin(0, 0, 8, 8),
-                    Button($"{title} Outline").Variant(variant).Outlined().Margin(0, 0, 8, 8)
+                    Button($"{title} Button").Class(BtnClass(variant)).Margin(0, 0, 8, 8),
+                    Button($"{title} Outline").Class(BtnOutlineClass(variant)).Margin(0, 0, 8, 8)
                 ).Wrap(FlexWrap.Wrap).AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
             )
-        ).Background(variant)
-            .Stroke(BootstrapTheme.Current.GetOutline())
-            .StrokeThickness(BootstrapTheme.Current.BorderWidth)
-            .Set(Microsoft.Maui.Controls.Border.StrokeShapeProperty, new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = (float)BootstrapTheme.Current.CornerRadius })
-            .Padding(16);
+        ).Class("card").Class(TextBgClass(variant));
     }
 
     public override VisualNode RenderContent()

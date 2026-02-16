@@ -9,11 +9,7 @@ class SpacingPage : BasePage
 {
     static Border Card(VisualNode content) =>
         Border(content)
-            .Stroke(BootstrapTheme.Current.GetOutline())
-            .BackgroundColor(BootstrapTheme.Current.GetSurface())
-            .StrokeThickness(BootstrapTheme.Current.BorderWidth)
-            .Set(Microsoft.Maui.Controls.Border.StrokeShapeProperty, new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = (float)BootstrapTheme.Current.CornerRadius })
-            .Padding(16);
+            .Class("card");
 
     public override VisualNode RenderContent()
         => ScrollView(

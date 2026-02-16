@@ -69,12 +69,7 @@ class ThemesPage : BasePage
                                 Border(Label("Alert").Class("on-danger").Class("small")).Class("badge").Class("bg-danger").Margin(0, 0, 8, 8)
                             ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start)
                         )
-                    ).Stroke(theme.GetOutline())
-                        .BackgroundColor(theme.GetSurface())
-                        .StrokeThickness(theme.BorderWidth)
-                        .Set(Microsoft.Maui.Controls.Border.StrokeShapeProperty, new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = (float)theme.CornerRadius })
-                        .Padding(16)
-                        .Class("shadow")
+                    ).Class("card").Class("shadow")
                 ),
 
                 // All Color Variants

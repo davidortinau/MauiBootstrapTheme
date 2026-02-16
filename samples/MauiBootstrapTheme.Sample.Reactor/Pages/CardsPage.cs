@@ -7,14 +7,6 @@ namespace MauiBootstrapTheme.Sample.Reactor.Pages;
 
 class CardsPage : BasePage
 {
-    static Border Card(VisualNode content) =>
-        Border(content)
-            .Stroke(BootstrapTheme.Current.GetOutline())
-            .BackgroundColor(BootstrapTheme.Current.GetSurface())
-            .StrokeThickness(BootstrapTheme.Current.BorderWidth)
-            .Set(Microsoft.Maui.Controls.Border.StrokeShapeProperty, new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = (float)BootstrapTheme.Current.CornerRadius })
-            .Padding(16);
-
     public override VisualNode RenderContent()
         => ScrollView(
             VStack(spacing: 24,
@@ -30,32 +22,32 @@ class CardsPage : BasePage
                 VStack(spacing: 12,
                     Label("Shadow Variants").H4(),
                     Grid("*", "*,*",
-                        Card(
+                        Border(
                             VStack(
                                 Label("No Shadow").H5(),
                                 Label("Default card without shadow").Muted()
                             )
-                        ).GridColumn(0),
-                        Card(
+                        ).Class("card").GridColumn(0),
+                        Border(
                             VStack(
                                 Label("Small Shadow").H5(),
                                 Label("shadow-sm class").Muted()
                             )
-                        ).Class("shadow-sm").GridColumn(1)
+                        ).Class("card").Class("shadow-sm").GridColumn(1)
                     ).ColumnSpacing(16).RowSpacing(16),
                     Grid("*", "*,*",
-                        Card(
+                        Border(
                             VStack(
                                 Label("Default Shadow").H5(),
                                 Label("shadow class").Muted()
                             )
-                        ).Class("shadow").GridColumn(0),
-                        Card(
+                        ).Class("card").Class("shadow").GridColumn(0),
+                        Border(
                             VStack(
                                 Label("Large Shadow").H5(),
                                 Label("shadow-lg class").Muted()
                             )
-                        ).Class("shadow-lg").GridColumn(1)
+                        ).Class("card").Class("shadow-lg").GridColumn(1)
                     ).ColumnSpacing(16)
                 ),
 
@@ -63,16 +55,16 @@ class CardsPage : BasePage
                 VStack(spacing: 12,
                     Label("Border Color Variants").H4(),
                     FlexLayout(
-                        Card(Label("Primary").HCenter())
-                            .Stroke(BootstrapTheme.Current.Primary).WidthRequest(150).Margin(0, 0, 12, 12),
-                        Card(Label("Success").HCenter())
-                            .Stroke(BootstrapTheme.Current.Success).WidthRequest(150).Margin(0, 0, 12, 12),
-                        Card(Label("Danger").HCenter())
-                            .Stroke(BootstrapTheme.Current.Danger).WidthRequest(150).Margin(0, 0, 12, 12),
-                        Card(Label("Warning").HCenter())
-                            .Stroke(BootstrapTheme.Current.Warning).WidthRequest(150).Margin(0, 0, 12, 12),
-                        Card(Label("Info").HCenter())
-                            .Stroke(BootstrapTheme.Current.Info).WidthRequest(150).Margin(0, 0, 12, 12)
+                        Border(Label("Primary").HCenter())
+                            .Class("card").Stroke(BootstrapTheme.Current.Primary).WidthRequest(150).Margin(0, 0, 12, 12),
+                        Border(Label("Success").HCenter())
+                            .Class("card").Stroke(BootstrapTheme.Current.Success).WidthRequest(150).Margin(0, 0, 12, 12),
+                        Border(Label("Danger").HCenter())
+                            .Class("card").Stroke(BootstrapTheme.Current.Danger).WidthRequest(150).Margin(0, 0, 12, 12),
+                        Border(Label("Warning").HCenter())
+                            .Class("card").Stroke(BootstrapTheme.Current.Warning).WidthRequest(150).Margin(0, 0, 12, 12),
+                        Border(Label("Info").HCenter())
+                            .Class("card").Stroke(BootstrapTheme.Current.Info).WidthRequest(150).Margin(0, 0, 12, 12)
                     ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap)
                         .JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start)
                 ),
@@ -117,12 +109,7 @@ class CardsPage : BasePage
                             BoxView().HeightRequest(1).Color(BootstrapTheme.Current.Outline),
                             Label("2 days ago").Muted().Padding(12, 8).Background(GetResource<Color>("Gray100"))
                         )
-                    ).Stroke(BootstrapTheme.Current.GetOutline())
-                        .BackgroundColor(BootstrapTheme.Current.GetSurface())
-                        .StrokeThickness(BootstrapTheme.Current.BorderWidth)
-                        .Set(Microsoft.Maui.Controls.Border.StrokeShapeProperty, new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = (float)BootstrapTheme.Current.CornerRadius })
-                        .Padding(0)
-                        .Class("shadow")
+                    ).Class("card").Class("shadow").Padding(0)
                 )
             ).Padding(20)
         );
