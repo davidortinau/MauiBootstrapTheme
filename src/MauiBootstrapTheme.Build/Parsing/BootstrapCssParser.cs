@@ -120,12 +120,20 @@ public class BootstrapCssParser
                 rule.Gradient = gradMatch.Groups[1].Value.Trim();
             }
 
-            // Extract box-shadow: .btn-{variant}{box-shadow:...}
-            var shadowPattern = $@"\.btn-{Regex.Escape(variant)}\{{box-shadow:([^}}]+)\}}";
-            var shadowMatch = Regex.Match(css, shadowPattern);
-            if (shadowMatch.Success)
+            // Extract box-shadow from grouped selectors and direct selectors:
+            //   .btn-outline-{variant},.btn-{variant}{box-shadow:...}
+            //   .btn-{variant},.btn-outline-{variant}{box-shadow:...}
+            //   .btn-{variant}{...box-shadow:...}
+            var pairShadowPattern = $@"(?:\.btn-outline-{Regex.Escape(variant)}\s*,\s*\.btn-{Regex.Escape(variant)}|\.btn-{Regex.Escape(variant)}\s*,\s*\.btn-outline-{Regex.Escape(variant)})\{{[^}}]*box-shadow:\s*([^;}}]+)";
+            foreach (Match sm in Regex.Matches(css, pairShadowPattern))
             {
-                rule.BoxShadow = shadowMatch.Groups[1].Value.Trim();
+                rule.BoxShadow = sm.Groups[1].Value.Trim();
+            }
+
+            var shadowPattern = $@"\.btn-{Regex.Escape(variant)}\{{[^}}]*box-shadow:\s*([^;}}]+)";
+            foreach (Match sm in Regex.Matches(css, shadowPattern))
+            {
+                rule.BoxShadow = sm.Groups[1].Value.Trim();
             }
 
             // Extract text-shadow: .btn-{variant}{text-shadow:...}

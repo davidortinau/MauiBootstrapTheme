@@ -49,7 +49,15 @@ public static class BootstrapButtonHandler
         // Only apply platform-level color overrides when an explicit variant is set.
         // When variant is Default, let MAUI-level styles (StyleClass, DynamicResource) handle colors.
         if (variant == BootstrapVariant.Default && !isPill)
+        {
+#if IOS || MACCATALYST
+            // MAUI shadows are drawn outside the button bounds; clipping hides them.
+            // Ensure default/class-styled buttons (e.g., theme switcher row) can render shadows.
+            if (handler.PlatformView != null)
+                handler.PlatformView.Layer.MasksToBounds = false;
+#endif
             return;
+        }
         
         var cornerRadius = isPill ? theme.CornerRadiusPill : GetCornerRadiusForSize(size, theme);
         var (backgroundColor, textColor) = Bootstrap.GetVariantColors(variant, theme);

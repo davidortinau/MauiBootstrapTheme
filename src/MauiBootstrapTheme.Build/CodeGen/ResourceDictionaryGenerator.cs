@@ -365,6 +365,7 @@ public partial class {className} : ResourceDictionary
         EmitCsColor(sb, "InputBackground", inputBackground);
         EmitCsColor(sb, "InputText", inputText);
         EmitCsColor(sb, "PlaceholderColor", placeholderColor);
+        EmitCsButtonShadowResources(sb, data);
         sb.AppendLine();
 
         // Implicit styles
@@ -596,6 +597,111 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = {targetType}.{property}Property, Value = DR(\"{resourceKey}\") }});");
     }
 
+    private void EmitCsButtonShadowResources(StringBuilder sb, Parsing.BootstrapThemeData data)
+    {
+        sb.AppendLine("        // Button shadow resources");
+        sb.AppendLine($"        this[\"BtnShadowBase\"] = {GetBaseButtonShadowExpression(data)};");
+
+        var variants = new[] { "primary", "secondary", "success", "danger", "warning", "info", "light", "dark" };
+        foreach (var variant in variants)
+        {
+            var pascal = ToPascalCase(variant);
+            var solidExpr = GetVariantButtonShadowExpression(data, variant);
+            sb.AppendLine($"        this[\"BtnShadow{pascal}\"] = {solidExpr};");
+
+            var outlineExpr = !string.IsNullOrWhiteSpace(data.BtnBaseBoxShadow)
+                && !data.BtnBaseBoxShadow.Contains("none", StringComparison.OrdinalIgnoreCase)
+                ? GetTransparentShadowExpression()
+                : solidExpr;
+            sb.AppendLine($"        this[\"BtnShadowOutline{pascal}\"] = {outlineExpr};");
+        }
+    }
+
+    private string GetBaseButtonShadowExpression(Parsing.BootstrapThemeData data)
+    {
+        if (data.HasGlowButtons && data.ButtonRules.TryGetValue("primary", out var glowBtn)
+            && !string.IsNullOrWhiteSpace(glowBtn.BoxShadow)
+            && !glowBtn.BoxShadow.Contains("none", StringComparison.OrdinalIgnoreCase))
+        {
+            return GetGlowShadowExpression(data.Primary ?? "#6f42c1");
+        }
+
+        if (!string.IsNullOrWhiteSpace(data.BtnBaseBoxShadow)
+            && !data.BtnBaseBoxShadow.Contains("none", StringComparison.OrdinalIgnoreCase))
+        {
+            return GetBoxShadowExpression(data.BtnBaseBoxShadow, data.Dark ?? "#000");
+        }
+
+        return GetTransparentShadowExpression();
+    }
+
+    private string GetVariantButtonShadowExpression(Parsing.BootstrapThemeData data, string variant)
+    {
+        if (data.ButtonRules.TryGetValue(variant, out var glowRule)
+            && !string.IsNullOrWhiteSpace(glowRule.BoxShadow)
+            && !glowRule.BoxShadow.Contains("none", StringComparison.OrdinalIgnoreCase))
+        {
+            // Extract actual CSS glow color when present (Vapor has non-semantic glow colors).
+            var shadowColor = ExtractBoxShadowColor(glowRule.BoxShadow)
+                ?? variant switch
+                {
+                    "primary" => data.Primary,
+                    "secondary" => data.Secondary,
+                    "success" => data.Success,
+                    "danger" => data.Danger,
+                    "warning" => data.Warning,
+                    "info" => data.Info,
+                    "light" => data.Light,
+                    "dark" => data.Dark,
+                    _ => null
+                };
+
+            if (!string.IsNullOrWhiteSpace(shadowColor))
+                return GetGlowShadowExpression(shadowColor);
+        }
+
+        if (!string.IsNullOrWhiteSpace(data.BtnBaseBoxShadow)
+            && !data.BtnBaseBoxShadow.Contains("none", StringComparison.OrdinalIgnoreCase))
+        {
+            return GetBoxShadowExpression(data.BtnBaseBoxShadow, data.Dark ?? "#000");
+        }
+
+        return GetTransparentShadowExpression();
+    }
+
+    private string GetTransparentShadowExpression() =>
+        "new Shadow { Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }";
+
+    private string GetGlowShadowExpression(string color) =>
+        $"new Shadow {{ Brush = Color.FromArgb(\"{NormalizeHexColor(color)}\"), Offset = new Point(0, 0), Radius = 8, Opacity = 0.6f }}";
+
+    private string GetBoxShadowExpression(string cssBoxShadow, string fallbackColor)
+    {
+        // Parse: offsetX offsetY [blurRadius] [spreadRadius] [color]
+        var parts = cssBoxShadow.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        double offsetX = 0, offsetY = 0, blur = 0;
+        var color = fallbackColor;
+
+        if (parts.Length >= 2)
+        {
+            offsetX = CssToDevicePixels(parts[0]);
+            offsetY = CssToDevicePixels(parts[1]);
+        }
+        if (parts.Length >= 3)
+            blur = CssToDevicePixels(parts[2]);
+
+        for (int i = parts.Length - 1; i >= 2; i--)
+        {
+            if (parts[i].StartsWith("#") || parts[i].StartsWith("rgb"))
+            {
+                color = parts[i].StartsWith("#") ? NormalizeHexColor(parts[i]) : fallbackColor;
+                break;
+            }
+        }
+
+        return $"new Shadow {{ Brush = Color.FromArgb(\"{color}\"), Offset = new Point({offsetX.ToString("F0", CultureInfo.InvariantCulture)}, {offsetY.ToString("F0", CultureInfo.InvariantCulture)}), Radius = {blur.ToString("F0", CultureInfo.InvariantCulture)}, Opacity = 1f }}";
+    }
+
     private void EmitCsImplicitStyles(StringBuilder sb, Parsing.BootstrapThemeData data)
     {
         // Button implicit style
@@ -627,22 +733,7 @@ public partial class {className} : ResourceDictionary
             sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.BorderWidthProperty, Value = 0d });");
         }
 
-        if (data.HasGlowButtons && data.ButtonRules.TryGetValue("primary", out var glowBtn) && glowBtn.BoxShadow != null)
-        {
-            EmitCsShadowSetter(sb, "style_button", data.Primary ?? "#6f42c1");
-        }
-        else if (data.BtnBaseBoxShadow != null)
-        {
-            // Resting-state offset shadow (e.g., Brite's "3px 3px 0 0 #000")
-            EmitCsBoxShadowSetter(sb, "style_button", data.BtnBaseBoxShadow, data.Dark ?? "#000");
-        }
-        else
-        {
-            // Explicitly clear Shadow to prevent stale values persisting across theme switches.
-            // Use an invisible shadow (Opacity 0) because setting null via Style Setter
-            // does not reliably clear the property when switching from a theme that set it.
-            sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.ShadowProperty, Value = new Shadow { Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f } });");
-        }
+        sb.AppendLine("        style_button.Setters.Add(new Setter { Property = Button.ShadowProperty, Value = DR(\"BtnShadowBase\") });");
 
         sb.AppendLine("        Add(style_button);");
         sb.AppendLine();
@@ -876,44 +967,7 @@ public partial class {className} : ResourceDictionary
             // Set border color from CSS --bs-btn-border-color via DynamicResource for theme switching
             sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = DR(\"BtnBorder{pascal}\") }});");
 
-            if (data.ButtonRules.TryGetValue(v, out var glowRule) && glowRule.BoxShadow != null)
-            {
-                // Extract the actual color from the CSS box-shadow value (e.g., rgba(111,66,193,.9))
-                // rather than using the semantic variant color, since glow shadows may use a different color
-                // (e.g., Vapor btn-dark uses purple glow, not the dark color).
-                var shadowColor = ExtractBoxShadowColor(glowRule.BoxShadow);
-                if (shadowColor == null)
-                {
-                    // Fallback to semantic variant color
-                    shadowColor = v switch
-                    {
-                        "primary" => data.Primary,
-                        "secondary" => data.Secondary,
-                        "success" => data.Success,
-                        "danger" => data.Danger,
-                        "warning" => data.Warning,
-                        "info" => data.Info,
-                        "light" => data.Light,
-                        "dark" => data.Dark,
-                        _ => null
-                    };
-                }
-                if (shadowColor != null)
-                    EmitCsShadowSetter(sb, varName, shadowColor);
-                else
-                    sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }} }});");
-            }
-            else if (data.BtnBaseBoxShadow != null)
-            {
-                // Theme has a base-level box-shadow (e.g. Brite offset shadow).
-                // Repeat it on per-variant to overwrite any per-variant glow from a previous theme.
-                EmitCsBoxShadowSetter(sb, varName, data.BtnBaseBoxShadow, data.Dark ?? "#000");
-            }
-            else
-            {
-                // Emit invisible shadow to clear any glow from a previously-active theme (e.g. Vapor)
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }} }});");
-            }
+            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = DR(\"BtnShadow{pascal}\") }});");
 
             sb.AppendLine($"        Add({varName});");
             sb.AppendLine();
@@ -949,6 +1003,8 @@ public partial class {className} : ResourceDictionary
                 sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderWidthProperty, Value = {CssToDevicePixels(rule.BorderWidth).ToString(CultureInfo.InvariantCulture)}d }});");
             else
                 sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderWidthProperty, Value = DR(\"BorderWidth\") }});");
+
+            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = DR(\"BtnShadowOutline{pascal}\") }});");
             sb.AppendLine($"        Add({varName});");
             sb.AppendLine();
         }
@@ -1235,7 +1291,7 @@ public partial class {className} : ResourceDictionary
             }
         }
 
-        sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Color.FromArgb(\"{color}\"), Offset = new Point({offsetX.ToString("F0", CultureInfo.InvariantCulture)}, {offsetY.ToString("F0", CultureInfo.InvariantCulture)}), Radius = {blur.ToString("F0", CultureInfo.InvariantCulture)}, Opacity = 0.8f }} }});");
+        sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Color.FromArgb(\"{color}\"), Offset = new Point({offsetX.ToString("F0", CultureInfo.InvariantCulture)}, {offsetY.ToString("F0", CultureInfo.InvariantCulture)}), Radius = {blur.ToString("F0", CultureInfo.InvariantCulture)}, Opacity = 1f }} }});");
     }
 
     #endregion

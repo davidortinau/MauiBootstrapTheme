@@ -1,5 +1,6 @@
 using Xunit;
 using MauiBootstrapTheme;
+using MauiBootstrapTheme.Build.Parsing;
 using System.IO;
 using System.Linq;
 
@@ -14,11 +15,12 @@ namespace MauiBootstrapTheme.Tests
         public void VerifyFormControl_Fidelity(string themeName, string expectedBorderColor, string expectedBgColor)
         {
             // Arrange
-            var cssContent = File.ReadAllText($"../../../../samples/MauiBootstrapTheme.Sample/Resources/Themes/{themeName}.min.css");
+            var repoRoot = FindRepositoryRoot();
+            var cssContent = File.ReadAllText(Path.Combine(repoRoot, "samples", "MauiBootstrapTheme.Sample", "Resources", "Themes", $"{themeName}.min.css"));
             var parser = new BootstrapCssParser();
 
             // Act
-            var theme = parser.Parse(cssContent);
+            var theme = parser.Parse(cssContent, themeName);
 
             // Assert
             // This assumes the parser exposes .form-control properties, or we inspect the internal dictionary
@@ -28,6 +30,20 @@ namespace MauiBootstrapTheme.Tests
             // Note: Actual property names on BootstrapTheme need to be verified against the codebase.
             // Assert.Equal(expectedBorderColor, theme.InputBorderColor.ToHex());
             // Assert.Equal(expectedBgColor, theme.InputBackgroundColor.ToHex());
+        }
+
+        private static string FindRepositoryRoot()
+        {
+            var current = AppContext.BaseDirectory;
+            while (!string.IsNullOrWhiteSpace(current))
+            {
+                if (File.Exists(Path.Combine(current, "MauiBootstrapTheme.sln")))
+                    return current;
+
+                current = Directory.GetParent(current)?.FullName ?? string.Empty;
+            }
+
+            throw new DirectoryNotFoundException("Unable to locate repository root (MauiBootstrapTheme.sln).");
         }
     }
 }

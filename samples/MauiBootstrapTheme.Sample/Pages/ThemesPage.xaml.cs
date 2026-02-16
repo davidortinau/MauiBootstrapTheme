@@ -9,6 +9,7 @@ public partial class ThemesPage : ContentPage
     public ThemesPage()
     {
         InitializeComponent();
+        ApplyTopThemeButtonShadowBindings();
         UpdateThemeLabel();
     }
 
@@ -37,11 +38,30 @@ public partial class ThemesPage : ContentPage
     {
         _currentThemeName = name;
         BootstrapTheme.Apply(name);
+        ApplyTopThemeButtonShadowBindings();
         UpdateThemeLabel();
     }
     
     private void UpdateThemeLabel()
     {
         CurrentThemeLabel.Text = $"Current: {_currentThemeName}";
+    }
+
+    private void ApplyTopThemeButtonShadowBindings()
+    {
+        BindShadow(ThemeButtonDefault, "BtnShadowPrimary");
+        BindShadow(ThemeButtonDarkly, "BtnShadowDark");
+        BindShadow(ThemeButtonSlate, "BtnShadowSecondary");
+        BindShadow(ThemeButtonFlatly, "BtnShadowInfo");
+        BindShadow(ThemeButtonSketchy, "BtnShadowWarning");
+        BindShadow(ThemeButtonVapor, "BtnShadowDanger");
+        BindShadow(ThemeButtonBrite, "BtnShadowSuccess");
+    }
+
+    private static void BindShadow(Button button, string resourceKey)
+    {
+        button.RemoveDynamicResource(Button.ShadowProperty);
+        button.ClearValue(Button.ShadowProperty);
+        button.SetDynamicResource(Button.ShadowProperty, resourceKey);
     }
 }
