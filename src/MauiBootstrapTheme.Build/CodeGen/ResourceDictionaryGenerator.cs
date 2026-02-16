@@ -281,7 +281,8 @@ public partial class {className} : ResourceDictionary
         EmitCsInt(sb, "CornerRadius", (int)Math.Round(CssToDevicePixels(data.BorderRadius ?? "0.375rem")));
         EmitCsInt(sb, "CornerRadiusSm", (int)Math.Round(CssToDevicePixels(data.BorderRadiusSm ?? "0.25rem")));
         EmitCsInt(sb, "CornerRadiusLg", (int)Math.Round(CssToDevicePixels(data.BorderRadiusLg ?? "0.5rem")));
-        EmitCsDouble(sb, "BorderWidth", CssToDevicePixels(data.BorderWidth ?? "1px"));
+        var baseBorderW = CssToDevicePixels(data.BorderWidth ?? "1px");
+        EmitCsDouble(sb, "BorderWidth", baseBorderW);
 
         var btnPadX = data.BtnPaddingX != null ? CssToDevicePixels(data.BtnPaddingX) : 12;
         var btnPadY = data.BtnPaddingY != null ? CssToDevicePixels(data.BtnPaddingY) : 6;
@@ -289,25 +290,33 @@ public partial class {className} : ResourceDictionary
         var btnPadYSm = data.BtnPaddingYSm != null ? CssToDevicePixels(data.BtnPaddingYSm) : 4;
         var btnPadXLg = data.BtnPaddingXLg != null ? CssToDevicePixels(data.BtnPaddingXLg) : 16;
         var btnPadYLg = data.BtnPaddingYLg != null ? CssToDevicePixels(data.BtnPaddingYLg) : 8;
-        var borderW = CssToDevicePixels(data.BorderWidth ?? "1px");
+        var borderW = baseBorderW;
+        var buttonLineHeight = ParseLineHeightFactor(
+            lv.TryGetValue("--bs-btn-line-height", out var btnLh) ? btnLh
+            : (lv.TryGetValue("--bs-body-line-height", out var bodyLh) ? bodyLh : null),
+            1.5);
+        var inputFontSize = data.FormControlRule.FontSize != null ? CssToDevicePixels(data.FormControlRule.FontSize) : baseFontSize;
+        var inputLineHeight = ParseLineHeightFactor(data.FormControlRule.LineHeight, 1.5);
+        var inputBorderW = data.FormControlRule.BorderWidth != null ? CssToDevicePixels(data.FormControlRule.BorderWidth) : baseBorderW;
+        var (inputPadX, inputPadY) = ResolvePadding(data.FormControlRule.Padding, btnPadX, btnPadY);
 
-        var buttonHeight = btnPadY * 2 + baseFontSize + borderW * 2;
+        var buttonHeight = btnPadY * 2 + (baseFontSize * buttonLineHeight) + borderW * 2;
         EmitCsDouble(sb, "ButtonHeight", buttonHeight);
-        var buttonHeightSm = btnPadYSm * 2 + (data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875) + borderW * 2;
-        var buttonHeightLg = btnPadYLg * 2 + (data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25) + borderW * 2;
+        var buttonHeightSm = btnPadYSm * 2 + ((data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875) * buttonLineHeight) + borderW * 2;
+        var buttonHeightLg = btnPadYLg * 2 + ((data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25) * buttonLineHeight) + borderW * 2;
         EmitCsDouble(sb, "ButtonHeightSm", buttonHeightSm);
         EmitCsDouble(sb, "ButtonHeightLg", buttonHeightLg);
         // Pre-calculate pill radii per size (half of height for perfect pill shape)
         EmitCsInt(sb, "CornerRadiusPill", (int)Math.Ceiling(buttonHeight / 2));
         EmitCsInt(sb, "CornerRadiusPillSm", (int)Math.Ceiling(buttonHeightSm / 2));
         EmitCsInt(sb, "CornerRadiusPillLg", (int)Math.Ceiling(buttonHeightLg / 2));
-        EmitCsDouble(sb, "InputHeight", btnPadY * 2 + baseFontSize + borderW * 2);
-        EmitCsDouble(sb, "InputHeightSm", btnPadYSm * 2 + baseFontSize * 0.875 + borderW * 2);
-        EmitCsDouble(sb, "InputHeightLg", btnPadYLg * 2 + baseFontSize * 1.25 + borderW * 2);
+        EmitCsDouble(sb, "InputHeight", inputPadY * 2 + (inputFontSize * inputLineHeight) + inputBorderW * 2);
+        EmitCsDouble(sb, "InputHeightSm", btnPadYSm * 2 + ((baseFontSize * 0.875) * inputLineHeight) + inputBorderW * 2);
+        EmitCsDouble(sb, "InputHeightLg", btnPadYLg * 2 + ((baseFontSize * 1.25) * inputLineHeight) + inputBorderW * 2);
         sb.AppendLine($"        this[\"ButtonPadding\"] = new Thickness({btnPadX.ToString(CultureInfo.InvariantCulture)}, {btnPadY.ToString(CultureInfo.InvariantCulture)});");
         sb.AppendLine($"        this[\"ButtonPaddingSm\"] = new Thickness({btnPadXSm.ToString(CultureInfo.InvariantCulture)}, {btnPadYSm.ToString(CultureInfo.InvariantCulture)});");
         sb.AppendLine($"        this[\"ButtonPaddingLg\"] = new Thickness({btnPadXLg.ToString(CultureInfo.InvariantCulture)}, {btnPadYLg.ToString(CultureInfo.InvariantCulture)});");
-        sb.AppendLine($"        this[\"InputPadding\"] = new Thickness({btnPadX.ToString(CultureInfo.InvariantCulture)}, {btnPadY.ToString(CultureInfo.InvariantCulture)});");
+        sb.AppendLine($"        this[\"InputPadding\"] = new Thickness({inputPadX.ToString(CultureInfo.InvariantCulture)}, {inputPadY.ToString(CultureInfo.InvariantCulture)});");
 
         var progressBg = data.ProgressBg ?? data.SecondaryBg ?? "#e9ecef";
         var inputBackground = data.FormControlRule.Background ?? data.BodyBackground ?? "#ffffff";
@@ -853,11 +862,27 @@ public partial class {className} : ResourceDictionary
         {
             var pascal = ToPascalCase(v);
             var varName = $"style_btnout_{v}";
+            data.ButtonRules.TryGetValue($"outline-{v}", out var rule);
             sb.AppendLine($"        var {varName} = new Style(typeof(Button)) {{ Class = \"btn-outline-{v}\" }};");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BackgroundProperty, Value = Colors.Transparent }});");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.TextColorProperty, Value = DR(\"{pascal}\") }});");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = DR(\"{pascal}\") }});");
-            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderWidthProperty, Value = DR(\"BorderWidth\") }});");
+            if (!string.IsNullOrWhiteSpace(rule?.Background))
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BackgroundProperty, Value = Color.FromArgb(\"{NormalizeHexColor(rule.Background)}\") }});");
+            else
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BackgroundProperty, Value = Colors.Transparent }});");
+
+            if (!string.IsNullOrWhiteSpace(rule?.Color))
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.TextColorProperty, Value = Color.FromArgb(\"{NormalizeHexColor(rule.Color)}\") }});");
+            else
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.TextColorProperty, Value = DR(\"{pascal}\") }});");
+
+            if (!string.IsNullOrWhiteSpace(rule?.BorderColor))
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = Color.FromArgb(\"{NormalizeHexColor(rule.BorderColor)}\") }});");
+            else
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = DR(\"{pascal}\") }});");
+
+            if (!string.IsNullOrWhiteSpace(rule?.BorderWidth))
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderWidthProperty, Value = {CssToDevicePixels(rule.BorderWidth).ToString(CultureInfo.InvariantCulture)}d }});");
+            else
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderWidthProperty, Value = DR(\"BorderWidth\") }});");
             sb.AppendLine($"        Add({varName});");
             sb.AppendLine();
         }
@@ -1273,22 +1298,32 @@ public partial class {className} : ResourceDictionary
         var btnPadYSm = data.BtnPaddingYSm != null ? CssToDevicePixels(data.BtnPaddingYSm) : 4;
         var btnPadXLg = data.BtnPaddingXLg != null ? CssToDevicePixels(data.BtnPaddingXLg) : 16;
         var btnPadYLg = data.BtnPaddingYLg != null ? CssToDevicePixels(data.BtnPaddingYLg) : 8;
-        var borderW = CssToDevicePixels(data.BorderWidth ?? "1px");
-        var buttonHeight = btnPadY * 2 + baseFontSize + borderW * 2;
-        var buttonHeightSm = btnPadYSm * 2 + (data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875) + borderW * 2;
-        var buttonHeightLg = btnPadYLg * 2 + (data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25) + borderW * 2;
+        var baseBorderW = CssToDevicePixels(data.BorderWidth ?? "1px");
+        var borderW = baseBorderW;
+        var buttonLineHeight = ParseLineHeightFactor(
+            data.LightVariables.TryGetValue("--bs-btn-line-height", out var btnLh) ? btnLh
+            : (data.LightVariables.TryGetValue("--bs-body-line-height", out var bodyLh) ? bodyLh : null),
+            1.5);
+        var inputFontSize = data.FormControlRule.FontSize != null ? CssToDevicePixels(data.FormControlRule.FontSize) : baseFontSize;
+        var inputLineHeight = ParseLineHeightFactor(data.FormControlRule.LineHeight, 1.5);
+        var inputBorderW = data.FormControlRule.BorderWidth != null ? CssToDevicePixels(data.FormControlRule.BorderWidth) : baseBorderW;
+        var (inputPadX, inputPadY) = ResolvePadding(data.FormControlRule.Padding, btnPadX, btnPadY);
+
+        var buttonHeight = btnPadY * 2 + (baseFontSize * buttonLineHeight) + borderW * 2;
+        var buttonHeightSm = btnPadYSm * 2 + ((data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875) * buttonLineHeight) + borderW * 2;
+        var buttonHeightLg = btnPadYLg * 2 + ((data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25) * buttonLineHeight) + borderW * 2;
         EmitDouble(sb, "CornerRadiusPill", Math.Ceiling(buttonHeight / 2));
-        EmitDouble(sb, "BorderWidth", CssToDevicePixels(data.BorderWidth ?? "1px"));
+        EmitDouble(sb, "BorderWidth", baseBorderW);
         EmitDouble(sb, "ButtonHeight", buttonHeight);
         EmitDouble(sb, "ButtonHeightSm", buttonHeightSm);
         EmitDouble(sb, "ButtonHeightLg", buttonHeightLg);
-        EmitDouble(sb, "InputHeight", btnPadY * 2 + baseFontSize + borderW * 2);
-        EmitDouble(sb, "InputHeightSm", btnPadYSm * 2 + baseFontSize * 0.875 + borderW * 2);
-        EmitDouble(sb, "InputHeightLg", btnPadYLg * 2 + baseFontSize * 1.25 + borderW * 2);
+        EmitDouble(sb, "InputHeight", inputPadY * 2 + (inputFontSize * inputLineHeight) + inputBorderW * 2);
+        EmitDouble(sb, "InputHeightSm", btnPadYSm * 2 + ((baseFontSize * 0.875) * inputLineHeight) + inputBorderW * 2);
+        EmitDouble(sb, "InputHeightLg", btnPadYLg * 2 + ((baseFontSize * 1.25) * inputLineHeight) + inputBorderW * 2);
         EmitThickness(sb, "ButtonPadding", $"{btnPadX.ToString(CultureInfo.InvariantCulture)},{btnPadY.ToString(CultureInfo.InvariantCulture)}");
         EmitThickness(sb, "ButtonPaddingSm", $"{btnPadXSm.ToString(CultureInfo.InvariantCulture)},{btnPadYSm.ToString(CultureInfo.InvariantCulture)}");
         EmitThickness(sb, "ButtonPaddingLg", $"{btnPadXLg.ToString(CultureInfo.InvariantCulture)},{btnPadYLg.ToString(CultureInfo.InvariantCulture)}");
-        EmitThickness(sb, "InputPadding", $"{btnPadX.ToString(CultureInfo.InvariantCulture)},{btnPadY.ToString(CultureInfo.InvariantCulture)}");
+        EmitThickness(sb, "InputPadding", $"{inputPadX.ToString(CultureInfo.InvariantCulture)},{inputPadY.ToString(CultureInfo.InvariantCulture)}");
 
         // Input colors
         var inputBg = IsDarkTheme(data)
@@ -1574,11 +1609,27 @@ public partial class {className} : ResourceDictionary
         foreach (var v in variants)
         {
             var pascal = ToPascalCase(v);
+            data.ButtonRules.TryGetValue($"outline-{v}", out var rule);
             sb.AppendLine($"    <Style TargetType=\"Button\" Class=\"btn-outline-{v}\">");
-            sb.AppendLine("        <Setter Property=\"Background\" Value=\"Transparent\"/>");
-            sb.AppendLine($"        <Setter Property=\"TextColor\" Value=\"{{DynamicResource {pascal}}}\"/>");
-            sb.AppendLine($"        <Setter Property=\"BorderColor\" Value=\"{{DynamicResource {pascal}}}\"/>");
-            sb.AppendLine("        <Setter Property=\"BorderWidth\" Value=\"{DynamicResource BorderWidth}\"/>");
+            if (!string.IsNullOrWhiteSpace(rule?.Background))
+                sb.AppendLine($"        <Setter Property=\"Background\" Value=\"{NormalizeHexColor(rule.Background)}\"/>");
+            else
+                sb.AppendLine("        <Setter Property=\"Background\" Value=\"Transparent\"/>");
+
+            if (!string.IsNullOrWhiteSpace(rule?.Color))
+                sb.AppendLine($"        <Setter Property=\"TextColor\" Value=\"{NormalizeHexColor(rule.Color)}\"/>");
+            else
+                sb.AppendLine($"        <Setter Property=\"TextColor\" Value=\"{{DynamicResource {pascal}}}\"/>");
+
+            if (!string.IsNullOrWhiteSpace(rule?.BorderColor))
+                sb.AppendLine($"        <Setter Property=\"BorderColor\" Value=\"{NormalizeHexColor(rule.BorderColor)}\"/>");
+            else
+                sb.AppendLine($"        <Setter Property=\"BorderColor\" Value=\"{{DynamicResource {pascal}}}\"/>");
+
+            if (!string.IsNullOrWhiteSpace(rule?.BorderWidth))
+                sb.AppendLine($"        <Setter Property=\"BorderWidth\" Value=\"{CssToDevicePixels(rule.BorderWidth).ToString(CultureInfo.InvariantCulture)}\"/>");
+            else
+                sb.AppendLine("        <Setter Property=\"BorderWidth\" Value=\"{DynamicResource BorderWidth}\"/>");
             sb.AppendLine("    </Style>");
             sb.AppendLine();
         }
@@ -1952,6 +2003,47 @@ public partial class {className} : ResourceDictionary
         if (double.TryParse(cssValue, NumberStyles.Any, CultureInfo.InvariantCulture, out var raw))
             return raw;
         return 1;
+    }
+
+    private (double X, double Y) ResolvePadding(string? cssPadding, double fallbackX, double fallbackY)
+    {
+        if (string.IsNullOrWhiteSpace(cssPadding))
+            return (fallbackX, fallbackY);
+
+        var parts = cssPadding.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (parts.Length == 0)
+            return (fallbackX, fallbackY);
+
+        return parts.Length switch
+        {
+            1 => (CssToDevicePixels(parts[0]), CssToDevicePixels(parts[0])),
+            2 => (CssToDevicePixels(parts[1]), CssToDevicePixels(parts[0])),
+            3 => (CssToDevicePixels(parts[1]), CssToDevicePixels(parts[0])),
+            _ => (CssToDevicePixels(parts[1]), CssToDevicePixels(parts[0]))
+        };
+    }
+
+    private double ParseLineHeightFactor(string? lineHeight, double fallback)
+    {
+        if (string.IsNullOrWhiteSpace(lineHeight))
+            return fallback;
+
+        var normalized = lineHeight.Trim();
+        if (normalized.Equals("normal", StringComparison.OrdinalIgnoreCase))
+            return fallback;
+
+        if (double.TryParse(normalized, NumberStyles.Any, CultureInfo.InvariantCulture, out var factor))
+            return factor;
+
+        if (normalized.EndsWith("px", StringComparison.OrdinalIgnoreCase) ||
+            normalized.EndsWith("rem", StringComparison.OrdinalIgnoreCase) ||
+            normalized.EndsWith("em", StringComparison.OrdinalIgnoreCase))
+        {
+            var px = CssToDevicePixels(normalized);
+            return px / 16d;
+        }
+
+        return fallback;
     }
 
     private string ToPascalCase(string input)

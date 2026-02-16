@@ -9,7 +9,7 @@
     <Nullable>enable</Nullable>
     
     <!-- NuGet Package Properties -->
-    <PackageId>MauiBootstrapTheme</PackageId>
+    <PackageId>Plugin.Maui.BootstrapAdapter</PackageId>
     <Version>0.1.0-preview.2</Version>
     <Authors>David Ortinau</Authors>
     <Description>Bootstrap CSS theming for stock .NET MAUI controls. Drop in a Bootstrap CSS file and your Entry, Button, Editor controls automatically get Bootstrap styling.</Description>

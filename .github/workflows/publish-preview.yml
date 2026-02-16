@@ -1,0 +1,74 @@
+name: Publish Preview to NuGet
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Preview package version (e.g. 0.2.0-preview.1)'
+        required: true
+        default: '0.1.0-preview.3'
+      publish:
+        description: 'Push to NuGet.org'
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  publish-preview:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          dotnet-quality: 'preview'
+
+      - name: Install MAUI workload
+        run: dotnet workload install maui
+
+      - name: Restore
+        run: dotnet restore MauiBootstrapTheme.sln
+
+      - name: Build MauiBootstrapTheme.Build
+        run: dotnet build src/MauiBootstrapTheme.Build -c Release --no-restore
+
+      - name: Build Plugin.Maui.BootstrapAdapter
+        run: dotnet build src/MauiBootstrapTheme -c Release --no-restore
+
+      - name: Test
+        run: dotnet test tests/MauiBootstrapTheme.Tests -c Release --no-restore
+
+      - name: Build sample app
+        run: dotnet build samples/MauiBootstrapTheme.Sample -c Release -f net10.0-android --no-restore
+
+      - name: Pack MauiBootstrapTheme.Build
+        run: dotnet pack src/MauiBootstrapTheme.Build -c Release --no-build -p:Version=${{ inputs.version }} -o artifacts
+
+      - name: Pack Plugin.Maui.BootstrapAdapter
+        run: dotnet pack src/MauiBootstrapTheme -c Release --no-build -p:Version=${{ inputs.version }} -o artifacts
+
+      - name: Upload NuGet artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-packages-${{ inputs.version }}
+          path: artifacts/*.nupkg
+          retention-days: 30
+
+      - name: Push to NuGet.org
+        if: ${{ inputs.publish }}
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "NUGET_API_KEY secret is not set."
+            exit 1
+          fi
+          dotnet nuget push "artifacts/*.nupkg" \
+            --api-key "$NUGET_API_KEY" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --skip-duplicate

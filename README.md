@@ -4,7 +4,7 @@ Use any [Bootstrap](https://getbootstrap.com/) or [Bootswatch](https://bootswatc
 
 Drop a Bootstrap CSS file into your project, call `.UseBootstrapTheme()`, and at build time the CSS is parsed into a native `ResourceDictionary` with styles for stock MAUI controls.
 
-[![NuGet](https://img.shields.io/nuget/v/MauiBootstrapTheme.svg)](https://www.nuget.org/packages/MauiBootstrapTheme/)
+[![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.BootstrapAdapter.svg)](https://www.nuget.org/packages/Plugin.Maui.BootstrapAdapter/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build](https://github.com/davidortinau/MauiBootstrapTheme/actions/workflows/ci.yml/badge.svg)](https://github.com/davidortinau/MauiBootstrapTheme/actions/workflows/ci.yml)
 
@@ -19,7 +19,7 @@ Drop a Bootstrap CSS file into your project, call `.UseBootstrapTheme()`, and at
 ### 1. Install
 
 ```bash
-dotnet add package MauiBootstrapTheme
+dotnet add package Plugin.Maui.BootstrapAdapter
 ```
 
 ### 2. Add a Bootstrap CSS file

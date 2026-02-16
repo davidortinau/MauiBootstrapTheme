@@ -30,6 +30,8 @@ public static class BootstrapPickerHandler
         
         var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
         var size = view != null ? Bootstrap.GetSize(view) : BootstrapSize.Default;
+        if (size == BootstrapSize.Default && view?.StyleClass?.Count > 0)
+            size = InferSizeFromStyleClass(view.StyleClass);
         
         var cornerRadius = GetCornerRadiusForSize(size, theme);
         var borderColor = GetBorderColorForVariant(variant, theme);
@@ -151,4 +153,20 @@ public static class BootstrapPickerHandler
         BootstrapSize.Large => (theme.InputPaddingXLg, theme.InputPaddingYLg),
         _ => (theme.InputPaddingX, theme.InputPaddingY)
     };
+
+    private static BootstrapSize InferSizeFromStyleClass(IList<string> styleClasses)
+    {
+        foreach (var item in styleClasses)
+        {
+            foreach (var token in item.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            {
+                if (token is "form-select-sm" or "form-control-sm" or "btn-sm")
+                    return BootstrapSize.Small;
+                if (token is "form-select-lg" or "form-control-lg" or "btn-lg")
+                    return BootstrapSize.Large;
+            }
+        }
+
+        return BootstrapSize.Default;
+    }
 }

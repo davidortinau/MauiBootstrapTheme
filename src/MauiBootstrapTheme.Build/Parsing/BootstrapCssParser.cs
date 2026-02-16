@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace MauiBootstrapTheme.Build.Parsing;
@@ -191,6 +192,7 @@ public class BootstrapCssParser
         if (vars.TryGetValue("--bs-btn-color", out var color)) rule.Color = color;
         if (vars.TryGetValue("--bs-btn-bg", out var bg)) rule.Background = bg;
         if (vars.TryGetValue("--bs-btn-border-color", out var bc)) rule.BorderColor = bc;
+        if (vars.TryGetValue("--bs-btn-border-width", out var bw)) rule.BorderWidth = bw;
     }
 
     private CardRule ExtractCardRules(string css)
@@ -228,11 +230,29 @@ public class BootstrapCssParser
 
     private InputRule ExtractInputRule(string css, Dictionary<string, string> vars, string className)
     {
+        var borderWidth = ResolveProperty(css, vars, className, null, "border-width");
+        if (borderWidth == null)
+        {
+            var borderValue = ResolveProperty(css, vars, className, null, "border");
+            if (!string.IsNullOrWhiteSpace(borderValue))
+            {
+                var tokens = borderValue.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                borderWidth = tokens.FirstOrDefault(t =>
+                    t.EndsWith("px", StringComparison.OrdinalIgnoreCase) ||
+                    t.EndsWith("rem", StringComparison.OrdinalIgnoreCase) ||
+                    t.EndsWith("em", StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
         return new InputRule
         {
             Background = ResolveColorProperty(css, vars, className, null, "background-color"),
             Color = ResolveColorProperty(css, vars, className, null, "color"),
             BorderColor = ResolveColorProperty(css, vars, className, null, "border-color"),
+            BorderWidth = borderWidth,
+            FontSize = ResolveProperty(css, vars, className, null, "font-size"),
+            LineHeight = ResolveProperty(css, vars, className, null, "line-height"),
+            Padding = ResolveProperty(css, vars, className, null, "padding"),
             PlaceholderColor = ResolveColorProperty(css, vars, className, "::placeholder", "color"),
             FocusBorderColor = ResolveColorProperty(css, vars, className, ":focus", "border-color"),
             FocusShadow = ResolveProperty(css, vars, className, ":focus", "box-shadow"),
@@ -496,6 +516,7 @@ public class BootstrapCssParser
             var padY = ExtractCssVar(block, "--bs-btn-padding-y");
             if (padX != null) data.BtnPaddingX = padX;
             if (padY != null) data.BtnPaddingY = padY;
+            data.BtnBorderWidth = ExtractCssVar(block, "--bs-btn-border-width");
         }
 
         // .btn-sm{--bs-btn-padding-y:0.25rem;--bs-btn-padding-x:0.5rem;--bs-btn-font-size:0.875rem;...}
@@ -731,6 +752,7 @@ public class BootstrapThemeData
     public string? BtnPaddingYSm { get; set; }
     public string? BtnPaddingXLg { get; set; }
     public string? BtnPaddingYLg { get; set; }
+    public string? BtnBorderWidth { get; set; }
     public string? BtnFontSizeSm { get; set; }
     public string? BtnFontSizeLg { get; set; }
 
@@ -765,6 +787,7 @@ public class ButtonRule
     public string? Color { get; set; }
     public string? Background { get; set; }
     public string? BorderColor { get; set; }
+    public string? BorderWidth { get; set; }
     public string? Gradient { get; set; }
     public string? BoxShadow { get; set; }
     public string? TextShadow { get; set; }
@@ -784,6 +807,10 @@ public class InputRule
     public string? Background { get; set; }
     public string? Color { get; set; }
     public string? BorderColor { get; set; }
+    public string? BorderWidth { get; set; }
+    public string? FontSize { get; set; }
+    public string? LineHeight { get; set; }
+    public string? Padding { get; set; }
     public string? PlaceholderColor { get; set; }
     public string? FocusBorderColor { get; set; }
     public string? FocusShadow { get; set; }
