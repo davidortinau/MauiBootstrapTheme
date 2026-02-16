@@ -9,8 +9,6 @@ class ThemesPage : BasePage
 {
     private void ApplyTheme(string themeName)
     {
-        // Apply theme via unified API — updates ResourceDictionary AND BootstrapTheme.Current
-        // BasePage.OnThemeChanged will trigger a re-render automatically.
         BootstrapTheme.Apply(themeName);
     }
 
@@ -26,7 +24,7 @@ class ThemesPage : BasePage
                     Label("Switch between Bootstrap themes at runtime").Lead().Muted()
                 ),
 
-                BoxView().HeightRequest(1).Color(theme.GetOutline()).Margin(0, 4),
+                BoxView().HeightRequest(1).Color(theme.OutlineVariant).Margin(0, 4),
 
                 // Theme Selection
                 VStack(spacing: 12,
@@ -50,7 +48,7 @@ class ThemesPage : BasePage
                         VStack(spacing: 12,
                             Label("Theme Preview").H5(),
 
-                            Entry().Placeholder("Sample input").BootstrapHeight(),
+                            Entry().Placeholder("Sample input"),
 
                             FlexLayout(
                                 Button("Primary").Primary().Margin(0, 0, 8, 8),
@@ -63,29 +61,34 @@ class ThemesPage : BasePage
                                 Button("Pill").Info().Pill().Margin(0, 0, 8, 8)
                             ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start),
 
-                            ProgressBar().Progress(0.65).Primary().BootstrapHeight(),
+                            ProgressBar().Progress(0.65),
 
                             FlexLayout(
                                 Label("Badge").Badge(BootstrapVariant.Primary).Margin(0, 0, 8, 8),
                                 Label("Success").Badge(BootstrapVariant.Success).Margin(0, 0, 8, 8),
                                 Label("Alert").Badge(BootstrapVariant.Danger).Margin(0, 0, 8, 8)
                             ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start)
-                        ).Padding(16)
-                    ).ShadowMd()
+                        )
+                    ).Stroke(theme.GetOutline())
+                        .BackgroundColor(theme.GetSurface())
+                        .StrokeThickness(theme.BorderWidth)
+                        .Set(Microsoft.Maui.Controls.Border.StrokeShapeProperty, new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = (float)theme.CornerRadius })
+                        .Padding(16)
+                        .ShadowMd()
                 ),
 
                 // All Color Variants
                 VStack(spacing: 12,
                     Label("All Color Variants").H4(),
                     Grid("Auto,Auto,Auto,Auto", "*,*",
-                        Border(Label("Primary").HCenter().TextColor(theme.OnPrimary)).BackgroundColor(theme.Primary).Padding(16).GridRow(0).GridColumn(0),
-                        Border(Label("Secondary").HCenter().TextColor(theme.OnSecondary)).BackgroundColor(theme.Secondary).Padding(16).GridRow(0).GridColumn(1),
-                        Border(Label("Success").HCenter().TextColor(theme.OnSuccess)).BackgroundColor(theme.Success).Padding(16).GridRow(1).GridColumn(0),
-                        Border(Label("Danger").HCenter().TextColor(theme.OnDanger)).BackgroundColor(theme.Danger).Padding(16).GridRow(1).GridColumn(1),
-                        Border(Label("Warning").HCenter().TextColor(theme.OnWarning)).BackgroundColor(theme.Warning).Padding(16).GridRow(2).GridColumn(0),
-                        Border(Label("Info").HCenter().TextColor(theme.OnInfo)).BackgroundColor(theme.Info).Padding(16).GridRow(2).GridColumn(1),
-                        Border(Label("Light").HCenter().TextColor(theme.OnBackground)).BackgroundColor(theme.Light).Padding(16).GridRow(3).GridColumn(0),
-                        Border(Label("Dark").HCenter().TextColor(theme.OnPrimary)).BackgroundColor(theme.Dark).Padding(16).GridRow(3).GridColumn(1)
+                        Border(Label("Primary").HCenter()).Background(BootstrapVariant.Primary).GridRow(0).GridColumn(0),
+                        Border(Label("Secondary").HCenter()).Background(BootstrapVariant.Secondary).GridRow(0).GridColumn(1),
+                        Border(Label("Success").HCenter()).Background(BootstrapVariant.Success).GridRow(1).GridColumn(0),
+                        Border(Label("Danger").HCenter()).Background(BootstrapVariant.Danger).GridRow(1).GridColumn(1),
+                        Border(Label("Warning").HCenter()).Background(BootstrapVariant.Warning).GridRow(2).GridColumn(0),
+                        Border(Label("Info").HCenter()).Background(BootstrapVariant.Info).GridRow(2).GridColumn(1),
+                        Border(Label("Light").HCenter()).Background(BootstrapVariant.Light).GridRow(3).GridColumn(0),
+                        Border(Label("Dark").HCenter()).Background(BootstrapVariant.Dark).GridRow(3).GridColumn(1)
                     ).RowSpacing(8).ColumnSpacing(8)
                 )
             ).Padding(20)

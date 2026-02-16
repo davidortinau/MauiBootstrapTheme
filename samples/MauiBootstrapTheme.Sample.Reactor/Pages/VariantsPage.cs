@@ -12,13 +12,17 @@ class VariantsPage : BasePage
         return Border(
             VStack(spacing: 12,
                 Label(title).H5(),
-                Entry().Placeholder($"{title} Entry").BootstrapHeight(),
+                Entry().Placeholder($"{title} Entry"),
                 FlexLayout(
                     Button($"{title} Button").Variant(variant).Margin(0, 0, 8, 8),
                     Button($"{title} Outline").Variant(variant).Outlined().Margin(0, 0, 8, 8)
                 ).Wrap(FlexWrap.Wrap).AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
-            ).Padding(16)
-        ).Background(variant).ShadowSm();
+            )
+        ).Background(variant)
+            .Stroke(BootstrapTheme.Current.GetOutline())
+            .StrokeThickness(BootstrapTheme.Current.BorderWidth)
+            .Set(Microsoft.Maui.Controls.Border.StrokeShapeProperty, new Microsoft.Maui.Controls.Shapes.RoundRectangle { CornerRadius = (float)BootstrapTheme.Current.CornerRadius })
+            .Padding(16);
     }
 
     public override VisualNode RenderContent()

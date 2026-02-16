@@ -33,8 +33,7 @@ class FormsPage : BasePage<FormsPageState>
                             .Placeholder("name@example.com")
                             .Keyboard(Keyboard.Email)
                             .Text(State.Email)
-                            .OnTextChanged(text => SetState(s => s.Email = text))
-                            .BootstrapHeight(),
+                            .OnTextChanged(text => SetState(s => s.Email = text)),
                         Label("We'll never share your email with anyone else.").Muted().TextStyle(BootstrapTextStyle.Small)
                     ),
 
@@ -44,7 +43,6 @@ class FormsPage : BasePage<FormsPageState>
                             .IsPassword(true)
                             .Text(State.Password)
                             .OnTextChanged(text => SetState(s => s.Password = text))
-                            .BootstrapHeight()
                     ),
 
                     HStack(spacing: 8,
@@ -64,12 +62,12 @@ class FormsPage : BasePage<FormsPageState>
 
                     VStack(spacing: 4,
                         Label("Large input").TextStyle(BootstrapTextStyle.Small),
-                        Entry().Placeholder(".form-control-lg").Large().HeightRequest(48)
+                        Entry().Placeholder(".form-control-lg").Large()
                     ),
 
                     VStack(spacing: 4,
                         Label("Default input").TextStyle(BootstrapTextStyle.Small),
-                        Entry().Placeholder(".form-control").BootstrapHeight()
+                        Entry().Placeholder(".form-control")
                     ),
 
                     VStack(spacing: 4,
@@ -88,7 +86,7 @@ class FormsPage : BasePage<FormsPageState>
 
                     VStack(spacing: 4,
                         Label("Disabled input").TextStyle(BootstrapTextStyle.Small),
-                        Entry().Placeholder("Disabled input").IsEnabled(false).BootstrapHeight()
+                        Entry().Placeholder("Disabled input")
                     ),
 
                     VStack(spacing: 4,
@@ -96,11 +94,10 @@ class FormsPage : BasePage<FormsPageState>
                         Picker()
                             .Title("Disabled select")
                             .ItemsSource(new[] { "Disabled select" })
-                            .IsEnabled(false)
                     ),
 
-                    Button("Submit").Primary().IsEnabled(false).HorizontalOptions(LayoutOptions.Start)
-                ),
+                    Button("Submit").Primary().HorizontalOptions(LayoutOptions.Start)
+                ).IsEnabled(false),
 
                 // Form layout
                 VStack(spacing: 12,
@@ -109,17 +106,17 @@ class FormsPage : BasePage<FormsPageState>
                     Grid("Auto,Auto,Auto", "*,*",
                         VStack(spacing: 4,
                             Label("First name").TextStyle(BootstrapTextStyle.Small),
-                            Entry().BootstrapHeight()
+                            Entry()
                         ).GridRow(0).GridColumn(0),
 
                         VStack(spacing: 4,
                             Label("Last name").TextStyle(BootstrapTextStyle.Small),
-                            Entry().BootstrapHeight()
+                            Entry()
                         ).GridRow(0).GridColumn(1),
 
                         VStack(spacing: 4,
                             Label("Email").TextStyle(BootstrapTextStyle.Small),
-                            Entry().Keyboard(Keyboard.Email).BootstrapHeight()
+                            Entry().Keyboard(Keyboard.Email)
                         ).GridRow(1).GridColumnSpan(2),
 
                         VStack(spacing: 4,

@@ -20,16 +20,16 @@ class InputsPage : BasePage
                 VStack(spacing: 12,
                     Label("Text Inputs").H4(),
                     VStack(spacing: 4,
-                        Label("Default Input").TextStyle(BootstrapTextStyle.Small),
-                        Entry().Placeholder("Enter text...").BootstrapHeight()
+                        Label("Default Input"),
+                        Entry().Placeholder("Enter text...")
                     ),
                     VStack(spacing: 4,
-                        Label("Large Input").TextStyle(BootstrapTextStyle.Small),
-                        Entry().Placeholder("Large input").Large().HeightRequest(48)
+                        Label("Large Input"),
+                        Entry().Placeholder("Large input").Large()
                     ),
                     VStack(spacing: 4,
-                        Label("Small Input").TextStyle(BootstrapTextStyle.Small),
-                        Entry().Placeholder("Small input").Small().HeightRequest(31)
+                        Label("Small Input"),
+                        Entry().Placeholder("Small input").Small()
                     )
                 ),
 
@@ -37,7 +37,7 @@ class InputsPage : BasePage
                 VStack(spacing: 12,
                     Label("Textarea").H4(),
                     VStack(spacing: 4,
-                        Label("Default Textarea").TextStyle(BootstrapTextStyle.Small),
+                        Label("Default Textarea"),
                         Editor().Placeholder("Enter multi-line text...").HeightRequest(100)
                     )
                 ),
@@ -46,7 +46,7 @@ class InputsPage : BasePage
                 VStack(spacing: 12,
                     Label("Select").H4(),
                     VStack(spacing: 4,
-                        Label("Default Select").TextStyle(BootstrapTextStyle.Small),
+                        Label("Default Select"),
                         Picker().Title("Choose an option...").ItemsSource(new[] { "Option 1", "Option 2", "Option 3" })
                     )
                 ),
@@ -54,16 +54,16 @@ class InputsPage : BasePage
                 // Date & Time
                 VStack(spacing: 12,
                     Label("Date & Time").H4(),
-                    HStack(spacing: 20,
+                    Grid("*,*", "Auto",
                         VStack(spacing: 4,
-                            Label("Date").TextStyle(BootstrapTextStyle.Small),
+                            Label("Date"),
                             DatePicker()
-                        ).HFill(),
+                        ).GridColumn(0),
                         VStack(spacing: 4,
-                            Label("Time").TextStyle(BootstrapTextStyle.Small),
+                            Label("Time"),
                             TimePicker()
-                        ).HFill()
-                    )
+                        ).GridColumn(1)
+                    ).ColumnSpacing(20)
                 ),
 
                 // Checkboxes & Switches
@@ -87,11 +87,21 @@ class InputsPage : BasePage
                     )
                 ),
 
+                // Radio Buttons
+                VStack(spacing: 12,
+                    Label("Radio Buttons").H4(),
+                    VStack(
+                        RadioButton().Content("Option 1").IsChecked(true),
+                        RadioButton().Content("Option 2"),
+                        RadioButton().Content("Option 3")
+                    ).Set(Microsoft.Maui.Controls.RadioButtonGroup.GroupNameProperty, "radioGroup")
+                ),
+
                 // Range Slider
                 VStack(spacing: 12,
                     Label("Range Slider").H4(),
                     VStack(spacing: 4,
-                        Label("Default Range").TextStyle(BootstrapTextStyle.Small),
+                        Label("Default Range"),
                         Slider().Minimum(0).Maximum(100).Value(50).Primary()
                     )
                 )

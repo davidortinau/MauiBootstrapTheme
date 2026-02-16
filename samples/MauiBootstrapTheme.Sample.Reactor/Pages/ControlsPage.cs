@@ -16,7 +16,7 @@ class ControlsPage : BasePage
                     Label("Stock MAUI controls styled with Bootstrap 5 theme values.").Lead().Muted()
                 ),
 
-                BoxView().HeightRequest(1).Color(BootstrapTheme.Current.GetOutline()).Margin(0, 4),
+                BoxView().HeightRequest(1).Color(BootstrapTheme.Current.OutlineVariant).Margin(0, 4),
 
                 // Buttons Section
                 VStack(spacing: 8,
