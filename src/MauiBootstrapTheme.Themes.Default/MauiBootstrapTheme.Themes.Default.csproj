@@ -9,8 +9,8 @@
     <Nullable>enable</Nullable>
     
     <!-- NuGet Package Properties -->
-    <PackageId>MauiBootstrapTheme.Themes.Default</PackageId>
-    <Version>0.1.0-preview1</Version>
+    <PackageId>Plugin.Maui.BootstrapTheme.Themes</PackageId>
+    <Version>0.1.0-preview.3</Version>
     <Authors>David Ortinau</Authors>
     <Description>Default Bootstrap 5 theme for MauiBootstrapTheme. Provides standard Bootstrap colors, spacing, and typography.</Description>
     <PackageTags>maui;bootstrap;theme;default</PackageTags>

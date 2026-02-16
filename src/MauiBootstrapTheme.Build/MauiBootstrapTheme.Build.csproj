@@ -6,8 +6,8 @@
     <Nullable>enable</Nullable>
     
     <!-- NuGet Package Properties -->
-    <PackageId>MauiBootstrapTheme.Build</PackageId>
-    <Version>0.1.0-preview.2</Version>
+    <PackageId>Plugin.Maui.BootstrapTheme.Build</PackageId>
+    <Version>0.1.0-preview.3</Version>
     <Authors>David Ortinau</Authors>
     <Description>MSBuild task for parsing Bootstrap CSS and generating theme code for MauiBootstrapTheme.</Description>
     <PackageTags>maui;bootstrap;theme;msbuild;codegen</PackageTags>
@@ -32,6 +32,20 @@
 
   <ItemGroup>
     <None Include="build\**" Pack="true" PackagePath="build\" />
+  </ItemGroup>
+
+  <!-- Pack the task DLL and its dependencies into build/ so UsingTask can find them -->
+  <Target Name="_PackBuildOutputToBuildFolder" AfterTargets="Build">
+    <ItemGroup>
+      <_TaskDlls Include="$(OutputPath)MauiBootstrapTheme.Build.dll" />
+      <_TaskDlls Include="$(OutputPath)ExCSS.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_TaskDlls)" DestinationFolder="build\" SkipUnchangedFiles="true" />
+  </Target>
+
+  <ItemGroup>
+    <None Include="$(OutputPath)MauiBootstrapTheme.Build.dll" Pack="true" PackagePath="build\" Visible="false" />
+    <None Include="$(OutputPath)ExCSS.dll" Pack="true" PackagePath="build\" Visible="false" />
   </ItemGroup>
 
 </Project>

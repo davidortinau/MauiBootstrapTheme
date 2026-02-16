@@ -53,7 +53,7 @@ jobs:
       - name: Build MauiBootstrapTheme.Build
         run: dotnet build src/MauiBootstrapTheme.Build -c Release --no-restore
 
-      - name: Build Plugin.Maui.BootstrapAdapter
+      - name: Build Plugin.Maui.BootstrapTheme
         run: dotnet build src/MauiBootstrapTheme -c Release --no-restore
 
       - name: Test
@@ -65,7 +65,7 @@ jobs:
       - name: Pack MauiBootstrapTheme.Build
         run: dotnet pack src/MauiBootstrapTheme.Build -c Release --no-build -p:Version=${{ steps.vars.outputs.version }} -o artifacts
 
-      - name: Pack Plugin.Maui.BootstrapAdapter
+      - name: Pack Plugin.Maui.BootstrapTheme
         run: dotnet pack src/MauiBootstrapTheme -c Release --no-build -p:Version=${{ steps.vars.outputs.version }} -o artifacts
 
       - name: Upload NuGet artifacts

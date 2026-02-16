@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Re-export the Build package's targets for transitive consumers -->
+  <UsingTask TaskName="MauiBootstrapTheme.Build.Tasks.GenerateBootstrapThemeTask"
+             AssemblyFile="$(MSBuildThisFileDirectory)MauiBootstrapTheme.Build.dll"
+             Condition="Exists('$(MSBuildThisFileDirectory)MauiBootstrapTheme.Build.dll')" />
+
+  <PropertyGroup>
+    <BootstrapThemeOutputDir>$(MSBuildProjectDirectory)\obj\BootstrapTheme\</BootstrapThemeOutputDir>
+  </PropertyGroup>
+
+  <!-- Discover CSS files marked as BootstrapCss -->
+  <Target Name="GenerateBootstrapThemes" 
+          BeforeTargets="CoreCompile;XamlG;MauiXamlSourceGen"
+          Condition="'@(BootstrapCss)' != ''">
+    
+    <MakeDir Directories="$(BootstrapThemeOutputDir)" />
+    
+    <GenerateBootstrapThemeTask
+        CssFiles="@(BootstrapCss)"
+        OutputDirectory="$(BootstrapThemeOutputDir)"
+        Namespace="$(RootNamespace).Themes">
+      <Output TaskParameter="GeneratedCsFiles" ItemName="_GeneratedThemeCs" />
+    </GenerateBootstrapThemeTask>
+    
+    <!-- Add generated C# files to compilation -->
+    <ItemGroup>
+      <Compile Include="@(_GeneratedThemeCs)" />
+    </ItemGroup>
+    
+  </Target>
+
+</Project>

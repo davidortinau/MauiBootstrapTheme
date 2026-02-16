@@ -64,6 +64,6 @@
     <BootstrapCss Include="Resources\Themes\brite.min.css" />
   </ItemGroup>
 
-  <Import Project="..\..\src\MauiBootstrapTheme.Build\build\MauiBootstrapTheme.Build.targets" />
+  <Import Project="..\..\src\MauiBootstrapTheme.Build\build\Plugin.Maui.BootstrapTheme.Build.targets" />
 
 </Project>

@@ -88,3 +88,7 @@ Generated/
 
 # Generated theme files
 **/obj/BootstrapTheme/
+
+# Copied build task DLLs (generated at build time)
+src/MauiBootstrapTheme/buildTransitive/*.dll
+src/MauiBootstrapTheme.Build/build/*.dll

@@ -9,8 +9,8 @@
     <Nullable>enable</Nullable>
     
     <!-- NuGet Package Properties -->
-    <PackageId>Plugin.Maui.BootstrapAdapter</PackageId>
-    <Version>0.1.0-preview.2</Version>
+    <PackageId>Plugin.Maui.BootstrapTheme</PackageId>
+    <Version>0.1.0-preview.3</Version>
     <Authors>David Ortinau</Authors>
     <Description>Bootstrap CSS theming for stock .NET MAUI controls. Drop in a Bootstrap CSS file and your Entry, Button, Editor controls automatically get Bootstrap styling.</Description>
     <PackageTags>maui;bootstrap;theme;css;styling;controls</PackageTags>
@@ -31,6 +31,19 @@
 
   <ItemGroup>
     <None Include="..\..\README.md" Pack="true" PackagePath="" />
+    <!-- Include build targets and task DLLs for CSS→C# code generation -->
+    <None Include="buildTransitive\Plugin.Maui.BootstrapTheme.targets" Pack="true" PackagePath="buildTransitive\" />
+    <None Include="buildTransitive\MauiBootstrapTheme.Build.dll" Pack="true" PackagePath="buildTransitive\" Visible="false" Condition="Exists('buildTransitive\MauiBootstrapTheme.Build.dll')" />
+    <None Include="buildTransitive\ExCSS.dll" Pack="true" PackagePath="buildTransitive\" Visible="false" Condition="Exists('buildTransitive\ExCSS.dll')" />
   </ItemGroup>
+
+  <!-- Copy Build task DLLs into buildTransitive so they get packed -->
+  <Target Name="_CopyBuildTaskForPack" BeforeTargets="Build;GenerateNuspec">
+    <ItemGroup>
+      <_BuildTaskDlls Include="$(MSBuildProjectDirectory)\..\MauiBootstrapTheme.Build\bin\$(Configuration)\net10.0\MauiBootstrapTheme.Build.dll" />
+      <_BuildTaskDlls Include="$(MSBuildProjectDirectory)\..\MauiBootstrapTheme.Build\bin\$(Configuration)\net10.0\ExCSS.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_BuildTaskDlls)" DestinationFolder="$(MSBuildProjectDirectory)\buildTransitive\" SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>
