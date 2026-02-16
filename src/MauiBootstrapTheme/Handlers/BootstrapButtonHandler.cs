@@ -39,8 +39,9 @@ public static class BootstrapButtonHandler
         var view = button as Button;
         
         var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
-        if (variant == BootstrapVariant.Default && view?.StyleClass?.Count > 0)
-            variant = InferVariantFromStyleClass(view.StyleClass);
+        // Don't infer variant from StyleClass — let MAUI style system handle class-based
+        // styles (btn-primary, etc.) via DynamicResource. Handler inference causes native-layer
+        // overrides that persist across theme switches.
         var size = view != null ? Bootstrap.GetSize(view) : BootstrapSize.Default;
         var isPill = view != null && Bootstrap.GetIsPill(view);
         var isOutlined = IsOutlineVariant(variant) || (view != null && Bootstrap.GetIsOutlined(view));

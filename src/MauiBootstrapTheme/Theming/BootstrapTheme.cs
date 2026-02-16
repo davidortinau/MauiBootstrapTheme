@@ -376,6 +376,40 @@ public class BootstrapTheme
         resources.MergedDictionaries.Add(theme);
 
         SyncFromResources(resources);
+
+        // Force all handlers to re-apply native properties from the updated BootstrapTheme.Current.
+        // Handlers read theme values at creation time, so we must invalidate their mapped properties
+        // to pick up the new theme's colors, borders, corners, etc.
+        RefreshHandlers();
+    }
+
+    /// <summary>
+    /// Walks the visual tree and forces all handlers to re-apply Bootstrap styling
+    /// by invalidating the "BootstrapStyle" mapped property, which re-triggers AppendToMapping callbacks.
+    /// </summary>
+    internal static void RefreshHandlers()
+    {
+        if (Application.Current?.Windows == null)
+            return;
+
+        foreach (var window in Application.Current.Windows)
+        {
+            if (window.Page == null) continue;
+            foreach (var descendant in window.Page.GetVisualTreeDescendants())
+            {
+                if (descendant is not VisualElement ve || ve.Handler == null)
+                    continue;
+
+                // All Bootstrap handlers register via AppendToMapping("BootstrapStyle", ...).
+                // UpdateValue("BootstrapStyle") re-triggers that callback with fresh theme values.
+                if (ve is Button or Entry or Editor or Picker or DatePicker or TimePicker
+                    or SearchBar or ProgressBar or Switch or Slider or CheckBox or Stepper
+                    or ActivityIndicator or RadioButton or Border or Label)
+                {
+                    ve.Handler.UpdateValue("BootstrapStyle");
+                }
+            }
+        }
     }
 
     /// <summary>

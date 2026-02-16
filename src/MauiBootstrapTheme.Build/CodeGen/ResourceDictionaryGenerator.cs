@@ -211,6 +211,34 @@ public partial class {className} : ResourceDictionary
         }
         sb.AppendLine();
 
+        // Button border colors (--bs-btn-border-color per variant, for solid buttons)
+        foreach (var v in variants)
+        {
+            var pascal = ToPascalCase(v);
+            var variantColor = v switch { "primary" => data.Primary ?? "#0d6efd", "secondary" => data.Secondary ?? "#6c757d",
+                "success" => data.Success ?? "#198754", "danger" => data.Danger ?? "#dc3545", "warning" => data.Warning ?? "#ffc107",
+                "info" => data.Info ?? "#0dcaf0", "light" => data.Light ?? "#f8f9fa", "dark" => data.Dark ?? "#212529", _ => "#000" };
+            var btnBorderColor = data.ButtonRules.TryGetValue(v, out var br) && br.BorderColor != null
+                ? NormalizeHexColor(br.BorderColor) : NormalizeHexColor(variantColor);
+            EmitCsColor(sb, $"BtnBorder{pascal}", btnBorderColor);
+        }
+        sb.AppendLine();
+
+        // Outline button text/border colors (--bs-btn-color and --bs-btn-border-color per outline variant)
+        foreach (var v in variants)
+        {
+            var pascal = ToPascalCase(v);
+            var variantColor = v switch { "primary" => data.Primary ?? "#0d6efd", "secondary" => data.Secondary ?? "#6c757d",
+                "success" => data.Success ?? "#198754", "danger" => data.Danger ?? "#dc3545", "warning" => data.Warning ?? "#ffc107",
+                "info" => data.Info ?? "#0dcaf0", "light" => data.Light ?? "#f8f9fa", "dark" => data.Dark ?? "#212529", _ => "#000" };
+            data.ButtonRules.TryGetValue($"outline-{v}", out var outRule);
+            var outTextColor = !string.IsNullOrWhiteSpace(outRule?.Color) ? NormalizeHexColor(outRule.Color) : NormalizeHexColor(variantColor);
+            var outBorderColor = !string.IsNullOrWhiteSpace(outRule?.BorderColor) ? NormalizeHexColor(outRule.BorderColor) : NormalizeHexColor(variantColor);
+            EmitCsColor(sb, $"OutlineText{pascal}", outTextColor);
+            EmitCsColor(sb, $"OutlineBorder{pascal}", outBorderColor);
+        }
+        sb.AppendLine();
+
         // Surface colors
         var bodyBg = data.BodyBackground ?? "#ffffff";
         var bodyColor = data.BodyColor ?? "#212529";
@@ -838,15 +866,8 @@ public partial class {className} : ResourceDictionary
             }
             sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.TextColorProperty, Value = DR(\"On{pascal}\") }});");
 
-            // Set border color from CSS --bs-btn-border-color (matches background for solid buttons)
-            if (data.ButtonRules.TryGetValue(v, out var borderRule) && borderRule.BorderColor != null)
-            {
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = Color.FromArgb(\"{NormalizeHexColor(borderRule.BorderColor)}\") }});");
-            }
-            else
-            {
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = DR(\"{pascal}\") }});");
-            }
+            // Set border color from CSS --bs-btn-border-color via DynamicResource for theme switching
+            sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = DR(\"BtnBorder{pascal}\") }});");
 
             if (data.ButtonRules.TryGetValue(v, out var glowRule) && glowRule.BoxShadow != null)
             {
@@ -858,10 +879,25 @@ public partial class {className} : ResourceDictionary
                     "danger" => data.Danger,
                     "warning" => data.Warning,
                     "info" => data.Info,
+                    "light" => data.Light,
+                    "dark" => data.Dark,
                     _ => null
                 };
                 if (color != null)
                     EmitCsShadowSetter(sb, varName, color);
+                else
+                    sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }} }});");
+            }
+            else if (data.BtnBaseBoxShadow != null)
+            {
+                // Theme has a base-level box-shadow (e.g. Brite offset shadow).
+                // Repeat it on per-variant to overwrite any per-variant glow from a previous theme.
+                EmitCsBoxShadowSetter(sb, varName, data.BtnBaseBoxShadow, data.Dark ?? "#000");
+            }
+            else
+            {
+                // Emit invisible shadow to clear any glow from a previously-active theme (e.g. Vapor)
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = new Shadow {{ Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }} }});");
             }
 
             sb.AppendLine($"        Add({varName});");
@@ -885,12 +921,12 @@ public partial class {className} : ResourceDictionary
                 sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BackgroundProperty, Value = Colors.Transparent }});");
 
             if (!string.IsNullOrWhiteSpace(rule?.Color))
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.TextColorProperty, Value = Color.FromArgb(\"{NormalizeHexColor(rule.Color)}\") }});");
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.TextColorProperty, Value = DR(\"OutlineText{pascal}\") }});");
             else
                 sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.TextColorProperty, Value = DR(\"{pascal}\") }});");
 
             if (!string.IsNullOrWhiteSpace(rule?.BorderColor))
-                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = Color.FromArgb(\"{NormalizeHexColor(rule.BorderColor)}\") }});");
+                sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = DR(\"OutlineBorder{pascal}\") }});");
             else
                 sb.AppendLine($"        {varName}.Setters.Add(new Setter {{ Property = Button.BorderColorProperty, Value = DR(\"{pascal}\") }});");
 
