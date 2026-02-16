@@ -16,30 +16,27 @@
                        StyleClass="lead,text-muted"/>
             </VerticalStackLayout>
 
-            <BoxView HeightRequest="1"
-                    Color="{DynamicResource OutlineVariant}"
-                    Margin="0,4"/>
-
             <!-- Text Inputs Section -->
             <VerticalStackLayout Spacing="12">
                 <Label Text="Text Inputs"
                         StyleClass="h4"/>
 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Default Input"/>
-                    <Entry Placeholder="Enter text..."/>
+                    <Label Text="Default Input" StyleClass="form-label"/>
+                    <Entry Placeholder="Enter text..."
+                           StyleClass="form-control"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Large Input"/>
+                    <Label Text="Large Input" StyleClass="form-label"/>
                     <Entry Placeholder="Large input"
-                            FontSize="20"/>
+                           StyleClass="form-control,form-control-lg"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Small Input"/>
+                    <Label Text="Small Input" StyleClass="form-label"/>
                     <Entry Placeholder="Small input"
-                            FontSize="12"/>
+                           StyleClass="form-control,form-control-sm"/>
                 </VerticalStackLayout>
             </VerticalStackLayout>
 
@@ -49,9 +46,10 @@
                         StyleClass="h4"/>
 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Default Textarea"/>
+                    <Label Text="Default Textarea" StyleClass="form-label"/>
                     <Editor Placeholder="Enter multi-line text..."
-                            HeightRequest="100"/>
+                            HeightRequest="100"
+                            StyleClass="form-control"/>
                 </VerticalStackLayout>
             </VerticalStackLayout>
 
@@ -61,8 +59,9 @@
                         StyleClass="h4"/>
 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Default Select"/>
-                    <Picker Title="Choose an option...">
+                    <Label Text="Default Select" StyleClass="form-label"/>
+                    <Picker Title="Choose an option..."
+                            StyleClass="form-select">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
                                 <x:String>Option 1</x:String>
@@ -79,19 +78,19 @@
                 <Label Text="Date &amp; Time"
                         StyleClass="h4"/>
 
-                <HorizontalStackLayout Spacing="20">
-                    <VerticalStackLayout Spacing="4"
-                            HorizontalOptions="FillAndExpand">
-                        <Label Text="Date"/>
-                        <DatePicker/>
+                <Grid ColumnDefinitions="*,*"
+                      ColumnSpacing="20">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Date" StyleClass="form-label"/>
+                        <DatePicker StyleClass="form-control"/>
                     </VerticalStackLayout>
 
-                    <VerticalStackLayout Spacing="4"
-                            HorizontalOptions="FillAndExpand">
-                        <Label Text="Time"/>
-                        <TimePicker/>
+                    <VerticalStackLayout Grid.Column="1"
+                                         Spacing="4">
+                        <Label Text="Time" StyleClass="form-label"/>
+                        <TimePicker StyleClass="form-control"/>
                     </VerticalStackLayout>
-                </HorizontalStackLayout>
+                </Grid>
             </VerticalStackLayout>
 
             <!-- Checkboxes & Switches Section -->
@@ -101,27 +100,35 @@
 
                 <HorizontalStackLayout Spacing="8">
                     <CheckBox IsChecked="True"
+                            StyleClass="form-check-input"
                             Color="{DynamicResource Primary}"/>
                     <Label Text="Default checkbox"
+                            StyleClass="form-check-label"
                             VerticalOptions="Center"/>
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Spacing="8">
-                    <CheckBox Color="{DynamicResource Primary}"/>
+                    <CheckBox StyleClass="form-check-input"
+                            Color="{DynamicResource Primary}"/>
                     <Label Text="Unchecked checkbox"
+                            StyleClass="form-check-label"
                             VerticalOptions="Center"/>
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Spacing="8">
                     <Switch IsToggled="True"
+                            StyleClass="form-switch"
                             OnColor="{DynamicResource Primary}"/>
                     <Label Text="Enabled switch"
+                            StyleClass="form-check-label"
                             VerticalOptions="Center"/>
                 </HorizontalStackLayout>
 
                 <HorizontalStackLayout Spacing="8">
-                    <Switch OnColor="{DynamicResource Primary}"/>
+                    <Switch StyleClass="form-switch"
+                            OnColor="{DynamicResource Primary}"/>
                     <Label Text="Disabled switch"
+                            StyleClass="form-check-label"
                             VerticalOptions="Center"/>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
@@ -133,9 +140,12 @@
 
                 <VerticalStackLayout RadioButtonGroup.GroupName="radioGroup">
                     <RadioButton Content="Option 1"
+                            StyleClass="form-check-input"
                             IsChecked="True"/>
-                    <RadioButton Content="Option 2"/>
-                    <RadioButton Content="Option 3"/>
+                    <RadioButton Content="Option 2"
+                            StyleClass="form-check-input"/>
+                    <RadioButton Content="Option 3"
+                            StyleClass="form-check-input"/>
                 </VerticalStackLayout>
             </VerticalStackLayout>
 
@@ -145,10 +155,11 @@
                         StyleClass="h4"/>
 
                 <VerticalStackLayout Spacing="4">
-                    <Label Text="Default Range"/>
+                    <Label Text="Default Range" StyleClass="form-label"/>
                     <Slider Minimum="0"
                             Maximum="100"
                             Value="50"
+                            StyleClass="form-range"
                             MinimumTrackColor="{DynamicResource Primary}"
                             ThumbColor="{DynamicResource Primary}"/>
                 </VerticalStackLayout>

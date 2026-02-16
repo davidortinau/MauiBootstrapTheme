@@ -4,121 +4,126 @@
              xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
              x:Class="MauiBootstrapTheme.Sample.Pages.SpacingPage"
              Title="Spacing">
-    
+
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
-            
-            <!-- Header -->
-            <Label Text="Spacing Utilities"
-                   StyleClass="h2"
-                   HorizontalOptions="Center" />
-            
-            <Label Text="Bootstrap spacing scale (0-5) for margin and padding"
-                   StyleClass="lead"
-                   HorizontalOptions="Center" />
-            
-            <!-- Spacing Scale Reference -->
-            <Border StyleClass="shadow-sm" Padding="16">
-                <VerticalStackLayout Spacing="8">
-                    <Label Text="Spacing Scale" StyleClass="h4" />
-                    <Label Text="• Level 0 = 0px" StyleClass="small" />
-                    <Label Text="• Level 1 = 4px (0.25rem)" StyleClass="small" />
-                    <Label Text="• Level 2 = 8px (0.5rem)" StyleClass="small" />
-                    <Label Text="• Level 3 = 16px (1rem)" StyleClass="small" />
-                    <Label Text="• Level 4 = 24px (1.5rem)" StyleClass="small" />
-                    <Label Text="• Level 5 = 48px (3rem)" StyleClass="small" />
-                </VerticalStackLayout>
-            </Border>
-            
-            <!-- Margin Examples -->
-            <Label Text="Margin Examples" StyleClass="h4" />
-            
-            <Border Background="LightGray" Padding="4">
-                <VerticalStackLayout Spacing="4">
-                    <Border Background="White" theme:Bootstrap.MarginLevel="0">
-                        <Label Text="MarginLevel=0" Padding="8" />
-                    </Border>
-                    
-                    <Border Background="White" theme:Bootstrap.MarginLevel="1">
-                        <Label Text="MarginLevel=1 (4px)" Padding="8" />
-                    </Border>
-                    
-                    <Border Background="White" theme:Bootstrap.MarginLevel="2">
-                        <Label Text="MarginLevel=2 (8px)" Padding="8" />
-                    </Border>
-                    
-                    <Border Background="White" theme:Bootstrap.MarginLevel="3">
-                        <Label Text="MarginLevel=3 (16px)" Padding="8" />
-                    </Border>
-                    
-                    <Border Background="White" theme:Bootstrap.MarginLevel="4">
-                        <Label Text="MarginLevel=4 (24px)" Padding="8" />
-                    </Border>
-                    
-                    <Border Background="White" theme:Bootstrap.MarginLevel="5">
-                        <Label Text="MarginLevel=5 (48px)" Padding="8" />
-                    </Border>
-                </VerticalStackLayout>
-            </Border>
-            
-            <!-- Padding Examples -->
-            <Label Text="Padding Examples" StyleClass="h4" />
-            
-            <VerticalStackLayout Spacing="8">
-                <Border Background="#e9ecef">
-                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="0" BackgroundColor="#0d6efd">
-                        <Label Text="PaddingLevel=0" TextColor="White" />
-                    </VerticalStackLayout>
-                </Border>
-                
-                <Border Background="#e9ecef">
-                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="1" BackgroundColor="#0d6efd">
-                        <Label Text="PaddingLevel=1 (4px)" TextColor="White" />
-                    </VerticalStackLayout>
-                </Border>
-                
-                <Border Background="#e9ecef">
-                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="2" BackgroundColor="#0d6efd">
-                        <Label Text="PaddingLevel=2 (8px)" TextColor="White" />
-                    </VerticalStackLayout>
-                </Border>
-                
-                <Border Background="#e9ecef">
-                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="3" BackgroundColor="#0d6efd">
-                        <Label Text="PaddingLevel=3 (16px)" TextColor="White" />
-                    </VerticalStackLayout>
-                </Border>
-                
-                <Border Background="#e9ecef">
-                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="4" BackgroundColor="#0d6efd">
-                        <Label Text="PaddingLevel=4 (24px)" TextColor="White" />
-                    </VerticalStackLayout>
-                </Border>
-                
-                <Border Background="#e9ecef">
-                    <VerticalStackLayout theme:Bootstrap.PaddingLevel="5" BackgroundColor="#0d6efd">
-                        <Label Text="PaddingLevel=5 (48px)" TextColor="White" />
-                    </VerticalStackLayout>
-                </Border>
+
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Spacing Utilities"
+                       StyleClass="h1" />
+                <Label Text="Canonical Bootstrap 5.3 spacing utility patterns."
+                       StyleClass="lead,text-muted" />
             </VerticalStackLayout>
-            
-            <!-- Combined Example -->
-            <Label Text="Combined Example" StyleClass="h4" />
-            
-            <Border StyleClass="shadow" Padding="0">
-                <VerticalStackLayout theme:Bootstrap.PaddingLevel="4">
-                    <Label Text="Card with PaddingLevel=4" StyleClass="h5" />
-                    
-                    <Button Text="Button with MarginLevel=3" 
-                            StyleClass="btn-primary"
-                            theme:Bootstrap.MarginLevel="3" />
-                    
-                    <Label Text="Using Bootstrap spacing levels creates consistent visual rhythm throughout your app."
-                           StyleClass="text-muted" />
+
+            <Border StyleClass="card">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Notation"
+                           StyleClass="h4" />
+                    <Label Text="m = margin, p = padding"
+                           StyleClass="small" />
+                    <Label Text="t, b, s, e, x, y = side selectors"
+                           StyleClass="small" />
+                    <Label Text="0-5 = spacing scale values"
+                           StyleClass="small" />
+                    <Label Text="Format: {property}{side}-{size} (example: mt-3, px-2)"
+                           StyleClass="small,text-muted" />
                 </VerticalStackLayout>
             </Border>
-            
+
+            <Border StyleClass="card">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Examples"
+                           StyleClass="h4" />
+
+                    <Border Background="#e9ecef" Padding="8">
+                        <VerticalStackLayout Spacing="6">
+                            <Border Background="{DynamicResource Primary}" theme:Bootstrap.PaddingLevel="0">
+                                <Label Text="p-0 (PaddingLevel=0)" TextColor="White" />
+                            </Border>
+                            <Border Background="{DynamicResource Primary}" theme:Bootstrap.PaddingLevel="1">
+                                <Label Text="p-1 (PaddingLevel=1)" TextColor="White" />
+                            </Border>
+                            <Border Background="{DynamicResource Primary}" theme:Bootstrap.PaddingLevel="2">
+                                <Label Text="p-2 (PaddingLevel=2)" TextColor="White" />
+                            </Border>
+                            <Border Background="{DynamicResource Primary}" theme:Bootstrap.PaddingLevel="3">
+                                <Label Text="p-3 (PaddingLevel=3)" TextColor="White" />
+                            </Border>
+                            <Border Background="{DynamicResource Primary}" theme:Bootstrap.PaddingLevel="4">
+                                <Label Text="p-4 (PaddingLevel=4)" TextColor="White" />
+                            </Border>
+                            <Border Background="{DynamicResource Primary}" theme:Bootstrap.PaddingLevel="5">
+                                <Label Text="p-5 (PaddingLevel=5)" TextColor="White" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Background="#f8f9fa" Padding="8">
+                        <VerticalStackLayout Spacing="0">
+                            <Border Background="White">
+                                <Label Text="mt-0 (MarginLevel=0)" Padding="8" />
+                            </Border>
+                            <Border Background="White" theme:Bootstrap.MarginLevel="1">
+                                <Label Text="mt-1 (MarginLevel=1)" Padding="8" />
+                            </Border>
+                            <Border Background="White" theme:Bootstrap.MarginLevel="2">
+                                <Label Text="mt-2 (MarginLevel=2)" Padding="8" />
+                            </Border>
+                            <Border Background="White" theme:Bootstrap.MarginLevel="3">
+                                <Label Text="mt-3 (MarginLevel=3)" Padding="8" />
+                            </Border>
+                            <Border Background="White" theme:Bootstrap.MarginLevel="4">
+                                <Label Text="mt-4 (MarginLevel=4)" Padding="8" />
+                            </Border>
+                            <Border Background="White" theme:Bootstrap.MarginLevel="5">
+                                <Label Text="mt-5 (MarginLevel=5)" Padding="8" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border StyleClass="card">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Horizontal centering"
+                           StyleClass="h4" />
+                    <Border WidthRequest="200"
+                            HorizontalOptions="Center"
+                            Background="{DynamicResource Secondary}"
+                            Padding="8">
+                        <Label Text=".mx-auto with width: 200px"
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border StyleClass="card">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Gap utilities"
+                           StyleClass="h4" />
+                    <HorizontalStackLayout Spacing="8">
+                        <Border Background="{DynamicResource Info}" Padding="8">
+                            <Label Text="gap-2 equivalent" />
+                        </Border>
+                        <Border Background="{DynamicResource Info}" Padding="8">
+                            <Label Text="Item" />
+                        </Border>
+                        <Border Background="{DynamicResource Info}" Padding="8">
+                            <Label Text="Item" />
+                        </Border>
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout Spacing="12">
+                        <Border Background="#f8f9fa" Padding="8">
+                            <Label Text="d-grid gap-3 item 1" />
+                        </Border>
+                        <Border Background="#f8f9fa" Padding="8">
+                            <Label Text="d-grid gap-3 item 2" />
+                        </Border>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
         </VerticalStackLayout>
     </ScrollView>
-    
 </ContentPage>

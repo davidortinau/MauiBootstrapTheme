@@ -174,8 +174,8 @@ public static class BootstrapEntryHandler
 
     private static (double X, double Y) GetPaddingForSize(BootstrapSize size, BootstrapTheme theme) => size switch
     {
-        BootstrapSize.Small => (8.0, 4.0),
-        BootstrapSize.Large => (16.0, 8.0),
+        BootstrapSize.Small => (theme.InputPaddingXSm, theme.InputPaddingYSm),
+        BootstrapSize.Large => (theme.InputPaddingXLg, theme.InputPaddingYLg),
         _ => (theme.InputPaddingX, theme.InputPaddingY)
     };
 }

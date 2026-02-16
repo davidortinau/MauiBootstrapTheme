@@ -38,6 +38,7 @@ public class ResourceDictionaryGenerator
         sb.AppendLine("<!-- Auto-generated from CSS by MauiBootstrapTheme.Build. Do not edit. -->");
         sb.AppendLine("<ResourceDictionary xmlns=\"http://schemas.microsoft.com/dotnet/2021/maui\"");
         sb.AppendLine("                    xmlns:x=\"http://schemas.microsoft.com/winfx/2009/xaml\"");
+        sb.AppendLine("                    xmlns:bs=\"clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme\"");
         sb.AppendLine($"                    x:Class=\"{@namespace}.{className}\">");
         sb.AppendLine();
 
@@ -175,6 +176,7 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("using Microsoft.Maui.Controls;");
         sb.AppendLine("using Microsoft.Maui.Controls.Shapes;");
         sb.AppendLine("using Microsoft.Maui.Graphics;");
+        sb.AppendLine("using MauiBootstrapTheme.Theming;");
         sb.AppendLine("#pragma warning disable CS8604");
         sb.AppendLine();
         sb.AppendLine($"namespace {@namespace};");
@@ -308,11 +310,13 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine($"        this[\"InputPadding\"] = new Thickness({btnPadX.ToString(CultureInfo.InvariantCulture)}, {btnPadY.ToString(CultureInfo.InvariantCulture)});");
 
         var progressBg = data.ProgressBg ?? data.SecondaryBg ?? "#e9ecef";
+        var inputBackground = data.FormControlRule.Background ?? data.BodyBackground ?? "#ffffff";
+        var inputText = data.FormControlRule.Color ?? data.BodyColor ?? "#212529";
+        var placeholderColor = data.FormControlRule.PlaceholderColor
+            ?? (data.LightVariables.TryGetValue("--bs-secondary-color", out var sc) ? NormalizeHexColor(sc) : "#6c757d");
         EmitCsColor(sb, "ProgressBackground", progressBg);
-        EmitCsColor(sb, "InputBackground", data.BodyBackground ?? "#ffffff");
-        EmitCsColor(sb, "InputText", data.BodyColor ?? "#212529");
-        var placeholderColor = data.LightVariables.TryGetValue("--bs-secondary-color", out var sc)
-            ? NormalizeHexColor(sc) : "#6c757d";
+        EmitCsColor(sb, "InputBackground", inputBackground);
+        EmitCsColor(sb, "InputText", inputText);
         EmitCsColor(sb, "PlaceholderColor", placeholderColor);
         sb.AppendLine();
 
@@ -413,10 +417,12 @@ public partial class {className} : ResourceDictionary
         // Input colors for dark mode
         if (data.DarkBodyBackground != null || data.DarkSecondaryBg != null)
         {
-            var darkInputBg = data.DarkSecondaryBg ?? data.DarkBodyBackground ?? "#303030";
+            var darkInputBg = data.FormControlRule.Background ?? data.DarkSecondaryBg ?? data.DarkBodyBackground ?? "#303030";
+            var darkPlaceholder = data.FormControlRule.PlaceholderColor
+                ?? (data.DarkVariables.TryGetValue("--bs-secondary-color", out var darkSc) ? NormalizeHexColor(darkSc) : "#FF999999");
             sb.AppendLine($"            this[\"InputBackground\"] = Color.FromArgb(\"{NormalizeHexColor(darkInputBg)}\");");
-            sb.AppendLine($"            this[\"InputText\"] = Color.FromArgb(\"{NormalizeHexColor(data.DarkBodyColor ?? "#ffffff")}\");");
-            sb.AppendLine($"            this[\"PlaceholderColor\"] = Color.FromArgb(\"#FF999999\");");
+            sb.AppendLine($"            this[\"InputText\"] = Color.FromArgb(\"{NormalizeHexColor(data.FormControlRule.Color ?? data.DarkBodyColor ?? "#ffffff")}\");");
+            sb.AppendLine($"            this[\"PlaceholderColor\"] = Color.FromArgb(\"{NormalizeHexColor(darkPlaceholder)}\");");
             sb.AppendLine($"            this[\"ProgressBackground\"] = Color.FromArgb(\"#FF464545\");");
         }
 
@@ -448,11 +454,13 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine($"            this[\"HeadingColor\"] = Color.FromArgb(\"{NormalizeHexColor(headingColor)}\");");
         sb.AppendLine($"            this[\"HeadingColorAlt\"] = Color.FromArgb(\"{NormalizeHexColor(headingColor)}\");");
 
-        var inputBg = data.BodyBackground ?? "#ffffff";
+        var inputBg = data.FormControlRule.Background ?? data.BodyBackground ?? "#ffffff";
         sb.AppendLine($"            this[\"InputBackground\"] = Color.FromArgb(\"{NormalizeHexColor(inputBg)}\");");
-        sb.AppendLine($"            this[\"InputText\"] = Color.FromArgb(\"{NormalizeHexColor(data.BodyColor ?? "#212529")}\");");
-        var lightPlaceholder = data.LightVariables.TryGetValue("--bs-secondary-color", out var lightSc)
-            ? NormalizeHexColor(lightSc) : "#FF6c757d";
+        sb.AppendLine($"            this[\"InputText\"] = Color.FromArgb(\"{NormalizeHexColor(data.FormControlRule.Color ?? data.BodyColor ?? "#212529")}\");");
+        var lightPlaceholder = data.FormControlRule.PlaceholderColor
+            ?? (data.LightVariables.TryGetValue("--bs-secondary-color", out var lightSc)
+                ? NormalizeHexColor(lightSc)
+                : "#FF6c757d");
         sb.AppendLine($"            this[\"PlaceholderColor\"] = Color.FromArgb(\"{lightPlaceholder}\");");
         var lightProgressBg = data.ProgressBg ?? data.SecondaryBg ?? "#e9ecef";
         sb.AppendLine($"            this[\"ProgressBackground\"] = Color.FromArgb(\"{NormalizeHexColor(lightProgressBg)}\");");
@@ -587,6 +595,11 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("        style_label.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
         sb.AppendLine("        Add(style_label);");
         sb.AppendLine();
+        sb.AppendLine("        var style_form_label = new Style(typeof(Label)) { Class = \"form-label\" };");
+        sb.AppendLine("        style_form_label.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"OnBackground\") });");
+        sb.AppendLine("        style_form_label.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        Add(style_form_label);");
+        sb.AppendLine();
 
         // Entry
         sb.AppendLine("        var style_entry = new Style(typeof(Entry));");
@@ -598,14 +611,153 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("        style_entry.Setters.Add(new Setter { Property = Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_entry);");
         sb.AppendLine();
+        sb.AppendLine("        var style_form_control_entry = new Style(typeof(Entry)) { Class = \"form-control\" };");
+        sb.AppendLine("        style_form_control_entry.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
+        sb.AppendLine("        style_form_control_entry.Setters.Add(new Setter { Property = Entry.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_form_control_entry.Setters.Add(new Setter { Property = Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        Add(style_form_control_entry);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_control_lg_entry = new Style(typeof(Entry)) { Class = \"form-control-lg\" };");
+        sb.AppendLine("        style_form_control_lg_entry.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
+        sb.AppendLine("        style_form_control_lg_entry.Setters.Add(new Setter { Property = Entry.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_form_control_lg_entry.Setters.Add(new Setter { Property = Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
+        sb.AppendLine("        Add(style_form_control_lg_entry);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_control_sm_entry = new Style(typeof(Entry)) { Class = \"form-control-sm\" };");
+        sb.AppendLine("        style_form_control_sm_entry.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
+        sb.AppendLine("        style_form_control_sm_entry.Setters.Add(new Setter { Property = Entry.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_control_sm_entry.Setters.Add(new Setter { Property = Entry.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
+        sb.AppendLine("        Add(style_form_control_sm_entry);");
+        sb.AppendLine();
+
+        // Picker
+        sb.AppendLine("        var style_picker = new Style(typeof(Picker));");
+        sb.AppendLine("        style_picker.Setters.Add(new Setter { Property = Picker.TextColorProperty, Value = DR(\"InputText\") });");
+        sb.AppendLine("        style_picker.Setters.Add(new Setter { Property = Picker.TitleColorProperty, Value = DR(\"PlaceholderColor\") });");
+        sb.AppendLine("        style_picker.Setters.Add(new Setter { Property = Picker.FontFamilyProperty, Value = DR(\"FontFamily\") });");
+        sb.AppendLine("        style_picker.Setters.Add(new Setter { Property = Picker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_picker.Setters.Add(new Setter { Property = Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        Add(style_picker);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_select_picker = new Style(typeof(Picker)) { Class = \"form-select\" };");
+        sb.AppendLine("        style_form_select_picker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
+        sb.AppendLine("        style_form_select_picker.Setters.Add(new Setter { Property = Picker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_form_select_picker.Setters.Add(new Setter { Property = Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        Add(style_form_select_picker);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_select_lg_picker = new Style(typeof(Picker)) { Class = \"form-select-lg\" };");
+        sb.AppendLine("        style_form_select_lg_picker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
+        sb.AppendLine("        style_form_select_lg_picker.Setters.Add(new Setter { Property = Picker.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_form_select_lg_picker.Setters.Add(new Setter { Property = Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
+        sb.AppendLine("        Add(style_form_select_lg_picker);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_select_sm_picker = new Style(typeof(Picker)) { Class = \"form-select-sm\" };");
+        sb.AppendLine("        style_form_select_sm_picker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
+        sb.AppendLine("        style_form_select_sm_picker.Setters.Add(new Setter { Property = Picker.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_select_sm_picker.Setters.Add(new Setter { Property = Picker.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
+        sb.AppendLine("        Add(style_form_select_sm_picker);");
+        sb.AppendLine();
+
+        // DatePicker
+        sb.AppendLine("        var style_datepicker = new Style(typeof(DatePicker));");
+        sb.AppendLine("        style_datepicker.Setters.Add(new Setter { Property = DatePicker.TextColorProperty, Value = DR(\"InputText\") });");
+        sb.AppendLine("        style_datepicker.Setters.Add(new Setter { Property = DatePicker.FontFamilyProperty, Value = DR(\"FontFamily\") });");
+        sb.AppendLine("        style_datepicker.Setters.Add(new Setter { Property = DatePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_datepicker.Setters.Add(new Setter { Property = DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        Add(style_datepicker);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_control_datepicker = new Style(typeof(DatePicker)) { Class = \"form-control\" };");
+        sb.AppendLine("        style_form_control_datepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
+        sb.AppendLine("        style_form_control_datepicker.Setters.Add(new Setter { Property = DatePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_form_control_datepicker.Setters.Add(new Setter { Property = DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        Add(style_form_control_datepicker);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_control_lg_datepicker = new Style(typeof(DatePicker)) { Class = \"form-control-lg\" };");
+        sb.AppendLine("        style_form_control_lg_datepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
+        sb.AppendLine("        style_form_control_lg_datepicker.Setters.Add(new Setter { Property = DatePicker.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_form_control_lg_datepicker.Setters.Add(new Setter { Property = DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
+        sb.AppendLine("        Add(style_form_control_lg_datepicker);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_control_sm_datepicker = new Style(typeof(DatePicker)) { Class = \"form-control-sm\" };");
+        sb.AppendLine("        style_form_control_sm_datepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
+        sb.AppendLine("        style_form_control_sm_datepicker.Setters.Add(new Setter { Property = DatePicker.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_control_sm_datepicker.Setters.Add(new Setter { Property = DatePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
+        sb.AppendLine("        Add(style_form_control_sm_datepicker);");
+        sb.AppendLine();
+
+        // TimePicker
+        sb.AppendLine("        var style_timepicker = new Style(typeof(TimePicker));");
+        sb.AppendLine("        style_timepicker.Setters.Add(new Setter { Property = TimePicker.TextColorProperty, Value = DR(\"InputText\") });");
+        sb.AppendLine("        style_timepicker.Setters.Add(new Setter { Property = TimePicker.FontFamilyProperty, Value = DR(\"FontFamily\") });");
+        sb.AppendLine("        style_timepicker.Setters.Add(new Setter { Property = TimePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_timepicker.Setters.Add(new Setter { Property = TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        Add(style_timepicker);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_control_timepicker = new Style(typeof(TimePicker)) { Class = \"form-control\" };");
+        sb.AppendLine("        style_form_control_timepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
+        sb.AppendLine("        style_form_control_timepicker.Setters.Add(new Setter { Property = TimePicker.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_form_control_timepicker.Setters.Add(new Setter { Property = TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        Add(style_form_control_timepicker);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_control_lg_timepicker = new Style(typeof(TimePicker)) { Class = \"form-control-lg\" };");
+        sb.AppendLine("        style_form_control_lg_timepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
+        sb.AppendLine("        style_form_control_lg_timepicker.Setters.Add(new Setter { Property = TimePicker.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_form_control_lg_timepicker.Setters.Add(new Setter { Property = TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
+        sb.AppendLine("        Add(style_form_control_lg_timepicker);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_control_sm_timepicker = new Style(typeof(TimePicker)) { Class = \"form-control-sm\" };");
+        sb.AppendLine("        style_form_control_sm_timepicker.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
+        sb.AppendLine("        style_form_control_sm_timepicker.Setters.Add(new Setter { Property = TimePicker.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_control_sm_timepicker.Setters.Add(new Setter { Property = TimePicker.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
+        sb.AppendLine("        Add(style_form_control_sm_timepicker);");
+        sb.AppendLine();
 
         // Editor
         sb.AppendLine("        var style_editor = new Style(typeof(Editor));");
-        sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.TextColorProperty, Value = DR(\"OnSurface\") });");
-        sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.BackgroundProperty, Value = DR(\"Surface\") });");
+        sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.TextColorProperty, Value = DR(\"InputText\") });");
+        sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.BackgroundProperty, Value = DR(\"InputBackground\") });");
         sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.FontFamilyProperty, Value = DR(\"FontFamily\") });");
         sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_editor.Setters.Add(new Setter { Property = Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
         sb.AppendLine("        Add(style_editor);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_control_editor = new Style(typeof(Editor)) { Class = \"form-control\" };");
+        sb.AppendLine("        style_form_control_editor.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Default });");
+        sb.AppendLine("        style_form_control_editor.Setters.Add(new Setter { Property = Editor.FontSizeProperty, Value = DR(\"FontSizeBase\") });");
+        sb.AppendLine("        style_form_control_editor.Setters.Add(new Setter { Property = Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeight\") });");
+        sb.AppendLine("        Add(style_form_control_editor);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_control_lg_editor = new Style(typeof(Editor)) { Class = \"form-control-lg\" };");
+        sb.AppendLine("        style_form_control_lg_editor.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Large });");
+        sb.AppendLine("        style_form_control_lg_editor.Setters.Add(new Setter { Property = Editor.FontSizeProperty, Value = DR(\"FontSizeLg\") });");
+        sb.AppendLine("        style_form_control_lg_editor.Setters.Add(new Setter { Property = Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeightLg\") });");
+        sb.AppendLine("        Add(style_form_control_lg_editor);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_control_sm_editor = new Style(typeof(Editor)) { Class = \"form-control-sm\" };");
+        sb.AppendLine("        style_form_control_sm_editor.Setters.Add(new Setter { Property = Bootstrap.SizeProperty, Value = BootstrapSize.Small });");
+        sb.AppendLine("        style_form_control_sm_editor.Setters.Add(new Setter { Property = Editor.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_control_sm_editor.Setters.Add(new Setter { Property = Editor.MinimumHeightRequestProperty, Value = DR(\"InputHeightSm\") });");
+        sb.AppendLine("        Add(style_form_control_sm_editor);");
+        sb.AppendLine();
+
+        // Check/Radio/Switch/Range classes
+        sb.AppendLine("        var style_form_check_checkbox = new Style(typeof(CheckBox)) { Class = \"form-check-input\" };");
+        sb.AppendLine("        style_form_check_checkbox.Setters.Add(new Setter { Property = CheckBox.ColorProperty, Value = DR(\"Primary\") });");
+        sb.AppendLine("        Add(style_form_check_checkbox);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_check_radio = new Style(typeof(RadioButton)) { Class = \"form-check-input\" };");
+        sb.AppendLine("        style_form_check_radio.Setters.Add(new Setter { Property = RadioButton.TextColorProperty, Value = DR(\"OnBackground\") });");
+        sb.AppendLine("        Add(style_form_check_radio);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_switch = new Style(typeof(Switch)) { Class = \"form-switch\" };");
+        sb.AppendLine("        style_form_switch.Setters.Add(new Setter { Property = Switch.OnColorProperty, Value = DR(\"Primary\") });");
+        sb.AppendLine("        Add(style_form_switch);");
+        sb.AppendLine();
+        sb.AppendLine("        var style_form_range = new Style(typeof(Slider)) { Class = \"form-range\" };");
+        sb.AppendLine("        style_form_range.Setters.Add(new Setter { Property = Slider.MinimumTrackColorProperty, Value = DR(\"Primary\") });");
+        sb.AppendLine("        style_form_range.Setters.Add(new Setter { Property = Slider.ThumbColorProperty, Value = DR(\"Primary\") });");
+        sb.AppendLine("        style_form_range.Setters.Add(new Setter { Property = Slider.MaximumTrackColorProperty, Value = DR(\"OutlineVariant\") });");
+        sb.AppendLine("        Add(style_form_range);");
         sb.AppendLine();
 
         // ProgressBar
@@ -876,6 +1028,13 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("        var style_small = new Style(typeof(Label)) { Class = \"small\" };");
         sb.AppendLine("        style_small.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
         sb.AppendLine("        Add(style_small);");
+        sb.AppendLine("        var style_form_text = new Style(typeof(Label)) { Class = \"form-text\" };");
+        sb.AppendLine("        style_form_text.Setters.Add(new Setter { Property = Label.FontSizeProperty, Value = DR(\"FontSizeSm\") });");
+        sb.AppendLine("        style_form_text.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"Muted\") });");
+        sb.AppendLine("        Add(style_form_text);");
+        sb.AppendLine("        var style_form_check_label = new Style(typeof(Label)) { Class = \"form-check-label\" };");
+        sb.AppendLine("        style_form_check_label.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"OnBackground\") });");
+        sb.AppendLine("        Add(style_form_check_label);");
         sb.AppendLine("        var style_mark = new Style(typeof(Label)) { Class = \"mark\" };");
         sb.AppendLine("        style_mark.Setters.Add(new Setter { Property = Label.BackgroundProperty, Value = Color.FromArgb(\"#fcf8e3\") });");
         sb.AppendLine("        style_mark.Setters.Add(new Setter { Property = Label.PaddingProperty, Value = new Thickness(4, 2) });");
@@ -891,6 +1050,15 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("        var style_text_muted = new Style(typeof(Label)) { Class = \"text-muted\" };");
         sb.AppendLine("        style_text_muted.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"Muted\") });");
         sb.AppendLine("        Add(style_text_muted);");
+        sb.AppendLine("        var style_text_dark = new Style(typeof(Label)) { Class = \"text-dark\" };");
+        sb.AppendLine("        style_text_dark.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = DR(\"Dark\") });");
+        sb.AppendLine("        Add(style_text_dark);");
+        sb.AppendLine("        var style_text_white = new Style(typeof(Label)) { Class = \"text-white\" };");
+        sb.AppendLine("        style_text_white.Setters.Add(new Setter { Property = Label.TextColorProperty, Value = Colors.White });");
+        sb.AppendLine("        Add(style_text_white);");
+        sb.AppendLine("        var style_text_center = new Style(typeof(Label)) { Class = \"text-center\" };");
+        sb.AppendLine("        style_text_center.Setters.Add(new Setter { Property = Label.HorizontalTextAlignmentProperty, Value = TextAlignment.Center });");
+        sb.AppendLine("        Add(style_text_center);");
         sb.AppendLine();
     }
 
@@ -1080,16 +1248,17 @@ public partial class {className} : ResourceDictionary
                 ? mapped : data.FontFamily;
         }
         EmitString(sb, "FontFamily", fontFamily);
-        EmitDouble(sb, "FontSizeBase", 16);
-        EmitDouble(sb, "FontSizeSm", 14);
-        EmitDouble(sb, "FontSizeLg", 20);
-        EmitDouble(sb, "FontSizeLead", 20);
-        EmitDouble(sb, "FontSizeH1", 40);
-        EmitDouble(sb, "FontSizeH2", 32);
-        EmitDouble(sb, "FontSizeH3", 28);
-        EmitDouble(sb, "FontSizeH4", 24);
-        EmitDouble(sb, "FontSizeH5", 20);
-        EmitDouble(sb, "FontSizeH6", 16);
+        var baseFontSize = data.BodyFontSize != null ? CssToDevicePixels(data.BodyFontSize) : 16;
+        EmitDouble(sb, "FontSizeBase", baseFontSize);
+        EmitDouble(sb, "FontSizeSm", data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875);
+        EmitDouble(sb, "FontSizeLg", data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25);
+        EmitDouble(sb, "FontSizeLead", baseFontSize * 1.25);
+        EmitDouble(sb, "FontSizeH1", data.FontSizeH1 != null ? CssToDevicePixels(data.FontSizeH1) : baseFontSize * 2.5);
+        EmitDouble(sb, "FontSizeH2", data.FontSizeH2 != null ? CssToDevicePixels(data.FontSizeH2) : baseFontSize * 2);
+        EmitDouble(sb, "FontSizeH3", data.FontSizeH3 != null ? CssToDevicePixels(data.FontSizeH3) : baseFontSize * 1.75);
+        EmitDouble(sb, "FontSizeH4", data.FontSizeH4 != null ? CssToDevicePixels(data.FontSizeH4) : baseFontSize * 1.5);
+        EmitDouble(sb, "FontSizeH5", data.FontSizeH5 != null ? CssToDevicePixels(data.FontSizeH5) : baseFontSize * 1.25);
+        EmitDouble(sb, "FontSizeH6", data.FontSizeH6 != null ? CssToDevicePixels(data.FontSizeH6) : baseFontSize);
     }
 
     private void EmitSpacing(StringBuilder sb, Parsing.BootstrapThemeData data)
@@ -1097,28 +1266,43 @@ public partial class {className} : ResourceDictionary
         EmitDouble(sb, "CornerRadius", CssToDevicePixels(data.BorderRadius ?? "0.375rem"));
         EmitDouble(sb, "CornerRadiusSm", CssToDevicePixels(data.BorderRadiusSm ?? "0.25rem"));
         EmitDouble(sb, "CornerRadiusLg", CssToDevicePixels(data.BorderRadiusLg ?? "0.5rem"));
-        EmitDouble(sb, "CornerRadiusPill", 19); // half of default ButtonHeight (38)
+        var baseFontSize = data.BodyFontSize != null ? CssToDevicePixels(data.BodyFontSize) : 16;
+        var btnPadX = data.BtnPaddingX != null ? CssToDevicePixels(data.BtnPaddingX) : 12;
+        var btnPadY = data.BtnPaddingY != null ? CssToDevicePixels(data.BtnPaddingY) : 6;
+        var btnPadXSm = data.BtnPaddingXSm != null ? CssToDevicePixels(data.BtnPaddingXSm) : 8;
+        var btnPadYSm = data.BtnPaddingYSm != null ? CssToDevicePixels(data.BtnPaddingYSm) : 4;
+        var btnPadXLg = data.BtnPaddingXLg != null ? CssToDevicePixels(data.BtnPaddingXLg) : 16;
+        var btnPadYLg = data.BtnPaddingYLg != null ? CssToDevicePixels(data.BtnPaddingYLg) : 8;
+        var borderW = CssToDevicePixels(data.BorderWidth ?? "1px");
+        var buttonHeight = btnPadY * 2 + baseFontSize + borderW * 2;
+        var buttonHeightSm = btnPadYSm * 2 + (data.BtnFontSizeSm != null ? CssToDevicePixels(data.BtnFontSizeSm) : baseFontSize * 0.875) + borderW * 2;
+        var buttonHeightLg = btnPadYLg * 2 + (data.BtnFontSizeLg != null ? CssToDevicePixels(data.BtnFontSizeLg) : baseFontSize * 1.25) + borderW * 2;
+        EmitDouble(sb, "CornerRadiusPill", Math.Ceiling(buttonHeight / 2));
         EmitDouble(sb, "BorderWidth", CssToDevicePixels(data.BorderWidth ?? "1px"));
-        EmitDouble(sb, "ButtonHeight", 38);
-        EmitDouble(sb, "ButtonHeightSm", 31);
-        EmitDouble(sb, "ButtonHeightLg", 48);
-        EmitDouble(sb, "InputHeight", 38);
-        EmitDouble(sb, "InputHeightSm", 31);
-        EmitDouble(sb, "InputHeightLg", 48);
-        EmitThickness(sb, "ButtonPadding", "12,6");
-        EmitThickness(sb, "ButtonPaddingSm", "8,4");
-        EmitThickness(sb, "ButtonPaddingLg", "16,8");
-        EmitThickness(sb, "InputPadding", "12,6");
+        EmitDouble(sb, "ButtonHeight", buttonHeight);
+        EmitDouble(sb, "ButtonHeightSm", buttonHeightSm);
+        EmitDouble(sb, "ButtonHeightLg", buttonHeightLg);
+        EmitDouble(sb, "InputHeight", btnPadY * 2 + baseFontSize + borderW * 2);
+        EmitDouble(sb, "InputHeightSm", btnPadYSm * 2 + baseFontSize * 0.875 + borderW * 2);
+        EmitDouble(sb, "InputHeightLg", btnPadYLg * 2 + baseFontSize * 1.25 + borderW * 2);
+        EmitThickness(sb, "ButtonPadding", $"{btnPadX.ToString(CultureInfo.InvariantCulture)},{btnPadY.ToString(CultureInfo.InvariantCulture)}");
+        EmitThickness(sb, "ButtonPaddingSm", $"{btnPadXSm.ToString(CultureInfo.InvariantCulture)},{btnPadYSm.ToString(CultureInfo.InvariantCulture)}");
+        EmitThickness(sb, "ButtonPaddingLg", $"{btnPadXLg.ToString(CultureInfo.InvariantCulture)},{btnPadYLg.ToString(CultureInfo.InvariantCulture)}");
+        EmitThickness(sb, "InputPadding", $"{btnPadX.ToString(CultureInfo.InvariantCulture)},{btnPadY.ToString(CultureInfo.InvariantCulture)}");
 
         // Input colors
-        var inputBg = IsDarkTheme(data) ? (data.DarkSecondaryBg ?? data.BodyBackground ?? "#303030") : (data.BodyBackground ?? "#ffffff");
-        var inputText = IsDarkTheme(data) ? "#ffffff" : (data.BodyColor ?? "#212529");
+        var inputBg = IsDarkTheme(data)
+            ? (data.DarkSecondaryBg ?? data.DarkBodyBackground ?? data.FormControlRule.Background ?? "#303030")
+            : (data.FormControlRule.Background ?? data.BodyBackground ?? "#ffffff");
+        var inputText = IsDarkTheme(data)
+            ? (data.FormControlRule.Color ?? data.DarkBodyColor ?? "#ffffff")
+            : (data.FormControlRule.Color ?? data.BodyColor ?? "#212529");
         EmitColor(sb, "ProgressBackground", IsDarkTheme(data) ? "#464545" : "#e9ecef");
         EmitColor(sb, "InputBackground", inputBg);
         EmitColor(sb, "InputText", inputText);
 
         // PlaceholderColor for dark themes
-        var placeholderColor = IsDarkTheme(data) ? "#999999" : "#6c757d";
+        var placeholderColor = data.FormControlRule.PlaceholderColor ?? (IsDarkTheme(data) ? "#999999" : "#6c757d");
         EmitColor(sb, "PlaceholderColor", placeholderColor);
     }
 
@@ -1169,6 +1353,11 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeBase}\"/>");
         sb.AppendLine("    </Style>");
         sb.AppendLine();
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"form-label\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource OnBackground}\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeBase}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine();
 
         // Entry
         sb.AppendLine("    <Style TargetType=\"Entry\">");
@@ -1181,12 +1370,127 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("    </Style>");
         sb.AppendLine();
 
-        // Editor
-        sb.AppendLine("    <Style TargetType=\"Editor\">");
-        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource OnSurface}\"/>");
-        sb.AppendLine("        <Setter Property=\"Background\" Value=\"{DynamicResource Surface}\"/>");
+        // Entry - form-control classes
+        sb.AppendLine("    <Style TargetType=\"Entry\" Class=\"form-control\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Default\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Entry\" Class=\"form-control-lg\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Large\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Entry\" Class=\"form-control-sm\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Small\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine();
+
+        // Picker
+        sb.AppendLine("    <Style TargetType=\"Picker\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource InputText}\"/>");
+        sb.AppendLine("        <Setter Property=\"TitleColor\" Value=\"{DynamicResource PlaceholderColor}\"/>");
         sb.AppendLine("        <Setter Property=\"FontFamily\" Value=\"{DynamicResource FontFamily}\"/>");
         sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeBase}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeight}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine();
+
+        // Picker - form-select classes
+        sb.AppendLine("    <Style TargetType=\"Picker\" Class=\"form-select\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Default\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Picker\" Class=\"form-select-lg\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Large\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Picker\" Class=\"form-select-sm\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Small\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine();
+
+        // DatePicker
+        sb.AppendLine("    <Style TargetType=\"DatePicker\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource InputText}\"/>");
+        sb.AppendLine("        <Setter Property=\"FontFamily\" Value=\"{DynamicResource FontFamily}\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeBase}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeight}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"DatePicker\" Class=\"form-control\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Default\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeBase}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeight}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"DatePicker\" Class=\"form-control-lg\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Large\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeLg}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeightLg}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"DatePicker\" Class=\"form-control-sm\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Small\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeSm}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeightSm}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine();
+
+        // TimePicker
+        sb.AppendLine("    <Style TargetType=\"TimePicker\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource InputText}\"/>");
+        sb.AppendLine("        <Setter Property=\"FontFamily\" Value=\"{DynamicResource FontFamily}\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeBase}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeight}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"TimePicker\" Class=\"form-control\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Default\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeBase}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeight}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"TimePicker\" Class=\"form-control-lg\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Large\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeLg}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeightLg}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"TimePicker\" Class=\"form-control-sm\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Small\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeSm}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeightSm}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine();
+
+        // Editor
+        sb.AppendLine("    <Style TargetType=\"Editor\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource InputText}\"/>");
+        sb.AppendLine("        <Setter Property=\"Background\" Value=\"{DynamicResource InputBackground}\"/>");
+        sb.AppendLine("        <Setter Property=\"FontFamily\" Value=\"{DynamicResource FontFamily}\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeBase}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeight}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Editor\" Class=\"form-control\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Default\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeBase}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeight}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Editor\" Class=\"form-control-lg\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Large\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeLg}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeightLg}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Editor\" Class=\"form-control-sm\">");
+        sb.AppendLine("        <Setter Property=\"bs:Bootstrap.Size\" Value=\"Small\"/>");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeSm}\"/>");
+        sb.AppendLine("        <Setter Property=\"MinimumHeightRequest\" Value=\"{DynamicResource InputHeightSm}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine();
+
+        // Check/Radio/Switch/Range classes
+        sb.AppendLine("    <Style TargetType=\"CheckBox\" Class=\"form-check-input\">");
+        sb.AppendLine("        <Setter Property=\"Color\" Value=\"{DynamicResource Primary}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"RadioButton\" Class=\"form-check-input\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource OnBackground}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Switch\" Class=\"form-switch\">");
+        sb.AppendLine("        <Setter Property=\"OnColor\" Value=\"{DynamicResource Primary}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Slider\" Class=\"form-range\">");
+        sb.AppendLine("        <Setter Property=\"MinimumTrackColor\" Value=\"{DynamicResource Primary}\"/>");
+        sb.AppendLine("        <Setter Property=\"ThumbColor\" Value=\"{DynamicResource Primary}\"/>");
+        sb.AppendLine("        <Setter Property=\"MaximumTrackColor\" Value=\"{DynamicResource OutlineVariant}\"/>");
         sb.AppendLine("    </Style>");
         sb.AppendLine();
 
@@ -1393,6 +1697,13 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("    <Style TargetType=\"Label\" Class=\"small\">");
         sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeSm}\"/>");
         sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"form-text\">");
+        sb.AppendLine("        <Setter Property=\"FontSize\" Value=\"{DynamicResource FontSizeSm}\"/>");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Muted}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"form-check-label\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource OnBackground}\"/>");
+        sb.AppendLine("    </Style>");
         sb.AppendLine("    <Style TargetType=\"Label\" Class=\"mark\">");
         sb.AppendLine("        <Setter Property=\"Background\" Value=\"#fcf8e3\"/>");
         sb.AppendLine("        <Setter Property=\"Padding\" Value=\"4,2\"/>");
@@ -1417,6 +1728,15 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("    </Style>");
         sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-muted\">");
         sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Muted}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-dark\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"{DynamicResource Dark}\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-white\">");
+        sb.AppendLine("        <Setter Property=\"TextColor\" Value=\"White\"/>");
+        sb.AppendLine("    </Style>");
+        sb.AppendLine("    <Style TargetType=\"Label\" Class=\"text-center\">");
+        sb.AppendLine("        <Setter Property=\"HorizontalTextAlignment\" Value=\"Center\"/>");
         sb.AppendLine("    </Style>");
     }
 

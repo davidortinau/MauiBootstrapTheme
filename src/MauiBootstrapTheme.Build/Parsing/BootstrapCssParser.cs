@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace MauiBootstrapTheme.Build.Parsing;
@@ -33,10 +34,13 @@ public class BootstrapCssParser
         // 6. Extract font-family
         data.FontFamily = ExtractFontFamily(cssContent);
 
-        // 7. Derive semantic colors from CSS variables
+        // 7. Extract input component rules
+        ExtractInputRules(cssContent, data);
+
+        // 8. Derive semantic colors from CSS variables
         DeriveSemanticColors(data);
 
-        // 8. Extract heading sizes/weight and button sizing from raw CSS rules
+        // 9. Extract heading sizes/weight and button sizing from raw CSS rules
         ExtractHeadingSizesFromCss(cssContent, data);
         ExtractButtonSizingFromCss(cssContent, data);
         ExtractProgressBgFromCss(cssContent, data);
@@ -214,6 +218,105 @@ public class BootstrapCssParser
         }
 
         return rule;
+    }
+
+    private void ExtractInputRules(string css, BootstrapThemeData data)
+    {
+        data.FormControlRule = ExtractInputRule(css, data.LightVariables, "form-control");
+        data.FormSelectRule = ExtractInputRule(css, data.LightVariables, "form-select");
+    }
+
+    private InputRule ExtractInputRule(string css, Dictionary<string, string> vars, string className)
+    {
+        return new InputRule
+        {
+            Background = ResolveColorProperty(css, vars, className, null, "background-color"),
+            Color = ResolveColorProperty(css, vars, className, null, "color"),
+            BorderColor = ResolveColorProperty(css, vars, className, null, "border-color"),
+            PlaceholderColor = ResolveColorProperty(css, vars, className, "::placeholder", "color"),
+            FocusBorderColor = ResolveColorProperty(css, vars, className, ":focus", "border-color"),
+            FocusShadow = ResolveProperty(css, vars, className, ":focus", "box-shadow"),
+            DisabledBackground = ResolveColorProperty(css, vars, className, ":disabled", "background-color"),
+            DisabledColor = ResolveColorProperty(css, vars, className, ":disabled", "color")
+        };
+    }
+
+    private string? ResolveColorProperty(string css, Dictionary<string, string> vars, string className, string? pseudo, string propertyName)
+    {
+        var value = ResolveProperty(css, vars, className, pseudo, propertyName);
+        if (value == null && propertyName.Equals("border-color", StringComparison.OrdinalIgnoreCase))
+        {
+            var borderValue = ResolveProperty(css, vars, className, pseudo, "border");
+            value = ExtractBorderColor(borderValue, vars);
+        }
+        return value == null ? null : NormalizeColor(value);
+    }
+
+    private string? ExtractBorderColor(string? borderValue, Dictionary<string, string> vars)
+    {
+        if (string.IsNullOrWhiteSpace(borderValue))
+            return null;
+
+        var rgbaMatch = Regex.Match(borderValue, @"rgba?\([^)]+\)", RegexOptions.IgnoreCase);
+        if (rgbaMatch.Success)
+            return rgbaMatch.Value;
+
+        var tokens = borderValue.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        for (var i = tokens.Length - 1; i >= 0; i--)
+        {
+            var token = tokens[i].Trim();
+            if (IsStandaloneCssVar(token))
+                token = ResolveCssVarValue(vars, token) ?? token;
+            if (token.StartsWith("#", StringComparison.Ordinal) ||
+                token.StartsWith("rgb(", StringComparison.OrdinalIgnoreCase) ||
+                token.StartsWith("rgba(", StringComparison.OrdinalIgnoreCase) ||
+                token.Equals("transparent", StringComparison.OrdinalIgnoreCase) ||
+                token.Equals("white", StringComparison.OrdinalIgnoreCase) ||
+                token.Equals("black", StringComparison.OrdinalIgnoreCase))
+            {
+                return token;
+            }
+        }
+
+        return tokens.Length > 0 ? tokens[^1] : null;
+    }
+
+    private string? ResolveProperty(string css, Dictionary<string, string> vars, string className, string? pseudo, string propertyName)
+    {
+        var classPattern = $@"(?<![\w-])\.{Regex.Escape(className)}(?![\w-])";
+        var selectorPattern = pseudo == null
+            ? $@"{classPattern}(?!:)"
+            : $@"{classPattern}{Regex.Escape(pseudo)}";
+
+        foreach (Match match in Regex.Matches(css, @"([^{}]+)\{([^{}]*)\}"))
+        {
+            var selector = match.Groups[1].Value;
+            if (!Regex.IsMatch(selector, selectorPattern))
+                continue;
+
+            var propertyPattern = $@"(?:^|;)\s*{Regex.Escape(propertyName)}\s*:\s*([^;]+)";
+            var propertyMatch = Regex.Match(match.Groups[2].Value, propertyPattern);
+            if (!propertyMatch.Success)
+                continue;
+
+            var rawValue = propertyMatch.Groups[1].Value.Trim();
+            var resolved = IsStandaloneCssVar(rawValue) ? (ResolveCssVarValue(vars, rawValue) ?? rawValue) : rawValue;
+            if (resolved.Contains("var(", StringComparison.OrdinalIgnoreCase))
+            {
+                if (propertyName.Equals("border", StringComparison.OrdinalIgnoreCase))
+                    return resolved;
+                continue;
+            }
+            return resolved;
+        }
+
+        return null;
+    }
+
+    private static bool IsStandaloneCssVar(string value)
+    {
+        value = value.Trim();
+        return Regex.IsMatch(value, @"^var\([^()]+\)$", RegexOptions.IgnoreCase);
     }
 
     private string? ExtractFontFamily(string css)
@@ -515,6 +618,32 @@ public class BootstrapCssParser
         value = value.Trim();
         if (value.StartsWith("#")) return value;
         if (value == "inherit") return value;
+        if (value.StartsWith("rgba(", StringComparison.OrdinalIgnoreCase))
+        {
+            var inner = value.Replace("rgba(", "", StringComparison.OrdinalIgnoreCase).TrimEnd(')');
+            var parts = inner.Split(',', StringSplitOptions.TrimEntries);
+            if (parts.Length == 4 &&
+                byte.TryParse(parts[0], out var r) &&
+                byte.TryParse(parts[1], out var g) &&
+                byte.TryParse(parts[2], out var b) &&
+                double.TryParse(parts[3], NumberStyles.Float, CultureInfo.InvariantCulture, out var a))
+            {
+                var alpha = (byte)Math.Clamp((int)Math.Round(a * 255), 0, 255);
+                return $"#{alpha:X2}{r:X2}{g:X2}{b:X2}";
+            }
+        }
+        if (value.StartsWith("rgb(", StringComparison.OrdinalIgnoreCase))
+        {
+            var inner = value.Replace("rgb(", "", StringComparison.OrdinalIgnoreCase).TrimEnd(')');
+            var parts = inner.Split(',', StringSplitOptions.TrimEntries);
+            if (parts.Length == 3 &&
+                byte.TryParse(parts[0], out var r) &&
+                byte.TryParse(parts[1], out var g) &&
+                byte.TryParse(parts[2], out var b))
+            {
+                return $"#{r:X2}{g:X2}{b:X2}";
+            }
+        }
 
         // Handle named colors
         return value switch
@@ -617,6 +746,8 @@ public class BootstrapThemeData
     public Dictionary<string, ButtonRule> ButtonRules { get; set; } = new();
     public Dictionary<string, ButtonRule> DarkButtonRules { get; set; } = new();
     public CardRule CardRules { get; set; } = new();
+    public InputRule FormControlRule { get; set; } = new();
+    public InputRule FormSelectRule { get; set; } = new();
 
     /// <summary>Whether this theme has meaningful [data-bs-theme=dark] overrides.</summary>
     public bool HasDarkMode => DarkVariables.Count > 0;
@@ -646,4 +777,16 @@ public class CardRule
     public string? BorderWidth { get; set; }
     public string? BorderRadius { get; set; }
     public string? HeaderBackground { get; set; }
+}
+
+public class InputRule
+{
+    public string? Background { get; set; }
+    public string? Color { get; set; }
+    public string? BorderColor { get; set; }
+    public string? PlaceholderColor { get; set; }
+    public string? FocusBorderColor { get; set; }
+    public string? FocusShadow { get; set; }
+    public string? DisabledBackground { get; set; }
+    public string? DisabledColor { get; set; }
 }

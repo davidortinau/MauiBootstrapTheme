@@ -9,15 +9,15 @@
 <div class="demo-section">
     <h4>Select Theme</h4>
     <div class="d-flex flex-wrap gap-2 mb-4">
-        <button class="btn btn-primary" @onclick='() => SetTheme("bootstrap")'>Default</button>
-        <button class="btn btn-dark" @onclick='() => SetTheme("darkly")'>Darkly</button>
-        <button class="btn btn-secondary" @onclick='() => SetTheme("slate")'>Slate</button>
-        <button class="btn btn-info" @onclick='() => SetTheme("flatly")'>Flatly</button>
-        <button class="btn btn-warning" @onclick='() => SetTheme("sketchy")'>Sketchy</button>
-        <button class="btn btn-danger" @onclick='() => SetTheme("vapor")'>Vapor</button>
-        <button class="btn btn-success" @onclick='() => SetTheme("brite")'>Brite</button>
+        <button class="btn btn-primary" data-testid="theme-btn-default" @onclick='() => SetTheme("bootstrap")'>Default</button>
+        <button class="btn btn-dark" data-testid="theme-btn-darkly" @onclick='() => SetTheme("darkly")'>Darkly</button>
+        <button class="btn btn-secondary" data-testid="theme-btn-slate" @onclick='() => SetTheme("slate")'>Slate</button>
+        <button class="btn btn-info" data-testid="theme-btn-flatly" @onclick='() => SetTheme("flatly")'>Flatly</button>
+        <button class="btn btn-warning" data-testid="theme-btn-sketchy" @onclick='() => SetTheme("sketchy")'>Sketchy</button>
+        <button class="btn btn-danger" data-testid="theme-btn-vapor" @onclick='() => SetTheme("vapor")'>Vapor</button>
+        <button class="btn btn-success" data-testid="theme-btn-brite" @onclick='() => SetTheme("brite")'>Brite</button>
     </div>
-    <p class="text-muted">Current: @currentTheme</p>
+    <p class="text-muted" data-testid="current-theme-label">Current: @currentTheme</p>
 </div>
 
 <div class="demo-section">

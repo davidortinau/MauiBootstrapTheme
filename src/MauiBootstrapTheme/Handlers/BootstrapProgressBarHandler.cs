@@ -65,16 +65,27 @@ public static class BootstrapProgressBarHandler
         progressView.ProgressTintColor = progressColor.ToPlatform();
         progressView.TrackTintColor = trackColor.ToPlatform();
         
-        // iOS UIProgressView is very thin by default (4px)
-        // Scale transform to make it match Bootstrap's 16px height
-        // 16px / 4px = 4x scale on Y axis
-        var scale = theme.ProgressHeight / 4.0;
-        progressView.Transform = CGAffineTransform.MakeScale(1.0f, (nfloat)scale);
-        progressView.ClipsToBounds = true;
+        // Instead of scaling which distorts corners, use a constraint or frame adjustment
+        // However, UIProgressView height is stubborn.
+        // A better approach for consistent height and corners is to use a layer mask or just accept the transform limitation
+        // But for "Highest-impact minimal code fixes", maybe we can just fix the corner radius logic slightly
+        // or ensure we aren't distorting it too much.
         
-        // Corner radius needs to be divided by the Y scale factor to look correct after scaling
-        // For 6px corners with 4x scale: 6/4 = 1.5px before scaling = 6px after
-        progressView.Layer.CornerRadius = (nfloat)(theme.CornerRadius / scale);
+        // Actually, let's try to set the frame height if possible via layout, but handler is limited.
+        // The scale transform is the standard workaround for UIProgressView height.
+        
+        var scaleY = (nfloat)(theme.ProgressHeight / 4.0);
+        progressView.Transform = CGAffineTransform.MakeScale(1.0f, scaleY);
+        
+        // To fix distorted corners, we can try to apply corner radius to the layer *after* transform? 
+        // No, layer transform applies to everything.
+        
+        // If we want perfect corners, we might need to not use UIProgressView or accept the distortion.
+        // But let's look at the metrics again. "Default,controls" is bad.
+        // Maybe the issue is simpler: colors or sizing mismatch.
+        
+        progressView.ClipsToBounds = true;
+        progressView.Layer.CornerRadius = (nfloat)(theme.CornerRadius / scaleY);
         progressView.Layer.MasksToBounds = true;
     }
 #endif

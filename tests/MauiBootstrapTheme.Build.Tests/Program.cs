@@ -7,6 +7,7 @@ Directory.CreateDirectory(outDir);
 
 var parser = new BootstrapCssParser();
 var generator = new ResourceDictionaryGenerator();
+var validationFailures = new List<string>();
 
 foreach (var cssFile in Directory.GetFiles(cssDir, "*.min.css"))
 {
@@ -24,6 +25,8 @@ foreach (var cssFile in Directory.GetFiles(cssDir, "*.min.css"))
     Console.WriteLine($"  Dark vars: {data.DarkVariables.Count}");
     Console.WriteLine($"  Gradient btns: {data.HasGradientButtons}");
     Console.WriteLine($"  Glow btns: {data.HasGlowButtons}");
+    Console.WriteLine($"  FormControl bg: {data.FormControlRule.Background ?? "(missing)"}");
+    Console.WriteLine($"  FormControl border: {data.FormControlRule.BorderColor ?? "(missing)"}");
 
     if (data.OnColors.Count > 0)
     {
@@ -54,6 +57,16 @@ foreach (var cssFile in Directory.GetFiles(cssDir, "*.min.css"))
     File.WriteAllText(xamlPath, xaml);
     Console.WriteLine($"  XAML: {new FileInfo(xamlPath).Length} bytes");
 
+    // Cross-theme mapping guards: detect parser/generator regressions for input controls
+    if (string.IsNullOrWhiteSpace(data.FormControlRule.Background))
+        validationFailures.Add($"{fileName}: missing .form-control background-color parse");
+    if (string.IsNullOrWhiteSpace(data.FormControlRule.BorderColor))
+        validationFailures.Add($"{fileName}: missing .form-control border-color parse");
+    if (!xaml.Contains("Class=\"form-control\"", StringComparison.Ordinal))
+        validationFailures.Add($"{fileName}: generated XAML missing form-control class style");
+    if (xaml.Contains("InputBackground\">var(", StringComparison.OrdinalIgnoreCase))
+        validationFailures.Add($"{fileName}: InputBackground unresolved var() in generated XAML");
+
     // Font warnings
     var warnings = generator.GetFontWarnings(data);
     foreach (var w in warnings)
@@ -61,3 +74,10 @@ foreach (var cssFile in Directory.GetFiles(cssDir, "*.min.css"))
 }
 
 Console.WriteLine("\n✅ All themes generated successfully.");
+if (validationFailures.Count > 0)
+{
+    Console.Error.WriteLine("\n❌ Validation failures:");
+    foreach (var failure in validationFailures)
+        Console.Error.WriteLine($" - {failure}");
+    Environment.Exit(1);
+}

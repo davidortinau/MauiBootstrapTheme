@@ -92,12 +92,36 @@
                         <FlexLayout Wrap="Wrap"
                                     AlignItems="Center"
                                     JustifyContent="Start">
-                            <Border StyleClass="badge,bg-primary" Margin="0,0,8,8"><Label Text="Primary" StyleClass="on-primary,small"/></Border>
-                            <Border StyleClass="badge,bg-secondary" Margin="0,0,8,8"><Label Text="Secondary" StyleClass="on-secondary,small"/></Border>
-                            <Border StyleClass="badge,bg-success" Margin="0,0,8,8"><Label Text="Success" StyleClass="on-success,small"/></Border>
-                            <Border StyleClass="badge,bg-danger" Margin="0,0,8,8"><Label Text="Danger" StyleClass="on-danger,small"/></Border>
-                            <Border StyleClass="badge,bg-warning" Margin="0,0,8,8"><Label Text="Warning" StyleClass="on-warning,small"/></Border>
-                            <Border StyleClass="badge,bg-info" Margin="0,0,8,8"><Label Text="Info" StyleClass="on-info,small"/></Border>
+                            <Border StyleClass="badge,bg-primary"
+                                    Margin="0,0,8,8">
+                                <Label Text="Primary"
+                                        StyleClass="on-primary,small"/>
+                            </Border>
+                            <Border StyleClass="badge,bg-secondary"
+                                    Margin="0,0,8,8">
+                                <Label Text="Secondary"
+                                        StyleClass="on-secondary,small"/>
+                            </Border>
+                            <Border StyleClass="badge,bg-success"
+                                    Margin="0,0,8,8">
+                                <Label Text="Success"
+                                        StyleClass="on-success,small"/>
+                            </Border>
+                            <Border StyleClass="badge,bg-danger"
+                                    Margin="0,0,8,8">
+                                <Label Text="Danger"
+                                        StyleClass="on-danger,small"/>
+                            </Border>
+                            <Border StyleClass="badge,bg-warning"
+                                    Margin="0,0,8,8">
+                                <Label Text="Warning"
+                                        StyleClass="on-warning,small"/>
+                            </Border>
+                            <Border StyleClass="badge,bg-info"
+                                    Margin="0,0,8,8">
+                                <Label Text="Info"
+                                        StyleClass="on-info,small"/>
+                            </Border>
                         </FlexLayout>
 
                         <Label Text="Pill Badges"
@@ -105,9 +129,21 @@
                         <FlexLayout Wrap="Wrap"
                                     AlignItems="Center"
                                     JustifyContent="Start">
-                            <Border StyleClass="badge,bg-primary" Margin="0,0,8,8"><Label Text="Primary" StyleClass="on-primary,small"/></Border>
-                            <Border StyleClass="badge,bg-success" Margin="0,0,8,8"><Label Text="Success" StyleClass="on-success,small"/></Border>
-                            <Border StyleClass="badge,bg-danger" Margin="0,0,8,8"><Label Text="Danger" StyleClass="on-danger,small"/></Border>
+                            <Border StyleClass="badge,bg-primary"
+                                    Margin="0,0,8,8">
+                                <Label Text="Primary"
+                                        StyleClass="on-primary,small"/>
+                            </Border>
+                            <Border StyleClass="badge,bg-success"
+                                    Margin="0,0,8,8">
+                                <Label Text="Success"
+                                        StyleClass="on-success,small"/>
+                            </Border>
+                            <Border StyleClass="badge,bg-danger"
+                                    Margin="0,0,8,8">
+                                <Label Text="Danger"
+                                        StyleClass="on-danger,small"/>
+                            </Border>
                         </FlexLayout>
 
                         <Label Text="Badge with Text"
@@ -115,11 +151,19 @@
                         <HorizontalStackLayout Spacing="8">
                             <Label Text="Messages"
                                    VerticalOptions="Center"/>
-                            <Border StyleClass="badge,bg-primary" VerticalOptions="Center"><Label Text="4" StyleClass="on-primary,small"/></Border>
+                            <Border StyleClass="badge,bg-primary"
+                                    VerticalOptions="Center">
+                                <Label Text="4"
+                                        StyleClass="on-primary,small"/>
+                            </Border>
                             <Label Text="Notifications"
                                    VerticalOptions="Center"
                                    Margin="12,0,0,0"/>
-                            <Border StyleClass="badge,bg-danger" VerticalOptions="Center"><Label Text="99+" StyleClass="on-danger,small"/></Border>
+                            <Border StyleClass="badge,bg-danger"
+                                    VerticalOptions="Center">
+                                <Label Text="99+"
+                                        StyleClass="on-danger,small"/>
+                            </Border>
                         </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </Border>

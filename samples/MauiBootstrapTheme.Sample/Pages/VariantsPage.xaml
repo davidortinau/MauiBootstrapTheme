@@ -8,22 +8,22 @@
     <ScrollView>
         <VerticalStackLayout Spacing="20" Padding="20">
             
-            <!-- Header -->
-            <Label Text="Color Variants"
-                   StyleClass="h1"
-                   HorizontalOptions="Center" />
-            
-            <Label Text="All Bootstrap color variants applied to various controls."
-                   StyleClass="lead,text-muted"
-                   HorizontalOptions="Center" />
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Color Variants"
+                       StyleClass="h1" />
+                <Label Text="All Bootstrap color variants applied to controls for parity comparison."
+                       StyleClass="lead,text-muted" />
+            </VerticalStackLayout>
             
             <!-- Primary -->
             <Border StyleClass="card,text-bg-primary">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Primary" StyleClass="h5,on-primary" />
-                    <Entry Placeholder="Primary Entry" theme:Bootstrap.Variant="Primary" />
-                    <Button Text="Primary Button" StyleClass="btn-primary" />
-                    <Button Text="Primary Outline" StyleClass="btn-outline-primary" />
+                    <Entry Placeholder="Primary Entry" StyleClass="form-control" />
+                    <FlexLayout Wrap="Wrap" AlignItems="Center">
+                        <Button Text="Primary Button" StyleClass="btn-primary" Margin="0,0,8,8" />
+                        <Button Text="Primary Outline" StyleClass="btn-outline-primary" Margin="0,0,8,8" />
+                    </FlexLayout>
                 </VerticalStackLayout>
             </Border>
             
@@ -31,9 +31,11 @@
             <Border StyleClass="card,text-bg-secondary">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Secondary" StyleClass="h5,on-secondary" />
-                    <Entry Placeholder="Secondary Entry" theme:Bootstrap.Variant="Secondary" />
-                    <Button Text="Secondary Button" StyleClass="btn-secondary" />
-                    <Button Text="Secondary Outline" StyleClass="btn-outline-secondary" />
+                    <Entry Placeholder="Secondary Entry" StyleClass="form-control" />
+                    <FlexLayout Wrap="Wrap" AlignItems="Center">
+                        <Button Text="Secondary Button" StyleClass="btn-secondary" Margin="0,0,8,8" />
+                        <Button Text="Secondary Outline" StyleClass="btn-outline-secondary" Margin="0,0,8,8" />
+                    </FlexLayout>
                 </VerticalStackLayout>
             </Border>
             
@@ -41,9 +43,11 @@
             <Border StyleClass="card,text-bg-success">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Success" StyleClass="h5,on-success" />
-                    <Entry Placeholder="Success Entry" theme:Bootstrap.Variant="Success" />
-                    <Button Text="Success Button" StyleClass="btn-success" />
-                    <Button Text="Success Outline" StyleClass="btn-outline-success" />
+                    <Entry Placeholder="Success Entry" StyleClass="form-control" />
+                    <FlexLayout Wrap="Wrap" AlignItems="Center">
+                        <Button Text="Success Button" StyleClass="btn-success" Margin="0,0,8,8" />
+                        <Button Text="Success Outline" StyleClass="btn-outline-success" Margin="0,0,8,8" />
+                    </FlexLayout>
                 </VerticalStackLayout>
             </Border>
             
@@ -51,9 +55,11 @@
             <Border StyleClass="card,text-bg-danger">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Danger" StyleClass="h5,on-danger" />
-                    <Entry Placeholder="Danger Entry" theme:Bootstrap.Variant="Danger" />
-                    <Button Text="Danger Button" StyleClass="btn-danger" />
-                    <Button Text="Danger Outline" StyleClass="btn-outline-danger" />
+                    <Entry Placeholder="Danger Entry" StyleClass="form-control" />
+                    <FlexLayout Wrap="Wrap" AlignItems="Center">
+                        <Button Text="Danger Button" StyleClass="btn-danger" Margin="0,0,8,8" />
+                        <Button Text="Danger Outline" StyleClass="btn-outline-danger" Margin="0,0,8,8" />
+                    </FlexLayout>
                 </VerticalStackLayout>
             </Border>
             
@@ -61,9 +67,11 @@
             <Border StyleClass="card,text-bg-warning">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Warning" StyleClass="h5,on-warning" />
-                    <Entry Placeholder="Warning Entry" theme:Bootstrap.Variant="Warning" />
-                    <Button Text="Warning Button" StyleClass="btn-warning" />
-                    <Button Text="Warning Outline" StyleClass="btn-outline-warning" />
+                    <Entry Placeholder="Warning Entry" StyleClass="form-control" />
+                    <FlexLayout Wrap="Wrap" AlignItems="Center">
+                        <Button Text="Warning Button" StyleClass="btn-warning" Margin="0,0,8,8" />
+                        <Button Text="Warning Outline" StyleClass="btn-outline-warning" Margin="0,0,8,8" />
+                    </FlexLayout>
                 </VerticalStackLayout>
             </Border>
             
@@ -71,9 +79,11 @@
             <Border StyleClass="card,text-bg-info">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Info" StyleClass="h5,on-info" />
-                    <Entry Placeholder="Info Entry" theme:Bootstrap.Variant="Info" />
-                    <Button Text="Info Button" StyleClass="btn-info" />
-                    <Button Text="Info Outline" StyleClass="btn-outline-info" />
+                    <Entry Placeholder="Info Entry" StyleClass="form-control" />
+                    <FlexLayout Wrap="Wrap" AlignItems="Center">
+                        <Button Text="Info Button" StyleClass="btn-info" Margin="0,0,8,8" />
+                        <Button Text="Info Outline" StyleClass="btn-outline-info" Margin="0,0,8,8" />
+                    </FlexLayout>
                 </VerticalStackLayout>
             </Border>
             

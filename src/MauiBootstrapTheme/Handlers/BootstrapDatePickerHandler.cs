@@ -33,18 +33,22 @@ public static class BootstrapDatePickerHandler
         
         var cornerRadius = GetCornerRadiusForSize(size, theme);
         var borderColor = GetBorderColorForVariant(variant, theme);
+        var minHeight = GetMinHeightForSize(size, theme);
+        var fontSize = GetFontSizeForSize(size, theme);
+        var (paddingX, paddingY) = GetPaddingForSize(size, theme);
 
 #if ANDROID
-        ApplyAndroid(handler, cornerRadius, borderColor, theme);
+        ApplyAndroid(handler, cornerRadius, borderColor, theme, minHeight, fontSize, paddingX, paddingY);
 #elif IOS || MACCATALYST
-        ApplyiOS(handler, borderColor, theme);
+        ApplyiOS(handler, cornerRadius, borderColor, theme);
 #elif WINDOWS
-        ApplyWindows(handler, cornerRadius, borderColor, theme);
+        ApplyWindows(handler, cornerRadius, borderColor, theme, minHeight, fontSize, paddingX, paddingY);
 #endif
     }
 
 #if ANDROID
-    private static void ApplyAndroid(IDatePickerHandler handler, double cornerRadius, Color borderColor, BootstrapTheme theme)
+    private static void ApplyAndroid(IDatePickerHandler handler, double cornerRadius, Color borderColor, BootstrapTheme theme,
+        double minHeight, double fontSize, double paddingX, double paddingY)
     {
         var editText = handler.PlatformView;
         if (editText == null) return;
@@ -58,27 +62,34 @@ public static class BootstrapDatePickerHandler
         drawable.SetColor(theme.InputBackground.ToPlatform());
         
         editText.Background = drawable;
+        editText.SetTextColor(theme.InputText.ToPlatform());
+        editText.SetTextSize(Android.Util.ComplexUnitType.Sp, (float)fontSize);
+        editText.SetMinHeight((int)(minHeight * density));
         
-        var px = (int)(theme.InputPaddingX * density);
-        var py = (int)(theme.InputPaddingY * density);
+        var px = (int)(paddingX * density);
+        var py = (int)(paddingY * density);
         editText.SetPadding(px, py, px, py);
     }
 #endif
 
 #if IOS || MACCATALYST
-    private static void ApplyiOS(IDatePickerHandler handler, Color borderColor, BootstrapTheme theme)
+    private static void ApplyiOS(IDatePickerHandler handler, double cornerRadius, Color borderColor, BootstrapTheme theme)
     {
-        // iOS/Mac DatePicker uses UIDatePicker which doesn't have typical text field styling
-        // The styling is limited for this native control
         var datePicker = handler.PlatformView;
         if (datePicker == null) return;
 
         datePicker.TintColor = theme.Primary.ToPlatform();
+        datePicker.Layer.BorderColor = borderColor.ToCGColor();
+        datePicker.Layer.BorderWidth = (nfloat)theme.BorderWidth;
+        datePicker.Layer.CornerRadius = (nfloat)cornerRadius;
+        datePicker.Layer.MasksToBounds = true;
+        datePicker.BackgroundColor = theme.InputBackground.ToPlatform();
     }
 #endif
 
 #if WINDOWS
-    private static void ApplyWindows(IDatePickerHandler handler, double cornerRadius, Color borderColor, BootstrapTheme theme)
+    private static void ApplyWindows(IDatePickerHandler handler, double cornerRadius, Color borderColor, BootstrapTheme theme,
+        double minHeight, double fontSize, double paddingX, double paddingY)
     {
         var calendarDatePicker = handler.PlatformView;
         if (calendarDatePicker == null) return;
@@ -86,6 +97,11 @@ public static class BootstrapDatePickerHandler
         calendarDatePicker.BorderBrush = new SolidColorBrush(borderColor.ToWindowsColor());
         calendarDatePicker.BorderThickness = new Microsoft.UI.Xaml.Thickness(theme.BorderWidth);
         calendarDatePicker.CornerRadius = new Microsoft.UI.Xaml.CornerRadius(cornerRadius);
+        calendarDatePicker.Foreground = new SolidColorBrush(theme.InputText.ToWindowsColor());
+        calendarDatePicker.Background = new SolidColorBrush(theme.InputBackground.ToWindowsColor());
+        calendarDatePicker.FontSize = fontSize;
+        calendarDatePicker.MinHeight = minHeight;
+        calendarDatePicker.Padding = new Microsoft.UI.Xaml.Thickness(paddingX, paddingY, paddingX, paddingY);
     }
 #endif
 
@@ -102,5 +118,26 @@ public static class BootstrapDatePickerHandler
         BootstrapVariant.Success => theme.Success,
         BootstrapVariant.Warning => theme.Warning,
         _ => theme.Outline
+    };
+
+    private static double GetMinHeightForSize(BootstrapSize size, BootstrapTheme theme) => size switch
+    {
+        BootstrapSize.Small => theme.InputMinHeightSm,
+        BootstrapSize.Large => theme.InputMinHeightLg,
+        _ => theme.InputMinHeight
+    };
+
+    private static double GetFontSizeForSize(BootstrapSize size, BootstrapTheme theme) => size switch
+    {
+        BootstrapSize.Small => theme.FontSizeSm,
+        BootstrapSize.Large => theme.FontSizeLg,
+        _ => theme.FontSizeBase
+    };
+
+    private static (double X, double Y) GetPaddingForSize(BootstrapSize size, BootstrapTheme theme) => size switch
+    {
+        BootstrapSize.Small => (theme.InputPaddingXSm, theme.InputPaddingYSm),
+        BootstrapSize.Large => (theme.InputPaddingXLg, theme.InputPaddingYLg),
+        _ => (theme.InputPaddingX, theme.InputPaddingY)
     };
 }

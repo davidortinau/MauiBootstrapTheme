@@ -1,130 +1,157 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
              x:Class="MauiBootstrapTheme.Sample.Pages.FormsPage"
              Title="Forms">
-    
+
     <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20">
-            
-            <!-- Header -->
-            <Label Text="Form Examples"
-                   StyleClass="h1"
-                   HorizontalOptions="Center" />
-            
-            <Label Text="Real-world form layouts using Bootstrap-themed controls."
-                   StyleClass="lead,text-muted"
-                   HorizontalOptions="Center" />
-            
-            <!-- Login Form -->
-            <Border StyleClass="card">
-                <VerticalStackLayout Spacing="16">
-                    <Label Text="Login" StyleClass="h4" HorizontalOptions="Center" />
-                    
+        <VerticalStackLayout Spacing="24" Padding="20">
+
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Forms"
+                       StyleClass="h1" />
+                <Label Text="Canonical Bootstrap 5.3 form patterns for parity comparison."
+                       StyleClass="lead,text-muted" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="12">
+                    <Label Text="Overview"
+                           StyleClass="h4" />
+
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Email address" StyleClass="small" />
-                        <Entry Placeholder="name@example.com" 
-                               Keyboard="Email" />
+                        <Label Text="Email address"
+                               StyleClass="form-label,small" />
+                        <Entry Placeholder="name@example.com"
+                               Keyboard="Email"
+                               StyleClass="form-control" />
+                        <Label Text="We'll never share your email with anyone else."
+                               StyleClass="form-text" />
                     </VerticalStackLayout>
-                    
+
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Password" StyleClass="small" />
-                        <Entry Placeholder="Password" 
-                               IsPassword="True" />
+                        <Label Text="Password"
+                               StyleClass="form-label,small" />
+                        <Entry IsPassword="True"
+                               StyleClass="form-control" />
                     </VerticalStackLayout>
-                    
+
                     <HorizontalStackLayout Spacing="8">
-                        <CheckBox />
-                        <Label Text="Remember me" VerticalOptions="Center" />
+                        <CheckBox StyleClass="form-check-input" />
+                        <Label Text="Check me out"
+                               StyleClass="form-check-label"
+                               VerticalOptions="Center" />
                     </HorizontalStackLayout>
-                    
-                    <Button Text="Sign In"
-                            StyleClass="btn-primary"
-                            HorizontalOptions="Fill" />
-                </VerticalStackLayout>
-            </Border>
-            
-            <!-- Contact Form -->
-            <Border StyleClass="card">
-                <VerticalStackLayout Spacing="16">
-                    <Label Text="Contact Us" StyleClass="h4" HorizontalOptions="Center" />
-                    
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
-                        <VerticalStackLayout Spacing="4">
-                            <Label Text="First Name" StyleClass="small" />
-                            <Entry Placeholder="John" />
-                        </VerticalStackLayout>
-                        
-                        <VerticalStackLayout Spacing="4" Grid.Column="1">
-                            <Label Text="Last Name" StyleClass="small" />
-                            <Entry Placeholder="Doe" />
-                        </VerticalStackLayout>
-                    </Grid>
-                    
+
+                    <Button Text="Submit"
+                            StyleClass="btn,btn-primary"
+                            HorizontalOptions="Start" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="12">
+                    <Label Text="Sizing"
+                           StyleClass="h4" />
+
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Email" StyleClass="small" />
-                        <Entry Placeholder="john.doe@example.com" 
-                               Keyboard="Email" />
+                        <Label Text="Large input"
+                               StyleClass="form-label,small" />
+                        <Entry Placeholder=".form-control-lg"
+                               StyleClass="form-control,form-control-lg" />
                     </VerticalStackLayout>
-                    
+
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Subject" StyleClass="small" />
-                        <Picker Title="Select a topic">
+                        <Label Text="Default input"
+                               StyleClass="form-label,small" />
+                        <Entry Placeholder=".form-control"
+                               StyleClass="form-control" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Small select"
+                               StyleClass="form-label,small" />
+                        <Picker Title=".form-select-sm"
+                                StyleClass="form-select,form-select-sm">
                             <Picker.ItemsSource>
                                 <x:Array Type="{x:Type x:String}">
-                                    <x:String>General Inquiry</x:String>
-                                    <x:String>Technical Support</x:String>
-                                    <x:String>Sales</x:String>
-                                    <x:String>Feedback</x:String>
+                                    <x:String>Option 1</x:String>
+                                    <x:String>Option 2</x:String>
                                 </x:Array>
                             </Picker.ItemsSource>
                         </Picker>
                     </VerticalStackLayout>
-                    
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="12"
+                                      IsEnabled="False">
+                    <Label Text="Disabled forms"
+                           StyleClass="h4" />
+                    <Label Text="Disabled fieldset example"
+                           StyleClass="small,text-muted" />
+
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Message" StyleClass="small" />
-                        <Editor Placeholder="Your message here..."
-                                HeightRequest="120" />
+                        <Label Text="Disabled input"
+                               StyleClass="form-label,small" />
+                        <Entry Placeholder="Disabled input"
+                               StyleClass="form-control" />
                     </VerticalStackLayout>
-                    
-                    <HorizontalStackLayout Spacing="12" HorizontalOptions="End">
-                        <Button Text="Cancel" StyleClass="btn-outline-secondary" />
-                        <Button Text="Send Message" 
-                                StyleClass="btn-success" />
-                    </HorizontalStackLayout>
-                </VerticalStackLayout>
-            </Border>
-            
-            <!-- Validation Example -->
-            <Border StyleClass="card">
-                <VerticalStackLayout Spacing="16">
-                    <Label Text="Validation States" StyleClass="h4" HorizontalOptions="Center" />
-                    
+
                     <VerticalStackLayout Spacing="4">
-                        <Label Text="Valid Input" StyleClass="small" />
-                        <Entry Text="Valid entry"
-                               theme:Bootstrap.Variant="Success" />
-                        <Label Text="✓ Looks good!" StyleClass="small,text-success" />
+                        <Label Text="Disabled select menu"
+                               StyleClass="form-label,small" />
+                        <Picker Title="Disabled select"
+                                StyleClass="form-select">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Disabled select</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
                     </VerticalStackLayout>
-                    
-                    <VerticalStackLayout Spacing="4">
-                        <Label Text="Invalid Input" StyleClass="small" />
-                        <Entry Placeholder="Required field"
-                               theme:Bootstrap.Variant="Danger" />
-                        <Label Text="✗ This field is required." StyleClass="small,text-danger" />
-                    </VerticalStackLayout>
-                    
-                    <VerticalStackLayout Spacing="4">
-                        <Label Text="Warning Input" StyleClass="small" />
-                        <Entry Text="Check this value"
-                               theme:Bootstrap.Variant="Warning" />
-                        <Label Text="⚠ Please verify this value." StyleClass="small,text-warning" />
-                    </VerticalStackLayout>
-                </VerticalStackLayout>
-            </Border>
-            
+
+                    <Button Text="Submit"
+                            StyleClass="btn,btn-primary"
+                            HorizontalOptions="Start" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="12">
+                    <Label Text="Form layout"
+                           StyleClass="h4" />
+
+                    <Grid ColumnDefinitions="*,*"
+                          ColumnSpacing="12"
+                          RowDefinitions="Auto,Auto,Auto"
+                          RowSpacing="8">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="First name"
+                                   StyleClass="form-label,small" />
+                            <Entry StyleClass="form-control" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1"
+                                             Spacing="4">
+                            <Label Text="Last name"
+                                   StyleClass="form-label,small" />
+                            <Entry StyleClass="form-control" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Row="1"
+                                             Grid.ColumnSpan="2"
+                                             Spacing="4">
+                            <Label Text="Email"
+                                   StyleClass="form-label,small" />
+                            <Entry Keyboard="Email"
+                                   StyleClass="form-control" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Row="2"
+                                             Grid.ColumnSpan="2"
+                                             Spacing="4">
+                            <Label Text="Message"
+                                   StyleClass="form-label,small" />
+                            <Editor HeightRequest="100"
+                                    StyleClass="form-control" />
+                        </VerticalStackLayout>
+                    </Grid>
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
-    
 </ContentPage>

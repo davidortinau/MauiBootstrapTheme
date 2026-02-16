@@ -205,6 +205,10 @@ public class MintyTheme : IBootstrapThemeProvider
         
         InputPaddingX = 16.0,
         InputPaddingY = 10.0,
+        InputPaddingXLg = 20.0,
+        InputPaddingYLg = 12.0,
+        InputPaddingXSm = 12.0,
+        InputPaddingYSm = 6.0,
         InputMinHeight = 44.0,
     };
 }
@@ -264,15 +268,19 @@ public class SlateTheme : IBootstrapThemeProvider
         FontSizeSm = 14.0,        // (was 12)
         FontSizeLg = 20.0,        // (was 18)
         
-        ButtonPaddingX = 12.0,
-        ButtonPaddingY = 6.0,
-        ButtonPaddingXLg = 16.0,
-        ButtonPaddingYLg = 8.0,
-        ButtonPaddingXSm = 8.0,
-        ButtonPaddingYSm = 4.0,
+        ButtonPaddingX = 16.0,
+        ButtonPaddingY = 8.0,
+        ButtonPaddingXLg = 20.0,
+        ButtonPaddingYLg = 10.0,
+        ButtonPaddingXSm = 12.0,
+        ButtonPaddingYSm = 6.0,
         
         InputPaddingX = 12.0,
-        InputPaddingY = 6.0,
+        InputPaddingY = 8.0,
+        InputPaddingXLg = 16.0,
+        InputPaddingYLg = 10.0,
+        InputPaddingXSm = 8.0,
+        InputPaddingYSm = 6.0,
         InputMinHeight = 38.0,
     };
 }
@@ -332,6 +340,10 @@ public class FlatlyTheme : IBootstrapThemeProvider
         ButtonPaddingYSm = 6.0,
         InputPaddingX = 12.0,
         InputPaddingY = 8.0,
+        InputPaddingXLg = 16.0,
+        InputPaddingYLg = 10.0,
+        InputPaddingXSm = 8.0,
+        InputPaddingYSm = 6.0,
         InputMinHeight = 40.0,
     };
 }
@@ -392,6 +404,10 @@ public class SketchyTheme : IBootstrapThemeProvider
         ButtonPaddingYSm = 6.0,
         InputPaddingX = 14.0,
         InputPaddingY = 10.0,
+        InputPaddingXLg = 18.0,
+        InputPaddingYLg = 12.0,
+        InputPaddingXSm = 10.0,
+        InputPaddingYSm = 8.0,
         InputMinHeight = 44.0,
     };
 }
@@ -452,6 +468,10 @@ public class VaporTheme : IBootstrapThemeProvider
         ButtonPaddingYSm = 6.0,
         InputPaddingX = 14.0,
         InputPaddingY = 8.0,
+        InputPaddingXLg = 18.0,
+        InputPaddingYLg = 10.0,
+        InputPaddingXSm = 10.0,
+        InputPaddingYSm = 6.0,
         InputMinHeight = 40.0,
     };
 }
@@ -494,6 +514,7 @@ public class BriteTheme : IBootstrapThemeProvider
         DarkOnSurface = Color.FromArgb("#f5f5f5"),
         DarkOutline = Color.FromArgb("#555555"),
         
+        // Brite specific
         CornerRadius = 8.0,
         CornerRadiusSm = 6.0,
         CornerRadiusLg = 12.0,
@@ -511,6 +532,10 @@ public class BriteTheme : IBootstrapThemeProvider
         ButtonPaddingYSm = 6.0,
         InputPaddingX = 14.0,
         InputPaddingY = 10.0,
+        InputPaddingXLg = 18.0,
+        InputPaddingYLg = 12.0,
+        InputPaddingXSm = 10.0,
+        InputPaddingYSm = 8.0,
         InputMinHeight = 44.0,
     };
 }

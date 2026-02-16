@@ -33,18 +33,22 @@ public static class BootstrapPickerHandler
         
         var cornerRadius = GetCornerRadiusForSize(size, theme);
         var borderColor = GetBorderColorForVariant(variant, theme);
+        var minHeight = GetMinHeightForSize(size, theme);
+        var fontSize = GetFontSizeForSize(size, theme);
+        var (paddingX, paddingY) = GetPaddingForSize(size, theme);
 
 #if ANDROID
-        ApplyAndroid(handler, cornerRadius, borderColor, theme);
+        ApplyAndroid(handler, cornerRadius, borderColor, theme, minHeight, fontSize, paddingX, paddingY);
 #elif IOS || MACCATALYST
-        ApplyiOS(handler, cornerRadius, borderColor, theme);
+        ApplyiOS(handler, cornerRadius, borderColor, theme, fontSize, paddingX);
 #elif WINDOWS
-        ApplyWindows(handler, cornerRadius, borderColor, theme);
+        ApplyWindows(handler, cornerRadius, borderColor, theme, minHeight, fontSize, paddingX, paddingY);
 #endif
     }
 
 #if ANDROID
-    private static void ApplyAndroid(IPickerHandler handler, double cornerRadius, Color borderColor, BootstrapTheme theme)
+    private static void ApplyAndroid(IPickerHandler handler, double cornerRadius, Color borderColor, BootstrapTheme theme,
+        double minHeight, double fontSize, double paddingX, double paddingY)
     {
         var picker = handler.PlatformView;
         if (picker == null) return;
@@ -58,15 +62,19 @@ public static class BootstrapPickerHandler
         drawable.SetColor(theme.InputBackground.ToPlatform());
         
         picker.Background = drawable;
+        picker.SetTextColor(theme.InputText.ToPlatform());
+        picker.SetTextSize(Android.Util.ComplexUnitType.Sp, (float)fontSize);
+        picker.SetMinHeight((int)(minHeight * density));
         
-        var px = (int)(theme.InputPaddingX * density);
-        var py = (int)(theme.InputPaddingY * density);
+        var px = (int)(paddingX * density);
+        var py = (int)(paddingY * density);
         picker.SetPadding(px, py, px, py);
     }
 #endif
 
 #if IOS || MACCATALYST
-    private static void ApplyiOS(IPickerHandler handler, double cornerRadius, Color borderColor, BootstrapTheme theme)
+    private static void ApplyiOS(IPickerHandler handler, double cornerRadius, Color borderColor, BootstrapTheme theme,
+        double fontSize, double paddingX)
     {
         var textField = handler.PlatformView;
         if (textField == null) return;
@@ -77,11 +85,21 @@ public static class BootstrapPickerHandler
         textField.Layer.CornerRadius = (nfloat)cornerRadius;
         textField.Layer.MasksToBounds = true;
         textField.BackgroundColor = theme.InputBackground.ToPlatform();
+        textField.TextColor = theme.InputText.ToPlatform();
+        textField.Font = UIFont.SystemFontOfSize((nfloat)fontSize);
+
+        var leftPadding = new UIView(new CoreGraphics.CGRect(0, 0, paddingX, 1));
+        var rightPadding = new UIView(new CoreGraphics.CGRect(0, 0, paddingX, 1));
+        textField.LeftView = leftPadding;
+        textField.LeftViewMode = UITextFieldViewMode.Always;
+        textField.RightView = rightPadding;
+        textField.RightViewMode = UITextFieldViewMode.Always;
     }
 #endif
 
 #if WINDOWS
-    private static void ApplyWindows(IPickerHandler handler, double cornerRadius, Color borderColor, BootstrapTheme theme)
+    private static void ApplyWindows(IPickerHandler handler, double cornerRadius, Color borderColor, BootstrapTheme theme,
+        double minHeight, double fontSize, double paddingX, double paddingY)
     {
         var comboBox = handler.PlatformView;
         if (comboBox == null) return;
@@ -89,6 +107,11 @@ public static class BootstrapPickerHandler
         comboBox.BorderBrush = new SolidColorBrush(borderColor.ToWindowsColor());
         comboBox.BorderThickness = new Microsoft.UI.Xaml.Thickness(theme.BorderWidth);
         comboBox.CornerRadius = new Microsoft.UI.Xaml.CornerRadius(cornerRadius);
+        comboBox.Foreground = new SolidColorBrush(theme.InputText.ToWindowsColor());
+        comboBox.Background = new SolidColorBrush(theme.InputBackground.ToWindowsColor());
+        comboBox.FontSize = fontSize;
+        comboBox.MinHeight = minHeight;
+        comboBox.Padding = new Microsoft.UI.Xaml.Thickness(paddingX, paddingY, paddingX, paddingY);
     }
 #endif
 
@@ -106,5 +129,26 @@ public static class BootstrapPickerHandler
         BootstrapVariant.Warning => theme.Warning,
         BootstrapVariant.Primary => theme.Primary,
         _ => theme.Outline
+    };
+
+    private static double GetMinHeightForSize(BootstrapSize size, BootstrapTheme theme) => size switch
+    {
+        BootstrapSize.Small => theme.InputMinHeightSm,
+        BootstrapSize.Large => theme.InputMinHeightLg,
+        _ => theme.InputMinHeight
+    };
+
+    private static double GetFontSizeForSize(BootstrapSize size, BootstrapTheme theme) => size switch
+    {
+        BootstrapSize.Small => theme.FontSizeSm,
+        BootstrapSize.Large => theme.FontSizeLg,
+        _ => theme.FontSizeBase
+    };
+
+    private static (double X, double Y) GetPaddingForSize(BootstrapSize size, BootstrapTheme theme) => size switch
+    {
+        BootstrapSize.Small => (theme.InputPaddingXSm, theme.InputPaddingYSm),
+        BootstrapSize.Large => (theme.InputPaddingXLg, theme.InputPaddingYLg),
+        _ => (theme.InputPaddingX, theme.InputPaddingY)
     };
 }

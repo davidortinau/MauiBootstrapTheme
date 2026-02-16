@@ -39,6 +39,8 @@ public static class BootstrapButtonHandler
         var view = button as Button;
         
         var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
+        if (variant == BootstrapVariant.Default && view?.StyleClass?.Count > 0)
+            variant = InferVariantFromStyleClass(view.StyleClass);
         var size = view != null ? Bootstrap.GetSize(view) : BootstrapSize.Default;
         var isPill = view != null && Bootstrap.GetIsPill(view);
         var isOutlined = IsOutlineVariant(variant) || (view != null && Bootstrap.GetIsOutlined(view));
@@ -59,7 +61,7 @@ public static class BootstrapButtonHandler
         }
         
         var borderColor = isOutlined ? Bootstrap.GetOutlineBorderColor(variant, theme) : backgroundColor;
-        var borderWidth = isOutlined ? theme.BorderWidth : 0;
+        var borderWidth = isOutlined ? Math.Max(theme.BorderWidth, 1.0) : 0;
         var (paddingX, paddingY) = GetPaddingForSize(size, theme);
         var fontSize = GetFontSizeForSize(size, theme);
         var minHeight = GetMinHeightForSize(size, theme);
@@ -72,6 +74,43 @@ public static class BootstrapButtonHandler
 #elif WINDOWS
         ApplyWindows(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, fontFamily);
 #endif
+    }
+
+    private static BootstrapVariant InferVariantFromStyleClass(IList<string> styleClasses)
+    {
+        static IEnumerable<string> Tokens(IList<string> classes)
+        {
+            foreach (var item in classes)
+            {
+                foreach (var token in item.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                    yield return token;
+            }
+        }
+
+        foreach (var token in Tokens(styleClasses))
+        {
+            switch (token)
+            {
+                case "btn-outline-primary": return BootstrapVariant.OutlinePrimary;
+                case "btn-outline-secondary": return BootstrapVariant.OutlineSecondary;
+                case "btn-outline-success": return BootstrapVariant.OutlineSuccess;
+                case "btn-outline-danger": return BootstrapVariant.OutlineDanger;
+                case "btn-outline-warning": return BootstrapVariant.OutlineWarning;
+                case "btn-outline-info": return BootstrapVariant.OutlineInfo;
+                case "btn-outline-light": return BootstrapVariant.OutlineLight;
+                case "btn-outline-dark": return BootstrapVariant.OutlineDark;
+                case "btn-primary": return BootstrapVariant.Primary;
+                case "btn-secondary": return BootstrapVariant.Secondary;
+                case "btn-success": return BootstrapVariant.Success;
+                case "btn-danger": return BootstrapVariant.Danger;
+                case "btn-warning": return BootstrapVariant.Warning;
+                case "btn-info": return BootstrapVariant.Info;
+                case "btn-light": return BootstrapVariant.Light;
+                case "btn-dark": return BootstrapVariant.Dark;
+            }
+        }
+
+        return BootstrapVariant.Default;
     }
 
 #if ANDROID

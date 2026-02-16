@@ -103,16 +103,20 @@ public class BootstrapTheme
     // 0 = 0, 1 = 0.25rem (4px), 2 = 0.5rem (8px), 3 = 1rem (16px), 4 = 1.5rem (24px), 5 = 3rem (48px)
     
     /// <summary>Gets the pixel value for a Bootstrap spacing level (0-5).</summary>
-    public static double GetSpacingValue(int level) => level switch
+    public static double GetSpacingValue(int level)
     {
-        0 => 0,
-        1 => 4,    // 0.25rem
-        2 => 8,    // 0.5rem
-        3 => 16,   // 1rem
-        4 => 24,   // 1.5rem
-        5 => 48,   // 3rem
-        _ => 16
-    };
+        var theme = Current;
+        return level switch
+        {
+            0 => 0,
+            1 => theme.Spacer * 0.25,    // 0.25rem
+            2 => theme.Spacer * 0.5,     // 0.5rem
+            3 => theme.Spacer,           // 1rem
+            4 => theme.Spacer * 1.5,     // 1.5rem
+            5 => theme.Spacer * 3.0,     // 3rem
+            _ => theme.Spacer
+        };
+    }
     
     // ── Shadow Values ──
     // Bootstrap shadow CSS: box-shadow: offsetX offsetY blurRadius spreadRadius color
@@ -173,6 +177,10 @@ public class BootstrapTheme
     
     public double InputPaddingX { get; set; } = 12.0;
     public double InputPaddingY { get; set; } = 6.0;
+    public double InputPaddingXLg { get; set; } = 16.0;
+    public double InputPaddingYLg { get; set; } = 8.0;
+    public double InputPaddingXSm { get; set; } = 8.0;
+    public double InputPaddingYSm { get; set; } = 4.0;
     public double InputMinHeight { get; set; } = 38.0;
     public double InputMinHeightLg { get; set; } = 48.0;
     public double InputMinHeightSm { get; set; } = 31.0;
@@ -455,6 +463,32 @@ public class BootstrapTheme
 
         if (resources.TryGetValue("FontFamily", out var ff) && ff is string ffs && !string.IsNullOrEmpty(ffs))
             theme.FontFamily = ffs;
+
+        if (resources.TryGetValue("ButtonPaddingX", out var bpx) && bpx is double bpxd)
+            theme.ButtonPaddingX = bpxd;
+        if (resources.TryGetValue("ButtonPaddingY", out var bpy) && bpy is double bpyd)
+            theme.ButtonPaddingY = bpyd;
+        if (resources.TryGetValue("ButtonPaddingXLg", out var bpxl) && bpxl is double bpxld)
+            theme.ButtonPaddingXLg = bpxld;
+        if (resources.TryGetValue("ButtonPaddingYLg", out var bpyl) && bpyl is double bpyld)
+            theme.ButtonPaddingYLg = bpyld;
+        if (resources.TryGetValue("ButtonPaddingXSm", out var bpxs) && bpxs is double bpxsd)
+            theme.ButtonPaddingXSm = bpxsd;
+        if (resources.TryGetValue("ButtonPaddingYSm", out var bpys) && bpys is double bpysd)
+            theme.ButtonPaddingYSm = bpysd;
+
+        if (resources.TryGetValue("InputPaddingX", out var ipx) && ipx is double ipxd)
+            theme.InputPaddingX = ipxd;
+        if (resources.TryGetValue("InputPaddingY", out var ipy) && ipy is double ipyd)
+            theme.InputPaddingY = ipyd;
+        if (resources.TryGetValue("InputPaddingXLg", out var ipxl) && ipxl is double ipxld)
+            theme.InputPaddingXLg = ipxld;
+        if (resources.TryGetValue("InputPaddingYLg", out var ipyl) && ipyl is double ipyld)
+            theme.InputPaddingYLg = ipyld;
+        if (resources.TryGetValue("InputPaddingXSm", out var ipxs) && ipxs is double ipxsd)
+            theme.InputPaddingXSm = ipxsd;
+        if (resources.TryGetValue("InputPaddingYSm", out var ipys) && ipys is double ipysd)
+            theme.InputPaddingYSm = ipysd;
 
         if (resources.TryGetValue("ButtonHeight", out var bh) && bh is double bhd)
             theme.ButtonMinHeight = bhd;

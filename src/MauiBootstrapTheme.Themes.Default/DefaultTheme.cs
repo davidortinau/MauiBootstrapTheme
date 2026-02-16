@@ -72,16 +72,20 @@ public class DefaultTheme : IBootstrapThemeProvider
         FontSizeH6 = 16.0,    // 1rem
         
         // Button Padding
-        ButtonPaddingX = 12.0,   // 0.75rem
-        ButtonPaddingY = 6.0,    // 0.375rem
-        ButtonPaddingXLg = 16.0, // 1rem
-        ButtonPaddingYLg = 8.0,  // 0.5rem
-        ButtonPaddingXSm = 8.0,  // 0.5rem
-        ButtonPaddingYSm = 4.0,  // 0.25rem
+        ButtonPaddingX = 16.0,   // Increased to improve touch target and parity
+        ButtonPaddingY = 8.0,    // Increased from 6.0
+        ButtonPaddingXLg = 20.0,
+        ButtonPaddingYLg = 10.0,
+        ButtonPaddingXSm = 12.0,
+        ButtonPaddingYSm = 6.0,
         
         // Input Padding
-        InputPaddingX = 12.0,    // 0.75rem
-        InputPaddingY = 6.0,     // 0.375rem
+        InputPaddingX = 12.0,
+        InputPaddingY = 8.0,     // Increased from 6.0
+        InputPaddingXLg = 16.0,
+        InputPaddingYLg = 10.0,
+        InputPaddingXSm = 8.0,
+        InputPaddingYSm = 6.0,
         InputMinHeight = 38.0,
         InputMinHeightLg = 48.0,
         InputMinHeightSm = 31.0,

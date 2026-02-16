@@ -7,6 +7,9 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+
+        // Keep sample comparisons deterministic against Blazor baseline (light mode CSS rendering).
+        UserAppTheme = AppTheme.Light;
         
         // Load the default generated theme from CSS
         Resources.MergedDictionaries.Add(new Themes.DefaultTheme());
