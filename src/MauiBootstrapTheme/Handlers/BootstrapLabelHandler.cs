@@ -9,6 +9,8 @@ using Microsoft.Maui.Platform;
 using Microsoft.Maui.Platform;
 #endif
 
+using System.Runtime.CompilerServices;
+
 namespace MauiBootstrapTheme.Handlers;
 
 /// <summary>
@@ -20,6 +22,7 @@ public static class BootstrapLabelHandler
     public static void Register()
     {
         LabelHandler.Mapper.AppendToMapping("BootstrapStyle", ApplyBootstrapStyle);
+        LabelHandler.Mapper.AppendToMapping("IsEnabled", ApplyDisabledState);
     }
 
     private static void ApplyBootstrapStyle(ILabelHandler handler, ILabel label)
@@ -135,5 +138,24 @@ public static class BootstrapLabelHandler
         // Calculate relative luminance
         var luminance = 0.299 * bgColor.Red + 0.587 * bgColor.Green + 0.114 * bgColor.Blue;
         return luminance > 0.5;
+    }
+
+    private static readonly ConditionalWeakTable<object, StrongBox<double>> _originalOpacity = new();
+
+    private static void ApplyDisabledState(ILabelHandler handler, ILabel control)
+    {
+        if (control is not VisualElement ve) return;
+        var theme = BootstrapTheme.Current;
+
+        if (!ve.IsEnabled)
+        {
+            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+            ve.Opacity = theme.DisabledOpacity;
+        }
+        else if (_originalOpacity.TryGetValue(control, out var box))
+        {
+            ve.Opacity = box.Value;
+            _originalOpacity.Remove(control);
+        }
     }
 }

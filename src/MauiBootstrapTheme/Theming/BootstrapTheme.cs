@@ -250,6 +250,100 @@ public class BootstrapTheme
         _ => OnSurface
     };
 
+    // ── Visual State Constants ──
+    
+    /// <summary>Bootstrap hover shade/tint amount (darken or lighten by 15%).</summary>
+    public float HoverShadeAmount { get; set; } = 0.15f;
+    
+    /// <summary>Bootstrap pressed/active shade/tint amount (darken or lighten by 20%).</summary>
+    public float PressedShadeAmount { get; set; } = 0.20f;
+    
+    /// <summary>Bootstrap hover border shade amount (darken by 20%).</summary>
+    public float HoverBorderShadeAmount { get; set; } = 0.20f;
+    
+    /// <summary>Bootstrap pressed border shade amount (darken by 25%).</summary>
+    public float PressedBorderShadeAmount { get; set; } = 0.25f;
+    
+    /// <summary>Bootstrap disabled opacity (0.65).</summary>
+    public float DisabledOpacity { get; set; } = 0.65f;
+
+    // ── State Color Methods ──
+
+    /// <summary>
+    /// Computes the hover background color for a variant.
+    /// Light colors are tinted (lightened); dark colors are shaded (darkened).
+    /// </summary>
+    public Color GetHoverBackground(BootstrapVariant variant)
+    {
+        var baseColor = GetVariantColor(variant);
+        return IsLightColor(baseColor) ? Tint(baseColor, HoverShadeAmount) : Shade(baseColor, HoverShadeAmount);
+    }
+
+    /// <summary>
+    /// Computes the pressed/active background color for a variant.
+    /// </summary>
+    public Color GetPressedBackground(BootstrapVariant variant)
+    {
+        var baseColor = GetVariantColor(variant);
+        return IsLightColor(baseColor) ? Tint(baseColor, PressedShadeAmount) : Shade(baseColor, PressedShadeAmount);
+    }
+
+    /// <summary>
+    /// Computes the hover border color for a variant (darken by 20%).
+    /// </summary>
+    public Color GetHoverBorder(BootstrapVariant variant)
+    {
+        var baseColor = GetVariantColor(variant);
+        return Shade(baseColor, HoverBorderShadeAmount);
+    }
+
+    /// <summary>
+    /// Computes the pressed border color for a variant (darken by 25%).
+    /// </summary>
+    public Color GetPressedBorder(BootstrapVariant variant)
+    {
+        var baseColor = GetVariantColor(variant);
+        return Shade(baseColor, PressedBorderShadeAmount);
+    }
+
+    // ── Color Math Helpers ──
+
+    /// <summary>
+    /// Darkens a color by mixing with black.
+    /// Equivalent to Bootstrap's shade-color($color, $amount).
+    /// </summary>
+    public static Color Shade(Color color, float amount)
+    {
+        return new Color(
+            color.Red * (1 - amount),
+            color.Green * (1 - amount),
+            color.Blue * (1 - amount),
+            color.Alpha);
+    }
+
+    /// <summary>
+    /// Lightens a color by mixing with white.
+    /// Equivalent to Bootstrap's tint-color($color, $amount).
+    /// </summary>
+    public static Color Tint(Color color, float amount)
+    {
+        return new Color(
+            color.Red + (1 - color.Red) * amount,
+            color.Green + (1 - color.Green) * amount,
+            color.Blue + (1 - color.Blue) * amount,
+            color.Alpha);
+    }
+
+    /// <summary>
+    /// Returns true if a color is "light" (Bootstrap WCAG relative luminance check).
+    /// Light colors get tinted on hover; dark colors get shaded.
+    /// </summary>
+    public static bool IsLightColor(Color color)
+    {
+        var luminance = 0.2126f * color.Red + 0.7152f * color.Green + 0.0722f * color.Blue;
+        return luminance > 0.5f;
+    }
+
     /// <summary>
     /// Creates a default Bootstrap 5 theme.
     /// </summary>

@@ -11,6 +11,8 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.Maui.Platform;
 #endif
 
+using System.Runtime.CompilerServices;
+
 namespace MauiBootstrapTheme.Handlers;
 
 /// <summary>
@@ -21,6 +23,7 @@ public static class BootstrapSearchBarHandler
     public static void Register()
     {
         SearchBarHandler.Mapper.AppendToMapping("BootstrapStyle", ApplyBootstrapStyle);
+        SearchBarHandler.Mapper.AppendToMapping("IsEnabled", ApplyDisabledState);
     }
 
     private static void ApplyBootstrapStyle(ISearchBarHandler handler, ISearchBar searchBar)
@@ -50,14 +53,28 @@ public static class BootstrapSearchBarHandler
         if (searchView == null) return;
 
         var density = searchView.Context?.Resources?.DisplayMetrics?.Density ?? 1;
-        
-        var drawable = new GradientDrawable();
-        drawable.SetShape(ShapeType.Rectangle);
-        drawable.SetCornerRadius((float)(cornerRadius * density));
-        drawable.SetStroke((int)(theme.BorderWidth * density), borderColor.ToPlatform());
-        drawable.SetColor(theme.InputBackground.ToPlatform());
-        
-        searchView.Background = drawable;
+        var cornerRadiusPx = (float)(cornerRadius * density);
+        var borderWidthPx = (int)(theme.BorderWidth * density);
+
+        var focusBorderColor = BootstrapTheme.Tint(theme.Primary, 0.50f);
+
+        var normalDrawable = new GradientDrawable();
+        normalDrawable.SetShape(ShapeType.Rectangle);
+        normalDrawable.SetCornerRadius(cornerRadiusPx);
+        normalDrawable.SetStroke(borderWidthPx, borderColor.ToPlatform());
+        normalDrawable.SetColor(theme.InputBackground.ToPlatform());
+
+        var focusedDrawable = new GradientDrawable();
+        focusedDrawable.SetShape(ShapeType.Rectangle);
+        focusedDrawable.SetCornerRadius(cornerRadiusPx);
+        focusedDrawable.SetStroke(borderWidthPx, focusBorderColor.ToPlatform());
+        focusedDrawable.SetColor(theme.InputBackground.ToPlatform());
+
+        var stateList = new StateListDrawable();
+        stateList.AddState(new[] { Android.Resource.Attribute.StateFocused }, focusedDrawable);
+        stateList.AddState(new int[] { }, normalDrawable);
+
+        searchView.Background = stateList;
     }
 #endif
 
@@ -89,6 +106,12 @@ public static class BootstrapSearchBarHandler
         autoSuggestBox.BorderBrush = new SolidColorBrush(borderColor.ToWindowsColor());
         autoSuggestBox.BorderThickness = new Microsoft.UI.Xaml.Thickness(theme.BorderWidth);
         autoSuggestBox.CornerRadius = new Microsoft.UI.Xaml.CornerRadius(cornerRadius);
+
+        var focusBorderColor = BootstrapTheme.Tint(theme.Primary, 0.50f);
+        var hoverBorderColor = BootstrapTheme.Shade(borderColor, theme.HoverShadeAmount);
+
+        autoSuggestBox.Resources["TextControlBorderBrushPointerOver"] = new SolidColorBrush(hoverBorderColor.ToWindowsColor());
+        autoSuggestBox.Resources["TextControlBorderBrushFocused"] = new SolidColorBrush(focusBorderColor.ToWindowsColor());
     }
 #endif
 
@@ -107,4 +130,23 @@ public static class BootstrapSearchBarHandler
         BootstrapVariant.Primary => theme.Primary,
         _ => theme.Outline
     };
+
+    private static readonly ConditionalWeakTable<object, StrongBox<double>> _originalOpacity = new();
+
+    private static void ApplyDisabledState(ISearchBarHandler handler, ISearchBar control)
+    {
+        if (control is not VisualElement ve) return;
+        var theme = BootstrapTheme.Current;
+
+        if (!ve.IsEnabled)
+        {
+            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+            ve.Opacity = theme.DisabledOpacity;
+        }
+        else if (_originalOpacity.TryGetValue(control, out var box))
+        {
+            ve.Opacity = box.Value;
+            _originalOpacity.Remove(control);
+        }
+    }
 }

@@ -9,6 +9,8 @@ using Microsoft.Maui.Platform;
 using Microsoft.Maui.Platform;
 #endif
 
+using System.Runtime.CompilerServices;
+
 namespace MauiBootstrapTheme.Handlers;
 
 /// <summary>
@@ -19,6 +21,7 @@ public static class BootstrapSwitchHandler
     public static void Register()
     {
         SwitchHandler.Mapper.AppendToMapping("BootstrapStyle", ApplyBootstrapStyle);
+        SwitchHandler.Mapper.AppendToMapping("IsEnabled", ApplyDisabledState);
     }
 
     private static void ApplyBootstrapStyle(ISwitchHandler handler, ISwitch sw)
@@ -104,4 +107,23 @@ public static class BootstrapSwitchHandler
         BootstrapVariant.Info => theme.Info,
         _ => theme.Primary
     };
+
+    private static readonly ConditionalWeakTable<object, StrongBox<double>> _originalOpacity = new();
+
+    private static void ApplyDisabledState(ISwitchHandler handler, ISwitch control)
+    {
+        if (control is not VisualElement ve) return;
+        var theme = BootstrapTheme.Current;
+
+        if (!ve.IsEnabled)
+        {
+            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+            ve.Opacity = theme.DisabledOpacity;
+        }
+        else if (_originalOpacity.TryGetValue(control, out var box))
+        {
+            ve.Opacity = box.Value;
+            _originalOpacity.Remove(control);
+        }
+    }
 }
