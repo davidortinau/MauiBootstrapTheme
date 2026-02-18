@@ -858,3 +858,37 @@ However, for v1, PointerOver is P1 (not P0). The visual difference is subtle and
 | Hover state | Platform-native in handlers, no-op on touch-only devices |
 | Implementation order | Disabled → Pressed → Focus → Hover |
 | Estimated effort | 9-14 days for all four states across all controls and platforms |
+
+---
+
+## Implementation Status
+
+### Phase 1: Native Handler States ✅
+- **Disabled** (all 16 handlers): `IsEnabled` mapper + `ConditionalWeakTable` opacity tracking (0.65)
+- **Pressed/Hover** (BootstrapButtonHandler): Android `RippleDrawable`+`StateListDrawable`, iOS per-state `SetBackgroundImage`/`SetTitleColor` + Mac Catalyst `UIHoverGestureRecognizer`, Windows themed resource overrides
+- **Focused** (6 input handlers): Android `StateListDrawable` with focused border, Windows hover/focus border resources
+- Applies to explicit `Bootstrap.Variant="Primary"` buttons only
+
+### Phase 2: Generated VisualStateManager Styles ✅
+- **Button Pressed/Hover/Disabled**: `VisualStateGroups` with `Normal`, `Pressed`, `PointerOver`, `Disabled` states added to all generated `btn-{variant}` class styles
+- **Outline Button Fill**: Outline buttons fill with solid variant color on hover/press (matching Bootstrap behavior)
+- **Hover/Pressed Color Resources**: `BtnHover{Variant}`, `BtnPressed{Variant}`, `BtnHoverText{Variant}`, `BtnPressedText{Variant}` DynamicResource keys emitted for all 8 variants
+- **Dark Mode**: Hover/pressed colors update correctly during light/dark theme switching
+- **Card Hover Shadow**: `card-hoverable` StyleClass with `PointerOver` shadow for `Border` elements
+- **Gradient Skip**: Gradient-themed buttons skip VSM (can't interpolate gradient backgrounds)
+- Applies to `StyleClass="btn-primary"` buttons (the common pattern)
+
+### Deferred
+- **Focus ring**: Deferred to future phase per user decision
+- **Desktop cursor**: Stretch goal — `Bootstrap.Cursor` attached property (Windows-only via `InputSystemCursor`)
+
+### Consumer Usage
+```xml
+<!-- Button pressed/hover works automatically via generated styles -->
+<Button StyleClass="btn-primary" Text="Click Me" />
+
+<!-- Card hover shadow — add card-hoverable to any clickable Border -->
+<Border StyleClass="card, card-hoverable">
+    <Label Text="Hover me on desktop" />
+</Border>
+```
