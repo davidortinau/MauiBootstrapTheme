@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"
+             x:Class="MauiBootstrapTheme.Sample.Pages.VisualStatesPage"
+             Title="Visual States">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="24" Padding="20">
+
+            <!-- Page Header -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Visual States"
+                       StyleClass="h1"/>
+                <Label Text="Press, hover, and disable controls to see Bootstrap visual state feedback."
+                       StyleClass="lead,text-muted"/>
+            </VerticalStackLayout>
+
+            <BoxView HeightRequest="1"
+                    Color="{DynamicResource OutlineVariant}"
+                    Margin="0,4"/>
+
+            <!-- SECTION: VSM Diagnostic — plain MAUI button with inline VSM -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="VSM Diagnostic (Inline XAML)"
+                       StyleClass="h4"/>
+                <Label Text="Raw MAUI VSM — no Bootstrap. Verifies PointerOver/Pressed fire on this platform."
+                       StyleClass="text-muted"/>
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Hover/Press Me" Margin="0,0,8,8"
+                            BackgroundColor="#0d6efd" TextColor="White"
+                            CornerRadius="6" Padding="12,8">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal"/>
+                                    <VisualState Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="#0B5ED7"/>
+                                            <Setter Property="Scale" Value="1.02"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="#0A58CA"/>
+                                            <Setter Property="Scale" Value="0.98"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+                    </Button>
+                    <Border Padding="16,12" Margin="0,0,8,8"
+                            BackgroundColor="{DynamicResource Surface}"
+                            StrokeShape="RoundRectangle 6"
+                            Stroke="{DynamicResource Outline}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal"/>
+                                    <VisualState Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Property="Shadow">
+                                                <Setter.Value>
+                                                    <Shadow Brush="Black" Offset="0,8" Radius="16" Opacity="0.15"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+                        <Label Text="Hover this card for shadow"/>
+                    </Border>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <!-- SECTION: Solid Button Pressed &amp; Hover -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Solid Buttons — Pressed &amp; Hover"
+                       StyleClass="h4"/>
+                <Label Text="Click/tap to see pressed state. Hover on desktop to see PointerOver."
+                       StyleClass="text-muted"/>
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Primary"
+                            StyleClass="btn-primary"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Secondary"
+                            StyleClass="btn-secondary"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Success"
+                            StyleClass="btn-success"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Danger"
+                            StyleClass="btn-danger"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Warning"
+                            StyleClass="btn-warning"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Info"
+                            StyleClass="btn-info"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Light"
+                            StyleClass="btn-light"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Dark"
+                            StyleClass="btn-dark"
+                            Margin="0,0,8,8"/>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <!-- SECTION: Outline Button Hover Fill -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Outline Buttons — Hover Fills Solid"
+                       StyleClass="h4"/>
+                <Label Text="Hover fills with variant color. Press to see solid fill persist."
+                       StyleClass="text-muted"/>
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Primary"
+                            StyleClass="btn-outline-primary"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Secondary"
+                            StyleClass="btn-outline-secondary"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Success"
+                            StyleClass="btn-outline-success"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Danger"
+                            StyleClass="btn-outline-danger"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Warning"
+                            StyleClass="btn-outline-warning"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Info"
+                            StyleClass="btn-outline-info"
+                            Margin="0,0,8,8"/>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <!-- SECTION: Disabled Buttons -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Disabled Buttons — Opacity 0.65"
+                       StyleClass="h4"/>
+                <Label Text="Disabled via IsEnabled=False. Compare opacity to enabled row above."
+                       StyleClass="text-muted"/>
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Primary"
+                            StyleClass="btn-primary"
+                            IsEnabled="False"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Secondary"
+                            StyleClass="btn-secondary"
+                            IsEnabled="False"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Success"
+                            StyleClass="btn-success"
+                            IsEnabled="False"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Outline"
+                            StyleClass="btn-outline-danger"
+                            IsEnabled="False"
+                            Margin="0,0,8,8"/>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <!-- SECTION: Toggle Enable/Disable -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Toggle Disabled State"
+                       StyleClass="h4"/>
+                <Label Text="Tap 'Toggle' to enable/disable the target button dynamically."
+                       StyleClass="text-muted"/>
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Toggle"
+                            StyleClass="btn-secondary,btn-sm"
+                            Clicked="OnToggleDisabledClicked"
+                            Margin="0,0,12,8"/>
+                    <Button x:Name="ToggleTarget"
+                            Text="Target Button"
+                            StyleClass="btn-primary"
+                            Margin="0,0,8,8"/>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <BoxView HeightRequest="1"
+                    Color="{DynamicResource OutlineVariant}"
+                    Margin="0,4"/>
+
+            <!-- SECTION: Attached Property Buttons (Handler Path) -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Attached Property Buttons (Native Handler)"
+                       StyleClass="h4"/>
+                <Label Text="These use Bootstrap.Variant for native pressed/hover via handlers."
+                       StyleClass="text-muted"/>
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Primary"
+                            theme:Bootstrap.Variant="Primary"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Danger"
+                            theme:Bootstrap.Variant="Danger"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Success"
+                            theme:Bootstrap.Variant="Success"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Outline Primary"
+                            theme:Bootstrap.Variant="OutlinePrimary"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Disabled"
+                            theme:Bootstrap.Variant="Primary"
+                            IsEnabled="False"
+                            Margin="0,0,8,8"/>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <BoxView HeightRequest="1"
+                    Color="{DynamicResource OutlineVariant}"
+                    Margin="0,4"/>
+
+            <!-- SECTION: Button Sizes with Visual States -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Button Sizes — States Apply at All Sizes"
+                       StyleClass="h4"/>
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Large"
+                            StyleClass="btn-primary,btn-lg"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Default"
+                            StyleClass="btn-primary"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Small"
+                            StyleClass="btn-primary,btn-sm"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Large Disabled"
+                            StyleClass="btn-danger,btn-lg"
+                            IsEnabled="False"
+                            Margin="0,0,8,8"/>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <BoxView HeightRequest="1"
+                    Color="{DynamicResource OutlineVariant}"
+                    Margin="0,4"/>
+
+            <!-- SECTION: Card Hover Shadow -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Card Hover Shadow"
+                       StyleClass="h4"/>
+                <Label Text="Hover over these cards on desktop to see shadow appear."
+                       StyleClass="text-muted"/>
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="16" RowSpacing="16">
+                    <Border StyleClass="card,card-hoverable" Grid.Column="0">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Hoverable Card" StyleClass="h5"/>
+                            <Label Text="Hover me to see the shadow effect. This uses StyleClass='card,card-hoverable'."
+                                   StyleClass="text-muted"/>
+                            <Button Text="Action" StyleClass="btn-primary,btn-sm" HorizontalOptions="Start"/>
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border StyleClass="card,card-hoverable" Grid.Column="1">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Another Hoverable" StyleClass="h5"/>
+                            <Label Text="Move your mouse over to compare shadow on/off."
+                                   StyleClass="text-muted"/>
+                            <Button Text="Details" StyleClass="btn-outline-success,btn-sm" HorizontalOptions="Start"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+                <Label Text="Compare: static card (no hover)" StyleClass="small,text-muted"/>
+                <Border StyleClass="card">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Static Card" StyleClass="h5"/>
+                        <Label Text="No card-hoverable class — no shadow on hover."
+                               StyleClass="text-muted"/>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+            <BoxView HeightRequest="1"
+                    Color="{DynamicResource OutlineVariant}"
+                    Margin="0,4"/>
+
+            <!-- SECTION: Disabled Inputs -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Disabled Inputs — Opacity 0.65"
+                       StyleClass="h4"/>
+                <Label Text="Inputs with IsEnabled=False show reduced opacity."
+                       StyleClass="text-muted"/>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="16" RowSpacing="12">
+                    <VerticalStackLayout Grid.Column="0" Spacing="8">
+                        <Label Text="Enabled" StyleClass="h6"/>
+                        <Entry Placeholder="Type here..." StyleClass="form-control"/>
+                        <Editor Placeholder="Multi-line text..." StyleClass="form-control" HeightRequest="60"/>
+                        <Picker Title="Select..." StyleClass="form-control">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Option A</x:String>
+                                    <x:String>Option B</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                        <SearchBar Placeholder="Search..." StyleClass="form-control"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="8">
+                        <Label Text="Disabled" StyleClass="h6"/>
+                        <Entry Placeholder="Disabled entry" StyleClass="form-control" IsEnabled="False"/>
+                        <Editor Placeholder="Disabled editor" StyleClass="form-control" HeightRequest="60" IsEnabled="False"/>
+                        <Picker Title="Disabled..." StyleClass="form-control" IsEnabled="False">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>Option A</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                        <SearchBar Placeholder="Disabled search" StyleClass="form-control" IsEnabled="False"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </VerticalStackLayout>
+
+            <BoxView HeightRequest="1"
+                    Color="{DynamicResource OutlineVariant}"
+                    Margin="0,4"/>
+
+            <!-- SECTION: Edge Cases -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Edge Cases"
+                       StyleClass="h4"/>
+
+                <!-- Pill disabled -->
+                <Label Text="Disabled Pill Buttons" StyleClass="h6"/>
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Pill Enabled"
+                            StyleClass="btn-success,btn-pill"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Pill Disabled"
+                            StyleClass="btn-success,btn-pill"
+                            IsEnabled="False"
+                            Margin="0,0,8,8"/>
+                </FlexLayout>
+
+                <!-- Multiple StyleClass combinations -->
+                <Label Text="Size + Outline + States" StyleClass="h6"/>
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Lg Outline"
+                            StyleClass="btn-outline-primary,btn-lg"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Sm Outline"
+                            StyleClass="btn-outline-danger,btn-sm"
+                            Margin="0,0,8,8"/>
+                    <Button Text="Lg Outline Disabled"
+                            StyleClass="btn-outline-warning,btn-lg"
+                            IsEnabled="False"
+                            Margin="0,0,8,8"/>
+                </FlexLayout>
+
+                <!-- Card hoverable with colored backgrounds -->
+                <Label Text="Hoverable Colored Cards" StyleClass="h6"/>
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                    <Border StyleClass="text-bg-primary,card-hoverable" Grid.Column="0">
+                        <VerticalStackLayout>
+                            <Label Text="Primary" StyleClass="h6,on-primary"/>
+                            <Label Text="Hover for shadow" StyleClass="on-primary"/>
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border StyleClass="text-bg-success,card-hoverable" Grid.Column="1">
+                        <VerticalStackLayout>
+                            <Label Text="Success" StyleClass="h6,on-success"/>
+                            <Label Text="Hover for shadow" StyleClass="on-success"/>
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border StyleClass="text-bg-dark,card-hoverable" Grid.Column="2">
+                        <VerticalStackLayout>
+                            <Label Text="Dark" StyleClass="h6,on-dark"/>
+                            <Label Text="Hover for shadow" StyleClass="on-dark"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+            </VerticalStackLayout>
+
+            <!-- Bottom padding -->
+            <BoxView HeightRequest="40" Color="Transparent"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

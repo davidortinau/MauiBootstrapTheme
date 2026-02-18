@@ -11,6 +11,8 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.Maui.Platform;
 #endif
 
+using System.Runtime.CompilerServices;
+
 namespace MauiBootstrapTheme.Handlers;
 
 /// <summary>
@@ -21,6 +23,7 @@ public static class BootstrapDatePickerHandler
     public static void Register()
     {
         DatePickerHandler.Mapper.AppendToMapping("BootstrapStyle", ApplyBootstrapStyle);
+        DatePickerHandler.Mapper.AppendToMapping("IsEnabled", ApplyDisabledState);
     }
 
     private static void ApplyBootstrapStyle(IDatePickerHandler handler, IDatePicker datePicker)
@@ -54,14 +57,28 @@ public static class BootstrapDatePickerHandler
         if (editText == null) return;
 
         var density = editText.Context?.Resources?.DisplayMetrics?.Density ?? 1;
-        
-        var drawable = new GradientDrawable();
-        drawable.SetShape(ShapeType.Rectangle);
-        drawable.SetCornerRadius((float)(cornerRadius * density));
-        drawable.SetStroke((int)(theme.BorderWidth * density), borderColor.ToPlatform());
-        drawable.SetColor(theme.InputBackground.ToPlatform());
-        
-        editText.Background = drawable;
+        var cornerRadiusPx = (float)(cornerRadius * density);
+        var borderWidthPx = (int)(theme.BorderWidth * density);
+
+        var focusBorderColor = BootstrapTheme.Tint(theme.Primary, 0.50f);
+
+        var normalDrawable = new GradientDrawable();
+        normalDrawable.SetShape(ShapeType.Rectangle);
+        normalDrawable.SetCornerRadius(cornerRadiusPx);
+        normalDrawable.SetStroke(borderWidthPx, borderColor.ToPlatform());
+        normalDrawable.SetColor(theme.InputBackground.ToPlatform());
+
+        var focusedDrawable = new GradientDrawable();
+        focusedDrawable.SetShape(ShapeType.Rectangle);
+        focusedDrawable.SetCornerRadius(cornerRadiusPx);
+        focusedDrawable.SetStroke(borderWidthPx, focusBorderColor.ToPlatform());
+        focusedDrawable.SetColor(theme.InputBackground.ToPlatform());
+
+        var stateList = new StateListDrawable();
+        stateList.AddState(new[] { Android.Resource.Attribute.StateFocused }, focusedDrawable);
+        stateList.AddState(new int[] { }, normalDrawable);
+
+        editText.Background = stateList;
         editText.SetTextColor(theme.InputText.ToPlatform());
         editText.SetTextSize(Android.Util.ComplexUnitType.Sp, (float)fontSize);
         editText.SetMinHeight((int)(minHeight * density));
@@ -102,6 +119,12 @@ public static class BootstrapDatePickerHandler
         calendarDatePicker.FontSize = fontSize;
         calendarDatePicker.MinHeight = minHeight;
         calendarDatePicker.Padding = new Microsoft.UI.Xaml.Thickness(paddingX, paddingY, paddingX, paddingY);
+
+        var focusBorderColor = BootstrapTheme.Tint(theme.Primary, 0.50f);
+        var hoverBorderColor = BootstrapTheme.Shade(borderColor, theme.HoverShadeAmount);
+
+        calendarDatePicker.Resources["CalendarDatePickerBorderBrushPointerOver"] = new SolidColorBrush(hoverBorderColor.ToWindowsColor());
+        calendarDatePicker.Resources["CalendarDatePickerBorderBrushFocused"] = new SolidColorBrush(focusBorderColor.ToWindowsColor());
     }
 #endif
 
@@ -140,4 +163,23 @@ public static class BootstrapDatePickerHandler
         BootstrapSize.Large => (theme.InputPaddingXLg, theme.InputPaddingYLg),
         _ => (theme.InputPaddingX, theme.InputPaddingY)
     };
+
+    private static readonly ConditionalWeakTable<object, StrongBox<double>> _originalOpacity = new();
+
+    private static void ApplyDisabledState(IDatePickerHandler handler, IDatePicker control)
+    {
+        if (control is not VisualElement ve) return;
+        var theme = BootstrapTheme.Current;
+
+        if (!ve.IsEnabled)
+        {
+            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+            ve.Opacity = theme.DisabledOpacity;
+        }
+        else if (_originalOpacity.TryGetValue(control, out var box))
+        {
+            ve.Opacity = box.Value;
+            _originalOpacity.Remove(control);
+        }
+    }
 }

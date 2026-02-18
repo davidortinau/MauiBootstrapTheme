@@ -23,8 +23,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.1" />
-    <PackageReference Include="Reactor.Maui" Version="2.*" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.10" />
+    <!-- When a sibling reactorui-maui checkout exists, use ProjectReference instead of NuGet.
+         This avoids duplicate-assembly errors when the consuming app also uses a local MauiReactor reference.
+         For NuGet publishing, toggle this back to PackageReference. -->
+    <!-- <PackageReference Include="Reactor.Maui" Version="2.*" /> -->
+    <ProjectReference Include="..\..\..\reactorui-maui\src\MauiReactor\MauiReactor.csproj" />
   </ItemGroup>
 
   <ItemGroup>

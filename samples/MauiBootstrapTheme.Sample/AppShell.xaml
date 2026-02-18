@@ -32,6 +32,10 @@
         <ShellContent ContentTemplate="{DataTemplate pages:FormsPage}" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Visual States" Route="visualstates">
+        <ShellContent ContentTemplate="{DataTemplate pages:VisualStatesPage}" />
+    </FlyoutItem>
+
     <FlyoutItem Title="Variants" Route="variants">
         <ShellContent ContentTemplate="{DataTemplate pages:VariantsPage}" />
     </FlyoutItem>

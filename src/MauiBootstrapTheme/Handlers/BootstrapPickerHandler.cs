@@ -11,6 +11,8 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.Maui.Platform;
 #endif
 
+using System.Runtime.CompilerServices;
+
 namespace MauiBootstrapTheme.Handlers;
 
 /// <summary>
@@ -21,6 +23,7 @@ public static class BootstrapPickerHandler
     public static void Register()
     {
         PickerHandler.Mapper.AppendToMapping("BootstrapStyle", ApplyBootstrapStyle);
+        PickerHandler.Mapper.AppendToMapping("IsEnabled", ApplyDisabledState);
     }
 
     private static void ApplyBootstrapStyle(IPickerHandler handler, IPicker picker)
@@ -56,14 +59,28 @@ public static class BootstrapPickerHandler
         if (picker == null) return;
 
         var density = picker.Context?.Resources?.DisplayMetrics?.Density ?? 1;
-        
-        var drawable = new GradientDrawable();
-        drawable.SetShape(ShapeType.Rectangle);
-        drawable.SetCornerRadius((float)(cornerRadius * density));
-        drawable.SetStroke((int)(theme.BorderWidth * density), borderColor.ToPlatform());
-        drawable.SetColor(theme.InputBackground.ToPlatform());
-        
-        picker.Background = drawable;
+        var cornerRadiusPx = (float)(cornerRadius * density);
+        var borderWidthPx = (int)(theme.BorderWidth * density);
+
+        var focusBorderColor = BootstrapTheme.Tint(theme.Primary, 0.50f);
+
+        var normalDrawable = new GradientDrawable();
+        normalDrawable.SetShape(ShapeType.Rectangle);
+        normalDrawable.SetCornerRadius(cornerRadiusPx);
+        normalDrawable.SetStroke(borderWidthPx, borderColor.ToPlatform());
+        normalDrawable.SetColor(theme.InputBackground.ToPlatform());
+
+        var focusedDrawable = new GradientDrawable();
+        focusedDrawable.SetShape(ShapeType.Rectangle);
+        focusedDrawable.SetCornerRadius(cornerRadiusPx);
+        focusedDrawable.SetStroke(borderWidthPx, focusBorderColor.ToPlatform());
+        focusedDrawable.SetColor(theme.InputBackground.ToPlatform());
+
+        var stateList = new StateListDrawable();
+        stateList.AddState(new[] { Android.Resource.Attribute.StateFocused }, focusedDrawable);
+        stateList.AddState(new int[] { }, normalDrawable);
+
+        picker.Background = stateList;
         picker.SetTextColor(theme.InputText.ToPlatform());
         picker.SetTextSize(Android.Util.ComplexUnitType.Sp, (float)fontSize);
         picker.SetMinHeight((int)(minHeight * density));
@@ -114,6 +131,12 @@ public static class BootstrapPickerHandler
         comboBox.FontSize = fontSize;
         comboBox.MinHeight = minHeight;
         comboBox.Padding = new Microsoft.UI.Xaml.Thickness(paddingX, paddingY, paddingX, paddingY);
+
+        var focusBorderColor = BootstrapTheme.Tint(theme.Primary, 0.50f);
+        var hoverBorderColor = BootstrapTheme.Shade(borderColor, theme.HoverShadeAmount);
+
+        comboBox.Resources["ComboBoxBorderBrushPointerOver"] = new SolidColorBrush(hoverBorderColor.ToWindowsColor());
+        comboBox.Resources["ComboBoxBorderBrushFocused"] = new SolidColorBrush(focusBorderColor.ToWindowsColor());
     }
 #endif
 
@@ -168,5 +191,24 @@ public static class BootstrapPickerHandler
         }
 
         return BootstrapSize.Default;
+    }
+
+    private static readonly ConditionalWeakTable<object, StrongBox<double>> _originalOpacity = new();
+
+    private static void ApplyDisabledState(IPickerHandler handler, IPicker control)
+    {
+        if (control is not VisualElement ve) return;
+        var theme = BootstrapTheme.Current;
+
+        if (!ve.IsEnabled)
+        {
+            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+            ve.Opacity = theme.DisabledOpacity;
+        }
+        else if (_originalOpacity.TryGetValue(control, out var box))
+        {
+            ve.Opacity = box.Value;
+            _originalOpacity.Remove(control);
+        }
     }
 }

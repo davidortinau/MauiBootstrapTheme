@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.Maui.Platform;
 #endif
 
+using System.Runtime.CompilerServices;
+
 namespace MauiBootstrapTheme.Handlers;
 
 /// <summary>
@@ -26,6 +28,7 @@ public static class BootstrapEditorHandler
     public static void Register()
     {
         EditorHandler.Mapper.AppendToMapping("BootstrapStyle", ApplyBootstrapStyle);
+        EditorHandler.Mapper.AppendToMapping("IsEnabled", ApplyDisabledState);
     }
 
     private static void ApplyBootstrapStyle(IEditorHandler handler, IEditor editor)
@@ -58,14 +61,28 @@ public static class BootstrapEditorHandler
         if (editText == null) return;
 
         var density = editText.Context?.Resources?.DisplayMetrics?.Density ?? 1;
-        
-        var drawable = new GradientDrawable();
-        drawable.SetShape(ShapeType.Rectangle);
-        drawable.SetCornerRadius((float)(cornerRadius * density));
-        drawable.SetStroke((int)(theme.BorderWidth * density), borderColor.ToPlatform());
-        drawable.SetColor(backgroundColor.ToPlatform());
-        
-        editText.Background = drawable;
+        var cornerRadiusPx = (float)(cornerRadius * density);
+        var borderWidthPx = (int)(theme.BorderWidth * density);
+
+        var focusBorderColor = BootstrapTheme.Tint(theme.Primary, 0.50f);
+
+        var normalDrawable = new GradientDrawable();
+        normalDrawable.SetShape(ShapeType.Rectangle);
+        normalDrawable.SetCornerRadius(cornerRadiusPx);
+        normalDrawable.SetStroke(borderWidthPx, borderColor.ToPlatform());
+        normalDrawable.SetColor(backgroundColor.ToPlatform());
+
+        var focusedDrawable = new GradientDrawable();
+        focusedDrawable.SetShape(ShapeType.Rectangle);
+        focusedDrawable.SetCornerRadius(cornerRadiusPx);
+        focusedDrawable.SetStroke(borderWidthPx, focusBorderColor.ToPlatform());
+        focusedDrawable.SetColor(backgroundColor.ToPlatform());
+
+        var stateList = new StateListDrawable();
+        stateList.AddState(new[] { Android.Resource.Attribute.StateFocused }, focusedDrawable);
+        stateList.AddState(new int[] { }, normalDrawable);
+
+        editText.Background = stateList;
         editText.SetTextColor(textColor.ToPlatform());
         
         // Padding
@@ -110,6 +127,12 @@ public static class BootstrapEditorHandler
         textBox.Foreground = new SolidColorBrush(textColor.ToWindowsColor());
         textBox.Padding = new Microsoft.UI.Xaml.Thickness(theme.InputPaddingX, theme.InputPaddingY,
             theme.InputPaddingX, theme.InputPaddingY);
+
+        var focusBorderColor = BootstrapTheme.Tint(theme.Primary, 0.50f);
+        var hoverBorderColor = BootstrapTheme.Shade(borderColor, theme.HoverShadeAmount);
+
+        textBox.Resources["TextControlBorderBrushPointerOver"] = new SolidColorBrush(hoverBorderColor.ToWindowsColor());
+        textBox.Resources["TextControlBorderBrushFocused"] = new SolidColorBrush(focusBorderColor.ToWindowsColor());
     }
 #endif
 
@@ -127,4 +150,23 @@ public static class BootstrapEditorHandler
         BootstrapVariant.Warning => theme.Warning,
         _ => theme.Outline
     };
+
+    private static readonly ConditionalWeakTable<object, StrongBox<double>> _originalOpacity = new();
+
+    private static void ApplyDisabledState(IEditorHandler handler, IEditor control)
+    {
+        if (control is not VisualElement ve) return;
+        var theme = BootstrapTheme.Current;
+
+        if (!ve.IsEnabled)
+        {
+            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+            ve.Opacity = theme.DisabledOpacity;
+        }
+        else if (_originalOpacity.TryGetValue(control, out var box))
+        {
+            ve.Opacity = box.Value;
+            _originalOpacity.Remove(control);
+        }
+    }
 }
