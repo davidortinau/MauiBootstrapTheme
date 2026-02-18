@@ -246,6 +246,23 @@ public partial class {className} : ResourceDictionary
         }
         sb.AppendLine();
 
+        // Hover/pressed state colors for buttons
+        sb.AppendLine("        // Button hover/pressed state colors");
+        foreach (var v in variants)
+        {
+            var pascal = ToPascalCase(v);
+            var variantColor = v switch { "primary" => data.Primary ?? "#0d6efd", "secondary" => data.Secondary ?? "#6c757d",
+                "success" => data.Success ?? "#198754", "danger" => data.Danger ?? "#dc3545", "warning" => data.Warning ?? "#ffc107",
+                "info" => data.Info ?? "#0dcaf0", "light" => data.Light ?? "#f8f9fa", "dark" => data.Dark ?? "#212529", _ => "#000" };
+            var normalizedColor = NormalizeHexColor(variantColor);
+            EmitCsColor(sb, $"BtnHover{pascal}", GetHoverColor(normalizedColor));
+            EmitCsColor(sb, $"BtnPressed{pascal}", GetPressedColor(normalizedColor));
+            var onColor = data.OnColors.TryGetValue(v, out var c) ? NormalizeHexColor(c) : (v == "warning" || v == "info" || v == "light" ? "#000000" : "#ffffff");
+            EmitCsColor(sb, $"BtnHoverText{pascal}", onColor);
+            EmitCsColor(sb, $"BtnPressedText{pascal}", onColor);
+        }
+        sb.AppendLine();
+
         // Surface colors
         var bodyBg = data.BodyBackground ?? "#ffffff";
         var bodyColor = data.BodyColor ?? "#212529";
@@ -386,6 +403,9 @@ public partial class {className} : ResourceDictionary
         // Color variant cards
         EmitCsColorVariantCards(sb, data);
 
+        // Card hoverable style
+        EmitCsCardHoverableStyle(sb);
+
         // Badge backgrounds
         EmitCsBadgeBackgrounds(sb);
 
@@ -479,9 +499,19 @@ public partial class {className} : ResourceDictionary
         {
             var pascal = ToPascalCase(kvp.Key);
             if (kvp.Value.Background != null)
-                sb.AppendLine($"            this[\"{pascal}\"] = Color.FromArgb(\"{NormalizeHexColor(kvp.Value.Background)}\");");
+            {
+                var darkBg = NormalizeHexColor(kvp.Value.Background);
+                sb.AppendLine($"            this[\"{pascal}\"] = Color.FromArgb(\"{darkBg}\");");
+                sb.AppendLine($"            this[\"BtnHover{pascal}\"] = Color.FromArgb(\"{GetHoverColor(darkBg)}\");");
+                sb.AppendLine($"            this[\"BtnPressed{pascal}\"] = Color.FromArgb(\"{GetPressedColor(darkBg)}\");");
+            }
             if (kvp.Value.Color != null)
-                sb.AppendLine($"            this[\"On{pascal}\"] = Color.FromArgb(\"{NormalizeHexColor(kvp.Value.Color)}\");");
+            {
+                var darkOn = NormalizeHexColor(kvp.Value.Color);
+                sb.AppendLine($"            this[\"On{pascal}\"] = Color.FromArgb(\"{darkOn}\");");
+                sb.AppendLine($"            this[\"BtnHoverText{pascal}\"] = Color.FromArgb(\"{darkOn}\");");
+                sb.AppendLine($"            this[\"BtnPressedText{pascal}\"] = Color.FromArgb(\"{darkOn}\");");
+            }
         }
 
         sb.AppendLine("        }");
@@ -530,11 +560,21 @@ public partial class {className} : ResourceDictionary
                 _ => null
             };
             if (lightColor != null)
-                sb.AppendLine($"            this[\"{pascal}\"] = Color.FromArgb(\"{NormalizeHexColor(lightColor)}\");");
+            {
+                var lc = NormalizeHexColor(lightColor);
+                sb.AppendLine($"            this[\"{pascal}\"] = Color.FromArgb(\"{lc}\");");
+                sb.AppendLine($"            this[\"BtnHover{pascal}\"] = Color.FromArgb(\"{GetHoverColor(lc)}\");");
+                sb.AppendLine($"            this[\"BtnPressed{pascal}\"] = Color.FromArgb(\"{GetPressedColor(lc)}\");");
+            }
 
             var lightOnColor = data.OnColors.TryGetValue(kvp.Key, out var oc) ? oc : null;
             if (lightOnColor != null)
-                sb.AppendLine($"            this[\"On{pascal}\"] = Color.FromArgb(\"{NormalizeHexColor(lightOnColor)}\");");
+            {
+                var loc = NormalizeHexColor(lightOnColor);
+                sb.AppendLine($"            this[\"On{pascal}\"] = Color.FromArgb(\"{loc}\");");
+                sb.AppendLine($"            this[\"BtnHoverText{pascal}\"] = Color.FromArgb(\"{loc}\");");
+                sb.AppendLine($"            this[\"BtnPressedText{pascal}\"] = Color.FromArgb(\"{loc}\");");
+            }
         }
 
         sb.AppendLine("        }");
@@ -969,6 +1009,29 @@ public partial class {className} : ResourceDictionary
 
             sb.AppendLine($"        {varName}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.ShadowProperty, Value = DR(\"BtnShadow{pascal}\") }});");
 
+            // Add VisualStateGroups for pressed/hover/disabled feedback
+            if (!(data.ButtonRules.TryGetValue(v, out var ruleVsm) && ruleVsm.Gradient != null))
+            {
+                sb.AppendLine($"        // VSM for btn-{v}");
+                sb.AppendLine($"        var vsg_{v} = new Microsoft.Maui.Controls.VisualStateGroup {{ Name = \"CommonStates\" }};");
+                sb.AppendLine($"        var vsNormal_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Normal\" }};");
+                sb.AppendLine($"        vsg_{v}.States.Add(vsNormal_{v});");
+                sb.AppendLine($"        var vsPressed_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Pressed\" }};");
+                sb.AppendLine($"        vsPressed_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundColorProperty, Value = DR(\"BtnPressed{pascal}\") }});");
+                sb.AppendLine($"        vsPressed_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = DR(\"BtnPressedText{pascal}\") }});");
+                sb.AppendLine($"        vsg_{v}.States.Add(vsPressed_{v});");
+                sb.AppendLine($"        var vsHover_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"PointerOver\" }};");
+                sb.AppendLine($"        vsHover_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundColorProperty, Value = DR(\"BtnHover{pascal}\") }});");
+                sb.AppendLine($"        vsHover_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = DR(\"BtnHoverText{pascal}\") }});");
+                sb.AppendLine($"        vsg_{v}.States.Add(vsHover_{v});");
+                sb.AppendLine($"        var vsDisabled_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Disabled\" }};");
+                sb.AppendLine($"        vsDisabled_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.VisualElement.OpacityProperty, Value = 0.65d }});");
+                sb.AppendLine($"        vsg_{v}.States.Add(vsDisabled_{v});");
+                sb.AppendLine($"        var vsgList_{v} = new Microsoft.Maui.Controls.VisualStateGroupList();");
+                sb.AppendLine($"        vsgList_{v}.Add(vsg_{v});");
+                sb.AppendLine($"        {varName}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.VisualStateManager.VisualStateGroupsProperty, Value = vsgList_{v} }});");
+            }
+
             sb.AppendLine($"        Add({varName});");
             sb.AppendLine();
         }
@@ -1005,9 +1068,54 @@ public partial class {className} : ResourceDictionary
                 sb.AppendLine($"        {varName}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BorderWidthProperty, Value = DR(\"BorderWidth\") }});");
 
             sb.AppendLine($"        {varName}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.ShadowProperty, Value = DR(\"BtnShadowOutline{pascal}\") }});");
+
+            // VSM for outline btn — hover/pressed fills with solid variant color
+            sb.AppendLine($"        var vsg_out_{v} = new Microsoft.Maui.Controls.VisualStateGroup {{ Name = \"CommonStates\" }};");
+            sb.AppendLine($"        var vsNormal_out_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Normal\" }};");
+            sb.AppendLine($"        vsg_out_{v}.States.Add(vsNormal_out_{v});");
+            sb.AppendLine($"        var vsPressed_out_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Pressed\" }};");
+            sb.AppendLine($"        vsPressed_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundColorProperty, Value = DR(\"{pascal}\") }});");
+            sb.AppendLine($"        vsPressed_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = DR(\"On{pascal}\") }});");
+            sb.AppendLine($"        vsg_out_{v}.States.Add(vsPressed_out_{v});");
+            sb.AppendLine($"        var vsHover_out_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"PointerOver\" }};");
+            sb.AppendLine($"        vsHover_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundColorProperty, Value = DR(\"{pascal}\") }});");
+            sb.AppendLine($"        vsHover_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = DR(\"On{pascal}\") }});");
+            sb.AppendLine($"        vsg_out_{v}.States.Add(vsHover_out_{v});");
+            sb.AppendLine($"        var vsDisabled_out_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Disabled\" }};");
+            sb.AppendLine($"        vsDisabled_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.VisualElement.OpacityProperty, Value = 0.65d }});");
+            sb.AppendLine($"        vsg_out_{v}.States.Add(vsDisabled_out_{v});");
+            sb.AppendLine($"        var vsgList_out_{v} = new Microsoft.Maui.Controls.VisualStateGroupList();");
+            sb.AppendLine($"        vsgList_out_{v}.Add(vsg_out_{v});");
+            sb.AppendLine($"        {varName}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.VisualStateManager.VisualStateGroupsProperty, Value = vsgList_out_{v} }});");
+
             sb.AppendLine($"        Add({varName});");
             sb.AppendLine();
         }
+    }
+
+    private void EmitCsCardHoverableStyle(StringBuilder sb)
+    {
+        sb.AppendLine("        // Card hover style — adds shadow on PointerOver");
+        sb.AppendLine("        var style_card_hoverable = new Microsoft.Maui.Controls.Style(typeof(Microsoft.Maui.Controls.Border)) { Class = \"card-hoverable\" };");
+        sb.AppendLine("        var vsg_card_hover = new Microsoft.Maui.Controls.VisualStateGroup { Name = \"CommonStates\" };");
+        sb.AppendLine("        var vsNormal_card = new Microsoft.Maui.Controls.VisualState { Name = \"Normal\" };");
+        sb.AppendLine("        vsg_card_hover.States.Add(vsNormal_card);");
+        sb.AppendLine("        var vsHover_card = new Microsoft.Maui.Controls.VisualState { Name = \"PointerOver\" };");
+        sb.AppendLine("        vsHover_card.Setters.Add(new Microsoft.Maui.Controls.Setter {");
+        sb.AppendLine("            Property = Microsoft.Maui.Controls.VisualElement.ShadowProperty,");
+        sb.AppendLine("            Value = new Microsoft.Maui.Controls.Shadow {");
+        sb.AppendLine("                Brush = new Microsoft.Maui.Controls.SolidColorBrush(Colors.Black),");
+        sb.AppendLine("                Offset = new Point(0, 8),");
+        sb.AppendLine("                Radius = 16,");
+        sb.AppendLine("                Opacity = 0.15f");
+        sb.AppendLine("            }");
+        sb.AppendLine("        });");
+        sb.AppendLine("        vsg_card_hover.States.Add(vsHover_card);");
+        sb.AppendLine("        var vsgList_card_hover = new Microsoft.Maui.Controls.VisualStateGroupList();");
+        sb.AppendLine("        vsgList_card_hover.Add(vsg_card_hover);");
+        sb.AppendLine("        style_card_hoverable.Setters.Add(new Microsoft.Maui.Controls.Setter { Property = Microsoft.Maui.Controls.VisualStateManager.VisualStateGroupsProperty, Value = vsgList_card_hover });");
+        sb.AppendLine("        Add(style_card_hoverable);");
+        sb.AppendLine();
     }
 
     private void EmitCsSizeVariants(StringBuilder sb)
@@ -2145,6 +2253,59 @@ public partial class {className} : ResourceDictionary
             }
         }
         return value;
+    }
+
+    /// <summary>Bootstrap shade-color: mix with black by amount (0.0-1.0).</summary>
+    private string ShadeColor(string hexColor, double amount)
+    {
+        var (r, g, b) = ParseHexRgb(hexColor);
+        var sr = (int)Math.Round(r * (1 - amount));
+        var sg = (int)Math.Round(g * (1 - amount));
+        var sb2 = (int)Math.Round(b * (1 - amount));
+        return $"#{Math.Clamp(sr,0,255):X2}{Math.Clamp(sg,0,255):X2}{Math.Clamp(sb2,0,255):X2}";
+    }
+
+    /// <summary>Bootstrap tint-color: mix with white by amount (0.0-1.0).</summary>
+    private string TintColor(string hexColor, double amount)
+    {
+        var (r, g, b) = ParseHexRgb(hexColor);
+        var tr = (int)Math.Round(r + (255 - r) * amount);
+        var tg = (int)Math.Round(g + (255 - g) * amount);
+        var tb = (int)Math.Round(b + (255 - b) * amount);
+        return $"#{Math.Clamp(tr,0,255):X2}{Math.Clamp(tg,0,255):X2}{Math.Clamp(tb,0,255):X2}";
+    }
+
+    /// <summary>Bootstrap luminance check: light colors get tinted, dark get shaded.</summary>
+    private bool IsLightColor(string hexColor)
+    {
+        var (r, g, b) = ParseHexRgb(hexColor);
+        var luminance = 0.2126 * (r / 255.0) + 0.7152 * (g / 255.0) + 0.0722 * (b / 255.0);
+        return luminance > 0.5;
+    }
+
+    /// <summary>Hover background: shade 15% (dark) or tint 15% (light).</summary>
+    private string GetHoverColor(string hexColor)
+        => IsLightColor(hexColor) ? TintColor(hexColor, 0.15) : ShadeColor(hexColor, 0.15);
+
+    /// <summary>Pressed background: shade 20% (dark) or tint 20% (light).</summary>
+    private string GetPressedColor(string hexColor)
+        => IsLightColor(hexColor) ? TintColor(hexColor, 0.20) : ShadeColor(hexColor, 0.20);
+
+    private (int R, int G, int B) ParseHexRgb(string hex)
+    {
+        hex = NormalizeHexColor(hex);
+        if (!hex.StartsWith("#") || hex.Length < 7)
+            return (0, 0, 0);
+        // Handle #AARRGGBB (8-char ARGB) by skipping alpha
+        var offset = hex.Length > 7 ? 3 : 1;
+        try
+        {
+            var r = int.Parse(hex.Substring(offset, 2), NumberStyles.HexNumber);
+            var g = int.Parse(hex.Substring(offset + 2, 2), NumberStyles.HexNumber);
+            var b = int.Parse(hex.Substring(offset + 4, 2), NumberStyles.HexNumber);
+            return (r, g, b);
+        }
+        catch { return (0, 0, 0); }
     }
 
     private string AdjustColorBrightness(string hexColor, int amount)
