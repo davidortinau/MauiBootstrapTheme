@@ -20,7 +20,62 @@
                     Color="{DynamicResource OutlineVariant}"
                     Margin="0,4"/>
 
-            <!-- SECTION: Solid Button Pressed/Hover -->
+            <!-- SECTION: VSM Diagnostic — plain MAUI button with inline VSM -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="VSM Diagnostic (Inline XAML)"
+                       StyleClass="h4"/>
+                <Label Text="Raw MAUI VSM — no Bootstrap. Verifies PointerOver/Pressed fire on this platform."
+                       StyleClass="text-muted"/>
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                    <Button Text="Hover/Press Me" Margin="0,0,8,8"
+                            BackgroundColor="#0d6efd" TextColor="White"
+                            CornerRadius="6" Padding="12,8">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal"/>
+                                    <VisualState Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="#0B5ED7"/>
+                                            <Setter Property="Scale" Value="1.02"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="#0A58CA"/>
+                                            <Setter Property="Scale" Value="0.98"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+                    </Button>
+                    <Border Padding="16,12" Margin="0,0,8,8"
+                            BackgroundColor="{DynamicResource Surface}"
+                            StrokeShape="RoundRectangle 6"
+                            Stroke="{DynamicResource Outline}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal"/>
+                                    <VisualState Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Property="Shadow">
+                                                <Setter.Value>
+                                                    <Shadow Brush="Black" Offset="0,8" Radius="16" Opacity="0.15"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+                        <Label Text="Hover this card for shadow"/>
+                    </Border>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <!-- SECTION: Solid Button Pressed &amp; Hover -->
             <VerticalStackLayout Spacing="8">
                 <Label Text="Solid Buttons — Pressed &amp; Hover"
                        StyleClass="h4"/>

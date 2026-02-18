@@ -1012,17 +1012,25 @@ public partial class {className} : ResourceDictionary
             // Add VisualStateGroups for pressed/hover/disabled feedback
             if (!(data.ButtonRules.TryGetValue(v, out var ruleVsm) && ruleVsm.Gradient != null))
             {
+                var baseColor = v switch { "primary" => data.Primary ?? "#0d6efd", "secondary" => data.Secondary ?? "#6c757d",
+                    "success" => data.Success ?? "#198754", "danger" => data.Danger ?? "#dc3545", "warning" => data.Warning ?? "#ffc107",
+                    "info" => data.Info ?? "#0dcaf0", "light" => data.Light ?? "#f8f9fa", "dark" => data.Dark ?? "#212529", _ => "#000" };
+                var normBase = NormalizeHexColor(baseColor);
+                var hoverBg = GetHoverColor(normBase);
+                var pressedBg = GetPressedColor(normBase);
+                var onColor = data.OnColors.TryGetValue(v, out var oc) ? NormalizeHexColor(oc) : (v == "warning" || v == "info" || v == "light" ? "#000000" : "#ffffff");
+
                 sb.AppendLine($"        // VSM for btn-{v}");
                 sb.AppendLine($"        var vsg_{v} = new Microsoft.Maui.Controls.VisualStateGroup {{ Name = \"CommonStates\" }};");
                 sb.AppendLine($"        var vsNormal_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Normal\" }};");
                 sb.AppendLine($"        vsg_{v}.States.Add(vsNormal_{v});");
                 sb.AppendLine($"        var vsPressed_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Pressed\" }};");
-                sb.AppendLine($"        vsPressed_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundColorProperty, Value = DR(\"BtnPressed{pascal}\") }});");
-                sb.AppendLine($"        vsPressed_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = DR(\"BtnPressedText{pascal}\") }});");
+                sb.AppendLine($"        vsPressed_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundProperty, Value = new Microsoft.Maui.Controls.SolidColorBrush(Color.FromArgb(\"{pressedBg}\")) }});");
+                sb.AppendLine($"        vsPressed_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = Color.FromArgb(\"{onColor}\") }});");
                 sb.AppendLine($"        vsg_{v}.States.Add(vsPressed_{v});");
                 sb.AppendLine($"        var vsHover_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"PointerOver\" }};");
-                sb.AppendLine($"        vsHover_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundColorProperty, Value = DR(\"BtnHover{pascal}\") }});");
-                sb.AppendLine($"        vsHover_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = DR(\"BtnHoverText{pascal}\") }});");
+                sb.AppendLine($"        vsHover_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundProperty, Value = new Microsoft.Maui.Controls.SolidColorBrush(Color.FromArgb(\"{hoverBg}\")) }});");
+                sb.AppendLine($"        vsHover_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = Color.FromArgb(\"{onColor}\") }});");
                 sb.AppendLine($"        vsg_{v}.States.Add(vsHover_{v});");
                 sb.AppendLine($"        var vsDisabled_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Disabled\" }};");
                 sb.AppendLine($"        vsDisabled_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.VisualElement.OpacityProperty, Value = 0.65d }});");
@@ -1070,16 +1078,22 @@ public partial class {className} : ResourceDictionary
             sb.AppendLine($"        {varName}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.ShadowProperty, Value = DR(\"BtnShadowOutline{pascal}\") }});");
 
             // VSM for outline btn — hover/pressed fills with solid variant color
+            var outBaseColor = v switch { "primary" => data.Primary ?? "#0d6efd", "secondary" => data.Secondary ?? "#6c757d",
+                "success" => data.Success ?? "#198754", "danger" => data.Danger ?? "#dc3545", "warning" => data.Warning ?? "#ffc107",
+                "info" => data.Info ?? "#0dcaf0", "light" => data.Light ?? "#f8f9fa", "dark" => data.Dark ?? "#212529", _ => "#000" };
+            var outNorm = NormalizeHexColor(outBaseColor);
+            var outOnColor = data.OnColors.TryGetValue(v, out var outOc) ? NormalizeHexColor(outOc) : (v == "warning" || v == "info" || v == "light" ? "#000000" : "#ffffff");
+
             sb.AppendLine($"        var vsg_out_{v} = new Microsoft.Maui.Controls.VisualStateGroup {{ Name = \"CommonStates\" }};");
             sb.AppendLine($"        var vsNormal_out_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Normal\" }};");
             sb.AppendLine($"        vsg_out_{v}.States.Add(vsNormal_out_{v});");
             sb.AppendLine($"        var vsPressed_out_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Pressed\" }};");
-            sb.AppendLine($"        vsPressed_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundColorProperty, Value = DR(\"{pascal}\") }});");
-            sb.AppendLine($"        vsPressed_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = DR(\"On{pascal}\") }});");
+            sb.AppendLine($"        vsPressed_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundProperty, Value = new Microsoft.Maui.Controls.SolidColorBrush(Color.FromArgb(\"{outNorm}\")) }});");
+            sb.AppendLine($"        vsPressed_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = Color.FromArgb(\"{outOnColor}\") }});");
             sb.AppendLine($"        vsg_out_{v}.States.Add(vsPressed_out_{v});");
             sb.AppendLine($"        var vsHover_out_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"PointerOver\" }};");
-            sb.AppendLine($"        vsHover_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundColorProperty, Value = DR(\"{pascal}\") }});");
-            sb.AppendLine($"        vsHover_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = DR(\"On{pascal}\") }});");
+            sb.AppendLine($"        vsHover_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.BackgroundProperty, Value = new Microsoft.Maui.Controls.SolidColorBrush(Color.FromArgb(\"{outNorm}\")) }});");
+            sb.AppendLine($"        vsHover_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.TextColorProperty, Value = Color.FromArgb(\"{outOnColor}\") }});");
             sb.AppendLine($"        vsg_out_{v}.States.Add(vsHover_out_{v});");
             sb.AppendLine($"        var vsDisabled_out_{v} = new Microsoft.Maui.Controls.VisualState {{ Name = \"Disabled\" }};");
             sb.AppendLine($"        vsDisabled_out_{v}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.VisualElement.OpacityProperty, Value = 0.65d }});");
