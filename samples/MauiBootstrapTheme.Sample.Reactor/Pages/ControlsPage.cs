@@ -11,7 +11,7 @@ class ControlsPage : BasePage
             VStack(spacing: 24,
                 // Page Header
                 VStack(spacing: 4,
-                    Label("Bootstrap Controls").Class("h1"),
+                    Label("Bootstrap dControls").Class("h4"),
                     Label("Stock MAUI controls styled with Bootstrap 5 theme values.").Class("lead").Class("text-muted")
                 ),
 
