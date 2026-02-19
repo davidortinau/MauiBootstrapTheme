@@ -29,20 +29,20 @@ public class CssParsingTests
         foreach (var variant in new[] { "primary", "secondary", "success", "danger", "warning", "info", "light", "dark" })
         {
             Assert.Matches(
-                $@"this\[""BtnShadow{ToPascal(variant)}""\] = new Shadow \{{ Brush = Color\.FromArgb\(""#000""\), Offset = new Point\(3, 3\), Radius = 0, Opacity = 1f \}};",
+                $@"this\[""BtnShadow{ToPascal(variant)}""\] = new Microsoft\.Maui\.Controls\.Shadow \{{ Brush = Color\.FromArgb\(""#000""\), Offset = new Point\(3, 3\), Radius = 0, Opacity = 1f \}};",
                 generated);
             Assert.Contains(
-                $"style_btn_{variant}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = DR(\"BtnShadow{ToPascal(variant)}\") }});",
+                $"style_btn_{variant}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.ShadowProperty, Value = DR(\"BtnShadow{ToPascal(variant)}\") }});",
                 generated);
         }
 
         foreach (var variant in new[] { "primary", "secondary", "success", "danger", "warning", "info", "light", "dark" })
         {
             Assert.Contains(
-                $"style_btnout_{variant}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = DR(\"BtnShadowOutline{ToPascal(variant)}\") }});",
+                $"style_btnout_{variant}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.ShadowProperty, Value = DR(\"BtnShadowOutline{ToPascal(variant)}\") }});",
                 generated);
             Assert.Contains(
-                $"this[\"BtnShadowOutline{ToPascal(variant)}\"] = new Shadow {{ Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }};",
+                $"this[\"BtnShadowOutline{ToPascal(variant)}\"] = new Microsoft.Maui.Controls.Shadow {{ Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }};",
                 generated);
         }
     }
@@ -58,10 +58,10 @@ public class CssParsingTests
         foreach (var variant in new[] { "primary", "secondary", "success", "danger", "warning", "info", "light", "dark" })
         {
             Assert.Contains(
-                $"this[\"BtnShadow{ToPascal(variant)}\"] = new Shadow {{ Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }};",
+                $"this[\"BtnShadow{ToPascal(variant)}\"] = new Microsoft.Maui.Controls.Shadow {{ Brush = Colors.Transparent, Offset = new Point(0, 0), Radius = 0, Opacity = 0f }};",
                 generated);
             Assert.Contains(
-                $"style_btn_{variant}.Setters.Add(new Setter {{ Property = Button.ShadowProperty, Value = DR(\"BtnShadow{ToPascal(variant)}\") }});",
+                $"style_btn_{variant}.Setters.Add(new Microsoft.Maui.Controls.Setter {{ Property = Microsoft.Maui.Controls.Button.ShadowProperty, Value = DR(\"BtnShadow{ToPascal(variant)}\") }});",
                 generated);
         }
     }
