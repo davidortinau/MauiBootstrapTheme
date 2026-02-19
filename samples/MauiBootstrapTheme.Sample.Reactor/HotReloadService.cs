@@ -19,8 +19,22 @@ internal static class HotReloadService
 
     static void UpdateApplication(Type[]? _)
     {
-        System.Diagnostics.Debug.WriteLine("[BootstrapTheme] Hot Reload triggered — invalidating components");
-        MainThread.BeginInvokeOnMainThread(() => HotReloadTriggered?.Invoke());
+        try
+        {
+            System.Diagnostics.Debug.WriteLine("[BootstrapTheme] Hot Reload triggered — invalidating components");
+            if (MainThread.IsMainThread)
+                HotReloadTriggered?.Invoke();
+            else
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    try { HotReloadTriggered?.Invoke(); }
+                    catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"[BootstrapTheme] Hot Reload callback error: {ex}"); }
+                });
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[BootstrapTheme] Hot Reload error: {ex}");
+        }
     }
 #pragma warning restore IDE0051
 }
