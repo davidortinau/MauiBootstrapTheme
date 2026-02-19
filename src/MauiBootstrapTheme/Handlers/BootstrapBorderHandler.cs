@@ -1,4 +1,4 @@
-using MauiBootstrapTheme.Theming;
+﻿using MauiBootstrapTheme.Theming;
 using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Controls.Shapes;
 #if ANDROID

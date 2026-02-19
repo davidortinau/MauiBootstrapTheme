@@ -1,4 +1,4 @@
-using MauiBootstrapTheme.Handlers;
+﻿using MauiBootstrapTheme.Handlers;
 using MauiBootstrapTheme.Theming;
 
 namespace MauiBootstrapTheme.Extensions;

@@ -1,4 +1,4 @@
-using MauiReactor;
+﻿using MauiReactor;
 using MauiBootstrapTheme.Theming;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;

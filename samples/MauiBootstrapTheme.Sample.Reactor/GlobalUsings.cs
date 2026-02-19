@@ -1,4 +1,4 @@
-// MauiReactor core
+﻿// MauiReactor core
 global using MauiReactor;
 global using Microsoft.Maui;
 global using Microsoft.Maui.Graphics;

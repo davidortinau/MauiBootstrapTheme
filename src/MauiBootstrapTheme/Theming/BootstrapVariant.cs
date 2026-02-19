@@ -1,4 +1,4 @@
-namespace MauiBootstrapTheme.Theming;
+﻿namespace MauiBootstrapTheme.Theming;
 
 /// <summary>
 /// Bootstrap variant types for controls.

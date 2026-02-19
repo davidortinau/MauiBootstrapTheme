@@ -1,4 +1,4 @@
-using MauiBootstrapTheme.Extensions;
+﻿using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
 using MauiDevFlow.Agent;
 

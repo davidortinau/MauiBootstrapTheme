@@ -1,4 +1,4 @@
-namespace MauiBootstrapTheme.Theming;
+﻿namespace MauiBootstrapTheme.Theming;
 
 /// <summary>
 /// Attached properties for applying Bootstrap styling to individual controls.

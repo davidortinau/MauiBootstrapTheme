@@ -1,4 +1,4 @@
-namespace MauiBootstrapTheme.Sample;
+﻿namespace MauiBootstrapTheme.Sample;
 
 public partial class AppShell : Shell
 {

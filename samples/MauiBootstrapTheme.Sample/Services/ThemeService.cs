@@ -1,4 +1,4 @@
-using MauiBootstrapTheme.Theming;
+﻿using MauiBootstrapTheme.Theming;
 
 namespace MauiBootstrapTheme.Sample.Services;
 

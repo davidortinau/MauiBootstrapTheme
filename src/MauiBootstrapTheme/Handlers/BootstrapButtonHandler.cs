@@ -1,4 +1,4 @@
-using MauiBootstrapTheme.Theming;
+﻿using MauiBootstrapTheme.Theming;
 using Microsoft.Maui.Handlers;
 using System.Collections.Concurrent;
 #if ANDROID

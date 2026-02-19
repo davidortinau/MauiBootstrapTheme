@@ -1,4 +1,4 @@
-using MauiReactor;
+﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
 
@@ -106,7 +106,7 @@ class CardsPage : BasePage
                                 Button("Go somewhere").Class("btn-primary").HorizontalOptions(LayoutOptions.Start)
                             ).Padding(16),
                             BoxView().HeightRequest(1).Color(BootstrapTheme.Current.Outline),
-                            Label("3 days ago").Class("text-muted").Padding(12, 8).Background(GetResource<Color>("Gray100"))
+                            Label("2 days ago").Class("text-muted").Padding(12, 8).Background(GetResource<Color>("Gray100"))
                         ).Padding(0)
                     ).Class("card").Class("shadow").Padding(0)
                 )

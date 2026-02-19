@@ -1,4 +1,4 @@
-namespace MauiBootstrapTheme.Theming;
+﻿namespace MauiBootstrapTheme.Theming;
 
 /// <summary>
 /// Represents the current Bootstrap theme with colors, spacing, and typography values.
