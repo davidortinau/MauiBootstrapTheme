@@ -35,6 +35,9 @@
     <None Include="buildTransitive\Plugin.Maui.BootstrapTheme.targets" Pack="true" PackagePath="buildTransitive\" />
     <None Include="buildTransitive\MauiBootstrapTheme.Build.dll" Pack="true" PackagePath="buildTransitive\" Visible="false" Condition="Exists('buildTransitive\MauiBootstrapTheme.Build.dll')" />
     <None Include="buildTransitive\ExCSS.dll" Pack="true" PackagePath="buildTransitive\" Visible="false" Condition="Exists('buildTransitive\ExCSS.dll')" />
+    <!-- Copilot skill files -->
+    <None Include="buildTransitive\skills\maui-bootstrap-theme\SKILL.md" Pack="true" PackagePath="buildTransitive\skills\maui-bootstrap-theme\" />
+    <None Include="buildTransitive\skills\maui-bootstrap-theme\references\attached-properties.md" Pack="true" PackagePath="buildTransitive\skills\maui-bootstrap-theme\references\" />
   </ItemGroup>
 
   <!-- Copy Build task DLLs into buildTransitive so they get packed -->

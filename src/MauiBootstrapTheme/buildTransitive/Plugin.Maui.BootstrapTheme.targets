@@ -31,4 +31,23 @@
     
   </Target>
 
+  <!-- Install Copilot skill into consuming project on first build -->
+  <PropertyGroup>
+    <_BootstrapSkillDir>$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '.copilot', 'skills', 'maui-bootstrap-theme'))</_BootstrapSkillDir>
+    <_BootstrapSkillSource>$([System.IO.Path]::Combine('$(MSBuildThisFileDirectory)', 'skills', 'maui-bootstrap-theme'))</_BootstrapSkillSource>
+  </PropertyGroup>
+  <Target Name="_InstallBootstrapThemeCopilotSkill"
+          BeforeTargets="CoreCompile"
+          Condition="!Exists('$(_BootstrapSkillDir)')">
+    <MakeDir Directories="$(_BootstrapSkillDir)" />
+    <MakeDir Directories="$([System.IO.Path]::Combine('$(_BootstrapSkillDir)', 'references'))" />
+    <Copy SourceFiles="$([System.IO.Path]::Combine('$(_BootstrapSkillSource)', 'SKILL.md'))"
+          DestinationFolder="$(_BootstrapSkillDir)"
+          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$([System.IO.Path]::Combine('$(_BootstrapSkillSource)', 'references', 'attached-properties.md'))"
+          DestinationFolder="$([System.IO.Path]::Combine('$(_BootstrapSkillDir)', 'references'))"
+          SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="MauiBootstrapTheme: Installed Copilot skill to .copilot/skills/maui-bootstrap-theme/" />
+  </Target>
+
 </Project>
