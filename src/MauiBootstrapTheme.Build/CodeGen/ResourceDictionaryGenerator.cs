@@ -430,12 +430,27 @@ public partial class {className} : ResourceDictionary
             sb.AppendLine("        // Apply initial theme mode based on current system theme");
             sb.AppendLine("        if (Application.Current != null)");
             sb.AppendLine("        {");
-            sb.AppendLine("            ApplyThemeMode(Application.Current.RequestedTheme);");
+            sb.AppendLine("            try");
+            sb.AppendLine("            {");
+            sb.AppendLine("                ApplyThemeMode(Application.Current.RequestedTheme);");
+            sb.AppendLine("            }");
+            sb.AppendLine("            catch (Exception ex)");
+            sb.AppendLine("            {");
+            sb.AppendLine("                System.Diagnostics.Debug.WriteLine($\"ApplyThemeMode failed during init: {ex}\");");
+            sb.AppendLine("            }");
             sb.AppendLine($"            var weakSelf = new WeakReference<{className}>(this);");
             sb.AppendLine("            Application.Current.RequestedThemeChanged += (s, e) =>");
             sb.AppendLine("            {");
-            sb.AppendLine("                if (weakSelf.TryGetTarget(out var self))");
-            sb.AppendLine("                    self.ApplyThemeMode(e.RequestedTheme);");
+            sb.AppendLine("                try");
+            sb.AppendLine("                {");
+            sb.AppendLine("                    if (Application.Current == null) return;");
+            sb.AppendLine("                    if (weakSelf.TryGetTarget(out var self))");
+            sb.AppendLine("                        self.ApplyThemeMode(e.RequestedTheme);");
+            sb.AppendLine("                }");
+            sb.AppendLine("                catch (Exception ex)");
+            sb.AppendLine("                {");
+            sb.AppendLine("                    System.Diagnostics.Debug.WriteLine($\"ApplyThemeMode failed on theme change: {ex}\");");
+            sb.AppendLine("                }");
             sb.AppendLine("            };");
             sb.AppendLine("        }");
         }
@@ -458,16 +473,22 @@ public partial class {className} : ResourceDictionary
 
     private void EmitApplyThemeModeMethod(StringBuilder sb, Parsing.BootstrapThemeData data)
     {
+        sb.AppendLine("    private bool _isApplyingTheme;");
+        sb.AppendLine();
         sb.AppendLine("    /// <summary>");
         sb.AppendLine("    /// Applies light or dark mode color overrides from the CSS [data-bs-theme=dark] block.");
         sb.AppendLine("    /// </summary>");
         sb.AppendLine("    private void ApplyThemeMode(AppTheme theme)");
         sb.AppendLine("    {");
+        sb.AppendLine("        if (_isApplyingTheme) return;");
         sb.AppendLine("        if (!Microsoft.Maui.ApplicationModel.MainThread.IsMainThread)");
         sb.AppendLine("        {");
         sb.AppendLine("            Microsoft.Maui.ApplicationModel.MainThread.BeginInvokeOnMainThread(() => ApplyThemeMode(theme));");
         sb.AppendLine("            return;");
         sb.AppendLine("        }");
+        sb.AppendLine("        _isApplyingTheme = true;");
+        sb.AppendLine("        try");
+        sb.AppendLine("        {");
         sb.AppendLine();
         sb.AppendLine("        if (theme == AppTheme.Dark)");
         sb.AppendLine("        {");
@@ -579,6 +600,11 @@ public partial class {className} : ResourceDictionary
             }
         }
 
+        sb.AppendLine("        }");
+        sb.AppendLine("        }");
+        sb.AppendLine("        finally");
+        sb.AppendLine("        {");
+        sb.AppendLine("            _isApplyingTheme = false;");
         sb.AppendLine("        }");
         sb.AppendLine("    }");
     }
