@@ -84,6 +84,8 @@ public class BootstrapTheme
     public Color DarkSurface { get; set; } = Color.FromArgb("#343a40");
     public Color DarkOnSurface { get; set; } = Color.FromArgb("#f8f9fa");
     public Color DarkOutline { get; set; } = Color.FromArgb("#495057");
+    public Color DarkInputBackground { get; set; } = Color.FromArgb("#343a40");
+    public Color DarkInputText { get; set; } = Color.FromArgb("#dee2e6");
 
     // ── Spacing & Sizing ──
     
@@ -210,6 +212,8 @@ public class BootstrapTheme
     public Color GetOnSurface() => IsDarkMode ? DarkOnSurface : OnSurface;
     public Color GetOutline() => IsDarkMode ? DarkOutline : Outline;
     public Color GetMuted() => IsDarkMode ? DarkOnSurface.WithAlpha(0.6f) : Muted;
+    public Color GetInputBackground() => IsDarkMode ? DarkInputBackground : InputBackground;
+    public Color GetInputText() => IsDarkMode ? DarkInputText : InputText;
     
     /// <summary>
     /// Gets the appropriate text color for the current theme.
@@ -481,7 +485,7 @@ public class BootstrapTheme
     /// Walks the visual tree and forces all handlers to re-apply Bootstrap styling
     /// by invalidating the "BootstrapStyle" mapped property, which re-triggers AppendToMapping callbacks.
     /// </summary>
-    internal static void RefreshHandlers()
+    public static void RefreshHandlers()
     {
         if (Application.Current?.Windows == null)
             return;
@@ -638,6 +642,10 @@ public class BootstrapTheme
             theme.InputBackground = ibgc;
         if (resources.TryGetValue("InputText", out var itx) && itx is Color itxc)
             theme.InputText = itxc;
+        if (resources.TryGetValue("DarkInputBackground", out var dibg) && dibg is Color dibgc)
+            theme.DarkInputBackground = dibgc;
+        if (resources.TryGetValue("DarkInputText", out var ditx) && ditx is Color ditxc)
+            theme.DarkInputText = ditxc;
 
         SetTheme(theme);
     }

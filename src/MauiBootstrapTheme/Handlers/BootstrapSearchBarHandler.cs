@@ -62,13 +62,13 @@ public static class BootstrapSearchBarHandler
         normalDrawable.SetShape(ShapeType.Rectangle);
         normalDrawable.SetCornerRadius(cornerRadiusPx);
         normalDrawable.SetStroke(borderWidthPx, borderColor.ToPlatform());
-        normalDrawable.SetColor(theme.InputBackground.ToPlatform());
+        normalDrawable.SetColor(theme.GetInputBackground().ToPlatform());
 
         var focusedDrawable = new GradientDrawable();
         focusedDrawable.SetShape(ShapeType.Rectangle);
         focusedDrawable.SetCornerRadius(cornerRadiusPx);
         focusedDrawable.SetStroke(borderWidthPx, focusBorderColor.ToPlatform());
-        focusedDrawable.SetColor(theme.InputBackground.ToPlatform());
+        focusedDrawable.SetColor(theme.GetInputBackground().ToPlatform());
 
         var stateList = new StateListDrawable();
         stateList.AddState(new[] { Android.Resource.Attribute.StateFocused }, focusedDrawable);
@@ -92,7 +92,7 @@ public static class BootstrapSearchBarHandler
             searchBar.SearchTextField.Layer.BorderWidth = (nfloat)theme.BorderWidth;
             searchBar.SearchTextField.Layer.CornerRadius = (nfloat)cornerRadius;
             searchBar.SearchTextField.Layer.MasksToBounds = true;
-            searchBar.SearchTextField.BackgroundColor = theme.InputBackground.ToPlatform();
+            searchBar.SearchTextField.BackgroundColor = theme.GetInputBackground().ToPlatform();
         }
     }
 #endif

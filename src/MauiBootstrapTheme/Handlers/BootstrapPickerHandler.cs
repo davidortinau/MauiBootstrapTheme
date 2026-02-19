@@ -68,20 +68,20 @@ public static class BootstrapPickerHandler
         normalDrawable.SetShape(ShapeType.Rectangle);
         normalDrawable.SetCornerRadius(cornerRadiusPx);
         normalDrawable.SetStroke(borderWidthPx, borderColor.ToPlatform());
-        normalDrawable.SetColor(theme.InputBackground.ToPlatform());
+        normalDrawable.SetColor(theme.GetInputBackground().ToPlatform());
 
         var focusedDrawable = new GradientDrawable();
         focusedDrawable.SetShape(ShapeType.Rectangle);
         focusedDrawable.SetCornerRadius(cornerRadiusPx);
         focusedDrawable.SetStroke(borderWidthPx, focusBorderColor.ToPlatform());
-        focusedDrawable.SetColor(theme.InputBackground.ToPlatform());
+        focusedDrawable.SetColor(theme.GetInputBackground().ToPlatform());
 
         var stateList = new StateListDrawable();
         stateList.AddState(new[] { Android.Resource.Attribute.StateFocused }, focusedDrawable);
         stateList.AddState(new int[] { }, normalDrawable);
 
         picker.Background = stateList;
-        picker.SetTextColor(theme.InputText.ToPlatform());
+        picker.SetTextColor(theme.GetInputText().ToPlatform());
         picker.SetTextSize(Android.Util.ComplexUnitType.Sp, (float)fontSize);
         picker.SetMinHeight((int)(minHeight * density));
         
@@ -103,8 +103,8 @@ public static class BootstrapPickerHandler
         textField.Layer.BorderWidth = (nfloat)theme.BorderWidth;
         textField.Layer.CornerRadius = (nfloat)cornerRadius;
         textField.Layer.MasksToBounds = true;
-        textField.BackgroundColor = theme.InputBackground.ToPlatform();
-        textField.TextColor = theme.InputText.ToPlatform();
+        textField.BackgroundColor = theme.GetInputBackground().ToPlatform();
+        textField.TextColor = theme.GetInputText().ToPlatform();
         textField.Font = UIFont.SystemFontOfSize((nfloat)fontSize);
 
         var leftPadding = new UIView(new CoreGraphics.CGRect(0, 0, paddingX, 1));
@@ -126,8 +126,8 @@ public static class BootstrapPickerHandler
         comboBox.BorderBrush = new SolidColorBrush(borderColor.ToWindowsColor());
         comboBox.BorderThickness = new Microsoft.UI.Xaml.Thickness(theme.BorderWidth);
         comboBox.CornerRadius = new Microsoft.UI.Xaml.CornerRadius(cornerRadius);
-        comboBox.Foreground = new SolidColorBrush(theme.InputText.ToWindowsColor());
-        comboBox.Background = new SolidColorBrush(theme.InputBackground.ToWindowsColor());
+        comboBox.Foreground = new SolidColorBrush(theme.GetInputText().ToWindowsColor());
+        comboBox.Background = new SolidColorBrush(theme.GetInputBackground().ToWindowsColor());
         comboBox.FontSize = fontSize;
         comboBox.MinHeight = minHeight;
         comboBox.Padding = new Microsoft.UI.Xaml.Thickness(paddingX, paddingY, paddingX, paddingY);

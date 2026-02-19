@@ -66,20 +66,20 @@ public static class BootstrapTimePickerHandler
         normalDrawable.SetShape(ShapeType.Rectangle);
         normalDrawable.SetCornerRadius(cornerRadiusPx);
         normalDrawable.SetStroke(borderWidthPx, borderColor.ToPlatform());
-        normalDrawable.SetColor(theme.InputBackground.ToPlatform());
+        normalDrawable.SetColor(theme.GetInputBackground().ToPlatform());
 
         var focusedDrawable = new GradientDrawable();
         focusedDrawable.SetShape(ShapeType.Rectangle);
         focusedDrawable.SetCornerRadius(cornerRadiusPx);
         focusedDrawable.SetStroke(borderWidthPx, focusBorderColor.ToPlatform());
-        focusedDrawable.SetColor(theme.InputBackground.ToPlatform());
+        focusedDrawable.SetColor(theme.GetInputBackground().ToPlatform());
 
         var stateList = new StateListDrawable();
         stateList.AddState(new[] { Android.Resource.Attribute.StateFocused }, focusedDrawable);
         stateList.AddState(new int[] { }, normalDrawable);
 
         editText.Background = stateList;
-        editText.SetTextColor(theme.InputText.ToPlatform());
+        editText.SetTextColor(theme.GetInputText().ToPlatform());
         editText.SetTextSize(Android.Util.ComplexUnitType.Sp, (float)fontSize);
         editText.SetMinHeight((int)(minHeight * density));
         
@@ -100,7 +100,7 @@ public static class BootstrapTimePickerHandler
         datePicker.Layer.BorderWidth = (nfloat)theme.BorderWidth;
         datePicker.Layer.CornerRadius = (nfloat)cornerRadius;
         datePicker.Layer.MasksToBounds = true;
-        datePicker.BackgroundColor = theme.InputBackground.ToPlatform();
+        datePicker.BackgroundColor = theme.GetInputBackground().ToPlatform();
     }
 #endif
 
@@ -114,8 +114,8 @@ public static class BootstrapTimePickerHandler
         timePicker.BorderBrush = new SolidColorBrush(borderColor.ToWindowsColor());
         timePicker.BorderThickness = new Microsoft.UI.Xaml.Thickness(theme.BorderWidth);
         timePicker.CornerRadius = new Microsoft.UI.Xaml.CornerRadius(cornerRadius);
-        timePicker.Foreground = new SolidColorBrush(theme.InputText.ToWindowsColor());
-        timePicker.Background = new SolidColorBrush(theme.InputBackground.ToWindowsColor());
+        timePicker.Foreground = new SolidColorBrush(theme.GetInputText().ToWindowsColor());
+        timePicker.Background = new SolidColorBrush(theme.GetInputBackground().ToWindowsColor());
         timePicker.FontSize = fontSize;
         timePicker.MinHeight = minHeight;
         timePicker.Padding = new Microsoft.UI.Xaml.Thickness(paddingX, paddingY, paddingX, paddingY);

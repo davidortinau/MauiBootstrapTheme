@@ -45,8 +45,8 @@ public static class BootstrapEntryHandler
         var cornerRadius = isPill ? theme.CornerRadiusPill : GetCornerRadiusForSize(size, theme);
         var borderColor = GetBorderColorForVariant(variant, theme);
         // Use theme-defined InputBackground/InputText (matches Bootstrap form-control colors)
-        var backgroundColor = theme.InputBackground;
-        var textColor = theme.InputText;
+        var backgroundColor = theme.GetInputBackground();
+        var textColor = theme.GetInputText();
         var minHeight = GetMinHeightForSize(size, theme);
         var fontSize = GetFontSizeForSize(size, theme);
         var (paddingX, paddingY) = GetPaddingForSize(size, theme);
