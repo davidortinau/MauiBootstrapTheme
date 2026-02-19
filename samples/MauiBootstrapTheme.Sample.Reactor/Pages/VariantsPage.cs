@@ -1,6 +1,5 @@
 using MauiReactor;
 using MauiBootstrapTheme.Extensions;
-using MauiBootstrapTheme.Reactor;
 using MauiBootstrapTheme.Theming;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;
@@ -55,7 +54,7 @@ class VariantsPage : BasePage
     {
         return Border(
             VStack(spacing: 12,
-                Label(title).H5().Class(OnClass(variant)),
+                Label(title).Class("h5").Class(OnClass(variant)),
                 Entry().Placeholder($"{title} Entry").Class("form-control"),
                 FlexLayout(
                     Button($"{title} Button").Class(BtnClass(variant)).Margin(0, 0, 8, 8),
@@ -70,8 +69,8 @@ class VariantsPage : BasePage
             VStack(spacing: 20,
                 // Header
                 VStack(spacing: 4,
-                    Label("Color Variants").H1(),
-                    Label("All Bootstrap color variants applied to controls for parity comparison.").Lead().Muted()
+                    Label("Color Variants").Class("h1"),
+                    Label("All Bootstrap color variants applied to controls for parity comparison.").Class("lead").Class("text-muted")
                 ),
 
                 RenderVariantSection("Primary", BootstrapVariant.Primary),

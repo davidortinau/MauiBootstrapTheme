@@ -1,6 +1,5 @@
 using MauiReactor;
 using MauiBootstrapTheme.Extensions;
-using MauiBootstrapTheme.Reactor;
 using MauiBootstrapTheme.Theming;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;
@@ -12,15 +11,15 @@ class ControlsPage : BasePage
             VStack(spacing: 24,
                 // Page Header
                 VStack(spacing: 4,
-                    Label("Bootstrap Controls").H1(),
-                    Label("Stock MAUI controls styled with Bootstrap 5 theme values.").Lead().Muted()
+                    Label("Bootstrap Controls").Class("h1"),
+                    Label("Stock MAUI controls styled with Bootstrap 5 theme values.").Class("lead").Class("text-muted")
                 ),
 
                 BoxView().HeightRequest(1).Color(BootstrapTheme.Current.OutlineVariant).Margin(0, 4),
 
                 // Buttons Section
                 VStack(spacing: 8,
-                    Label("Buttons").H4(),
+                    Label("Buttons").Class("h4"),
                     FlexLayout(
                         Button("Primary").Class("btn-primary").Margin(0, 0, 8, 8),
                         Button("Secondary").Class("btn-secondary").Margin(0, 0, 8, 8),
@@ -33,7 +32,7 @@ class ControlsPage : BasePage
 
                 // Outline Buttons Section
                 VStack(spacing: 8,
-                    Label("Outline Buttons").H5(),
+                    Label("Outline Buttons").Class("h5"),
                     FlexLayout(
                         Button("Primary").Class("btn-outline-primary").Margin(0, 0, 8, 8),
                         Button("Secondary").Class("btn-outline-secondary").Margin(0, 0, 8, 8),
@@ -44,7 +43,7 @@ class ControlsPage : BasePage
 
                 // Button Sizes Section
                 VStack(spacing: 8,
-                    Label("Button Sizes").H5(),
+                    Label("Button Sizes").Class("h5"),
                     FlexLayout(
                         Button("Large").Class("btn-primary").Class("btn-lg").Margin(0, 0, 8, 8),
                         Button("Default").Class("btn-primary").Margin(0, 0, 8, 8),
@@ -54,7 +53,7 @@ class ControlsPage : BasePage
 
                 // Pill Buttons Section
                 VStack(spacing: 8,
-                    Label("Pill Buttons").H5(),
+                    Label("Pill Buttons").Class("h5"),
                     FlexLayout(
                         Button("Primary Pill").Class("btn-primary").Class("btn-pill").Margin(0, 0, 8, 8),
                         Button("Success Pill").Class("btn-success").Class("btn-pill").Margin(0, 0, 8, 8)
@@ -63,7 +62,7 @@ class ControlsPage : BasePage
 
                 // Progress Section
                 VStack(spacing: 12,
-                    Label("Progress").H4(),
+                    Label("Progress").Class("h4"),
                     VStack(spacing: 4,
                         Label("Primary (75%)"),
                         ProgressBar().Progress(0.75)
@@ -80,7 +79,7 @@ class ControlsPage : BasePage
 
                 // Spinners Section
                 VStack(spacing: 8,
-                    Label("Spinners").H4(),
+                    Label("Spinners").Class("h4"),
                     HStack(spacing: 16,
                         ActivityIndicator().IsRunning(true).Color(GetResource<Color>("Primary")),
                         ActivityIndicator().IsRunning(true).Color(GetResource<Color>("Success")),

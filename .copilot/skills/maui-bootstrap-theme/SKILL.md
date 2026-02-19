@@ -13,7 +13,7 @@ description: >-
 # MauiBootstrapTheme Styling Guide
 
 Bootstrap 5 styling for .NET MAUI via CSS-generated ResourceDictionaries.
-NuGet: `Plugin.Maui.BootstrapTheme` (XAML/C#) + `MauiBootstrapTheme.Reactor` (MauiReactor).
+NuGet: `Plugin.Maui.BootstrapTheme`.
 
 ## Setup
 
@@ -21,8 +21,6 @@ NuGet: `Plugin.Maui.BootstrapTheme` (XAML/C#) + `MauiBootstrapTheme.Reactor` (Ma
 
 ```xml
 <PackageReference Include="Plugin.Maui.BootstrapTheme" />
-<!-- MauiReactor only: -->
-<PackageReference Include="MauiBootstrapTheme.Reactor" />
 ```
 
 ### 2. Add CSS themes to .csproj
@@ -97,14 +95,11 @@ Buttons include visual states: Pressed darkens bg, PointerOver lightens bg (desk
 <Button Text="Disabled" StyleClass="btn-primary" IsEnabled="False"/>
 ```
 
-#### C#
+#### C# / MauiReactor
 ```csharp
+// C#
 new Button { Text = "Save", StyleClass = { "btn-primary" } };
-new Button { Text = "Delete", StyleClass = { "btn-outline-danger", "btn-sm" } };
-```
-
-#### MauiReactor
-```csharp
+// MauiReactor
 Button("Save").Class("btn-primary")
 Button("Delete").Class("btn-outline-danger").Class("btn-sm")
 ```
@@ -139,10 +134,13 @@ Button("Delete").Class("btn-outline-danger").Class("btn-sm")
 <Label Text="On blue card" StyleClass="h5,on-primary"/>
 ```
 
-#### MauiReactor
+#### C# / MauiReactor
 ```csharp
-Label("Page Title").H1()
-Label("Subtitle").Lead().Muted()
+// C#
+new Label { Text = "Page Title", StyleClass = { "h1" } };
+// MauiReactor
+Label("Page Title").Class("h1")
+Label("Subtitle").Class("lead").Class("text-muted")
 Label("Field Label").Class("form-label")
 ```
 
@@ -184,15 +182,13 @@ Label("Field Label").Class("form-label")
 <Slider StyleClass="form-range"/>
 ```
 
-#### MauiReactor
+#### C# / MauiReactor
 ```csharp
 Label("Email").Class("form-label")
 Entry().Placeholder("name@example.com").Class("form-control")
 Picker().Title("Select...").Class("form-select")
-SearchBar().Placeholder("Search...").Class("form-control")
 CheckBox().Class("form-check-input")
 Switch().Class("form-switch")
-Slider().Class("form-range")
 ```
 
 ### Cards & Containers (Border)
@@ -231,12 +227,12 @@ Slider().Class("form-range")
 </Border>
 ```
 
-#### MauiReactor
+#### C# / MauiReactor
 ```csharp
 Border(
     VStack(
-        Label("Card Title").H5(),
-        Label("Content").Muted()
+        Label("Card Title").Class("h5"),
+        Label("Content").Class("text-muted")
     )
 ).Class("card").Class("shadow")
 ```
@@ -280,63 +276,101 @@ Badges use a Border container with a Label inside:
 <Label TextColor="{DynamicResource OnBackground}"/>
 ```
 
-### Spacing (via Attached Properties)
+## Attached Properties
 
-XAML namespace: `xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapTheme"`
-
-```xml
-<Border theme:Bootstrap.PaddingLevel="3"/>  <!-- 0-5 scale -->
-<Border theme:Bootstrap.MarginLevel="2"/>
-```
-
-MauiReactor: `.PaddingLevel(3)` / `.MarginLevel(2)`
-
-## Attached Properties (Alternative to StyleClass)
-
-For buttons, you can use attached properties instead of StyleClass for native handler-level styling:
-
-```xml
-<Button Text="Primary" theme:Bootstrap.Variant="Primary"/>
-<Button Text="Outline" theme:Bootstrap.Variant="OutlinePrimary"/>
-<Button Text="Large" theme:Bootstrap.Variant="Danger" theme:Bootstrap.Size="Large"/>
-```
-
-Variant values: `Primary`, `Secondary`, `Success`, `Danger`, `Warning`, `Info`, `Light`, `Dark`, `OutlinePrimary`...`OutlineDark`, `Link`
-
-MauiReactor equivalents: `.Primary()`, `.Danger()`, `.Outlined()`, `.Large()`, `.Small()`
-
-### Additional MauiReactor Extension Methods
-
-| Method | Effect |
-|--------|--------|
-| `.H1()` ... `.H6()` | Heading level |
-| `.Lead()` `.Muted()` | Text styles |
-| `.TextColor(BootstrapVariant)` | Text color variant |
-| `.TextStyle(BootstrapTextStyle)` | Text style enum |
-| `.Background(BootstrapVariant)` | Background color variant |
-| `.Badge(BootstrapVariant)` | Badge display on Label |
-| `.Shadow(BootstrapShadow)` `.ShadowSm()` `.ShadowMd()` `.ShadowLg()` | Shadow levels |
-| `.PaddingLevel(int)` `.MarginLevel(int)` | Bootstrap spacing 0-5 |
-| `.BootstrapHeight()` | Standard Bootstrap height (Button, Entry, ProgressBar) |
+Alternative to StyleClass for handler-level styling (buttons, spacing, shadows). See `references/attached-properties.md` for details.
 
 ## Theme Switching
 
 ```csharp
 // Switch theme at runtime:
 BootstrapTheme.Apply("darkly");
+```
 
-// Or use ThemeService pattern:
-public class ThemeService
+Available Bootswatch themes: `default`, `darkly`, `slate`, `flatly`, `sketchy`, `vapor`, `brite` (or any Bootstrap 5 CSS).
+
+### Handling Theme Changes
+
+`BootstrapTheme.Apply()` swaps the `ResourceDictionary` and fires `BootstrapTheme.ThemeChanged`. Controls using `DynamicResource` update automatically, but **page backgrounds and any values read from `BootstrapTheme.Current` do not** — you must listen and refresh.
+
+#### XAML Pages
+
+Subscribe to `BootstrapTheme.ThemeChanged` to update the page background (and any other `BootstrapTheme.Current` values) on theme switch:
+
+```csharp
+public partial class MyPage : ContentPage
 {
-    public void ApplyTheme(string name)
+    public MyPage()
     {
-        BootstrapTheme.Apply(name);
-        ThemeChanged?.Invoke(this, name);
+        InitializeComponent();
+        this.BackgroundColor = BootstrapTheme.Current.GetBackground();
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        BootstrapTheme.ThemeChanged += OnThemeChanged;
+    }
+
+    protected override void OnDisappearing()
+    {
+        BootstrapTheme.ThemeChanged -= OnThemeChanged;
+        base.OnDisappearing();
+    }
+
+    private void OnThemeChanged(object? sender, EventArgs e)
+    {
+        this.BackgroundColor = BootstrapTheme.Current.GetBackground();
     }
 }
 ```
 
-Available Bootswatch themes: `default`, `darkly`, `slate`, `flatly`, `sketchy`, `vapor`, `brite` (or any Bootstrap 5 CSS).
+#### MauiReactor Pages — BasePage Pattern
+
+In MauiReactor, create a `BasePage` component that subscribes to `ThemeChanged` and calls `Invalidate()` to re-render with the new theme values:
+
+```csharp
+abstract class BasePage : Component
+{
+    protected override void OnMounted()
+    {
+        BootstrapTheme.ThemeChanged += OnThemeChanged;
+        base.OnMounted();
+    }
+
+    protected override void OnWillUnmount()
+    {
+        BootstrapTheme.ThemeChanged -= OnThemeChanged;
+        base.OnWillUnmount();
+    }
+
+    private void OnThemeChanged(object? sender, EventArgs e) => Invalidate();
+
+    public abstract VisualNode RenderContent();
+
+    public override VisualNode Render()
+    {
+        return ContentPage(
+            RenderContent()
+        ).BackgroundColor(BootstrapTheme.Current.GetBackground());
+    }
+}
+```
+
+Then every page extends `BasePage` (or `BasePage<TState>` for stateful pages — same pattern with `Component<TState>`):
+
+```csharp
+class ControlsPage : BasePage
+{
+    public override VisualNode RenderContent()
+        => ScrollView(
+            VStack(spacing: 24,
+                Label("Controls").Class("h1"),
+                Button("Primary").Class("btn-primary")
+            ).Padding(20)
+        );
+}
+```
 
 ## Common Mistakes
 
@@ -391,19 +425,13 @@ Available Bootswatch themes: `default`, `darkly`, `slate`, `flatly`, `sketchy`, 
 <Label TextColor="{DynamicResource Primary}"/>
 ```
 
-### ❌ DON'T: Forget page background
+### ❌ DON'T: Forget page background and theme change handling
 ```csharp
-public MyPage() { InitializeComponent(); }  // White bg regardless of theme
+public MyPage() { InitializeComponent(); }  // White bg, won't update on theme switch
 ```
 
-### ✅ DO: Set background from theme
-```csharp
-public MyPage()
-{
-    InitializeComponent();
-    this.BackgroundColor = BootstrapTheme.Current.GetBackground();
-}
-```
+### ✅ DO: Set background and subscribe to theme changes
+See the **Handling Theme Changes** section above for the full XAML and MauiReactor patterns.
 
 ## Control → StyleClass Quick Reference
 

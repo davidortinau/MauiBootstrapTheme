@@ -1,6 +1,5 @@
 using MauiReactor;
 using MauiBootstrapTheme.Extensions;
-using MauiBootstrapTheme.Reactor;
 using MauiBootstrapTheme.Theming;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;
@@ -12,13 +11,13 @@ class InputsPage : BasePage
             VStack(spacing: 24,
                 // Page Header
                 VStack(spacing: 4,
-                    Label("Input Controls").H1(),
-                    Label("Form inputs with Bootstrap styling").Lead().Muted()
+                    Label("Input Controls").Class("h1"),
+                    Label("Form inputs with Bootstrap styling").Class("lead").Class("text-muted")
                 ),
 
                 // Text Inputs
                 VStack(spacing: 12,
-                    Label("Text Inputs").H4(),
+                    Label("Text Inputs").Class("h4"),
                     VStack(spacing: 4,
                         Label("Default Input").Class("form-label"),
                         Entry().Placeholder("Enter text...").Class("form-control")
@@ -35,7 +34,7 @@ class InputsPage : BasePage
 
                 // Textarea
                 VStack(spacing: 12,
-                    Label("Textarea").H4(),
+                    Label("Textarea").Class("h4"),
                     VStack(spacing: 4,
                         Label("Default Textarea").Class("form-label"),
                         Editor().Placeholder("Enter multi-line text...").HeightRequest(100).Class("form-control")
@@ -44,7 +43,7 @@ class InputsPage : BasePage
 
                 // Select
                 VStack(spacing: 12,
-                    Label("Select").H4(),
+                    Label("Select").Class("h4"),
                     VStack(spacing: 4,
                         Label("Default Select").Class("form-label"),
                         Picker().Title("Choose an option...").ItemsSource(new[] { "Option 1", "Option 2", "Option 3" }).Class("form-select")
@@ -53,7 +52,7 @@ class InputsPage : BasePage
 
                 // Date & Time
                 VStack(spacing: 12,
-                    Label("Date & Time").H4(),
+                    Label("Date & Time").Class("h4"),
                     Grid("Auto", "*,*",
                         VStack(spacing: 4,
                             Label("Date").Class("form-label"),
@@ -68,7 +67,7 @@ class InputsPage : BasePage
 
                 // Checkboxes & Switches
                 VStack(spacing: 12,
-                    Label("Checkboxes & Switches").H4(),
+                    Label("Checkboxes & Switches").Class("h4"),
                     HStack(spacing: 8,
                         CheckBox().IsChecked(true).Class("form-check-input").Color(GetResource<Color>("Primary")),
                         Label("Default checkbox").Class("form-check-label").VCenter()
@@ -89,7 +88,7 @@ class InputsPage : BasePage
 
                 // Radio Buttons
                 VStack(spacing: 12,
-                    Label("Radio Buttons").H4(),
+                    Label("Radio Buttons").Class("h4"),
                     VStack(
                         RadioButton().Content("Option 1").IsChecked(true).Class("form-check-input"),
                         RadioButton().Content("Option 2").Class("form-check-input"),
@@ -99,7 +98,7 @@ class InputsPage : BasePage
 
                 // Range Slider
                 VStack(spacing: 12,
-                    Label("Range Slider").H4(),
+                    Label("Range Slider").Class("h4"),
                     VStack(spacing: 4,
                         Label("Default Range").Class("form-label"),
                         Slider().Minimum(0).Maximum(100).Value(50).Class("form-range")

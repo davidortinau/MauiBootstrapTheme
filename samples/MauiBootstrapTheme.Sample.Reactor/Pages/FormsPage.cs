@@ -1,6 +1,5 @@
 using MauiReactor;
 using MauiBootstrapTheme.Extensions;
-using MauiBootstrapTheme.Reactor;
 using MauiBootstrapTheme.Theming;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;
@@ -19,13 +18,13 @@ class FormsPage : BasePage<FormsPageState>
             VStack(spacing: 24,
                 // Header
                 VStack(spacing: 4,
-                    Label("Forms").H1(),
-                    Label("Canonical Bootstrap 5.3 form patterns for parity comparison.").Lead().Muted()
+                    Label("Forms").Class("h1"),
+                    Label("Canonical Bootstrap 5.3 form patterns for parity comparison.").Class("lead").Class("text-muted")
                 ),
 
                 // Overview
                 VStack(spacing: 12,
-                    Label("Overview").H4(),
+                    Label("Overview").Class("h4"),
 
                     VStack(spacing: 4,
                         Label("Email address").Class("form-label").Class("small"),
@@ -60,7 +59,7 @@ class FormsPage : BasePage<FormsPageState>
 
                 // Sizing
                 VStack(spacing: 12,
-                    Label("Sizing").H4(),
+                    Label("Sizing").Class("h4"),
 
                     VStack(spacing: 4,
                         Label("Large input").Class("form-label").Class("small"),
@@ -83,8 +82,8 @@ class FormsPage : BasePage<FormsPageState>
 
                 // Disabled forms
                 VStack(spacing: 12,
-                    Label("Disabled forms").H4(),
-                    Label("Disabled fieldset example").Class("small").Muted(),
+                    Label("Disabled forms").Class("h4"),
+                    Label("Disabled fieldset example").Class("small").Class("text-muted"),
 
                     VStack(spacing: 4,
                         Label("Disabled input").Class("form-label").Class("small"),
@@ -104,7 +103,7 @@ class FormsPage : BasePage<FormsPageState>
 
                 // Form layout
                 VStack(spacing: 12,
-                    Label("Form layout").H4(),
+                    Label("Form layout").Class("h4"),
 
                     Grid("Auto,Auto,Auto", "*,*",
                         VStack(spacing: 4,

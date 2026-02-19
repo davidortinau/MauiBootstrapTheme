@@ -179,6 +179,71 @@ App.Current.UserAppTheme = AppTheme.Dark;
 App.Current.UserAppTheme = AppTheme.Unspecified;
 ```
 
+## Handling Theme Changes
+
+`BootstrapTheme.Apply()` swaps the merged `ResourceDictionary` and fires `BootstrapTheme.ThemeChanged`. Controls using `DynamicResource` bindings update automatically, but **page backgrounds** and any values read directly from `BootstrapTheme.Current` do not — pages must subscribe to the event and refresh.
+
+### XAML Pages
+
+```csharp
+public partial class MyPage : ContentPage
+{
+    public MyPage()
+    {
+        InitializeComponent();
+        this.BackgroundColor = BootstrapTheme.Current.GetBackground();
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        BootstrapTheme.ThemeChanged += OnThemeChanged;
+    }
+
+    protected override void OnDisappearing()
+    {
+        BootstrapTheme.ThemeChanged -= OnThemeChanged;
+        base.OnDisappearing();
+    }
+
+    private void OnThemeChanged(object? sender, EventArgs e)
+    {
+        this.BackgroundColor = BootstrapTheme.Current.GetBackground();
+    }
+}
+```
+
+### MauiReactor Pages
+
+Create a `BasePage` component that subscribes to `ThemeChanged` and calls `Invalidate()` to re-render:
+
+```csharp
+abstract class BasePage : Component
+{
+    protected override void OnMounted()
+    {
+        BootstrapTheme.ThemeChanged += OnThemeChanged;
+        base.OnMounted();
+    }
+
+    protected override void OnWillUnmount()
+    {
+        BootstrapTheme.ThemeChanged -= OnThemeChanged;
+        base.OnWillUnmount();
+    }
+
+    private void OnThemeChanged(object? sender, EventArgs e) => Invalidate();
+
+    public abstract VisualNode RenderContent();
+
+    public override VisualNode Render()
+        => ContentPage(RenderContent())
+            .BackgroundColor(BootstrapTheme.Current.GetBackground());
+}
+```
+
+Then every page extends `BasePage` and only implements `RenderContent()`.
+
 ## Included Sample Themes
 
 The sample app ships with these [Bootswatch](https://bootswatch.com/) themes:

@@ -282,7 +282,7 @@ public partial class {className} : ResourceDictionary
         var outlineVariant = data.LightVariables.TryGetValue("--bs-border-color-translucent", out var ov)
             ? NormalizeHexColor(ov) : AdjustColorBrightness(borderColor, -10);
         EmitCsColor(sb, "OutlineVariant", outlineVariant);
-        EmitCsColor(sb, "Muted", data.Secondary ?? "#6c757d");
+        EmitCsColor(sb, "Muted", data.SecondaryColor ?? data.Secondary ?? "#6c757d");
         sb.AppendLine();
 
         // Dark mode color keys stored for reference (used by ApplyThemeMode)
@@ -293,6 +293,8 @@ public partial class {className} : ResourceDictionary
             if (data.DarkBodyColor != null) EmitCsColor(sb, "DarkOnBackground", data.DarkBodyColor);
             if (data.DarkSecondaryBg != null) EmitCsColor(sb, "DarkSurface", data.DarkSecondaryBg);
             if (data.DarkBorderColor != null) EmitCsColor(sb, "DarkOutline", data.DarkBorderColor);
+            var darkMuted = data.DarkSecondaryColor ?? data.DarkSecondary ?? "#adb5bd";
+            EmitCsColor(sb, "DarkMuted", darkMuted);
             sb.AppendLine();
         }
 
@@ -1514,8 +1516,8 @@ public partial class {className} : ResourceDictionary
             ? NormalizeHexColor(ov) : AdjustColorBrightness(borderColor, -10);
         EmitColor(sb, "OutlineVariant", outlineVariant);
 
-        // Muted — use secondary color or gray-600
-        var muted = data.Secondary ?? "#6c757d";
+        // Muted — use secondary-color (text muted) or gray-600
+        var muted = data.SecondaryColor ?? data.Secondary ?? "#6c757d";
         EmitColor(sb, "Muted", muted);
     }
 
@@ -1529,6 +1531,8 @@ public partial class {className} : ResourceDictionary
             EmitColor(sb, "DarkSurface", data.DarkSecondaryBg);
         if (data.DarkBorderColor != null)
             EmitColor(sb, "DarkOutline", data.DarkBorderColor);
+        var darkMuted = data.DarkSecondaryColor ?? data.DarkSecondary ?? "#adb5bd";
+        EmitColor(sb, "DarkMuted", darkMuted);
 
         // Dark button overrides
         foreach (var kvp in data.DarkButtonRules)

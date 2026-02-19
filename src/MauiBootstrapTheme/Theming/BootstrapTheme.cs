@@ -84,6 +84,7 @@ public class BootstrapTheme
     public Color DarkSurface { get; set; } = Color.FromArgb("#343a40");
     public Color DarkOnSurface { get; set; } = Color.FromArgb("#f8f9fa");
     public Color DarkOutline { get; set; } = Color.FromArgb("#495057");
+    public Color DarkMuted { get; set; } = Color.FromArgb("#adb5bd");
     public Color DarkInputBackground { get; set; } = Color.FromArgb("#343a40");
     public Color DarkInputText { get; set; } = Color.FromArgb("#dee2e6");
 
@@ -211,7 +212,7 @@ public class BootstrapTheme
     public Color GetSurface() => IsDarkMode ? DarkSurface : Surface;
     public Color GetOnSurface() => IsDarkMode ? DarkOnSurface : OnSurface;
     public Color GetOutline() => IsDarkMode ? DarkOutline : Outline;
-    public Color GetMuted() => IsDarkMode ? DarkOnSurface.WithAlpha(0.6f) : Muted;
+    public Color GetMuted() => IsDarkMode ? DarkMuted : Muted;
     public Color GetInputBackground() => IsDarkMode ? DarkInputBackground : InputBackground;
     public Color GetInputText() => IsDarkMode ? DarkInputText : InputText;
     
@@ -550,6 +551,20 @@ public class BootstrapTheme
         if (resources.TryGetValue("Muted", out var muted) && muted is Color mc)
             theme.Muted = mc;
 
+        // Dark variant overrides (explicit keys from theme ResourceDictionaries)
+        if (resources.TryGetValue("DarkBackground", out var darkBg) && darkBg is Color dbgc)
+            theme.DarkBackground = dbgc;
+        if (resources.TryGetValue("DarkOnBackground", out var darkOnBg) && darkOnBg is Color dobgc)
+            theme.DarkOnBackground = dobgc;
+        if (resources.TryGetValue("DarkSurface", out var darkSurf) && darkSurf is Color dsfc)
+            theme.DarkSurface = dsfc;
+        if (resources.TryGetValue("DarkOnSurface", out var darkOnSurf) && darkOnSurf is Color dosfc)
+            theme.DarkOnSurface = dosfc;
+        if (resources.TryGetValue("DarkOutline", out var darkOutline) && darkOutline is Color dolc)
+            theme.DarkOutline = dolc;
+        if (resources.TryGetValue("DarkMuted", out var darkMuted) && darkMuted is Color dmc)
+            theme.DarkMuted = dmc;
+
         if (resources.TryGetValue("OnPrimary", out var onP) && onP is Color opc)
             theme.OnPrimary = opc;
         if (resources.TryGetValue("OnSecondary", out var onS) && onS is Color osc)
@@ -642,10 +657,22 @@ public class BootstrapTheme
             theme.InputBackground = ibgc;
         if (resources.TryGetValue("InputText", out var itx) && itx is Color itxc)
             theme.InputText = itxc;
-        if (resources.TryGetValue("DarkInputBackground", out var dibg) && dibg is Color dibgc)
-            theme.DarkInputBackground = dibgc;
-        if (resources.TryGetValue("DarkInputText", out var ditx) && ditx is Color ditxc)
-            theme.DarkInputText = ditxc;
+
+        // Read explicit Dark* input keys first
+        var hasDarkInputBg = resources.TryGetValue("DarkInputBackground", out var dibg) && dibg is Color;
+        if (hasDarkInputBg)
+            theme.DarkInputBackground = (Color)dibg;
+        var hasDarkInputText = resources.TryGetValue("DarkInputText", out var ditx) && ditx is Color;
+        if (hasDarkInputText)
+            theme.DarkInputText = (Color)ditx;
+
+        // Fallback: themes using conditional ResourceDictionary branches set InputBackground/InputText
+        // to the dark value when in dark mode. If no explicit DarkInput* keys exist, sync from the
+        // already-overridden InputBackground/InputText values.
+        if (!hasDarkInputBg && IsDarkMode)
+            theme.DarkInputBackground = theme.InputBackground;
+        if (!hasDarkInputText && IsDarkMode)
+            theme.DarkInputText = theme.InputText;
 
         SetTheme(theme);
     }

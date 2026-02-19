@@ -447,6 +447,7 @@ public class BootstrapCssParser
         // Typography
         data.BodyFontSize = GetVar(v, "--bs-body-font-size");
         data.SecondaryBg = GetColor(v, "--bs-secondary-bg");
+        data.SecondaryColor = GetColor(v, "--bs-secondary-color");
 
         // Card spacing
         data.CardSpacerX = GetVar(v, "--bs-card-spacer-x");
@@ -471,6 +472,7 @@ public class BootstrapCssParser
         data.DarkHeadingColor = GetVar(dv, "--bs-heading-color");
         data.DarkBorderColor = GetColor(dv, "--bs-border-color");
         data.DarkSecondaryBg = GetColor(dv, "--bs-secondary-bg");
+        data.DarkSecondaryColor = GetColor(dv, "--bs-secondary-color");
 
         // Dark semantic colors
         data.DarkPrimary = GetColor(dv, "--bs-primary");
@@ -779,6 +781,10 @@ public class BootstrapThemeData
     public string? BorderColor { get; set; }
     public string? HeadingColor { get; set; }
     public string? LinkColor { get; set; }
+
+    // Muted / secondary text color
+    public string? SecondaryColor { get; set; }
+    public string? DarkSecondaryColor { get; set; }
 
     // Dark mode surface colors
     public string? DarkBodyBackground { get; set; }

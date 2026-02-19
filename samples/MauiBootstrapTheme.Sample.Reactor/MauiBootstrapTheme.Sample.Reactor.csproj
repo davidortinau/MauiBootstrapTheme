@@ -27,13 +27,12 @@
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.31" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.31" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-    <PackageReference Include="Reactor.Maui" Version="2.*" />
+    <PackageReference Include="Reactor.Maui" Version="4.*" />
     <PackageReference Include="Redth.MauiDevFlow.Agent" Version="*" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\MauiBootstrapTheme\MauiBootstrapTheme.csproj" />
-    <ProjectReference Include="..\..\src\MauiBootstrapTheme.Reactor\MauiBootstrapTheme.Reactor.csproj" />
     <ProjectReference Include="..\..\src\MauiBootstrapTheme.Build\MauiBootstrapTheme.Build.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
@@ -45,6 +44,14 @@
     <BootstrapCss Include="Resources\Themes\sketchy.min.css" />
     <BootstrapCss Include="Resources\Themes\vapor.min.css" />
     <BootstrapCss Include="Resources\Themes\brite.min.css" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <RuntimeHostConfigurationOption Include="MauiReactor.HotReload" Value="true" Trim="false" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Release'">
+    <RuntimeHostConfigurationOption Include="MauiReactor.HotReload" Value="false" Trim="true" />
   </ItemGroup>
 
   <Import Project="..\..\src\MauiBootstrapTheme.Build\build\Plugin.Maui.BootstrapTheme.Build.targets" />

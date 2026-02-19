@@ -1,6 +1,5 @@
 using MauiReactor;
 using MauiBootstrapTheme.Extensions;
-using MauiBootstrapTheme.Reactor;
 using MauiBootstrapTheme.Theming;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;
@@ -20,15 +19,15 @@ class ThemesPage : BasePage
             VStack(spacing: 24,
                 // Page Header
                 VStack(spacing: 4,
-                    Label("Theme Switcher").H1(),
-                    Label("Switch between Bootstrap themes at runtime").Lead().Muted()
+                    Label("Theme Switcher").Class("h1"),
+                    Label("Switch between Bootstrap themes at runtime").Class("lead").Class("text-muted")
                 ),
 
                 BoxView().HeightRequest(1).Color(theme.OutlineVariant).Margin(0, 4),
 
                 // Theme Selection
                 VStack(spacing: 12,
-                    Label("Select Theme").H4(),
+                    Label("Select Theme").Class("h4"),
                     FlexLayout(
                         Button("Default").Class("btn-primary").OnClicked(() => ApplyTheme("default")).Margin(0, 0, 8, 8),
                         Button("Darkly").Class("btn-dark").OnClicked(() => ApplyTheme("darkly")).Margin(0, 0, 8, 8),
@@ -43,10 +42,10 @@ class ThemesPage : BasePage
 
                 // Preview
                 VStack(spacing: 12,
-                    Label("Preview").H4(),
+                    Label("Preview").Class("h4"),
                     Border(
                         VStack(spacing: 12,
-                            Label("Theme Preview").H5(),
+                            Label("Theme Preview").Class("h5"),
 
                             Entry().Placeholder("Sample input").Class("form-control"),
 
@@ -74,7 +73,7 @@ class ThemesPage : BasePage
 
                 // All Color Variants
                 VStack(spacing: 12,
-                    Label("All Color Variants").H4(),
+                    Label("All Color Variants").Class("h4"),
                     Grid("Auto,Auto,Auto,Auto", "*,*",
                         Border(Label("Primary").HCenter().Class("on-primary")).Class("text-bg-primary").GridRow(0).GridColumn(0),
                         Border(Label("Secondary").HCenter().Class("on-secondary")).Class("text-bg-secondary").GridRow(0).GridColumn(1),

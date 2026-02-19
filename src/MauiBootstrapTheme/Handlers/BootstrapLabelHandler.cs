@@ -105,7 +105,7 @@ public static class BootstrapLabelHandler
                 label.FontSize = theme.FontSizeSmall;
                 break;
             case BootstrapTextStyle.Muted:
-                label.TextColor = theme.Muted;
+                label.TextColor = theme.GetMuted();
                 break;
             case BootstrapTextStyle.Mark:
                 label.Background = new SolidColorBrush(Color.FromArgb("#fcf8e3"));
