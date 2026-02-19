@@ -28,22 +28,29 @@ public static class BootstrapSearchBarHandler
 
     private static void ApplyBootstrapStyle(ISearchBarHandler handler, ISearchBar searchBar)
     {
-        var theme = BootstrapTheme.Current;
-        var view = searchBar as SearchBar;
-        
-        var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
-        var size = view != null ? Bootstrap.GetSize(view) : BootstrapSize.Default;
-        
-        var cornerRadius = GetCornerRadiusForSize(size, theme);
-        var borderColor = GetBorderColorForVariant(variant, theme);
+        try
+        {
+            var theme = BootstrapTheme.Current;
+            var view = searchBar as SearchBar;
+
+            var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
+            var size = view != null ? Bootstrap.GetSize(view) : BootstrapSize.Default;
+
+            var cornerRadius = GetCornerRadiusForSize(size, theme);
+            var borderColor = GetBorderColorForVariant(variant, theme);
 
 #if ANDROID
-        ApplyAndroid(handler, cornerRadius, borderColor, theme);
+            ApplyAndroid(handler, cornerRadius, borderColor, theme);
 #elif IOS || MACCATALYST
-        ApplyiOS(handler, cornerRadius, borderColor, theme);
+            ApplyiOS(handler, cornerRadius, borderColor, theme);
 #elif WINDOWS
-        ApplyWindows(handler, cornerRadius, borderColor, theme);
+            ApplyWindows(handler, cornerRadius, borderColor, theme);
 #endif
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
+        }
     }
 
 #if ANDROID
@@ -135,18 +142,25 @@ public static class BootstrapSearchBarHandler
 
     private static void ApplyDisabledState(ISearchBarHandler handler, ISearchBar control)
     {
-        if (control is not VisualElement ve) return;
-        var theme = BootstrapTheme.Current;
+        try
+        {
+            if (control is not VisualElement ve) return;
+            var theme = BootstrapTheme.Current;
 
-        if (!ve.IsEnabled)
-        {
-            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
-            ve.Opacity = theme.DisabledOpacity;
+            if (!ve.IsEnabled)
+            {
+                _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+                ve.Opacity = theme.DisabledOpacity;
+            }
+            else if (_originalOpacity.TryGetValue(control, out var box))
+            {
+                ve.Opacity = box.Value;
+                _originalOpacity.Remove(control);
+            }
         }
-        else if (_originalOpacity.TryGetValue(control, out var box))
+        catch (Exception ex)
         {
-            ve.Opacity = box.Value;
-            _originalOpacity.Remove(control);
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
         }
     }
 }

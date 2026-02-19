@@ -33,24 +33,31 @@ public static class BootstrapEditorHandler
 
     private static void ApplyBootstrapStyle(IEditorHandler handler, IEditor editor)
     {
-        var theme = BootstrapTheme.Current;
-        var view = editor as Editor;
-        
-        var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
-        var size = view != null ? Bootstrap.GetSize(view) : BootstrapSize.Default;
-        
-        var cornerRadius = GetCornerRadiusForSize(size, theme);
-        var borderColor = GetBorderColorForVariant(variant, theme);
-        var backgroundColor = theme.GetInputBackground();
-        var textColor = theme.GetInputText();
+        try
+        {
+            var theme = BootstrapTheme.Current;
+            var view = editor as Editor;
+
+            var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
+            var size = view != null ? Bootstrap.GetSize(view) : BootstrapSize.Default;
+
+            var cornerRadius = GetCornerRadiusForSize(size, theme);
+            var borderColor = GetBorderColorForVariant(variant, theme);
+            var backgroundColor = theme.GetInputBackground();
+            var textColor = theme.GetInputText();
 
 #if ANDROID
-        ApplyAndroid(handler, cornerRadius, borderColor, backgroundColor, textColor, theme);
+            ApplyAndroid(handler, cornerRadius, borderColor, backgroundColor, textColor, theme);
 #elif IOS || MACCATALYST
-        ApplyiOS(handler, cornerRadius, borderColor, backgroundColor, textColor, theme);
+            ApplyiOS(handler, cornerRadius, borderColor, backgroundColor, textColor, theme);
 #elif WINDOWS
-        ApplyWindows(handler, cornerRadius, borderColor, backgroundColor, textColor, theme);
+            ApplyWindows(handler, cornerRadius, borderColor, backgroundColor, textColor, theme);
 #endif
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
+        }
     }
 
 #if ANDROID
@@ -155,18 +162,25 @@ public static class BootstrapEditorHandler
 
     private static void ApplyDisabledState(IEditorHandler handler, IEditor control)
     {
-        if (control is not VisualElement ve) return;
-        var theme = BootstrapTheme.Current;
+        try
+        {
+            if (control is not VisualElement ve) return;
+            var theme = BootstrapTheme.Current;
 
-        if (!ve.IsEnabled)
-        {
-            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
-            ve.Opacity = theme.DisabledOpacity;
+            if (!ve.IsEnabled)
+            {
+                _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+                ve.Opacity = theme.DisabledOpacity;
+            }
+            else if (_originalOpacity.TryGetValue(control, out var box))
+            {
+                ve.Opacity = box.Value;
+                _originalOpacity.Remove(control);
+            }
         }
-        else if (_originalOpacity.TryGetValue(control, out var box))
+        catch (Exception ex)
         {
-            ve.Opacity = box.Value;
-            _originalOpacity.Remove(control);
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
         }
     }
 }

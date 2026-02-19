@@ -7,6 +7,7 @@ namespace MauiBootstrapTheme.Theming;
 public class BootstrapTheme
 {
     private static BootstrapTheme? _current;
+    private static bool _isRefreshing;
     private static readonly Microsoft.Maui.WeakEventManager ThemeChangedEventManager = new();
     
     /// <summary>
@@ -222,8 +223,21 @@ public class BootstrapTheme
     /// </summary>
     public Color GetText() => OnBackground;
     
-    private static bool IsDarkMode => 
-        RespectSystemTheme && Application.Current?.RequestedTheme == AppTheme.Dark;
+    private static bool IsDarkMode
+    {
+        get
+        {
+            try
+            {
+                return RespectSystemTheme && Application.Current?.RequestedTheme == AppTheme.Dark;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"IsDarkMode check failed: {ex.Message}");
+                return false;
+            }
+        }
+    }
 
     /// <summary>
     /// Gets the font size for a heading level (1-6).
@@ -488,26 +502,62 @@ public class BootstrapTheme
     /// </summary>
     public static void RefreshHandlers()
     {
-        if (Application.Current?.Windows == null)
+        if (!MainThread.IsMainThread)
+        {
+            MainThread.BeginInvokeOnMainThread(() => RefreshHandlers());
+            return;
+        }
+
+        if (_isRefreshing)
             return;
 
-        foreach (var window in Application.Current.Windows)
+        _isRefreshing = true;
+        try
         {
-            if (window.Page == null) continue;
-            foreach (var descendant in window.Page.GetVisualTreeDescendants())
+            IReadOnlyList<Window>? windows;
+            try
             {
-                if (descendant is not VisualElement ve || ve.Handler == null)
-                    continue;
+                windows = Application.Current?.Windows;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"BootstrapTheme.RefreshHandlers: failed to access Windows: {ex}");
+                return;
+            }
 
-                // All Bootstrap handlers register via AppendToMapping("BootstrapStyle", ...).
-                // UpdateValue("BootstrapStyle") re-triggers that callback with fresh theme values.
-                if (ve is Button or Entry or Editor or Picker or DatePicker or TimePicker
-                    or SearchBar or ProgressBar or Switch or Slider or CheckBox or Stepper
-                    or ActivityIndicator or RadioButton or Border or Label)
+            if (windows == null)
+                return;
+
+            foreach (var window in windows)
+            {
+                if (window.Page == null) continue;
+                var descendants = window.Page.GetVisualTreeDescendants().ToList();
+                foreach (var descendant in descendants)
                 {
-                    ve.Handler.UpdateValue("BootstrapStyle");
+                    if (descendant is not VisualElement ve || ve.Handler == null)
+                        continue;
+
+                    // All Bootstrap handlers register via AppendToMapping("BootstrapStyle", ...).
+                    // UpdateValue("BootstrapStyle") re-triggers that callback with fresh theme values.
+                    if (ve is Button or Entry or Editor or Picker or DatePicker or TimePicker
+                        or SearchBar or ProgressBar or Switch or Slider or CheckBox or Stepper
+                        or ActivityIndicator or RadioButton or Border or Label)
+                    {
+                        try
+                        {
+                            ve.Handler.UpdateValue("BootstrapStyle");
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"BootstrapTheme.RefreshHandlers: failed to update {ve.GetType().Name}: {ex}");
+                        }
+                    }
                 }
             }
+        }
+        finally
+        {
+            _isRefreshing = false;
         }
     }
 

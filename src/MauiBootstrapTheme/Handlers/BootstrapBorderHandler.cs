@@ -29,53 +29,60 @@ public static class BootstrapBorderHandler
 
     private static void ApplyBootstrapStyle(IBorderHandler handler, IBorderView border)
     {
-        var theme = BootstrapTheme.Current;
-        var view = border as Border;
-        if (view == null) return;
-
-        var variant = Bootstrap.GetVariant(view);
-        var shadow = Bootstrap.GetShadow(view);
-        var backgroundVariant = Bootstrap.GetBackgroundVariant(view);
-
-        // Apply background variant
-        if (backgroundVariant != BootstrapVariant.Default)
+        try
         {
-            view.Background = new SolidColorBrush(theme.GetVariantColor(backgroundVariant));
-            // Also set text color for child labels
-            var onColor = Bootstrap.GetVariantColors(backgroundVariant, theme).Foreground;
-            foreach (var child in GetDescendants(view, 0, 10))
+            var theme = BootstrapTheme.Current;
+            var view = border as Border;
+            if (view == null) return;
+
+            var variant = Bootstrap.GetVariant(view);
+            var shadow = Bootstrap.GetShadow(view);
+            var backgroundVariant = Bootstrap.GetBackgroundVariant(view);
+
+            // Apply background variant
+            if (backgroundVariant != BootstrapVariant.Default)
             {
-                if (child is Label lbl)
-                    lbl.TextColor = onColor;
+                view.Background = new SolidColorBrush(theme.GetVariantColor(backgroundVariant));
+                // Also set text color for child labels
+                var onColor = Bootstrap.GetVariantColors(backgroundVariant, theme).Foreground;
+                foreach (var child in GetDescendants(view, 0, 10))
+                {
+                    if (child is Label lbl)
+                        lbl.TextColor = onColor;
+                }
             }
-        }
-        // Don't override BackgroundColor for borders without BackgroundVariant —
-        // the implicit Border style in ResourceDictionary already sets it via {DynamicResource Surface}
+            // Don't override BackgroundColor for borders without BackgroundVariant —
+            // the implicit Border style in ResourceDictionary already sets it via {DynamicResource Surface}
 
-        // Apply border color based on variant
-        if (variant != BootstrapVariant.Default)
-        {
-            view.Stroke = new SolidColorBrush(theme.GetVariantColor(variant));
-        }
-        // Don't override Stroke for borders without Variant —
-        // the implicit style handles it via {DynamicResource Outline}
+            // Apply border color based on variant
+            if (variant != BootstrapVariant.Default)
+            {
+                view.Stroke = new SolidColorBrush(theme.GetVariantColor(variant));
+            }
+            // Don't override Stroke for borders without Variant —
+            // the implicit style handles it via {DynamicResource Outline}
 
-        // Apply corner radius and stroke thickness from theme only when variant/shadow is active
-        // But only set StrokeThickness when variant is explicitly set (not for shadow-only),
-        // so text-bg-* styles with StrokeThickness=0 are preserved
-        if (variant != BootstrapVariant.Default || backgroundVariant != BootstrapVariant.Default)
-        {
-            view.StrokeThickness = theme.BorderWidth;
-            view.StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(theme.CornerRadius) };
-        }
-        else if (shadow != BootstrapShadow.None)
-        {
-            // Shadow-only: apply corner radius but don't override StrokeThickness
-            view.StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(theme.CornerRadius) };
-        }
+            // Apply corner radius and stroke thickness from theme only when variant/shadow is active
+            // But only set StrokeThickness when variant is explicitly set (not for shadow-only),
+            // so text-bg-* styles with StrokeThickness=0 are preserved
+            if (variant != BootstrapVariant.Default || backgroundVariant != BootstrapVariant.Default)
+            {
+                view.StrokeThickness = theme.BorderWidth;
+                view.StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(theme.CornerRadius) };
+            }
+            else if (shadow != BootstrapShadow.None)
+            {
+                // Shadow-only: apply corner radius but don't override StrokeThickness
+                view.StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(theme.CornerRadius) };
+            }
 
-        // Apply shadow
-        ApplyShadow(view, shadow, theme);
+            // Apply shadow
+            ApplyShadow(view, shadow, theme);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
+        }
     }
 
     private static IEnumerable<VisualElement> GetDescendants(View view, int depth, int maxDepth)
@@ -143,18 +150,25 @@ public static class BootstrapBorderHandler
 
     private static void ApplyDisabledState(IBorderHandler handler, IBorderView control)
     {
-        if (control is not VisualElement ve) return;
-        var theme = BootstrapTheme.Current;
+        try
+        {
+            if (control is not VisualElement ve) return;
+            var theme = BootstrapTheme.Current;
 
-        if (!ve.IsEnabled)
-        {
-            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
-            ve.Opacity = theme.DisabledOpacity;
+            if (!ve.IsEnabled)
+            {
+                _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+                ve.Opacity = theme.DisabledOpacity;
+            }
+            else if (_originalOpacity.TryGetValue(control, out var box))
+            {
+                ve.Opacity = box.Value;
+                _originalOpacity.Remove(control);
+            }
         }
-        else if (_originalOpacity.TryGetValue(control, out var box))
+        catch (Exception ex)
         {
-            ve.Opacity = box.Value;
-            _originalOpacity.Remove(control);
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
         }
     }
 }

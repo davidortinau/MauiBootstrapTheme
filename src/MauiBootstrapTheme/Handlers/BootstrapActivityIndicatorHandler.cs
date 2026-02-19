@@ -26,19 +26,26 @@ public static class BootstrapActivityIndicatorHandler
 
     private static void ApplyBootstrapStyle(IActivityIndicatorHandler handler, IActivityIndicator activityIndicator)
     {
-        var theme = BootstrapTheme.Current;
-        var view = activityIndicator as ActivityIndicator;
-        
-        var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
-        var color = GetSpinnerColor(variant, theme);
+        try
+        {
+            var theme = BootstrapTheme.Current;
+            var view = activityIndicator as ActivityIndicator;
+
+            var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
+            var color = GetSpinnerColor(variant, theme);
 
 #if ANDROID
-        ApplyAndroid(handler, color);
+            ApplyAndroid(handler, color);
 #elif IOS || MACCATALYST
-        ApplyiOS(handler, color);
+            ApplyiOS(handler, color);
 #elif WINDOWS
-        ApplyWindows(handler, color);
+            ApplyWindows(handler, color);
 #endif
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
+        }
     }
 
 #if ANDROID
@@ -88,18 +95,25 @@ public static class BootstrapActivityIndicatorHandler
 
     private static void ApplyDisabledState(IActivityIndicatorHandler handler, IActivityIndicator control)
     {
-        if (control is not VisualElement ve) return;
-        var theme = BootstrapTheme.Current;
+        try
+        {
+            if (control is not VisualElement ve) return;
+            var theme = BootstrapTheme.Current;
 
-        if (!ve.IsEnabled)
-        {
-            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
-            ve.Opacity = theme.DisabledOpacity;
+            if (!ve.IsEnabled)
+            {
+                _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+                ve.Opacity = theme.DisabledOpacity;
+            }
+            else if (_originalOpacity.TryGetValue(control, out var box))
+            {
+                ve.Opacity = box.Value;
+                _originalOpacity.Remove(control);
+            }
         }
-        else if (_originalOpacity.TryGetValue(control, out var box))
+        catch (Exception ex)
         {
-            ve.Opacity = box.Value;
-            _originalOpacity.Remove(control);
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
         }
     }
 }

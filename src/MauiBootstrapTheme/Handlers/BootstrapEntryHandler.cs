@@ -35,29 +35,36 @@ public static class BootstrapEntryHandler
 
     private static void ApplyBootstrapStyle(IEntryHandler handler, IEntry entry)
     {
-        var theme = BootstrapTheme.Current;
-        var view = entry as Entry;
-        
-        var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
-        var size = view != null ? Bootstrap.GetSize(view) : BootstrapSize.Default;
-        var isPill = view != null && Bootstrap.GetIsPill(view);
-        
-        var cornerRadius = isPill ? theme.CornerRadiusPill : GetCornerRadiusForSize(size, theme);
-        var borderColor = GetBorderColorForVariant(variant, theme);
-        // Use theme-defined InputBackground/InputText (matches Bootstrap form-control colors)
-        var backgroundColor = theme.GetInputBackground();
-        var textColor = theme.GetInputText();
-        var minHeight = GetMinHeightForSize(size, theme);
-        var fontSize = GetFontSizeForSize(size, theme);
-        var (paddingX, paddingY) = GetPaddingForSize(size, theme);
+        try
+        {
+            var theme = BootstrapTheme.Current;
+            var view = entry as Entry;
+
+            var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
+            var size = view != null ? Bootstrap.GetSize(view) : BootstrapSize.Default;
+            var isPill = view != null && Bootstrap.GetIsPill(view);
+
+            var cornerRadius = isPill ? theme.CornerRadiusPill : GetCornerRadiusForSize(size, theme);
+            var borderColor = GetBorderColorForVariant(variant, theme);
+            // Use theme-defined InputBackground/InputText (matches Bootstrap form-control colors)
+            var backgroundColor = theme.GetInputBackground();
+            var textColor = theme.GetInputText();
+            var minHeight = GetMinHeightForSize(size, theme);
+            var fontSize = GetFontSizeForSize(size, theme);
+            var (paddingX, paddingY) = GetPaddingForSize(size, theme);
 
 #if ANDROID
-        ApplyAndroid(handler, cornerRadius, borderColor, backgroundColor, textColor, theme, minHeight, fontSize, paddingX, paddingY);
+            ApplyAndroid(handler, cornerRadius, borderColor, backgroundColor, textColor, theme, minHeight, fontSize, paddingX, paddingY);
 #elif IOS || MACCATALYST
-        ApplyiOS(handler, cornerRadius, borderColor, backgroundColor, textColor, theme, minHeight, fontSize, paddingX, paddingY);
+            ApplyiOS(handler, cornerRadius, borderColor, backgroundColor, textColor, theme, minHeight, fontSize, paddingX, paddingY);
 #elif WINDOWS
-        ApplyWindows(handler, cornerRadius, borderColor, backgroundColor, textColor, theme, minHeight, fontSize, paddingX, paddingY);
+            ApplyWindows(handler, cornerRadius, borderColor, backgroundColor, textColor, theme, minHeight, fontSize, paddingX, paddingY);
 #endif
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
+        }
     }
 
 #if ANDROID
@@ -210,18 +217,25 @@ public static class BootstrapEntryHandler
 
     private static void ApplyDisabledState(IEntryHandler handler, IEntry control)
     {
-        if (control is not VisualElement ve) return;
-        var theme = BootstrapTheme.Current;
+        try
+        {
+            if (control is not VisualElement ve) return;
+            var theme = BootstrapTheme.Current;
 
-        if (!ve.IsEnabled)
-        {
-            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
-            ve.Opacity = theme.DisabledOpacity;
+            if (!ve.IsEnabled)
+            {
+                _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+                ve.Opacity = theme.DisabledOpacity;
+            }
+            else if (_originalOpacity.TryGetValue(control, out var box))
+            {
+                ve.Opacity = box.Value;
+                _originalOpacity.Remove(control);
+            }
         }
-        else if (_originalOpacity.TryGetValue(control, out var box))
+        catch (Exception ex)
         {
-            ve.Opacity = box.Value;
-            _originalOpacity.Remove(control);
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
         }
     }
 }

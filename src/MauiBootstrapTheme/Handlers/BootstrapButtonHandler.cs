@@ -40,83 +40,90 @@ public static class BootstrapButtonHandler
 
     private static void ApplyBootstrapStyle(IButtonHandler handler, IButton button)
     {
-        var theme = BootstrapTheme.Current;
-        var view = button as Button;
-        
-        var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
-        // Don't infer variant from StyleClass — let MAUI style system handle class-based
-        // styles (btn-primary, etc.) via DynamicResource. Handler inference causes native-layer
-        // overrides that persist across theme switches.
-        var size = view != null ? Bootstrap.GetSize(view) : BootstrapSize.Default;
-        var isPill = view != null && Bootstrap.GetIsPill(view);
-        var isOutlined = IsOutlineVariant(variant) || (view != null && Bootstrap.GetIsOutlined(view));
-        
-        // Only apply platform-level color overrides when an explicit variant is set.
-        // When variant is Default, let MAUI-level styles (StyleClass, DynamicResource) handle colors.
-        // Also skip when no size or pill override is set.
-        if (variant == BootstrapVariant.Default && !isPill && size == BootstrapSize.Default)
+        try
         {
+            var theme = BootstrapTheme.Current;
+            var view = button as Button;
+
+            var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
+            // Don't infer variant from StyleClass — let MAUI style system handle class-based
+            // styles (btn-primary, etc.) via DynamicResource. Handler inference causes native-layer
+            // overrides that persist across theme switches.
+            var size = view != null ? Bootstrap.GetSize(view) : BootstrapSize.Default;
+            var isPill = view != null && Bootstrap.GetIsPill(view);
+            var isOutlined = IsOutlineVariant(variant) || (view != null && Bootstrap.GetIsOutlined(view));
+
+            // Only apply platform-level color overrides when an explicit variant is set.
+            // When variant is Default, let MAUI-level styles (StyleClass, DynamicResource) handle colors.
+            // Also skip when no size or pill override is set.
+            if (variant == BootstrapVariant.Default && !isPill && size == BootstrapSize.Default)
+            {
 #if IOS || MACCATALYST
-            // MAUI shadows are drawn outside the button bounds; clipping hides them.
-            // Ensure default/class-styled buttons (e.g., theme switcher row) can render shadows.
-            if (handler.PlatformView != null)
-                handler.PlatformView.Layer.MasksToBounds = false;
+                // MAUI shadows are drawn outside the button bounds; clipping hides them.
+                // Ensure default/class-styled buttons (e.g., theme switcher row) can render shadows.
+                if (handler.PlatformView != null)
+                    handler.PlatformView.Layer.MasksToBounds = false;
 #endif
-            return;
-        }
-        
-        var cornerRadius = isPill ? theme.CornerRadiusPill : GetCornerRadiusForSize(size, theme);
-        var (backgroundColor, textColor) = Bootstrap.GetVariantColors(variant, theme);
-        
-        // For outline buttons, use transparent background and variant color for text
-        if (isOutlined && !IsOutlineVariant(variant))
-        {
-            backgroundColor = Colors.Transparent;
-            textColor = Bootstrap.GetOutlineBorderColor(variant, theme);
-        }
-        
-        var borderColor = isOutlined ? Bootstrap.GetOutlineBorderColor(variant, theme) : backgroundColor;
-        var borderWidth = isOutlined ? Math.Max(theme.BorderWidth, 1.0) : 0;
-        var (paddingX, paddingY) = GetPaddingForSize(size, theme);
-        var fontSize = GetFontSizeForSize(size, theme);
-        var minHeight = GetMinHeightForSize(size, theme);
-        var fontFamily = theme.FontFamily;
+                return;
+            }
 
-        // Compute hover/pressed state colors
-        var baseVariant = GetBaseVariant(variant);
-        Color hoverBgColor, pressedBgColor, hoverBorderColor, pressedBorderColor, hoverTextColor, pressedTextColor;
+            var cornerRadius = isPill ? theme.CornerRadiusPill : GetCornerRadiusForSize(size, theme);
+            var (backgroundColor, textColor) = Bootstrap.GetVariantColors(variant, theme);
 
-        if (isOutlined)
-        {
-            // Outline: hover/pressed fill with variant color, text becomes OnVariant
-            var (solidBg, solidFg) = Bootstrap.GetVariantColors(baseVariant, theme);
-            hoverBgColor = solidBg;
-            pressedBgColor = solidBg;
-            hoverTextColor = solidFg;
-            pressedTextColor = solidFg;
-            hoverBorderColor = solidBg;
-            pressedBorderColor = BootstrapTheme.Shade(solidBg, theme.PressedBorderShadeAmount);
-        }
-        else
-        {
-            hoverBgColor = theme.GetHoverBackground(baseVariant);
-            pressedBgColor = theme.GetPressedBackground(baseVariant);
-            hoverBorderColor = theme.GetHoverBorder(baseVariant);
-            pressedBorderColor = theme.GetPressedBorder(baseVariant);
-            hoverTextColor = textColor;
-            pressedTextColor = textColor;
-        }
+            // For outline buttons, use transparent background and variant color for text
+            if (isOutlined && !IsOutlineVariant(variant))
+            {
+                backgroundColor = Colors.Transparent;
+                textColor = Bootstrap.GetOutlineBorderColor(variant, theme);
+            }
+
+            var borderColor = isOutlined ? Bootstrap.GetOutlineBorderColor(variant, theme) : backgroundColor;
+            var borderWidth = isOutlined ? Math.Max(theme.BorderWidth, 1.0) : 0;
+            var (paddingX, paddingY) = GetPaddingForSize(size, theme);
+            var fontSize = GetFontSizeForSize(size, theme);
+            var minHeight = GetMinHeightForSize(size, theme);
+            var fontFamily = theme.FontFamily;
+
+            // Compute hover/pressed state colors
+            var baseVariant = GetBaseVariant(variant);
+            Color hoverBgColor, pressedBgColor, hoverBorderColor, pressedBorderColor, hoverTextColor, pressedTextColor;
+
+            if (isOutlined)
+            {
+                // Outline: hover/pressed fill with variant color, text becomes OnVariant
+                var (solidBg, solidFg) = Bootstrap.GetVariantColors(baseVariant, theme);
+                hoverBgColor = solidBg;
+                pressedBgColor = solidBg;
+                hoverTextColor = solidFg;
+                pressedTextColor = solidFg;
+                hoverBorderColor = solidBg;
+                pressedBorderColor = BootstrapTheme.Shade(solidBg, theme.PressedBorderShadeAmount);
+            }
+            else
+            {
+                hoverBgColor = theme.GetHoverBackground(baseVariant);
+                pressedBgColor = theme.GetPressedBackground(baseVariant);
+                hoverBorderColor = theme.GetHoverBorder(baseVariant);
+                pressedBorderColor = theme.GetPressedBorder(baseVariant);
+                hoverTextColor = textColor;
+                pressedTextColor = textColor;
+            }
 
 #if ANDROID
-        ApplyAndroid(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, fontFamily,
-            hoverBgColor, pressedBgColor, hoverBorderColor, pressedBorderColor, hoverTextColor, pressedTextColor);
+            ApplyAndroid(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, fontFamily,
+                hoverBgColor, pressedBgColor, hoverBorderColor, pressedBorderColor, hoverTextColor, pressedTextColor);
 #elif IOS || MACCATALYST
-        ApplyiOS(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, isPill, fontFamily,
-            hoverBgColor, pressedBgColor, hoverBorderColor, pressedBorderColor, hoverTextColor, pressedTextColor);
+            ApplyiOS(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, isPill, fontFamily,
+                hoverBgColor, pressedBgColor, hoverBorderColor, pressedBorderColor, hoverTextColor, pressedTextColor);
 #elif WINDOWS
-        ApplyWindows(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, fontFamily,
-            hoverBgColor, pressedBgColor, hoverBorderColor, pressedBorderColor, hoverTextColor, pressedTextColor);
+            ApplyWindows(handler, cornerRadius, borderColor, backgroundColor, textColor, borderWidth, paddingX, paddingY, fontSize, minHeight, fontFamily,
+                hoverBgColor, pressedBgColor, hoverBorderColor, pressedBorderColor, hoverTextColor, pressedTextColor);
 #endif
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
+        }
     }
 
     private static BootstrapVariant InferVariantFromStyleClass(IList<string> styleClasses)
@@ -410,18 +417,25 @@ public static class BootstrapButtonHandler
 
     private static void ApplyDisabledState(IButtonHandler handler, IButton control)
     {
-        if (control is not VisualElement ve) return;
-        var theme = BootstrapTheme.Current;
+        try
+        {
+            if (control is not VisualElement ve) return;
+            var theme = BootstrapTheme.Current;
 
-        if (!ve.IsEnabled)
-        {
-            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
-            ve.Opacity = theme.DisabledOpacity;
+            if (!ve.IsEnabled)
+            {
+                _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+                ve.Opacity = theme.DisabledOpacity;
+            }
+            else if (_originalOpacity.TryGetValue(control, out var box))
+            {
+                ve.Opacity = box.Value;
+                _originalOpacity.Remove(control);
+            }
         }
-        else if (_originalOpacity.TryGetValue(control, out var box))
+        catch (Exception ex)
         {
-            ve.Opacity = box.Value;
-            _originalOpacity.Remove(control);
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
         }
     }
 }

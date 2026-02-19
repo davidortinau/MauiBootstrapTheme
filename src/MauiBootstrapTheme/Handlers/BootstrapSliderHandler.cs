@@ -26,20 +26,27 @@ public static class BootstrapSliderHandler
 
     private static void ApplyBootstrapStyle(ISliderHandler handler, ISlider slider)
     {
-        var theme = BootstrapTheme.Current;
-        var view = slider as Slider;
-        
-        var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
-        var accentColor = GetAccentColor(variant, theme);
-        var trackColor = theme.Outline;
+        try
+        {
+            var theme = BootstrapTheme.Current;
+            var view = slider as Slider;
+
+            var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
+            var accentColor = GetAccentColor(variant, theme);
+            var trackColor = theme.Outline;
 
 #if ANDROID
-        ApplyAndroid(handler, accentColor, trackColor, theme);
+            ApplyAndroid(handler, accentColor, trackColor, theme);
 #elif IOS || MACCATALYST
-        ApplyiOS(handler, accentColor, trackColor, theme);
+            ApplyiOS(handler, accentColor, trackColor, theme);
 #elif WINDOWS
-        ApplyWindows(handler, accentColor, trackColor, theme);
+            ApplyWindows(handler, accentColor, trackColor, theme);
 #endif
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
+        }
     }
 
 #if ANDROID
@@ -97,18 +104,25 @@ public static class BootstrapSliderHandler
 
     private static void ApplyDisabledState(ISliderHandler handler, ISlider control)
     {
-        if (control is not VisualElement ve) return;
-        var theme = BootstrapTheme.Current;
+        try
+        {
+            if (control is not VisualElement ve) return;
+            var theme = BootstrapTheme.Current;
 
-        if (!ve.IsEnabled)
-        {
-            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
-            ve.Opacity = theme.DisabledOpacity;
+            if (!ve.IsEnabled)
+            {
+                _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+                ve.Opacity = theme.DisabledOpacity;
+            }
+            else if (_originalOpacity.TryGetValue(control, out var box))
+            {
+                ve.Opacity = box.Value;
+                _originalOpacity.Remove(control);
+            }
         }
-        else if (_originalOpacity.TryGetValue(control, out var box))
+        catch (Exception ex)
         {
-            ve.Opacity = box.Value;
-            _originalOpacity.Remove(control);
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
         }
     }
 }

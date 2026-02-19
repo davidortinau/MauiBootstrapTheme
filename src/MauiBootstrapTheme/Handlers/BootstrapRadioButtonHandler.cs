@@ -26,20 +26,27 @@ public static class BootstrapRadioButtonHandler
 
     private static void ApplyBootstrapStyle(IRadioButtonHandler handler, IRadioButton radioButton)
     {
-        var theme = BootstrapTheme.Current;
-        var view = radioButton as RadioButton;
-        
-        var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
-        var accentColor = GetAccentColor(variant, theme);
+        try
+        {
+            var theme = BootstrapTheme.Current;
+            var view = radioButton as RadioButton;
+
+            var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
+            var accentColor = GetAccentColor(variant, theme);
 
 #if ANDROID
-        ApplyAndroid(handler, accentColor, theme);
+            ApplyAndroid(handler, accentColor, theme);
 #elif IOS || MACCATALYST
-        // iOS doesn't have a native radio button, MAUI uses custom rendering
-        ApplyiOS(handler, accentColor, theme);
+            // iOS doesn't have a native radio button, MAUI uses custom rendering
+            ApplyiOS(handler, accentColor, theme);
 #elif WINDOWS
-        ApplyWindows(handler, accentColor, theme);
+            ApplyWindows(handler, accentColor, theme);
 #endif
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
+        }
     }
 
 #if ANDROID
@@ -92,18 +99,25 @@ public static class BootstrapRadioButtonHandler
 
     private static void ApplyDisabledState(IRadioButtonHandler handler, IRadioButton control)
     {
-        if (control is not VisualElement ve) return;
-        var theme = BootstrapTheme.Current;
+        try
+        {
+            if (control is not VisualElement ve) return;
+            var theme = BootstrapTheme.Current;
 
-        if (!ve.IsEnabled)
-        {
-            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
-            ve.Opacity = theme.DisabledOpacity;
+            if (!ve.IsEnabled)
+            {
+                _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+                ve.Opacity = theme.DisabledOpacity;
+            }
+            else if (_originalOpacity.TryGetValue(control, out var box))
+            {
+                ve.Opacity = box.Value;
+                _originalOpacity.Remove(control);
+            }
         }
-        else if (_originalOpacity.TryGetValue(control, out var box))
+        catch (Exception ex)
         {
-            ve.Opacity = box.Value;
-            _originalOpacity.Remove(control);
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
         }
     }
 }

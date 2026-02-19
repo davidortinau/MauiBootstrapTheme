@@ -27,50 +27,57 @@ public static class BootstrapLabelHandler
 
     private static void ApplyBootstrapStyle(ILabelHandler handler, ILabel label)
     {
-        var theme = BootstrapTheme.Current;
-        var view = label as Label;
-        if (view == null) return;
+        try
+        {
+            var theme = BootstrapTheme.Current;
+            var view = label as Label;
+            if (view == null) return;
 
-        var heading = Bootstrap.GetHeading(view);
-        var textStyle = Bootstrap.GetTextStyle(view);
-        var textColorVariant = Bootstrap.GetTextColorVariant(view);
-        var badgeVariant = Bootstrap.GetBadge(view);
-        var variant = Bootstrap.GetVariant(view);
+            var heading = Bootstrap.GetHeading(view);
+            var textStyle = Bootstrap.GetTextStyle(view);
+            var textColorVariant = Bootstrap.GetTextColorVariant(view);
+            var badgeVariant = Bootstrap.GetBadge(view);
+            var variant = Bootstrap.GetVariant(view);
 
-        // Apply heading styles
-        if (heading > 0 && heading <= 6)
-        {
-            ApplyHeading(view, heading, theme);
+            // Apply heading styles
+            if (heading > 0 && heading <= 6)
+            {
+                ApplyHeading(view, heading, theme);
+            }
+
+            // Apply text styles
+            if (textStyle != BootstrapTextStyle.Normal)
+            {
+                ApplyTextStyle(view, textStyle, theme);
+            }
+
+            // Apply color variant for text
+            if (textColorVariant != BootstrapVariant.Default)
+            {
+                view.TextColor = theme.GetVariantColor(textColorVariant);
+            }
+
+            // Apply badge styling (when Badge property is set to a variant other than Default)
+            if (badgeVariant != BootstrapVariant.Default)
+            {
+                ApplyBadge(view, badgeVariant, theme);
+            }
+
+            // Apply font family to ALL labels if theme specifies one (and not already set)
+            if (!string.IsNullOrEmpty(theme.FontFamily) && string.IsNullOrEmpty(view.FontFamily))
+            {
+                view.FontFamily = theme.FontFamily;
+            }
+
+            // Apply text color for labels that don't have any specific variant/badge/heading
+            // Only apply if the handler's theme OnBackground differs from what the style set
+            // Skip this — the implicit Label style in ResourceDictionary already sets TextColor
+            // via {DynamicResource OnBackground}. We should not override it here.
         }
-        
-        // Apply text styles
-        if (textStyle != BootstrapTextStyle.Normal)
+        catch (Exception ex)
         {
-            ApplyTextStyle(view, textStyle, theme);
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
         }
-        
-        // Apply color variant for text
-        if (textColorVariant != BootstrapVariant.Default)
-        {
-            view.TextColor = theme.GetVariantColor(textColorVariant);
-        }
-        
-        // Apply badge styling (when Badge property is set to a variant other than Default)
-        if (badgeVariant != BootstrapVariant.Default)
-        {
-            ApplyBadge(view, badgeVariant, theme);
-        }
-        
-        // Apply font family to ALL labels if theme specifies one (and not already set)
-        if (!string.IsNullOrEmpty(theme.FontFamily) && string.IsNullOrEmpty(view.FontFamily))
-        {
-            view.FontFamily = theme.FontFamily;
-        }
-        
-        // Apply text color for labels that don't have any specific variant/badge/heading
-        // Only apply if the handler's theme OnBackground differs from what the style set
-        // Skip this — the implicit Label style in ResourceDictionary already sets TextColor
-        // via {DynamicResource OnBackground}. We should not override it here.
     }
 
     private static void ApplyHeading(Label label, int level, BootstrapTheme theme)
@@ -144,18 +151,25 @@ public static class BootstrapLabelHandler
 
     private static void ApplyDisabledState(ILabelHandler handler, ILabel control)
     {
-        if (control is not VisualElement ve) return;
-        var theme = BootstrapTheme.Current;
+        try
+        {
+            if (control is not VisualElement ve) return;
+            var theme = BootstrapTheme.Current;
 
-        if (!ve.IsEnabled)
-        {
-            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
-            ve.Opacity = theme.DisabledOpacity;
+            if (!ve.IsEnabled)
+            {
+                _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+                ve.Opacity = theme.DisabledOpacity;
+            }
+            else if (_originalOpacity.TryGetValue(control, out var box))
+            {
+                ve.Opacity = box.Value;
+                _originalOpacity.Remove(control);
+            }
         }
-        else if (_originalOpacity.TryGetValue(control, out var box))
+        catch (Exception ex)
         {
-            ve.Opacity = box.Value;
-            _originalOpacity.Remove(control);
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
         }
     }
 }

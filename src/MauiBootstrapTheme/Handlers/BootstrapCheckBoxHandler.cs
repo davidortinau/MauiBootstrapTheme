@@ -27,19 +27,26 @@ public static class BootstrapCheckBoxHandler
 
     private static void ApplyBootstrapStyle(ICheckBoxHandler handler, ICheckBox checkBox)
     {
-        var theme = BootstrapTheme.Current;
-        var view = checkBox as CheckBox;
-        
-        var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
-        var accentColor = GetAccentColor(variant, theme);
+        try
+        {
+            var theme = BootstrapTheme.Current;
+            var view = checkBox as CheckBox;
+
+            var variant = view != null ? Bootstrap.GetVariant(view) : BootstrapVariant.Default;
+            var accentColor = GetAccentColor(variant, theme);
 
 #if ANDROID
-        ApplyAndroid(handler, accentColor, theme);
+            ApplyAndroid(handler, accentColor, theme);
 #elif IOS || MACCATALYST
-        ApplyiOS(handler, accentColor, theme);
+            ApplyiOS(handler, accentColor, theme);
 #elif WINDOWS
-        ApplyWindows(handler, accentColor, theme);
+            ApplyWindows(handler, accentColor, theme);
 #endif
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
+        }
     }
 
 #if ANDROID
@@ -100,18 +107,25 @@ public static class BootstrapCheckBoxHandler
 
     private static void ApplyDisabledState(ICheckBoxHandler handler, ICheckBox control)
     {
-        if (control is not VisualElement ve) return;
-        var theme = BootstrapTheme.Current;
+        try
+        {
+            if (control is not VisualElement ve) return;
+            var theme = BootstrapTheme.Current;
 
-        if (!ve.IsEnabled)
-        {
-            _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
-            ve.Opacity = theme.DisabledOpacity;
+            if (!ve.IsEnabled)
+            {
+                _originalOpacity.GetOrCreateValue(control).Value = ve.Opacity;
+                ve.Opacity = theme.DisabledOpacity;
+            }
+            else if (_originalOpacity.TryGetValue(control, out var box))
+            {
+                ve.Opacity = box.Value;
+                _originalOpacity.Remove(control);
+            }
         }
-        else if (_originalOpacity.TryGetValue(control, out var box))
+        catch (Exception ex)
         {
-            ve.Opacity = box.Value;
-            _originalOpacity.Remove(control);
+            System.Diagnostics.Debug.WriteLine($"BootstrapTheme: Handler error: {ex.Message}");
         }
     }
 }
