@@ -1,7 +1,6 @@
 ﻿using MauiBootstrapTheme.Extensions;
 using MauiReactor;
 using Microsoft.Extensions.Logging;
-using MauiDevFlow.Agent;
 
 namespace MauiBootstrapTheme.Sample.Reactor;
 
@@ -30,7 +29,6 @@ public static class MauiProgram
 
 #if DEBUG
         builder.Logging.AddDebug();
-        // builder.AddMauiDevFlowAgent();
 #endif
 
         return builder.Build();
