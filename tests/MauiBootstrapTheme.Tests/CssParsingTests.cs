@@ -1,4 +1,4 @@
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using MauiBootstrapTheme.Build.CodeGen;
 using MauiBootstrapTheme.Build.Parsing;
 using Xunit;

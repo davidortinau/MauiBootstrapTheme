@@ -1,4 +1,4 @@
-using MauiBootstrapTheme.Build.CodeGen;
+﻿using MauiBootstrapTheme.Build.CodeGen;
 using MauiBootstrapTheme.Build.Parsing;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;

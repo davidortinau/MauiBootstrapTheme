@@ -1,4 +1,4 @@
-using MauiBootstrapTheme.Build.Parsing;
+﻿using MauiBootstrapTheme.Build.Parsing;
 using MauiBootstrapTheme.Build.CodeGen;
 
 var cssDir = args[0];
