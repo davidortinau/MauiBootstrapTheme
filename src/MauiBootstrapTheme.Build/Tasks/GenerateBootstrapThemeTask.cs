@@ -67,6 +67,8 @@ public class GenerateBootstrapThemeTask : Microsoft.Build.Utilities.Task
         var generatedXaml = new List<ITaskItem>();
         var generatedCs = new List<ITaskItem>();
 
+        var bsGenerated = false;
+        var bsIncluded = false;
         foreach (var cssItem in CssFiles)
         {
             var cssFile = cssItem.ItemSpec;
@@ -115,13 +117,18 @@ public class GenerateBootstrapThemeTask : Microsoft.Build.Utilities.Task
                 {
                     // Generate MauiReactor Bs constants (once per build, from first theme)
                     var bsPath = Path.Combine(OutputDirectory, "Bs.g.cs");
-                    if (!File.Exists(bsPath))
+                    if (!bsGenerated)
                     {
                         var bsContent = generator.GenerateBsConstants(themeData, Namespace);
                         File.WriteAllText(bsPath, bsContent);
-                        generatedCs.Add(new TaskItem(bsPath));
-                        Log.LogMessage(MessageImportance.Normal, $"  Generated: {bsPath}");
+                        bsGenerated = true;
                     }
+                    if (!bsIncluded)
+                    {
+                        generatedCs.Add(new TaskItem(bsPath));
+                        bsIncluded = true;
+                    }
+                    Log.LogMessage(MessageImportance.Normal, $"  Generated: {bsPath}");
 
                     // Generate MauiReactor Theme subclass
                     var reactorContent = generator.GenerateReactorTheme(themeData, Namespace);
