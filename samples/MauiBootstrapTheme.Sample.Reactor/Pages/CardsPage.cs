@@ -1,4 +1,4 @@
-﻿using MauiReactor;
+﻿﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
 using MauiBootstrapTheme.Sample.Reactor.Themes;
@@ -55,15 +55,15 @@ class CardsPage : BasePage
                 VStack(spacing: 12,
                     Label("Border Color Variants").Class(Bs.H4),
                     FlexLayout(
-                        Border(Label("Primary").HCenter())
+                        Border(Label("Primary").Center())
                             .Class(Bs.Card).Stroke(BootstrapTheme.Current.Primary).WidthRequest(150).Margin(0, 0, 12, 12),
-                        Border(Label("Success").HCenter())
+                        Border(Label("Success").Center())
                             .Class(Bs.Card).Stroke(BootstrapTheme.Current.Success).WidthRequest(150).Margin(0, 0, 12, 12),
-                        Border(Label("Danger").HCenter())
+                        Border(Label("Danger").Center())
                             .Class(Bs.Card).Stroke(BootstrapTheme.Current.Danger).WidthRequest(150).Margin(0, 0, 12, 12),
-                        Border(Label("Warning").HCenter())
+                        Border(Label("Warning").Center())
                             .Class(Bs.Card).Stroke(BootstrapTheme.Current.Warning).WidthRequest(150).Margin(0, 0, 12, 12),
-                        Border(Label("Info").HCenter())
+                        Border(Label("Info").Center())
                             .Class(Bs.Card).Stroke(BootstrapTheme.Current.Info).WidthRequest(150).Margin(0, 0, 12, 12)
                     ).Wrap(Microsoft.Maui.Layouts.FlexWrap.Wrap)
                         .JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start)

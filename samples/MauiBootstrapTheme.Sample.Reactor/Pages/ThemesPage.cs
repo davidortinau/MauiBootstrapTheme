@@ -1,4 +1,4 @@
-﻿using MauiReactor;
+﻿﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
 using MauiBootstrapTheme.Sample.Reactor.Themes;
@@ -15,7 +15,7 @@ class ThemesPage : BasePage
     public override VisualNode RenderContent()
     {
         var theme = BootstrapTheme.Current;
-        
+
         return ScrollView(
             VStack(spacing: 24,
                 // Page Header
@@ -76,14 +76,14 @@ class ThemesPage : BasePage
                 VStack(spacing: 12,
                     Label("All Color Variants").Class(Bs.H4),
                     Grid("Auto,Auto,Auto,Auto", "*,*",
-                        Border(Label("Primary").HCenter().Class(Bs.OnPrimary)).Class(Bs.TextBgPrimary).GridRow(0).GridColumn(0),
-                        Border(Label("Secondary").HCenter().Class(Bs.OnSecondary)).Class(Bs.TextBgSecondary).GridRow(0).GridColumn(1),
-                        Border(Label("Success").HCenter().Class(Bs.OnSuccess)).Class(Bs.TextBgSuccess).GridRow(1).GridColumn(0),
-                        Border(Label("Danger").HCenter().Class(Bs.OnDanger)).Class(Bs.TextBgDanger).GridRow(1).GridColumn(1),
-                        Border(Label("Warning").HCenter().Class(Bs.OnWarning)).Class(Bs.TextBgWarning).GridRow(2).GridColumn(0),
-                        Border(Label("Info").HCenter().Class(Bs.OnInfo)).Class(Bs.TextBgInfo).GridRow(2).GridColumn(1),
-                        Border(Label("Light").HCenter().Class(Bs.OnLight)).Class(Bs.TextBgLight).GridRow(3).GridColumn(0),
-                        Border(Label("Dark").HCenter().Class(Bs.OnDark)).Class(Bs.TextBgDark).GridRow(3).GridColumn(1)
+                        Border(Label("Primary").Center().Class(Bs.OnPrimary)).Class(Bs.TextBgPrimary).GridRow(0).GridColumn(0),
+                        Border(Label("Secondary").Center().Class(Bs.OnSecondary)).Class(Bs.TextBgSecondary).GridRow(0).GridColumn(1),
+                        Border(Label("Success").Center().Class(Bs.OnSuccess)).Class(Bs.TextBgSuccess).GridRow(1).GridColumn(0),
+                        Border(Label("Danger").Center().Class(Bs.OnDanger)).Class(Bs.TextBgDanger).GridRow(1).GridColumn(1),
+                        Border(Label("Warning").Center().Class(Bs.OnWarning)).Class(Bs.TextBgWarning).GridRow(2).GridColumn(0),
+                        Border(Label("Info").Center().Class(Bs.OnInfo)).Class(Bs.TextBgInfo).GridRow(2).GridColumn(1),
+                        Border(Label("Light").Center().Class(Bs.OnLight)).Class(Bs.TextBgLight).GridRow(3).GridColumn(0),
+                        Border(Label("Dark").Center().Class(Bs.OnDark)).Class(Bs.TextBgDark).GridRow(3).GridColumn(1)
                     ).RowSpacing(8).ColumnSpacing(8)
                 )
             ).Padding(20)
