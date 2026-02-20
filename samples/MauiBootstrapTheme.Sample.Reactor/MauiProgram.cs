@@ -30,7 +30,7 @@ public static class MauiProgram
 
 #if DEBUG
         builder.Logging.AddDebug();
-        builder.AddMauiDevFlowAgent();
+        // builder.AddMauiDevFlowAgent();
 #endif
 
         return builder.Build();
