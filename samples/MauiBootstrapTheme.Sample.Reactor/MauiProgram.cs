@@ -33,7 +33,7 @@ public static class MauiProgram
         // builder.AddMauiDevFlowAgent();
 
         // Enable MauiReactor debug logging
-        builder.Services.AddMauiReactor(options => 
+        builder.Services.Configure<ReactorApplicationOptions>(options => 
         {
             options.EnableDebugLogging = true;
         });
