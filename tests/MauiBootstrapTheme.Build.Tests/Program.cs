@@ -81,3 +81,19 @@ if (validationFailures.Count > 0)
         Console.Error.WriteLine($" - {failure}");
     Environment.Exit(1);
 }
+
+// Generate Bs constants and Reactor themes from first CSS file
+var firstCss = Directory.GetFiles(cssDir, "*.min.css").First();
+var firstFileName = Path.GetFileNameWithoutExtension(firstCss);
+if (firstFileName.EndsWith(".min")) firstFileName = firstFileName[..^4];
+var firstData = parser.Parse(File.ReadAllText(firstCss), firstFileName);
+
+var bsContent = generator.GenerateBsConstants(firstData, "MauiBootstrapTheme.Generated");
+var bsPath = Path.Combine(outDir, "Bs.g.cs");
+File.WriteAllText(bsPath, bsContent);
+Console.WriteLine($"\n📦 Bs.g.cs: {bsContent.Split('\n').Length} lines");
+
+var reactorContent = generator.GenerateReactorTheme(firstData, "MauiBootstrapTheme.Generated");
+var reactorPath = Path.Combine(outDir, $"{char.ToUpper(firstFileName[0]) + firstFileName[1..]}ReactorTheme.g.cs");
+File.WriteAllText(reactorPath, reactorContent);
+Console.WriteLine($"📦 {Path.GetFileName(reactorPath)}: {reactorContent.Split('\n').Length} lines");

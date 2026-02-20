@@ -24,7 +24,8 @@
     <GenerateBootstrapThemeTask
         CssFiles="@(BootstrapCss)"
         OutputDirectory="$(BootstrapThemeOutputDir)"
-        Namespace="$(RootNamespace).Themes">
+        Namespace="$(RootNamespace).Themes"
+        GenerateReactorTheme="$(BootstrapThemeGenerateReactor)">
       <Output TaskParameter="GeneratedCsFiles" ItemName="_GeneratedThemeCs" />
     </GenerateBootstrapThemeTask>
     

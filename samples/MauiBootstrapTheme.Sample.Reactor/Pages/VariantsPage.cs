@@ -1,6 +1,7 @@
 ﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
+using MauiBootstrapTheme.Sample.Reactor.Themes;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;
 
@@ -8,60 +9,60 @@ class VariantsPage : BasePage
 {
     private static string TextBgClass(BootstrapVariant variant) => variant switch
     {
-        BootstrapVariant.Primary => "text-bg-primary",
-        BootstrapVariant.Secondary => "text-bg-secondary",
-        BootstrapVariant.Success => "text-bg-success",
-        BootstrapVariant.Danger => "text-bg-danger",
-        BootstrapVariant.Warning => "text-bg-warning",
-        BootstrapVariant.Info => "text-bg-info",
-        _ => "text-bg-primary"
+        BootstrapVariant.Primary => Bs.TextBgPrimary,
+        BootstrapVariant.Secondary => Bs.TextBgSecondary,
+        BootstrapVariant.Success => Bs.TextBgSuccess,
+        BootstrapVariant.Danger => Bs.TextBgDanger,
+        BootstrapVariant.Warning => Bs.TextBgWarning,
+        BootstrapVariant.Info => Bs.TextBgInfo,
+        _ => Bs.TextBgPrimary
     };
 
     private static string OnClass(BootstrapVariant variant) => variant switch
     {
-        BootstrapVariant.Primary => "on-primary",
-        BootstrapVariant.Secondary => "on-secondary",
-        BootstrapVariant.Success => "on-success",
-        BootstrapVariant.Danger => "on-danger",
-        BootstrapVariant.Warning => "on-warning",
-        BootstrapVariant.Info => "on-info",
-        _ => "on-primary"
+        BootstrapVariant.Primary => Bs.OnPrimary,
+        BootstrapVariant.Secondary => Bs.OnSecondary,
+        BootstrapVariant.Success => Bs.OnSuccess,
+        BootstrapVariant.Danger => Bs.OnDanger,
+        BootstrapVariant.Warning => Bs.OnWarning,
+        BootstrapVariant.Info => Bs.OnInfo,
+        _ => Bs.OnPrimary
     };
 
     private static string BtnClass(BootstrapVariant variant) => variant switch
     {
-        BootstrapVariant.Primary => "btn-primary",
-        BootstrapVariant.Secondary => "btn-secondary",
-        BootstrapVariant.Success => "btn-success",
-        BootstrapVariant.Danger => "btn-danger",
-        BootstrapVariant.Warning => "btn-warning",
-        BootstrapVariant.Info => "btn-info",
-        _ => "btn-primary"
+        BootstrapVariant.Primary => Bs.BtnPrimary,
+        BootstrapVariant.Secondary => Bs.BtnSecondary,
+        BootstrapVariant.Success => Bs.BtnSuccess,
+        BootstrapVariant.Danger => Bs.BtnDanger,
+        BootstrapVariant.Warning => Bs.BtnWarning,
+        BootstrapVariant.Info => Bs.BtnInfo,
+        _ => Bs.BtnPrimary
     };
 
     private static string BtnOutlineClass(BootstrapVariant variant) => variant switch
     {
-        BootstrapVariant.Primary => "btn-outline-primary",
-        BootstrapVariant.Secondary => "btn-outline-secondary",
-        BootstrapVariant.Success => "btn-outline-success",
-        BootstrapVariant.Danger => "btn-outline-danger",
-        BootstrapVariant.Warning => "btn-outline-warning",
-        BootstrapVariant.Info => "btn-outline-info",
-        _ => "btn-outline-primary"
+        BootstrapVariant.Primary => Bs.BtnOutlinePrimary,
+        BootstrapVariant.Secondary => Bs.BtnOutlineSecondary,
+        BootstrapVariant.Success => Bs.BtnOutlineSuccess,
+        BootstrapVariant.Danger => Bs.BtnOutlineDanger,
+        BootstrapVariant.Warning => Bs.BtnOutlineWarning,
+        BootstrapVariant.Info => Bs.BtnOutlineInfo,
+        _ => Bs.BtnOutlinePrimary
     };
 
     private static VisualNode RenderVariantSection(string title, BootstrapVariant variant)
     {
         return Border(
             VStack(spacing: 12,
-                Label(title).Class("h5").Class(OnClass(variant)),
-                Entry().Placeholder($"{title} Entry").Class("form-control"),
+                Label(title).ThemeKey(Bs.H5).Class(OnClass(variant)),
+                Entry().Placeholder($"{title} Entry").Class(Bs.FormControl),
                 FlexLayout(
                     Button($"{title} Button").Class(BtnClass(variant)).Margin(0, 0, 8, 8),
                     Button($"{title} Outline").Class(BtnOutlineClass(variant)).Margin(0, 0, 8, 8)
                 ).Wrap(FlexWrap.Wrap).AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
             )
-        ).Class("card").Class(TextBgClass(variant));
+        ).Class(Bs.Card).Class(TextBgClass(variant));
     }
 
     public override VisualNode RenderContent()
@@ -69,8 +70,8 @@ class VariantsPage : BasePage
             VStack(spacing: 20,
                 // Header
                 VStack(spacing: 4,
-                    Label("Color Variants").Class("h1"),
-                    Label("All Bootstrap color variants applied to controls for parity comparison.").Class("lead").Class("text-muted")
+                    Label("Color Variants").ThemeKey(Bs.H1),
+                    Label("All Bootstrap color variants applied to controls for parity comparison.").ThemeKey(Bs.Lead).Class(Bs.TextMuted)
                 ),
 
                 RenderVariantSection("Primary", BootstrapVariant.Primary),

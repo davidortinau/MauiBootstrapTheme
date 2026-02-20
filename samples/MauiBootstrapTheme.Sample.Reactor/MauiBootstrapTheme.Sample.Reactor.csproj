@@ -9,6 +9,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
+    <BootstrapThemeGenerateReactor>true</BootstrapThemeGenerateReactor>
+
     <ApplicationTitle>Bootstrap Theme Reactor</ApplicationTitle>
     <ApplicationId>com.simplyprofound.bootstrapreactor</ApplicationId>
     <ApplicationIdGuid>8E3F9A1C-2B5D-4E6F-9A8C-1D2E3F4A5B6C</ApplicationIdGuid>

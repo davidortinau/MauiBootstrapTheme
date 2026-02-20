@@ -2443,6 +2443,246 @@ public partial class {className} : ResourceDictionary
     }
 
     #endregion
+
+    #region MauiReactor Bs Constants Generator
+
+    /// <summary>
+    /// Generates a static Bs class with const string keys for all Bootstrap CSS classes
+    /// and spacing constants. For use with MauiReactor's .Class() and .ThemeKey() methods.
+    /// </summary>
+    public string GenerateBsConstants(Parsing.BootstrapThemeData data, string @namespace)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("// Auto-generated from CSS by MauiBootstrapTheme.Build. Do not edit.");
+        sb.AppendLine();
+        sb.AppendLine($"namespace {@namespace};");
+        sb.AppendLine();
+        sb.AppendLine("/// <summary>");
+        sb.AppendLine("/// Bootstrap CSS class constants for MauiReactor styling.");
+        sb.AppendLine("/// Use with .Class() for composable styling or .ThemeKey() for single-concept styles.");
+        sb.AppendLine("/// Example: Button(\"Save\").Class(Bs.BtnPrimary, Bs.BtnLg)");
+        sb.AppendLine("/// </summary>");
+        sb.AppendLine("public static class Bs");
+        sb.AppendLine("{");
+
+        // Typography
+        sb.AppendLine("    // ── Typography ──");
+        sb.AppendLine("    public const string H1 = \"h1\";");
+        sb.AppendLine("    public const string H2 = \"h2\";");
+        sb.AppendLine("    public const string H3 = \"h3\";");
+        sb.AppendLine("    public const string H4 = \"h4\";");
+        sb.AppendLine("    public const string H5 = \"h5\";");
+        sb.AppendLine("    public const string H6 = \"h6\";");
+        sb.AppendLine("    public const string Lead = \"lead\";");
+        sb.AppendLine("    public const string Small = \"small\";");
+        sb.AppendLine("    public const string Mark = \"mark\";");
+        sb.AppendLine("    public const string TextMuted = \"text-muted\";");
+        sb.AppendLine();
+
+        // Text colors
+        sb.AppendLine("    // ── Text Colors ──");
+        var variants = new[] { "primary", "secondary", "success", "danger", "warning", "info" };
+        foreach (var v in variants)
+            sb.AppendLine($"    public const string Text{ToPascalCase(v)} = \"text-{v}\";");
+        sb.AppendLine();
+
+        // Buttons: Variants
+        sb.AppendLine("    // ── Buttons: Variants ──");
+        var allVariants = new[] { "primary", "secondary", "success", "danger", "warning", "info", "light", "dark" };
+        foreach (var v in allVariants)
+            sb.AppendLine($"    public const string Btn{ToPascalCase(v)} = \"btn-{v}\";");
+        sb.AppendLine();
+
+        // Buttons: Outline Variants
+        sb.AppendLine("    // ── Buttons: Outline Variants ──");
+        foreach (var v in allVariants)
+            sb.AppendLine($"    public const string BtnOutline{ToPascalCase(v)} = \"btn-outline-{v}\";");
+        sb.AppendLine();
+
+        // Buttons: Sizes & Shapes
+        sb.AppendLine("    // ── Buttons: Sizes & Shapes ──");
+        sb.AppendLine("    public const string BtnLg = \"btn-lg\";");
+        sb.AppendLine("    public const string BtnSm = \"btn-sm\";");
+        sb.AppendLine("    public const string BtnPill = \"btn-pill\";");
+        sb.AppendLine();
+
+        // Forms
+        sb.AppendLine("    // ── Forms ──");
+        sb.AppendLine("    public const string FormControl = \"form-control\";");
+        sb.AppendLine("    public const string FormControlLg = \"form-control-lg\";");
+        sb.AppendLine("    public const string FormControlSm = \"form-control-sm\";");
+        sb.AppendLine("    public const string FormLabel = \"form-label\";");
+        sb.AppendLine("    public const string FormText = \"form-text\";");
+        sb.AppendLine("    public const string FormSelect = \"form-select\";");
+        sb.AppendLine("    public const string FormSelectSm = \"form-select-sm\";");
+        sb.AppendLine("    public const string FormCheckInput = \"form-check-input\";");
+        sb.AppendLine("    public const string FormCheckLabel = \"form-check-label\";");
+        sb.AppendLine("    public const string FormSwitch = \"form-switch\";");
+        sb.AppendLine("    public const string FormRange = \"form-range\";");
+        sb.AppendLine();
+
+        // Cards & Containers
+        sb.AppendLine("    // ── Cards & Containers ──");
+        sb.AppendLine("    public const string Card = \"card\";");
+        sb.AppendLine("    public const string Shadow = \"shadow\";");
+        sb.AppendLine("    public const string ShadowSm = \"shadow-sm\";");
+        sb.AppendLine("    public const string ShadowLg = \"shadow-lg\";");
+        sb.AppendLine();
+
+        // Backgrounds
+        sb.AppendLine("    // ── Backgrounds ──");
+        foreach (var v in allVariants)
+            sb.AppendLine($"    public const string Bg{ToPascalCase(v)} = \"bg-{v}\";");
+        sb.AppendLine();
+
+        // Text + Background combos
+        sb.AppendLine("    // ── Text + Background Combos ──");
+        foreach (var v in allVariants)
+            sb.AppendLine($"    public const string TextBg{ToPascalCase(v)} = \"text-bg-{v}\";");
+        sb.AppendLine();
+
+        // On-colors (contrast text)
+        sb.AppendLine("    // ── Contrast Text (On-Colors) ──");
+        foreach (var v in allVariants)
+            sb.AppendLine($"    public const string On{ToPascalCase(v)} = \"on-{v}\";");
+        sb.AppendLine();
+
+        // Progress
+        sb.AppendLine("    // ── Progress ──");
+        sb.AppendLine("    public const string ProgressSuccess = \"progress-success\";");
+        sb.AppendLine("    public const string ProgressDanger = \"progress-danger\";");
+        sb.AppendLine();
+
+        // Badges
+        sb.AppendLine("    // ── Badges ──");
+        sb.AppendLine("    public const string Badge = \"badge\";");
+        sb.AppendLine();
+
+        // Spacing
+        sb.AppendLine("    // ── Spacing (Bootstrap scale → device pixels) ──");
+        sb.AppendLine("    public const double Spacing0 = 0;");
+        sb.AppendLine("    public const double Spacing1 = 4;");
+        sb.AppendLine("    public const double Spacing2 = 8;");
+        sb.AppendLine("    public const double Spacing3 = 16;");
+        sb.AppendLine("    public const double Spacing4 = 24;");
+        sb.AppendLine("    public const double Spacing5 = 48;");
+
+        sb.AppendLine("}");
+        return sb.ToString();
+    }
+
+    #endregion
+
+    #region MauiReactor Theme Subclass Generator
+
+    /// <summary>
+    /// Generates a MauiReactor Theme subclass that registers styles via *Styles.Themes[] dictionaries.
+    /// For use with .ThemeKey() on typography and default control styles.
+    /// </summary>
+    public string GenerateReactorTheme(Parsing.BootstrapThemeData data, string @namespace)
+    {
+        var className = ToPascalCase(data.Name) + "ReactorTheme";
+        var sb = new StringBuilder();
+
+        sb.AppendLine("// Auto-generated from CSS by MauiBootstrapTheme.Build. Do not edit.");
+        sb.AppendLine("using MauiReactor;");
+        sb.AppendLine("using Microsoft.Maui.Controls;");
+        sb.AppendLine("using Microsoft.Maui.Graphics;");
+        sb.AppendLine();
+        sb.AppendLine($"namespace {@namespace};");
+        sb.AppendLine();
+        sb.AppendLine("/// <summary>");
+        sb.AppendLine($"/// Generated MauiReactor Theme from Bootstrap CSS '{data.Name}'.");
+        sb.AppendLine("/// Register with app.UseTheme&lt;T&gt;() in MauiProgram.cs.");
+        sb.AppendLine("/// </summary>");
+        sb.AppendLine($"public partial class {className} : Theme");
+        sb.AppendLine("{");
+
+        // Color properties
+        sb.AppendLine("    // ── Colors ──");
+        EmitReactorColor(sb, "Primary", data.Primary ?? "#0d6efd");
+        EmitReactorColor(sb, "Secondary", data.Secondary ?? "#6c757d");
+        EmitReactorColor(sb, "Success", data.Success ?? "#198754");
+        EmitReactorColor(sb, "Danger", data.Danger ?? "#dc3545");
+        EmitReactorColor(sb, "Warning", data.Warning ?? "#ffc107");
+        EmitReactorColor(sb, "Info", data.Info ?? "#0dcaf0");
+        EmitReactorColor(sb, "Light", data.Light ?? "#f8f9fa");
+        EmitReactorColor(sb, "Dark", data.Dark ?? "#212529");
+        EmitReactorColor(sb, "Body", data.BodyColor ?? "#212529");
+        EmitReactorColor(sb, "BodyBg", data.BodyBackground ?? "#ffffff");
+        EmitReactorColor(sb, "Muted", data.SecondaryColor ?? "#6c757d");
+        sb.AppendLine();
+
+        // On-colors
+        sb.AppendLine("    // ── Contrast Colors ──");
+        var allVariants = new[] { "primary", "secondary", "success", "danger", "warning", "info", "light", "dark" };
+        foreach (var v in allVariants)
+        {
+            var onColor = data.OnColors.TryGetValue(v, out var c)
+                ? NormalizeHexColor(c)
+                : (v == "warning" || v == "info" || v == "light" ? "#000000" : "#ffffff");
+            EmitReactorColor(sb, $"On{ToPascalCase(v)}", onColor);
+        }
+        sb.AppendLine();
+
+        // Font sizes
+        var baseFontSize = data.BodyFontSize != null ? CssToDevicePixels(data.BodyFontSize) : 16;
+        sb.AppendLine("    // ── Typography Sizes ──");
+        sb.AppendLine($"    public static double FontSizeBase {{ get; }} = {FormatDouble(baseFontSize)};");
+        sb.AppendLine($"    public static double FontSizeH1 {{ get; }} = {FormatDouble(data.FontSizeH1 != null ? CssToDevicePixels(data.FontSizeH1) : baseFontSize * 2.5)};");
+        sb.AppendLine($"    public static double FontSizeH2 {{ get; }} = {FormatDouble(data.FontSizeH2 != null ? CssToDevicePixels(data.FontSizeH2) : baseFontSize * 2)};");
+        sb.AppendLine($"    public static double FontSizeH3 {{ get; }} = {FormatDouble(data.FontSizeH3 != null ? CssToDevicePixels(data.FontSizeH3) : baseFontSize * 1.75)};");
+        sb.AppendLine($"    public static double FontSizeH4 {{ get; }} = {FormatDouble(data.FontSizeH4 != null ? CssToDevicePixels(data.FontSizeH4) : baseFontSize * 1.5)};");
+        sb.AppendLine($"    public static double FontSizeH5 {{ get; }} = {FormatDouble(data.FontSizeH5 != null ? CssToDevicePixels(data.FontSizeH5) : baseFontSize * 1.25)};");
+        sb.AppendLine($"    public static double FontSizeH6 {{ get; }} = {FormatDouble(data.FontSizeH6 != null ? CssToDevicePixels(data.FontSizeH6) : baseFontSize)};");
+        sb.AppendLine($"    public static double FontSizeLead {{ get; }} = {FormatDouble(baseFontSize * 1.25)};");
+        sb.AppendLine($"    public static double FontSizeSmall {{ get; }} = {FormatDouble(baseFontSize * 0.875)};");
+        sb.AppendLine();
+
+        // Corner radius
+        var cornerRadius = (int)Math.Round(CssToDevicePixels(data.BorderRadius ?? "0.375rem"));
+        sb.AppendLine($"    public static int CornerRadius {{ get; }} = {cornerRadius};");
+        sb.AppendLine();
+
+        // OnApply
+        sb.AppendLine("    protected override void OnApply()");
+        sb.AppendLine("    {");
+
+        // Typography ThemeKey styles
+        sb.AppendLine("        // ── Typography (use with .ThemeKey()) ──");
+        var headingWeight = "Microsoft.Maui.Controls.FontAttributes.Bold";
+        for (int i = 1; i <= 6; i++)
+        {
+            sb.AppendLine($"        LabelStyles.Themes[Bs.H{i}] = _ => _.FontSize(FontSizeH{i}).FontAttributes({headingWeight}).TextColor(Body);");
+        }
+        sb.AppendLine($"        LabelStyles.Themes[Bs.Lead] = _ => _.FontSize(FontSizeLead).TextColor(Body);");
+        sb.AppendLine($"        LabelStyles.Themes[Bs.Small] = _ => _.FontSize(FontSizeSmall).TextColor(Body);");
+        sb.AppendLine($"        LabelStyles.Themes[Bs.TextMuted] = _ => _.TextColor(Muted);");
+        sb.AppendLine();
+
+        // Partial method for user extensions
+        sb.AppendLine("        OnApplyCustom();");
+        sb.AppendLine("    }");
+        sb.AppendLine();
+        sb.AppendLine("    /// <summary>Override in a partial class to add custom ThemeKey registrations.</summary>");
+        sb.AppendLine("    partial void OnApplyCustom();");
+
+        sb.AppendLine("}");
+        return sb.ToString();
+    }
+
+    private void EmitReactorColor(StringBuilder sb, string name, string hexColor)
+    {
+        var hex = NormalizeHexColor(hexColor);
+        sb.AppendLine($"    public static Color {name} {{ get; }} = Color.FromArgb(\"{hex}\");");
+    }
+
+    private string FormatDouble(double value)
+    {
+        return value.ToString("0.##", CultureInfo.InvariantCulture);
+    }
+
+    #endregion
 }
 
 public class FontWarning

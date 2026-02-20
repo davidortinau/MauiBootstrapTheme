@@ -29,6 +29,12 @@ public class GenerateBootstrapThemeTask : Microsoft.Build.Utilities.Task
     public string Namespace { get; set; } = "MauiBootstrapTheme.Generated";
 
     /// <summary>
+    /// Whether to generate MauiReactor-specific files (Bs constants + Theme subclasses).
+    /// Set to true in MauiReactor projects. Default: false.
+    /// </summary>
+    public bool GenerateReactorTheme { get; set; } = false;
+
+    /// <summary>
     /// Output: Generated XAML files (for MauiXaml item group).
     /// </summary>
     [Output]
@@ -104,6 +110,27 @@ public class GenerateBootstrapThemeTask : Microsoft.Build.Utilities.Task
                 File.WriteAllText(csPath, csContent);
                 generatedCs.Add(new TaskItem(csPath));
                 Log.LogMessage(MessageImportance.Normal, $"  Generated: {csPath}");
+
+                if (GenerateReactorTheme)
+                {
+                    // Generate MauiReactor Bs constants (once per build, from first theme)
+                    var bsPath = Path.Combine(OutputDirectory, "Bs.g.cs");
+                    if (!File.Exists(bsPath))
+                    {
+                        var bsContent = generator.GenerateBsConstants(themeData, Namespace);
+                        File.WriteAllText(bsPath, bsContent);
+                        generatedCs.Add(new TaskItem(bsPath));
+                        Log.LogMessage(MessageImportance.Normal, $"  Generated: {bsPath}");
+                    }
+
+                    // Generate MauiReactor Theme subclass
+                    var reactorContent = generator.GenerateReactorTheme(themeData, Namespace);
+                    var reactorClassName = ToPascalCase(themeName) + "ReactorTheme";
+                    var reactorPath = Path.Combine(OutputDirectory, $"{reactorClassName}.g.cs");
+                    File.WriteAllText(reactorPath, reactorContent);
+                    generatedCs.Add(new TaskItem(reactorPath));
+                    Log.LogMessage(MessageImportance.Normal, $"  Generated: {reactorPath}");
+                }
 
                 // Emit font warnings
                 var fontWarnings = generator.GetFontWarnings(themeData);
