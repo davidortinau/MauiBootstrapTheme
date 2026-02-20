@@ -1,4 +1,4 @@
-﻿using System.Reflection.Metadata;
+﻿﻿using System.Reflection.Metadata;
 
 [assembly: MetadataUpdateHandler(typeof(MauiBootstrapTheme.Sample.Reactor.HotReloadService))]
 

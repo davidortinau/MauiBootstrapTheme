@@ -1,4 +1,4 @@
-﻿﻿using MauiReactor;
+﻿﻿﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
 using MauiBootstrapTheme.Sample.Reactor.Themes;
@@ -20,7 +20,7 @@ class ControlsPage : BasePage
 
                 // Buttons Section
                 VStack(spacing: 8,
-                    Label("Buttons").Class(Bs.H4),
+                    Label("Buttonsdddddd").Class(Bs.H1),
                     FlexLayout(
                         Button("Primary").Class(Bs.BtnPrimary).Margin(0, 0, 8, 8),
                         Button("Secondary").Class(Bs.BtnSecondary).Margin(0, 0, 8, 8),
