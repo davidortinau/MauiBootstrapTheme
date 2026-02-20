@@ -69,6 +69,8 @@ public class GenerateBootstrapThemeTask : Microsoft.Build.Utilities.Task
 
         var bsGenerated = false;
         var bsIncluded = false;
+        var bsSpacingGenerated = false;
+        var bsSpacingIncluded = false;
         foreach (var cssItem in CssFiles)
         {
             var cssFile = cssItem.ItemSpec;
@@ -129,6 +131,21 @@ public class GenerateBootstrapThemeTask : Microsoft.Build.Utilities.Task
                         bsIncluded = true;
                     }
                     Log.LogMessage(MessageImportance.Normal, $"  Generated: {bsPath}");
+
+                    // Generate spacing extension helpers once per build
+                    var bsSpacingPath = Path.Combine(OutputDirectory, "BsSpacingExtensions.g.cs");
+                    if (!bsSpacingGenerated)
+                    {
+                        var bsSpacingContent = generator.GenerateBsSpacingExtensions(Namespace);
+                        File.WriteAllText(bsSpacingPath, bsSpacingContent);
+                        bsSpacingGenerated = true;
+                    }
+                    if (!bsSpacingIncluded)
+                    {
+                        generatedCs.Add(new TaskItem(bsSpacingPath));
+                        bsSpacingIncluded = true;
+                    }
+                    Log.LogMessage(MessageImportance.Normal, $"  Generated: {bsSpacingPath}");
 
                     // Generate MauiReactor Theme subclass
                     var reactorContent = generator.GenerateReactorTheme(themeData, Namespace);

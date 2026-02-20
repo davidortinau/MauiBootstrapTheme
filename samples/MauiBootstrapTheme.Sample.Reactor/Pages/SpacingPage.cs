@@ -39,12 +39,12 @@ class SpacingPage : BasePage
                         // Padding examples
                         Border(
                             VStack(spacing: 6,
-                                Border(Label("p-0 (PaddingLevel=0)").TextColor(Colors.White)).Class(Bs.BgPrimary).Set(Bootstrap.PaddingLevelProperty, 0),
-                                Border(Label("p-1 (PaddingLevel=1)").TextColor(Colors.White)).Class(Bs.BgPrimary).Set(Bootstrap.PaddingLevelProperty, 1),
-                                Border(Label("p-2 (PaddingLevel=2)").TextColor(Colors.White)).Class(Bs.BgPrimary).Set(Bootstrap.PaddingLevelProperty, 2),
-                                Border(Label("p-3 (PaddingLevel=3)").TextColor(Colors.White)).Class(Bs.BgPrimary).Set(Bootstrap.PaddingLevelProperty, 3),
-                                Border(Label("p-4 (PaddingLevel=4)").TextColor(Colors.White)).Class(Bs.BgPrimary).Set(Bootstrap.PaddingLevelProperty, 4),
-                                Border(Label("p-5 (PaddingLevel=5)").TextColor(Colors.White)).Class(Bs.BgPrimary).Set(Bootstrap.PaddingLevelProperty, 5)
+                                Border(Label("p-0 (PaddingLevel=0)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding0(),
+                                Border(Label("p-1 (PaddingLevel=1)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding1(),
+                                Border(Label("p-2 (PaddingLevel=2)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding2(),
+                                Border(Label("p-3 (PaddingLevel=3)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding3(),
+                                Border(Label("p-4 (PaddingLevel=4)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding4(),
+                                Border(Label("p-5 (PaddingLevel=5)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding5()
                             )
                         ).Background(Color.FromArgb("#e9ecef")).Padding(8),
 
@@ -52,11 +52,11 @@ class SpacingPage : BasePage
                         Border(
                             VStack(spacing: 0,
                                 Border(Label("mt-0 (MarginLevel=0)").Padding(8)).Background(Colors.White),
-                                Border(Label("mt-1 (MarginLevel=1)").Padding(8)).Background(Colors.White).Set(Bootstrap.MarginLevelProperty, 1),
-                                Border(Label("mt-2 (MarginLevel=2)").Padding(8)).Background(Colors.White).Set(Bootstrap.MarginLevelProperty, 2),
-                                Border(Label("mt-3 (MarginLevel=3)").Padding(8)).Background(Colors.White).Set(Bootstrap.MarginLevelProperty, 3),
-                                Border(Label("mt-4 (MarginLevel=4)").Padding(8)).Background(Colors.White).Set(Bootstrap.MarginLevelProperty, 4),
-                                Border(Label("mt-5 (MarginLevel=5)").Padding(8)).Background(Colors.White).Set(Bootstrap.MarginLevelProperty, 5)
+                                Border(Label("mt-1 (MarginLevel=1)").Padding(8)).Background(Colors.White).BsMargin1(),
+                                Border(Label("mt-2 (MarginLevel=2)").Padding(8)).Background(Colors.White).BsMargin2(),
+                                Border(Label("mt-3 (MarginLevel=3)").Padding(8)).Background(Colors.White).BsMargin3(),
+                                Border(Label("mt-4 (MarginLevel=4)").Padding(8)).Background(Colors.White).BsMargin4(),
+                                Border(Label("mt-5 (MarginLevel=5)").Padding(8)).Background(Colors.White).BsMargin5()
                             )
                         ).Background(Color.FromArgb("#f8f9fa")).Padding(8)
                     )

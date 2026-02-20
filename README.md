@@ -249,6 +249,11 @@ Border(content).Class(Bs.Card).Class(Bs.Shadow)
 // Spacing constants (Bootstrap scale → dp)
 VStack(spacing: Bs.Spacing3, ...)  // 16dp
 .Padding(Bs.Spacing4)              // 24dp
+
+// Bootstrap spacing utility helpers (no direct .Set(...))
+Border(label).BsPadding0()
+Border(label).BsPadding3()
+Border(label).BsMargin2()
 ```
 
 #### Theme Change Handling

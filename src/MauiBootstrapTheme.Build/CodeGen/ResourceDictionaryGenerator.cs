@@ -2571,6 +2571,40 @@ public partial class {className} : ResourceDictionary
         return sb.ToString();
     }
 
+    /// <summary>
+    /// Generates MauiReactor extension methods for Bootstrap spacing utilities.
+    /// This keeps Reactor page code free of direct .Set(Bootstrap.*Property, n) calls.
+    /// </summary>
+    public string GenerateBsSpacingExtensions(string @namespace)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("// Auto-generated from CSS by MauiBootstrapTheme.Build. Do not edit.");
+        sb.AppendLine("using MauiBootstrapTheme.Theming;");
+        sb.AppendLine("using MauiReactor;");
+        sb.AppendLine();
+        sb.AppendLine($"namespace {@namespace};");
+        sb.AppendLine();
+        sb.AppendLine("public static class BsSpacingExtensions");
+        sb.AppendLine("{");
+        sb.AppendLine("    public static T BsPadding<T>(this T node, int level) where T : IVisualNode");
+        sb.AppendLine("        => node.Set(Bootstrap.PaddingLevelProperty, level);");
+        sb.AppendLine();
+        sb.AppendLine("    public static T BsMargin<T>(this T node, int level) where T : IVisualNode");
+        sb.AppendLine("        => node.Set(Bootstrap.MarginLevelProperty, level);");
+        sb.AppendLine();
+        for (var i = 0; i <= 5; i++)
+        {
+            sb.AppendLine($"    public static T BsPadding{i}<T>(this T node) where T : IVisualNode => node.BsPadding({i});");
+        }
+        sb.AppendLine();
+        for (var i = 0; i <= 5; i++)
+        {
+            sb.AppendLine($"    public static T BsMargin{i}<T>(this T node) where T : IVisualNode => node.BsMargin({i});");
+        }
+        sb.AppendLine("}");
+        return sb.ToString();
+    }
+
     #endregion
 
     #region MauiReactor Theme Subclass Generator

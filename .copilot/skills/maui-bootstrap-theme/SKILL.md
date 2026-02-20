@@ -77,7 +77,7 @@ When `BootstrapThemeGenerateReactor=true`, the build generates:
 **Rules for MauiReactor code:**
 - **Typography** (h1–h6, lead, small, text-muted) → use `.Class(Bs.H1)`
 - **Buttons, forms, cards, backgrounds** → use `.Class(Bs.BtnPrimary)`, compose with `.Class(Bs.BtnPrimary).Class(Bs.BtnLg)`
-- **Spacing** → use `Bs.Spacing0` through `Bs.Spacing5` (0, 4, 8, 16, 24, 48 dp)
+- **Spacing** → use `Bs.Spacing0` through `Bs.Spacing5` (0, 4, 8, 16, 24, 48 dp) and `BsPadding0..5` / `BsMargin0..5` helpers
 - **Never use raw strings** — always use `Bs.*` constants for IntelliSense and typo prevention
 
 ```csharp
@@ -88,6 +88,8 @@ Button("Delete").Class(Bs.BtnDanger).Class(Bs.BtnSm)
 Entry().Class(Bs.FormControl)
 Border(content).Class(Bs.Card).Class(Bs.Shadow)
 VStack(spacing: Bs.Spacing3, ...)
+Border(content).BsPadding3()
+Border(content).BsMargin2()
 
 // ❌ Do NOT use raw strings:
 Label("Dashboard").Class("h1")        // Use Bs constant
