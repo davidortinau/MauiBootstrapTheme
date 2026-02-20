@@ -27,8 +27,9 @@ internal static class HotReloadService
             else
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    try { HotReloadTriggered?.Invoke(); }
-                    catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"[BootstrapTheme] Hot Reload callback error: {ex}"); }
+                    // Don't swallow exceptions on the UI thread, as they may
+                    // cause the debug session to disconnect silently.
+                    HotReloadTriggered?.Invoke();
                 });
         }
         catch (Exception ex)
