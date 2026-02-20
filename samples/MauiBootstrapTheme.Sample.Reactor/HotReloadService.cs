@@ -1,21 +1,17 @@
-﻿using System.Reflection.Metadata;
-
-/*
 // [assembly: System.Reflection.Metadata.MetadataUpdateHandler(typeof(MauiBootstrapTheme.Sample.Reactor.HotReloadService))]
-*/
 
 namespace MauiBootstrapTheme.Sample.Reactor;
 
 /// <summary>
-/// Bridges .NET C# Hot Reload with MauiReactor's component tree.
-/// MauiReactor v4 NuGet does not ship a MetadataUpdateHandler,
-/// so without this, code changes apply in-memory but components
-/// never re-render.
+/// This service is intentionally commented out.
+/// MauiReactor v3+ (and v4) supports Hot Reload natively via the
+/// RuntimeHostConfigurationOption in the .csproj file.
+///
+/// If Hot Reload fails, uncomment this class and subscribe to
+/// HotReloadTriggered in BasePage.cs to bridge the notification manually.
 /// </summary>
 internal static class HotReloadService
 {
-    // ... rest of class remains but unused ...
-
     public static event Action? HotReloadTriggered;
 
 #pragma warning disable IDE0051 // Called by .NET Hot Reload infrastructure
@@ -23,23 +19,16 @@ internal static class HotReloadService
 
     static void UpdateApplication(Type[]? _)
     {
-        try
-        {
-            System.Diagnostics.Debug.WriteLine("[BootstrapTheme] Hot Reload triggered — invalidating components");
-            if (MainThread.IsMainThread)
-                HotReloadTriggered?.Invoke();
-            else
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    // Don't swallow exceptions on the UI thread, as they may
-                    // cause the debug session to disconnect silently.
-                    HotReloadTriggered?.Invoke();
-                });
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[BootstrapTheme] Hot Reload error: {ex}");
-        }
+        // Debug logging only - standard MauiReactor invalidation should handle this.
+        System.Diagnostics.Debug.WriteLine("[BootstrapTheme] Hot Reload update received via custom handler.");
+        
+        // Uncomment if manual invalidation is needed:
+        /*
+        if (MainThread.IsMainThread)
+            HotReloadTriggered?.Invoke();
+        else
+            MainThread.BeginInvokeOnMainThread(() => HotReloadTriggered?.Invoke());
+        */
     }
 #pragma warning restore IDE0051
 }
