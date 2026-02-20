@@ -55,7 +55,7 @@ class VariantsPage : BasePage
     {
         return Border(
             VStack(spacing: 12,
-                Label(title).ThemeKey(Bs.H5).Class(OnClass(variant)),
+                Label(title).Class(Bs.H5).Class(OnClass(variant)),
                 Entry().Placeholder($"{title} Entry").Class(Bs.FormControl),
                 FlexLayout(
                     Button($"{title} Button").Class(BtnClass(variant)).Margin(0, 0, 8, 8),
@@ -70,8 +70,8 @@ class VariantsPage : BasePage
             VStack(spacing: 20,
                 // Header
                 VStack(spacing: 4,
-                    Label("Color Variants").ThemeKey(Bs.H1),
-                    Label("All Bootstrap color variants applied to controls for parity comparison.").ThemeKey(Bs.Lead).Class(Bs.TextMuted)
+                    Label("Color Variants").Class(Bs.H1),
+                    Label("All Bootstrap color variants applied to controls for parity comparison.").Class(Bs.Lead).Class(Bs.TextMuted)
                 ),
 
                 RenderVariantSection("Primary", BootstrapVariant.Primary),

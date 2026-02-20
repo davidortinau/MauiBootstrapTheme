@@ -230,9 +230,9 @@ This generates a `Bs` constants class and `*ReactorTheme` classes at build time.
 Use `Bs.*` constants instead of raw strings for IntelliSense and type safety:
 
 ```csharp
-// Typography — use .ThemeKey() for single-concept styles
-Label("Dashboard").ThemeKey(Bs.H1)
-Label("Description").ThemeKey(Bs.Lead)
+// Typography — use .Class() consistently
+Label("Dashboard").Class(Bs.H1)
+Label("Description").Class(Bs.Lead)
 
 // Buttons — use .Class() for composable styling
 Button("Save").Class(Bs.BtnPrimary)

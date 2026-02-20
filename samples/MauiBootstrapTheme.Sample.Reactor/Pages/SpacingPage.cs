@@ -16,25 +16,25 @@ class SpacingPage : BasePage
             VStack(spacing: 20,
                 // Header
                 VStack(spacing: 4,
-                    Label("Spacing Utilities").ThemeKey(Bs.H1),
-                    Label("Canonical Bootstrap 5.3 spacing utility patterns.").ThemeKey(Bs.Lead).Class(Bs.TextMuted)
+                    Label("Spacing Utilities").Class(Bs.H1),
+                    Label("Canonical Bootstrap 5.3 spacing utility patterns.").Class(Bs.Lead).Class(Bs.TextMuted)
                 ),
 
                 // Notation card
                 Card(
                     VStack(
-                        Label("Notation").ThemeKey(Bs.H4),
-                        Label("m = margin, p = padding").ThemeKey(Bs.Small),
-                        Label("t, b, s, e, x, y = side selectors").ThemeKey(Bs.Small),
-                        Label("0-5 = spacing scale values").ThemeKey(Bs.Small),
-                        Label("Format: {property}{side}-{size} (example: mt-3, px-2)").ThemeKey(Bs.Small).Class(Bs.TextMuted)
+                        Label("Notation").Class(Bs.H4),
+                        Label("m = margin, p = padding").Class(Bs.Small),
+                        Label("t, b, s, e, x, y = side selectors").Class(Bs.Small),
+                        Label("0-5 = spacing scale values").Class(Bs.Small),
+                        Label("Format: {property}{side}-{size} (example: mt-3, px-2)").Class(Bs.Small).Class(Bs.TextMuted)
                     ).Class("   ")
                 ),
 
                 // Examples card
                 Card(
                     VStack(spacing: 10,
-                        Label("Examples").ThemeKey(Bs.H4),
+                        Label("Examples").Class(Bs.H4),
 
                         // Padding examples
                         Border(
@@ -65,7 +65,7 @@ class SpacingPage : BasePage
                 // Horizontal centering card
                 Card(
                     VStack(spacing: 8,
-                        Label("Horizontal centering").ThemeKey(Bs.H4),
+                        Label("Horizontal centering").Class(Bs.H4),
                         Border(
                             Label(".mx-auto with width: 200px").TextColor(Colors.White).HorizontalOptions(LayoutOptions.Center)
                         ).WidthRequest(200).HorizontalOptions(LayoutOptions.Center).Background(BootstrapTheme.Current.Secondary).Padding(8)
@@ -75,7 +75,7 @@ class SpacingPage : BasePage
                 // Gap utilities card
                 Card(
                     VStack(spacing: 8,
-                        Label("Gap utilities").ThemeKey(Bs.H4),
+                        Label("Gap utilities").Class(Bs.H4),
                         HStack(spacing: 8,
                             Border(Label("gap-2 equivalent")).Background(BootstrapTheme.Current.Info).Padding(8),
                             Border(Label("Item")).Background(BootstrapTheme.Current.Info).Padding(8),

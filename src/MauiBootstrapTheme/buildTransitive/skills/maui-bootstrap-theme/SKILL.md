@@ -72,17 +72,17 @@ Theme classes (e.g., `DefaultTheme`) are auto-generated at build time into `obj/
 
 When `BootstrapThemeGenerateReactor=true`, the build generates:
 - **`Bs` static class** — `const string` keys for all Bootstrap CSS classes + spacing constants
-- **`*ReactorTheme` classes** — MauiReactor `Theme` subclasses with color properties and ThemeKey registrations
+- **`*ReactorTheme` classes** — MauiReactor `Theme` subclasses with color properties and class-based style support
 
 **Rules for MauiReactor code:**
-- **Typography** (h1–h6, lead, small, text-muted) → use `.ThemeKey(Bs.H1)`
+- **Typography** (h1–h6, lead, small, text-muted) → use `.Class(Bs.H1)`
 - **Buttons, forms, cards, backgrounds** → use `.Class(Bs.BtnPrimary)`, compose with `.Class(Bs.BtnPrimary).Class(Bs.BtnLg)`
 - **Spacing** → use `Bs.Spacing0` through `Bs.Spacing5` (0, 4, 8, 16, 24, 48 dp)
 - **Never use raw strings** — always use `Bs.*` constants for IntelliSense and typo prevention
 
 ```csharp
 // ✅ Correct MauiReactor patterns:
-Label("Dashboard").ThemeKey(Bs.H1)
+Label("Dashboard").Class(Bs.H1)
 Button("Save").Class(Bs.BtnPrimary)
 Button("Delete").Class(Bs.BtnDanger).Class(Bs.BtnSm)
 Entry().Class(Bs.FormControl)
@@ -90,7 +90,7 @@ Border(content).Class(Bs.Card).Class(Bs.Shadow)
 VStack(spacing: Bs.Spacing3, ...)
 
 // ❌ Do NOT use raw strings:
-Label("Dashboard").Class("h1")        // Use ThemeKey + Bs constant
+Label("Dashboard").Class("h1")        // Use Bs constant
 Button("Save").Class("btn-primary")   // Use Bs.BtnPrimary
 ```
 
@@ -172,9 +172,9 @@ Button("Delete").Class(Bs.BtnOutlineDanger).Class(Bs.BtnSm)
 ```csharp
 // C#
 new Label { Text = "Page Title", StyleClass = { "h1" } };
-// MauiReactor — use ThemeKey for single-concept typography
-Label("Page Title").ThemeKey(Bs.H1)
-Label("Subtitle").ThemeKey(Bs.Lead)
+// MauiReactor — use Class() consistently for typography
+Label("Page Title").Class(Bs.H1)
+Label("Subtitle").Class(Bs.Lead)
 Label("Field Label").Class(Bs.FormLabel)
 ```
 
@@ -265,8 +265,8 @@ Switch().Class(Bs.FormSwitch)
 ```csharp
 Border(
     VStack(
-        Label("Card Title").ThemeKey(Bs.H5),
-        Label("Content").ThemeKey(Bs.TextMuted)
+        Label("Card Title").Class(Bs.H5),
+        Label("Content").Class(Bs.TextMuted)
     )
 ).Class(Bs.Card).Class(Bs.Shadow)
 ```

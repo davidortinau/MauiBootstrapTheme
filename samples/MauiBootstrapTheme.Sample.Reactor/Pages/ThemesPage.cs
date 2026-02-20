@@ -20,15 +20,15 @@ class ThemesPage : BasePage
             VStack(spacing: 24,
                 // Page Header
                 VStack(spacing: 4,
-                    Label("Theme Switcher").ThemeKey(Bs.H1),
-                    Label("Switch between Bootstrap themes at runtime").ThemeKey(Bs.Lead).Class(Bs.TextMuted)
+                    Label("Theme Switcher").Class(Bs.H1),
+                    Label("Switch between Bootstrap themes at runtime").Class(Bs.Lead).Class(Bs.TextMuted)
                 ),
 
                 BoxView().HeightRequest(1).Color(theme.OutlineVariant).Margin(0, 4),
 
                 // Theme Selection
                 VStack(spacing: 12,
-                    Label("Select Theme").ThemeKey(Bs.H4),
+                    Label("Select Theme").Class(Bs.H4),
                     FlexLayout(
                         Button("Default").Class(Bs.BtnPrimary).OnClicked(() => ApplyTheme("default")).Margin(0, 0, 8, 8),
                         Button("Darkly").Class(Bs.BtnDark).OnClicked(() => ApplyTheme("darkly")).Margin(0, 0, 8, 8),
@@ -43,10 +43,10 @@ class ThemesPage : BasePage
 
                 // Preview
                 VStack(spacing: 12,
-                    Label("Preview").ThemeKey(Bs.H4),
+                    Label("Preview").Class(Bs.H4),
                     Border(
                         VStack(spacing: 12,
-                            Label("Theme Preview").ThemeKey(Bs.H5),
+                            Label("Theme Preview").Class(Bs.H5),
 
                             Entry().Placeholder("Sample input").Class(Bs.FormControl),
 
@@ -64,9 +64,9 @@ class ThemesPage : BasePage
                             ProgressBar().Progress(0.65),
 
                             FlexLayout(
-                                Border(Label("Badge").Class(Bs.OnPrimary).ThemeKey(Bs.Small)).Class(Bs.Badge).Class(Bs.BgPrimary).Margin(0, 0, 8, 8),
-                                Border(Label("Success").Class(Bs.OnSuccess).ThemeKey(Bs.Small)).Class(Bs.Badge).Class(Bs.BgSuccess).Margin(0, 0, 8, 8),
-                                Border(Label("Alert").Class(Bs.OnDanger).ThemeKey(Bs.Small)).Class(Bs.Badge).Class(Bs.BgDanger).Margin(0, 0, 8, 8)
+                                Border(Label("Badge").Class(Bs.OnPrimary).Class(Bs.Small)).Class(Bs.Badge).Class(Bs.BgPrimary).Margin(0, 0, 8, 8),
+                                Border(Label("Success").Class(Bs.OnSuccess).Class(Bs.Small)).Class(Bs.Badge).Class(Bs.BgSuccess).Margin(0, 0, 8, 8),
+                                Border(Label("Alert").Class(Bs.OnDanger).Class(Bs.Small)).Class(Bs.Badge).Class(Bs.BgDanger).Margin(0, 0, 8, 8)
                             ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start)
                         )
                     ).Class(Bs.Card).Class(Bs.Shadow)
@@ -74,7 +74,7 @@ class ThemesPage : BasePage
 
                 // All Color Variants
                 VStack(spacing: 12,
-                    Label("All Color Variants").ThemeKey(Bs.H4),
+                    Label("All Color Variants").Class(Bs.H4),
                     Grid("Auto,Auto,Auto,Auto", "*,*",
                         Border(Label("Primary").HCenter().Class(Bs.OnPrimary)).Class(Bs.TextBgPrimary).GridRow(0).GridColumn(0),
                         Border(Label("Secondary").HCenter().Class(Bs.OnSecondary)).Class(Bs.TextBgSecondary).GridRow(0).GridColumn(1),
