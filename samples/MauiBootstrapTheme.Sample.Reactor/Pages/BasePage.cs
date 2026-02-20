@@ -7,19 +7,22 @@ abstract class BasePage : Component
 {
     private void OnThemeChanged(object? sender, EventArgs e)
     {
-        // Force re-render when theme changes so we pick up new colors
         Invalidate();
     }
+
+    private void OnHotReload() => Invalidate();
 
     protected override void OnMounted()
     {
         BootstrapTheme.ThemeChanged += OnThemeChanged;
+        HotReloadService.HotReloadTriggered += OnHotReload;
         base.OnMounted();
     }
 
     protected override void OnWillUnmount()
     {
         BootstrapTheme.ThemeChanged -= OnThemeChanged;
+        HotReloadService.HotReloadTriggered -= OnHotReload;
         base.OnWillUnmount();
     }
 
@@ -47,15 +50,19 @@ abstract class BasePage<TState> : Component<TState> where TState : class, new()
         Invalidate();
     }
 
+    private void OnHotReload() => Invalidate();
+
     protected override void OnMounted()
     {
         BootstrapTheme.ThemeChanged += OnThemeChanged;
+        HotReloadService.HotReloadTriggered += OnHotReload;
         base.OnMounted();
     }
 
     protected override void OnWillUnmount()
     {
         BootstrapTheme.ThemeChanged -= OnThemeChanged;
+        HotReloadService.HotReloadTriggered -= OnHotReload;
         base.OnWillUnmount();
     }
 

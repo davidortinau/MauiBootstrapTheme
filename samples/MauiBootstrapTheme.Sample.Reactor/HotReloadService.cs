@@ -1,16 +1,15 @@
-﻿// [assembly: System.Reflection.Metadata.MetadataUpdateHandler(typeof(MauiBootstrapTheme.Sample.Reactor.HotReloadService))]
+﻿using System.Reflection.Metadata;
+
+[assembly: MetadataUpdateHandler(typeof(MauiBootstrapTheme.Sample.Reactor.HotReloadService))]
 
 namespace MauiBootstrapTheme.Sample.Reactor;
 
 /// <summary>
-/// This service is intentionally commented out.
-/// MauiReactor v3+ (and v4) supports Hot Reload natively via the
-/// RuntimeHostConfigurationOption in the .csproj file.
-///
-/// If Hot Reload fails, uncomment this class and subscribe to
-/// HotReloadTriggered in BasePage.cs to bridge the notification manually.
+/// Bridges .NET C# Hot Reload with MauiReactor's component tree.
+/// MauiReactor v4 NuGet does not ship a MetadataUpdateHandler,
+/// so without this, code changes apply in-memory but components
+/// never re-render.
 /// </summary>
-#if false
 internal static class HotReloadService
 {
     public static event Action? HotReloadTriggered;
@@ -20,17 +19,18 @@ internal static class HotReloadService
 
     static void UpdateApplication(Type[]? _)
     {
-        // Debug logging only - standard MauiReactor invalidation should handle this.
-        System.Diagnostics.Debug.WriteLine("[BootstrapTheme] Hot Reload update received via custom handler.");
-        
-        // Uncomment if manual invalidation is needed:
-        /*
-        if (MainThread.IsMainThread)
-            HotReloadTriggered?.Invoke();
-        else
-            MainThread.BeginInvokeOnMainThread(() => HotReloadTriggered?.Invoke());
-        */
+        try
+        {
+            System.Diagnostics.Debug.WriteLine("[BootstrapTheme] Hot Reload triggered — invalidating components");
+            if (MainThread.IsMainThread)
+                HotReloadTriggered?.Invoke();
+            else
+                MainThread.BeginInvokeOnMainThread(() => HotReloadTriggered?.Invoke());
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[BootstrapTheme] Hot Reload error: {ex}");
+        }
     }
 #pragma warning restore IDE0051
 }
-#endif
