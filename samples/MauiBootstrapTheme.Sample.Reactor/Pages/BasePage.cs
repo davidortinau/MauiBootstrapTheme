@@ -1,4 +1,4 @@
-﻿using MauiReactor;
+using MauiReactor;
 using MauiBootstrapTheme.Theming;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;
@@ -11,19 +11,15 @@ abstract class BasePage : Component
         Invalidate();
     }
 
-    private void OnHotReload() => Invalidate();
-
     protected override void OnMounted()
     {
         BootstrapTheme.ThemeChanged += OnThemeChanged;
-        HotReloadService.HotReloadTriggered += OnHotReload;
         base.OnMounted();
     }
 
     protected override void OnWillUnmount()
     {
         BootstrapTheme.ThemeChanged -= OnThemeChanged;
-        HotReloadService.HotReloadTriggered -= OnHotReload;
         base.OnWillUnmount();
     }
 
@@ -51,19 +47,15 @@ abstract class BasePage<TState> : Component<TState> where TState : class, new()
         Invalidate();
     }
 
-    private void OnHotReload() => Invalidate();
-
     protected override void OnMounted()
     {
         BootstrapTheme.ThemeChanged += OnThemeChanged;
-        HotReloadService.HotReloadTriggered += OnHotReload;
         base.OnMounted();
     }
 
     protected override void OnWillUnmount()
     {
         BootstrapTheme.ThemeChanged -= OnThemeChanged;
-        HotReloadService.HotReloadTriggered -= OnHotReload;
         base.OnWillUnmount();
     }
 

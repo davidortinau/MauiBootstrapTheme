@@ -1,6 +1,8 @@
 ﻿using System.Reflection.Metadata;
 
-[assembly: System.Reflection.Metadata.MetadataUpdateHandler(typeof(MauiBootstrapTheme.Sample.Reactor.HotReloadService))]
+/*
+// [assembly: System.Reflection.Metadata.MetadataUpdateHandler(typeof(MauiBootstrapTheme.Sample.Reactor.HotReloadService))]
+*/
 
 namespace MauiBootstrapTheme.Sample.Reactor;
 
@@ -12,6 +14,8 @@ namespace MauiBootstrapTheme.Sample.Reactor;
 /// </summary>
 internal static class HotReloadService
 {
+    // ... rest of class remains but unused ...
+
     public static event Action? HotReloadTriggered;
 
 #pragma warning disable IDE0051 // Called by .NET Hot Reload infrastructure
