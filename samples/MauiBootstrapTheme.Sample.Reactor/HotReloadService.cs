@@ -1,4 +1,4 @@
-﻿// [assembly: System.Reflection.Metadata.MetadataUpdateHandler(typeof(MauiBootstrapTheme.Sample.Reactor.HotReloadService))]
+// [assembly: System.Reflection.Metadata.MetadataUpdateHandler(typeof(MauiBootstrapTheme.Sample.Reactor.HotReloadService))]
 
 namespace MauiBootstrapTheme.Sample.Reactor;
 
@@ -10,6 +10,7 @@ namespace MauiBootstrapTheme.Sample.Reactor;
 /// If Hot Reload fails, uncomment this class and subscribe to
 /// HotReloadTriggered in BasePage.cs to bridge the notification manually.
 /// </summary>
+#if false
 internal static class HotReloadService
 {
     public static event Action? HotReloadTriggered;
@@ -32,3 +33,4 @@ internal static class HotReloadService
     }
 #pragma warning restore IDE0051
 }
+#endif
