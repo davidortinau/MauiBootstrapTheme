@@ -11,10 +11,7 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder
-            .UseMauiReactorApp<MainPage>(app =>
-            {
-                app.EnableDebugLogging();
-            })
+            .UseMauiReactorApp<MainPage>()
             .UseBootstrapTheme(options =>
             {
                 options.AddTheme<Themes.DefaultTheme>("default");
@@ -34,6 +31,12 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
         // builder.AddMauiDevFlowAgent();
+
+        // Enable MauiReactor debug logging
+        builder.Services.AddMauiReactor(options => 
+        {
+            options.EnableDebugLogging = true;
+        });
 #endif
 
         return builder.Build();
