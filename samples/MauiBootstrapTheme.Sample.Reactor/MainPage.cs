@@ -35,28 +35,5 @@ class MainPage : Component
         )
         .Title("Bootstrap Theme")
         .FlyoutBehavior(FlyoutBehavior.Flyout)
-        .FlyoutBackgroundColor(BootstrapTheme.Current.GetBackground())
-        .OnAppearing((s, e) =>
-        {
-            if (s is Microsoft.Maui.Controls.Shell shell)
-            {
-                var textColor = BootstrapTheme.Current.GetOnBackground();
-                shell.ItemTemplate = new DataTemplate(() =>
-                {
-                    var grid = new Microsoft.Maui.Controls.Grid
-                    {
-                        Padding = new Thickness(16, 12),
-                    };
-                    var label = new Microsoft.Maui.Controls.Label
-                    {
-                        TextColor = textColor,
-                        FontSize = 16,
-                        VerticalOptions = LayoutOptions.Center
-                    };
-                    label.SetBinding(Microsoft.Maui.Controls.Label.TextProperty, "Title");
-                    grid.Children.Add(label);
-                    return grid;
-                });
-            }
-        });
+        .FlyoutBackground(BootstrapTheme.Current.Background);
 }

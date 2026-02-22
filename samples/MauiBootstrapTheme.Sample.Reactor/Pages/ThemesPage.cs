@@ -1,4 +1,4 @@
-﻿﻿﻿using MauiReactor;
+﻿﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
 using MauiBootstrapTheme.Sample.Reactor.Themes;
@@ -10,6 +10,7 @@ class ThemesPage : BasePage
     private void ApplyTheme(string themeName)
     {
         BootstrapTheme.Apply(themeName);
+        Microsoft.Maui.Controls.Shell.Current.FlyoutBackground = BootstrapTheme.Current.Background;
     }
 
     public override VisualNode RenderContent()
@@ -17,35 +18,35 @@ class ThemesPage : BasePage
         var theme = BootstrapTheme.Current;
 
         return ScrollView(
-            VStack(spacing: 24,
+            VStack(spacing: Bs.Spacing4,
                 // Page Header
-                VStack(spacing: 4,
+                VStack(spacing: Bs.Spacing0,
                     Label("Theme Switcher").Class(Bs.H1),
                     Label("Switch between Bootstrap themes at runtime").Class(Bs.Lead).Class(Bs.TextMuted)
                 ),
 
-                BoxView().HeightRequest(1).Color(theme.OutlineVariant).Margin(0, 4),
+                BoxView().HeightRequest(1).Color(theme.Outline),
 
                 // Theme Selection
-                VStack(spacing: 12,
-                    Label("Select Theme").Class(Bs.H4),
+                VStack(spacing: Bs.Spacing3,
+                    Label("Select Theme").Class(Bs.H1),
                     FlexLayout(
-                        Button("Default").Class(Bs.BtnPrimary).OnClicked(() => ApplyTheme("default")).Margin(0, 0, 8, 8),
-                        Button("Darkly").Class(Bs.BtnDark).OnClicked(() => ApplyTheme("darkly")).Margin(0, 0, 8, 8),
-                        Button("Slate").Class(Bs.BtnSecondary).OnClicked(() => ApplyTheme("slate")).Margin(0, 0, 8, 8),
-                        Button("Flatly").Class(Bs.BtnInfo).OnClicked(() => ApplyTheme("flatly")).Margin(0, 0, 8, 8),
-                        Button("Sketchy").Class(Bs.BtnWarning).OnClicked(() => ApplyTheme("sketchy")).Margin(0, 0, 8, 8),
-                        Button("Vapor").Class(Bs.BtnDanger).OnClicked(() => ApplyTheme("vapor")).Margin(0, 0, 8, 8),
-                        Button("Brite").Class(Bs.BtnSuccess).OnClicked(() => ApplyTheme("brite")).Margin(0, 0, 8, 8)
+                        Button("Default").Class(Bs.BtnPrimary).OnClicked(() => ApplyTheme("default")).Margin(0, 0, Bs.Spacing2, Bs.Spacing2),
+                        Button("Darkly").Class(Bs.BtnDark).OnClicked(() => ApplyTheme("darkly")).Margin(0, 0, Bs.Spacing2, Bs.Spacing2),
+                        Button("Slate").Class(Bs.BtnSecondary).OnClicked(() => ApplyTheme("slate")).Margin(0, 0, Bs.Spacing2, Bs.Spacing2),
+                        Button("Flatly").Class(Bs.BtnInfo).OnClicked(() => ApplyTheme("flatly")).Margin(0, 0, Bs.Spacing2, Bs.Spacing2),
+                        Button("Sketchy").Class(Bs.BtnWarning).OnClicked(() => ApplyTheme("sketchy")).Margin(0, 0, Bs.Spacing2, Bs.Spacing2),
+                        Button("Vapor").Class(Bs.BtnDanger).OnClicked(() => ApplyTheme("vapor")).Margin(0, 0, Bs.Spacing2, Bs.Spacing2),
+                        Button("Brite").Class(Bs.BtnSuccess).OnClicked(() => ApplyTheme("brite")).Margin(0, 0, Bs.Spacing2, Bs.Spacing2)
                     ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start),
-                    Label($"Current: {theme.Name}").Class(Bs.TextMuted)
-                ),
+                    Label($"Current: {BootstrapTheme.Current.Name}").Class(Bs.TextMuted)
+                ).Class(Bs.Shadow),
 
                 // Preview
-                VStack(spacing: 12,
+                VStack(spacing: Bs.Spacing2,
                     Label("Preview").Class(Bs.H4),
                     Border(
-                        VStack(spacing: 12,
+                        VStack(spacing: Bs.Spacing2,
                             Label("Theme Preview").Class(Bs.H5),
 
                             Entry().Placeholder("Sample input").Class(Bs.FormControl),
@@ -70,10 +71,10 @@ class ThemesPage : BasePage
                             ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start)
                         )
                     ).Class(Bs.Card).Class(Bs.Shadow)
-                ),
+                ).Class(Bs.Shadow),
 
                 // All Color Variants
-                VStack(spacing: 12,
+                VStack(spacing: Bs.Spacing3,
                     Label("All Color Variants").Class(Bs.H4),
                     Grid("Auto,Auto,Auto,Auto", "*,*",
                         Border(Label("Primary").Center().Class(Bs.OnPrimary)).Class(Bs.TextBgPrimary).GridRow(0).GridColumn(0),
@@ -84,7 +85,7 @@ class ThemesPage : BasePage
                         Border(Label("Info").Center().Class(Bs.OnInfo)).Class(Bs.TextBgInfo).GridRow(2).GridColumn(1),
                         Border(Label("Light").Center().Class(Bs.OnLight)).Class(Bs.TextBgLight).GridRow(3).GridColumn(0),
                         Border(Label("Dark").Center().Class(Bs.OnDark)).Class(Bs.TextBgDark).GridRow(3).GridColumn(1)
-                    ).RowSpacing(8).ColumnSpacing(8)
+                    ).RowSpacing(Bs.Spacing2).ColumnSpacing(Bs.Spacing2)
                 )
             ).Padding(20)
         );

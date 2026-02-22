@@ -1,4 +1,4 @@
-﻿﻿﻿using MauiReactor;
+﻿﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
 using MauiBootstrapTheme.Sample.Reactor.Themes;
@@ -9,18 +9,18 @@ class ControlsPage : BasePage
 {
     public override VisualNode RenderContent()
         => ScrollView(
-            VStack(spacing: 24,
+            VStack(spacing: Bs.Spacing3,
                 // Page Header
-                VStack(spacing: 4,
+                VStack(spacing: Bs.Spacing1,
                     Label("Controls").Class(Bs.H1),
-                    Label("Stock MAUI controls styled with Bootstrap 5 theme values.").Class(Bs.Lead).Class(Bs.TextMuted)
+                    Label("Stock .NET MAUI controls styled with Bootstrap 5 theme values.").Class(Bs.TextWarning).Class(Bs.TextMuted)
                 ),
 
                 BoxView().HeightRequest(1).Color(BootstrapTheme.Current.OutlineVariant).Margin(0, 4),
 
                 // Buttons Section
-                VStack(spacing: 8,
-                    Label("Buttonsdddddd").Class(Bs.H1),
+                VStack(spacing: Bs.Spacing2,
+                    Label("Buttons").Class(Bs.H4),
                     FlexLayout(
                         Button("Primary").Class(Bs.BtnPrimary).Margin(0, 0, 8, 8),
                         Button("Secondary").Class(Bs.BtnSecondary).Margin(0, 0, 8, 8),
@@ -32,7 +32,7 @@ class ControlsPage : BasePage
                 ),
 
                 // Outline Buttons Section
-                VStack(spacing: 8,
+                VStack(spacing: Bs.Spacing2,
                     Label("Outline Buttons").Class(Bs.H5),
                     FlexLayout(
                         Button("Primary").Class(Bs.BtnOutlinePrimary).Margin(0, 0, 8, 8),
@@ -43,7 +43,7 @@ class ControlsPage : BasePage
                 ),
 
                 // Button Sizes Section
-                VStack(spacing: 8,
+                VStack(spacing: Bs.Spacing2,
                     Label("Button Sizes").Class(Bs.H5),
                     FlexLayout(
                         Button("Large").Class(Bs.BtnPrimary).Class(Bs.BtnLg).Margin(0, 0, 8, 8),
@@ -53,7 +53,7 @@ class ControlsPage : BasePage
                 ),
 
                 // Pill Buttons Section
-                VStack(spacing: 8,
+                VStack(spacing: Bs.Spacing2,
                     Label("Pill Buttons").Class(Bs.H5),
                     FlexLayout(
                         Button("Primary Pill").Class(Bs.BtnPrimary).Class(Bs.BtnPill).Margin(0, 0, 8, 8),
@@ -62,29 +62,29 @@ class ControlsPage : BasePage
                 ),
 
                 // Progress Section
-                VStack(spacing: 12,
+                VStack(spacing: Bs.Spacing3,
                     Label("Progress").Class(Bs.H4),
-                    VStack(spacing: 4,
+                    VStack(spacing: Bs.Spacing1,
                         Label("Primary (75%)"),
                         ProgressBar().Progress(0.75)
                     ),
-                    VStack(spacing: 4,
+                    VStack(spacing: Bs.Spacing1,
                         Label("Success (50%)"),
                         ProgressBar().Progress(0.5).Class(Bs.ProgressSuccess)
                     ),
-                    VStack(spacing: 4,
+                    VStack(spacing: Bs.Spacing1,
                         Label("Danger (25%)"),
                         ProgressBar().Progress(0.25).Class(Bs.ProgressDanger)
                     )
                 ),
 
                 // Spinners Section
-                VStack(spacing: 8,
+                VStack(spacing: Bs.Spacing2,
                     Label("Spinners").Class(Bs.H4),
-                    HStack(spacing: 16,
-                        ActivityIndicator().IsRunning(true).Color(GetResource<Color>("Primary")),
-                        ActivityIndicator().IsRunning(true).Color(GetResource<Color>("Success")),
-                        ActivityIndicator().IsRunning(true).Color(GetResource<Color>("Danger"))
+                    HStack(spacing: Bs.Spacing3,
+                        ActivityIndicator().IsRunning(true).Color(BootstrapTheme.Current.Muted),
+                        ActivityIndicator().IsRunning(true).Color(BootstrapTheme.Current.Success),
+                        ActivityIndicator().IsRunning(true).Color(BootstrapTheme.Current.Danger)
                     )
                 )
             ).Padding(20)

@@ -1,4 +1,4 @@
-﻿﻿﻿using MauiReactor;
+﻿﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
 using MauiBootstrapTheme.Sample.Reactor.Themes;
@@ -13,12 +13,14 @@ class SpacingPage : BasePage
 
     public override VisualNode RenderContent()
         => ScrollView(
-            VStack(spacing: 20,
+            VStack(spacing: Bs.Spacing4,
                 // Header
-                VStack(spacing: 4,
+                VStack(spacing: Bs.Spacing1,
                     Label("Spacing Utilities").Class(Bs.H1),
                     Label("Canonical Bootstrap 5.3 spacing utility patterns.").Class(Bs.Lead).Class(Bs.TextMuted)
                 ),
+
+                BoxView().HeightRequest(1).Color(BootstrapTheme.Current.Outline),
 
                 // Notation card
                 Card(
@@ -33,12 +35,12 @@ class SpacingPage : BasePage
 
                 // Examples card
                 Card(
-                    VStack(spacing: 10,
+                    VStack(spacing: Bs.Spacing2,
                         Label("Examples").Class(Bs.H4),
 
                         // Padding examples
                         Border(
-                            VStack(spacing: 6,
+                            VStack(spacing: Bs.Spacing1,
                                 Border(Label("p-0 (PaddingLevel=0)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding0(),
                                 Border(Label("p-1 (PaddingLevel=1)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding1(),
                                 Border(Label("p-2 (PaddingLevel=2)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding2(),
@@ -50,7 +52,7 @@ class SpacingPage : BasePage
 
                         // Margin examples
                         Border(
-                            VStack(spacing: 0,
+                            VStack(spacing: Bs.Spacing0,
                                 Border(Label("mt-0 (MarginLevel=0)").Padding(8)).Background(Colors.White),
                                 Border(Label("mt-1 (MarginLevel=1)").Padding(8)).Background(Colors.White).BsMargin1(),
                                 Border(Label("mt-2 (MarginLevel=2)").Padding(8)).Background(Colors.White).BsMargin2(),
@@ -64,7 +66,7 @@ class SpacingPage : BasePage
 
                 // Horizontal centering card
                 Card(
-                    VStack(spacing: 8,
+                    VStack(spacing: Bs.Spacing2,
                         Label("Horizontal centering").Class(Bs.H4),
                         Border(
                             Label(".mx-auto with width: 200px").TextColor(Colors.White).HorizontalOptions(LayoutOptions.Center)
@@ -74,14 +76,14 @@ class SpacingPage : BasePage
 
                 // Gap utilities card
                 Card(
-                    VStack(spacing: 8,
+                    VStack(spacing: Bs.Spacing2,
                         Label("Gap utilities").Class(Bs.H4),
-                        HStack(spacing: 8,
+                        HStack(spacing: Bs.Spacing2,
                             Border(Label("gap-2 equivalent")).Background(BootstrapTheme.Current.Info).Padding(8),
                             Border(Label("Item")).Background(BootstrapTheme.Current.Info).Padding(8),
                             Border(Label("Item")).Background(BootstrapTheme.Current.Info).Padding(8)
                         ),
-                        VStack(spacing: 12,
+                        VStack(spacing: Bs.Spacing3,
                             Border(Label("d-grid gap-3 item 1")).Background(Color.FromArgb("#f8f9fa")).Padding(8),
                             Border(Label("d-grid gap-3 item 2")).Background(Color.FromArgb("#f8f9fa")).Padding(8)
                         )

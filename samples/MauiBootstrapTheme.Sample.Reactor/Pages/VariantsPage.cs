@@ -54,7 +54,7 @@ class VariantsPage : BasePage
     private static VisualNode RenderVariantSection(string title, BootstrapVariant variant)
     {
         return Border(
-            VStack(spacing: 12,
+            VStack(spacing: Bs.Spacing3,
                 Label(title).Class(Bs.H5).Class(OnClass(variant)),
                 Entry().Placeholder($"{title} Entry").Class(Bs.FormControl),
                 FlexLayout(
@@ -67,9 +67,9 @@ class VariantsPage : BasePage
 
     public override VisualNode RenderContent()
         => ScrollView(
-            VStack(spacing: 20,
+            VStack(spacing: Bs.Spacing4,
                 // Header
-                VStack(spacing: 4,
+                VStack(spacing: Bs.Spacing1,
                     Label("Color Variants").Class(Bs.H1),
                     Label("All Bootstrap color variants applied to controls for parity comparison.").Class(Bs.Lead).Class(Bs.TextMuted)
                 ),

@@ -1,4 +1,4 @@
-﻿﻿﻿using MauiReactor;
+﻿﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
 using MauiBootstrapTheme.Sample.Reactor.Themes;
@@ -9,17 +9,17 @@ class CardsPage : BasePage
 {
     public override VisualNode RenderContent()
         => ScrollView(
-            VStack(spacing: 24,
+            VStack(spacing: Bs.Spacing4,
                 // Page Header
-                VStack(spacing: 4,
+                VStack(spacing: Bs.Spacing0,
                     Label("Cards & Containers").Class(Bs.H1),
-                    Label("Bootstrap card components with shadows").Class(Bs.Lead).Class(Bs.TextMuted)
+                    Label("Bootstrap card components with shadows.").Class(Bs.Lead).Class(Bs.TextMuted)
                 ),
 
-                BoxView().HeightRequest(1).Color(BootstrapTheme.Current.OutlineVariant).Margin(0, 4),
+                BoxView().HeightRequest(1).Color(BootstrapTheme.Current.Outline),
 
                 // Shadow Variants
-                VStack(spacing: 12,
+                VStack(spacing: Bs.Spacing3,
                     Label("Shadow Variants").Class(Bs.H4),
                     Grid("*", "*,*",
                         Border(
@@ -34,7 +34,7 @@ class CardsPage : BasePage
                                 Label("shadow-sm class").Class(Bs.TextMuted)
                             )
                         ).Class(Bs.Card).Class(Bs.ShadowSm).GridColumn(1)
-                    ).ColumnSpacing(16).RowSpacing(16),
+                    ).ColumnSpacing(Bs.Spacing3).RowSpacing(Bs.Spacing3),
                     Grid("*", "*,*",
                         Border(
                             VStack(
@@ -48,11 +48,11 @@ class CardsPage : BasePage
                                 Label("shadow-lg class").Class(Bs.TextMuted)
                             )
                         ).Class(Bs.Card).Class(Bs.ShadowLg).GridColumn(1)
-                    ).ColumnSpacing(16)
+                    ).ColumnSpacing(Bs.Spacing3).RowSpacing(Bs.Spacing3)
                 ),
 
                 // Border Color Variants
-                VStack(spacing: 12,
+                VStack(spacing: Bs.Spacing3,
                     Label("Border Color Variants").Class(Bs.H4),
                     FlexLayout(
                         Border(Label("Primary").Center())
@@ -70,7 +70,7 @@ class CardsPage : BasePage
                 ),
 
                 // Background Variants
-                VStack(spacing: 12,
+                VStack(spacing: Bs.Spacing3,
                     Label("Background Variants").Class(Bs.H4),
                     Grid("*", "*,*,*",
                         Border(
@@ -91,17 +91,17 @@ class CardsPage : BasePage
                                 Label("text-bg-dark").Class(Bs.OnDark)
                             )
                         ).Class(Bs.TextBgDark).Class(Bs.ShadowSm).GridColumn(2)
-                    ).ColumnSpacing(12).RowSpacing(12)
+                    ).ColumnSpacing(Bs.Spacing3).RowSpacing(Bs.Spacing3)
                 ),
 
                 // Card with Header & Footer
-                VStack(spacing: 12,
+                VStack(spacing: Bs.Spacing3,
                     Label("Card with Header & Footer").Class(Bs.H4),
                     Border(
                         VStack(
                             Label("Featured").Padding(12, 8).Background(GetResource<Color>("Gray100")),
                             BoxView().HeightRequest(1).Color(BootstrapTheme.Current.Outline),
-                            VStack(spacing: 8,
+                            VStack(spacing: Bs.Spacing2,
                                 Label("Special Title").Class(Bs.H5),
                                 Label("With supporting text below as a natural lead-in to additional content."),
                                 Button("Go somewhere").Class(Bs.BtnPrimary).HorizontalOptions(LayoutOptions.Start)

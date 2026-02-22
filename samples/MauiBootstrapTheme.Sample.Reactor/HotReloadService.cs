@@ -15,9 +15,9 @@ internal static class HotReloadService
     public static event Action? HotReloadTriggered;
 
 #pragma warning disable IDE0051 // Called by .NET Hot Reload infrastructure
-    static void ClearCache(Type[]? _) { }
+    public static void ClearCache(Type[]? _) { }
 
-    static void UpdateApplication(Type[]? _)
+    public static void UpdateApplication(Type[]? updatedTypes)
     {
         try
         {
