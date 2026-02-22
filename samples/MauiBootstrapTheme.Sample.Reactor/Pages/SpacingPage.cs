@@ -1,6 +1,7 @@
-﻿using MauiReactor;
+﻿﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
+using MauiBootstrapTheme.Sample.Reactor.Themes;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;
 
@@ -8,54 +9,56 @@ class SpacingPage : BasePage
 {
     static Border Card(VisualNode content) =>
         Border(content)
-            .Class("card");
+            .Class(Bs.Card);
 
     public override VisualNode RenderContent()
         => ScrollView(
-            VStack(spacing: 20,
+            VStack(spacing: Bs.Spacing4,
                 // Header
-                VStack(spacing: 4,
-                    Label("Spacing Utilities").Class("h1"),
-                    Label("Canonical Bootstrap 5.3 spacing utility patterns.").Class("lead").Class("text-muted")
+                VStack(spacing: Bs.Spacing1,
+                    Label("Spacing Utilities").Class(Bs.H1),
+                    Label("Canonical Bootstrap 5.3 spacing utility patterns.").Class(Bs.Lead).Class(Bs.TextMuted)
                 ),
+
+                BoxView().HeightRequest(1).Color(BootstrapTheme.Current.Outline),
 
                 // Notation card
                 Card(
                     VStack(
-                        Label("Notation").Class("h4"),
-                        Label("m = margin, p = padding").Class("small"),
-                        Label("t, b, s, e, x, y = side selectors").Class("small"),
-                        Label("0-5 = spacing scale values").Class("small"),
-                        Label("Format: {property}{side}-{size} (example: mt-3, px-2)").Class("small").Class("text-muted")
+                        Label("Notation").Class(Bs.H4),
+                        Label("m = margin, p = padding").Class(Bs.Small),
+                        Label("t, b, s, e, x, y = side selectors").Class(Bs.Small),
+                        Label("0-5 = spacing scale values").Class(Bs.Small),
+                        Label("Format: {property}{side}-{size} (example: mt-3, px-2)").Class(Bs.Small).Class(Bs.TextMuted)
                     ).Class("   ")
                 ),
 
                 // Examples card
                 Card(
-                    VStack(spacing: 10,
-                        Label("Examples").Class("h4"),
+                    VStack(spacing: Bs.Spacing2,
+                        Label("Examples").Class(Bs.H4),
 
                         // Padding examples
                         Border(
-                            VStack(spacing: 6,
-                                Border(Label("p-0 (PaddingLevel=0)").TextColor(Colors.White)).Class("bg-primary").Set(Bootstrap.PaddingLevelProperty, 0),
-                                Border(Label("p-1 (PaddingLevel=1)").TextColor(Colors.White)).Class("bg-primary").Set(Bootstrap.PaddingLevelProperty, 1),
-                                Border(Label("p-2 (PaddingLevel=2)").TextColor(Colors.White)).Class("bg-primary").Set(Bootstrap.PaddingLevelProperty, 2),
-                                Border(Label("p-3 (PaddingLevel=3)").TextColor(Colors.White)).Class("bg-primary").Set(Bootstrap.PaddingLevelProperty, 3),
-                                Border(Label("p-4 (PaddingLevel=4)").TextColor(Colors.White)).Class("bg-primary").Set(Bootstrap.PaddingLevelProperty, 4),
-                                Border(Label("p-5 (PaddingLevel=5)").TextColor(Colors.White)).Class("bg-primary").Set(Bootstrap.PaddingLevelProperty, 5)
+                            VStack(spacing: Bs.Spacing1,
+                                Border(Label("p-0 (PaddingLevel=0)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding0(),
+                                Border(Label("p-1 (PaddingLevel=1)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding1(),
+                                Border(Label("p-2 (PaddingLevel=2)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding2(),
+                                Border(Label("p-3 (PaddingLevel=3)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding3(),
+                                Border(Label("p-4 (PaddingLevel=4)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding4(),
+                                Border(Label("p-5 (PaddingLevel=5)").TextColor(Colors.White)).Class(Bs.BgPrimary).BsPadding5()
                             )
                         ).Background(Color.FromArgb("#e9ecef")).Padding(8),
 
                         // Margin examples
                         Border(
-                            VStack(spacing: 0,
+                            VStack(spacing: Bs.Spacing0,
                                 Border(Label("mt-0 (MarginLevel=0)").Padding(8)).Background(Colors.White),
-                                Border(Label("mt-1 (MarginLevel=1)").Padding(8)).Background(Colors.White).Set(Bootstrap.MarginLevelProperty, 1),
-                                Border(Label("mt-2 (MarginLevel=2)").Padding(8)).Background(Colors.White).Set(Bootstrap.MarginLevelProperty, 2),
-                                Border(Label("mt-3 (MarginLevel=3)").Padding(8)).Background(Colors.White).Set(Bootstrap.MarginLevelProperty, 3),
-                                Border(Label("mt-4 (MarginLevel=4)").Padding(8)).Background(Colors.White).Set(Bootstrap.MarginLevelProperty, 4),
-                                Border(Label("mt-5 (MarginLevel=5)").Padding(8)).Background(Colors.White).Set(Bootstrap.MarginLevelProperty, 5)
+                                Border(Label("mt-1 (MarginLevel=1)").Padding(8)).Background(Colors.White).BsMargin1(),
+                                Border(Label("mt-2 (MarginLevel=2)").Padding(8)).Background(Colors.White).BsMargin2(),
+                                Border(Label("mt-3 (MarginLevel=3)").Padding(8)).Background(Colors.White).BsMargin3(),
+                                Border(Label("mt-4 (MarginLevel=4)").Padding(8)).Background(Colors.White).BsMargin4(),
+                                Border(Label("mt-5 (MarginLevel=5)").Padding(8)).Background(Colors.White).BsMargin5()
                             )
                         ).Background(Color.FromArgb("#f8f9fa")).Padding(8)
                     )
@@ -63,8 +66,8 @@ class SpacingPage : BasePage
 
                 // Horizontal centering card
                 Card(
-                    VStack(spacing: 8,
-                        Label("Horizontal centering").Class("h4"),
+                    VStack(spacing: Bs.Spacing2,
+                        Label("Horizontal centering").Class(Bs.H4),
                         Border(
                             Label(".mx-auto with width: 200px").TextColor(Colors.White).HorizontalOptions(LayoutOptions.Center)
                         ).WidthRequest(200).HorizontalOptions(LayoutOptions.Center).Background(BootstrapTheme.Current.Secondary).Padding(8)
@@ -73,14 +76,14 @@ class SpacingPage : BasePage
 
                 // Gap utilities card
                 Card(
-                    VStack(spacing: 8,
-                        Label("Gap utilities").Class("h4"),
-                        HStack(spacing: 8,
+                    VStack(spacing: Bs.Spacing2,
+                        Label("Gap utilities").Class(Bs.H4),
+                        HStack(spacing: Bs.Spacing2,
                             Border(Label("gap-2 equivalent")).Background(BootstrapTheme.Current.Info).Padding(8),
                             Border(Label("Item")).Background(BootstrapTheme.Current.Info).Padding(8),
                             Border(Label("Item")).Background(BootstrapTheme.Current.Info).Padding(8)
                         ),
-                        VStack(spacing: 12,
+                        VStack(spacing: Bs.Spacing3,
                             Border(Label("d-grid gap-3 item 1")).Background(Color.FromArgb("#f8f9fa")).Padding(8),
                             Border(Label("d-grid gap-3 item 2")).Background(Color.FromArgb("#f8f9fa")).Padding(8)
                         )

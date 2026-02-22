@@ -1,6 +1,7 @@
-﻿using MauiReactor;
+﻿﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
+using MauiBootstrapTheme.Sample.Reactor.Themes;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;
 
@@ -15,117 +16,117 @@ class FormsPage : BasePage<FormsPageState>
 {
     public override VisualNode RenderContent()
         => ScrollView(
-            VStack(spacing: 24,
+            VStack(spacing: Bs.Spacing4,
                 // Header
-                VStack(spacing: 4,
-                    Label("Forms").Class("h1"),
-                    Label("Canonical Bootstrap 5.3 form patterns for parity comparison.").Class("lead").Class("text-muted")
+                VStack(spacing: Bs.Spacing0,
+                    Label("Forms").Class(Bs.H1),
+                    Label("Canonical Bootstrap 5.3 form patterns for parity comparison.").Class(Bs.Lead).Class(Bs.TextMuted)
                 ),
 
                 // Overview
-                VStack(spacing: 12,
-                    Label("Overview").Class("h4"),
+                VStack(spacing: Bs.Spacing3,
+                    Label("Overview").Class(Bs.H4),
 
-                    VStack(spacing: 4,
-                        Label("Email address").Class("form-label").Class("small"),
+                    VStack(spacing: Bs.Spacing2,
+                        Label("Email address").Class(Bs.FormLabel).Class(Bs.Small),
                         Entry()
                             .Placeholder("name@example.com")
                             .Keyboard(Keyboard.Email)
                             .Text(State.Email)
                             .OnTextChanged(text => SetState(s => s.Email = text))
-                            .Class("form-control"),
-                        Label("We'll never share your email with anyone else.").Class("form-text")
+                            .Class(Bs.FormControl),
+                        Label("We'll never share your email with anyone else.").Class(Bs.FormText)
                     ),
 
-                    VStack(spacing: 4,
-                        Label("Password").Class("form-label").Class("small"),
+                    VStack(spacing: Bs.Spacing2,
+                        Label("Password").Class(Bs.FormLabel).Class(Bs.Small),
                         Entry()
                             .IsPassword(true)
                             .Text(State.Password)
                             .OnTextChanged(text => SetState(s => s.Password = text))
-                            .Class("form-control")
+                            .Class(Bs.FormControl)
                     ),
 
-                    HStack(spacing: 8,
+                    HStack(spacing: Bs.Spacing3,
                         CheckBox()
                             .IsChecked(State.IsChecked)
                             .OnCheckedChanged(chk => SetState(s => s.IsChecked = chk))
-                            .Class("form-check-input"),
-                        Label("Check me out").Class("form-check-label").VCenter()
-                    ),
+                            .Class(Bs.FormCheckInput),
+                        Label("Remember me").Class(Bs.FormCheckLabel).VCenter()
+                    ).Class(Bs.Shadow),
 
-                    Button("Submit").Class("btn").Class("btn-primary").HorizontalOptions(LayoutOptions.Start)
+                    Button("Submit").Class(Bs.BtnPrimary).HorizontalOptions(LayoutOptions.Start)
                 ),
 
                 // Sizing
-                VStack(spacing: 12,
-                    Label("Sizing").Class("h4"),
+                VStack(spacing: Bs.Spacing3,
+                    Label("Sizing").Class(Bs.H4),
 
-                    VStack(spacing: 4,
-                        Label("Large input").Class("form-label").Class("small"),
-                        Entry().Placeholder(".form-control-lg").Class("form-control").Class("form-control-lg")
+                    VStack(spacing: Bs.Spacing2,
+                        Label("Large input").Class(Bs.FormLabel).Class(Bs.Small),
+                        Entry().Placeholder(".form-control-lg").Class(Bs.FormControl).Class(Bs.FormControlLg)
                     ),
 
-                    VStack(spacing: 4,
-                        Label("Default input").Class("form-label").Class("small"),
-                        Entry().Placeholder(".form-control").Class("form-control")
+                    VStack(spacing: Bs.Spacing2,
+                        Label("Default input").Class(Bs.FormLabel).Class(Bs.Small),
+                        Entry().Placeholder(".form-control").Class(Bs.FormControl)
                     ),
 
-                    VStack(spacing: 4,
-                        Label("Small select").Class("form-label").Class("small"),
+                    VStack(spacing: Bs.Spacing2,
+                        Label("Small select").Class(Bs.FormLabel).Class(Bs.Small),
                         Picker()
                             .Title(".form-select-sm")
                             .ItemsSource(new[] { "Option 1", "Option 2" })
-                            .Class("form-select").Class("form-select-sm")
+                            .Class(Bs.FormSelect).Class(Bs.FormSelectSm)
                     )
                 ),
 
                 // Disabled forms
-                VStack(spacing: 12,
-                    Label("Disabled forms").Class("h4"),
-                    Label("Disabled fieldset example").Class("small").Class("text-muted"),
+                VStack(spacing: Bs.Spacing3,
+                    Label("Disabled forms").Class(Bs.H4),
+                    Label("Disabled fieldset example").Class(Bs.Small).Class(Bs.TextMuted),
 
-                    VStack(spacing: 4,
-                        Label("Disabled input").Class("form-label").Class("small"),
-                        Entry().Placeholder("Disabled input").Class("form-control")
+                    VStack(spacing: Bs.Spacing2,
+                        Label("Disabled input").Class(Bs.FormLabel).Class(Bs.Small),
+                        Entry().Placeholder("Disabled input").Class(Bs.FormControl)
                     ),
 
-                    VStack(spacing: 4,
-                        Label("Disabled select menu").Class("form-label").Class("small"),
+                    VStack(spacing: Bs.Spacing2,
+                        Label("Disabled select menu").Class(Bs.FormLabel).Class(Bs.Small),
                         Picker()
                             .Title("Disabled select")
                             .ItemsSource(new[] { "Disabled select" })
-                            .Class("form-select")
+                            .Class(Bs.FormSelect)
                     ),
 
-                    Button("Submit").Class("btn").Class("btn-primary").HorizontalOptions(LayoutOptions.Start)
+                    Button("Submit").Class(Bs.BtnPrimary).HorizontalOptions(LayoutOptions.Start)
                 ).IsEnabled(false),
 
                 // Form layout
-                VStack(spacing: 12,
-                    Label("Form layout").Class("h4"),
+                VStack(spacing: Bs.Spacing3,
+                    Label("Form layout").Class(Bs.H4),
 
                     Grid("Auto,Auto,Auto", "*,*",
-                        VStack(spacing: 4,
-                            Label("First name").Class("form-label").Class("small"),
-                            Entry().Class("form-control")
+                        VStack(spacing: Bs.Spacing2,
+                            Label("First name").Class(Bs.FormLabel).Class(Bs.Small),
+                            Entry().Class(Bs.FormControl)
                         ).GridRow(0).GridColumn(0),
 
-                        VStack(spacing: 4,
-                            Label("Last name").Class("form-label").Class("small"),
-                            Entry().Class("form-control")
+                        VStack(spacing: Bs.Spacing2,
+                            Label("Last name").Class(Bs.FormLabel).Class(Bs.Small),
+                            Entry().Class(Bs.FormControl)
                         ).GridRow(0).GridColumn(1),
 
-                        VStack(spacing: 4,
-                            Label("Email").Class("form-label").Class("small"),
-                            Entry().Keyboard(Keyboard.Email).Class("form-control")
+                        VStack(spacing: Bs.Spacing2,
+                            Label("Email").Class(Bs.FormLabel).Class(Bs.Small),
+                            Entry().Keyboard(Keyboard.Email).Class(Bs.FormControl)
                         ).GridRow(1).GridColumnSpan(2),
 
-                        VStack(spacing: 4,
-                            Label("Message").Class("form-label").Class("small"),
-                            Editor().HeightRequest(100).Class("form-control")
+                        VStack(spacing: Bs.Spacing2,
+                            Label("Message").Class(Bs.FormLabel).Class(Bs.Small),
+                            Editor().HeightRequest(100).Class(Bs.FormControl)
                         ).GridRow(2).GridColumnSpan(2)
-                    ).ColumnSpacing(12).RowSpacing(8)
+                    ).ColumnSpacing(Bs.Spacing3).RowSpacing(Bs.Spacing2)
                 )
             ).Padding(20)
         );

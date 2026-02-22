@@ -1,4 +1,4 @@
-﻿using System.Reflection.Metadata;
+﻿﻿using System.Reflection.Metadata;
 
 [assembly: MetadataUpdateHandler(typeof(MauiBootstrapTheme.Sample.Reactor.HotReloadService))]
 
@@ -15,9 +15,9 @@ internal static class HotReloadService
     public static event Action? HotReloadTriggered;
 
 #pragma warning disable IDE0051 // Called by .NET Hot Reload infrastructure
-    static void ClearCache(Type[]? _) { }
+    public static void ClearCache(Type[]? _) { }
 
-    static void UpdateApplication(Type[]? _)
+    public static void UpdateApplication(Type[]? updatedTypes)
     {
         try
         {
@@ -25,11 +25,7 @@ internal static class HotReloadService
             if (MainThread.IsMainThread)
                 HotReloadTriggered?.Invoke();
             else
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    try { HotReloadTriggered?.Invoke(); }
-                    catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"[BootstrapTheme] Hot Reload callback error: {ex}"); }
-                });
+                MainThread.BeginInvokeOnMainThread(() => HotReloadTriggered?.Invoke());
         }
         catch (Exception ex)
         {

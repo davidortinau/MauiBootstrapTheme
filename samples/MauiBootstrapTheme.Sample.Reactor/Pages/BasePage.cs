@@ -1,4 +1,4 @@
-﻿using MauiReactor;
+﻿﻿using MauiReactor;
 using MauiBootstrapTheme.Theming;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;
@@ -7,7 +7,6 @@ abstract class BasePage : Component
 {
     private void OnThemeChanged(object? sender, EventArgs e)
     {
-        // Force re-render when theme changes so we pick up new colors
         Invalidate();
     }
 

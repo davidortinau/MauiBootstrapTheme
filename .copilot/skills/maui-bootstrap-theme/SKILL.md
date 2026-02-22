@@ -32,6 +32,14 @@ NuGet: `Plugin.Maui.BootstrapTheme`.
 </ItemGroup>
 ```
 
+For **MauiReactor** projects, also enable Reactor code generation:
+```xml
+<PropertyGroup>
+  <BootstrapThemeGenerateReactor>true</BootstrapThemeGenerateReactor>
+</PropertyGroup>
+```
+This generates a `Bs` constants class and `*ReactorTheme` classes alongside the ResourceDictionaries.
+
 Download CSS from [Bootswatch](https://bootswatch.com) or use stock Bootstrap 5.
 
 ### 3. Register in MauiProgram.cs
@@ -59,6 +67,34 @@ BootstrapTheme.SyncFromResources(Resources);
 ```
 
 Theme classes (e.g., `DefaultTheme`) are auto-generated at build time into `obj/BootstrapTheme/`.
+
+### MauiReactor: `Bs` Constants Pattern
+
+When `BootstrapThemeGenerateReactor=true`, the build generates:
+- **`Bs` static class** — `const string` keys for all Bootstrap CSS classes + spacing constants
+- **`*ReactorTheme` classes** — MauiReactor `Theme` subclasses with color properties and class-based style support
+
+**Rules for MauiReactor code:**
+- **Typography** (h1–h6, lead, small, text-muted) → use `.Class(Bs.H1)`
+- **Buttons, forms, cards, backgrounds** → use `.Class(Bs.BtnPrimary)`, compose with `.Class(Bs.BtnPrimary).Class(Bs.BtnLg)`
+- **Spacing** → use `Bs.Spacing0` through `Bs.Spacing5` (0, 4, 8, 16, 24, 48 dp) and `BsPadding0..5` / `BsMargin0..5` helpers
+- **Never use raw strings** — always use `Bs.*` constants for IntelliSense and typo prevention
+
+```csharp
+// ✅ Correct MauiReactor patterns:
+Label("Dashboard").Class(Bs.H1)
+Button("Save").Class(Bs.BtnPrimary)
+Button("Delete").Class(Bs.BtnDanger).Class(Bs.BtnSm)
+Entry().Class(Bs.FormControl)
+Border(content).Class(Bs.Card).Class(Bs.Shadow)
+VStack(spacing: Bs.Spacing3, ...)
+Border(content).BsPadding3()
+Border(content).BsMargin2()
+
+// ❌ Do NOT use raw strings:
+Label("Dashboard").Class("h1")        // Use Bs constant
+Button("Save").Class("btn-primary")   // Use Bs.BtnPrimary
+```
 
 ## Critical Rules
 
@@ -99,9 +135,9 @@ Buttons include visual states: Pressed darkens bg, PointerOver lightens bg (desk
 ```csharp
 // C#
 new Button { Text = "Save", StyleClass = { "btn-primary" } };
-// MauiReactor
-Button("Save").Class("btn-primary")
-Button("Delete").Class("btn-outline-danger").Class("btn-sm")
+// MauiReactor — use Bs constants for IntelliSense + type safety
+Button("Save").Class(Bs.BtnPrimary)
+Button("Delete").Class(Bs.BtnOutlineDanger).Class(Bs.BtnSm)
 ```
 
 ### Typography (Label)
@@ -138,10 +174,10 @@ Button("Delete").Class("btn-outline-danger").Class("btn-sm")
 ```csharp
 // C#
 new Label { Text = "Page Title", StyleClass = { "h1" } };
-// MauiReactor
-Label("Page Title").Class("h1")
-Label("Subtitle").Class("lead").Class("text-muted")
-Label("Field Label").Class("form-label")
+// MauiReactor — use Class() consistently for typography
+Label("Page Title").Class(Bs.H1)
+Label("Subtitle").Class(Bs.Lead)
+Label("Field Label").Class(Bs.FormLabel)
 ```
 
 ### Form Inputs
@@ -184,11 +220,11 @@ Label("Field Label").Class("form-label")
 
 #### C# / MauiReactor
 ```csharp
-Label("Email").Class("form-label")
-Entry().Placeholder("name@example.com").Class("form-control")
-Picker().Title("Select...").Class("form-select")
-CheckBox().Class("form-check-input")
-Switch().Class("form-switch")
+Label("Email").Class(Bs.FormLabel)
+Entry().Placeholder("name@example.com").Class(Bs.FormControl)
+Picker().Title("Select...").Class(Bs.FormSelect)
+CheckBox().Class(Bs.FormCheckInput)
+Switch().Class(Bs.FormSwitch)
 ```
 
 ### Cards & Containers (Border)
@@ -231,10 +267,10 @@ Switch().Class("form-switch")
 ```csharp
 Border(
     VStack(
-        Label("Card Title").Class("h5"),
-        Label("Content").Class("text-muted")
+        Label("Card Title").Class(Bs.H5),
+        Label("Content").Class(Bs.TextMuted)
     )
-).Class("card").Class("shadow")
+).Class(Bs.Card).Class(Bs.Shadow)
 ```
 
 ### Badges

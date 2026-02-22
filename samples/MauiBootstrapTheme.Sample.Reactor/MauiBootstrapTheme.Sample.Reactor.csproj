@@ -9,6 +9,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
+    <BootstrapThemeGenerateReactor>true</BootstrapThemeGenerateReactor>
+
     <ApplicationTitle>Bootstrap Theme Reactor</ApplicationTitle>
     <ApplicationId>com.simplyprofound.bootstrapreactor</ApplicationId>
     <ApplicationIdGuid>8E3F9A1C-2B5D-4E6F-9A8C-1D2E3F4A5B6C</ApplicationIdGuid>
@@ -28,12 +30,12 @@
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.31" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
     <PackageReference Include="Reactor.Maui" Version="4.*" />
-    <PackageReference Include="Redth.MauiDevFlow.Agent" Version="*" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\MauiBootstrapTheme\MauiBootstrapTheme.csproj" />
     <ProjectReference Include="..\..\src\MauiBootstrapTheme.Build\MauiBootstrapTheme.Build.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\hotreload-sentinel\src\HotReloadSentinel.Diagnostics\HotReloadSentinel.Diagnostics.csproj" Condition="'$(Configuration)'=='Debug'" />
   </ItemGroup>
 
   <ItemGroup>

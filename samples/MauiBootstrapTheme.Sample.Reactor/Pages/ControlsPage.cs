@@ -1,6 +1,7 @@
-﻿using MauiReactor;
+﻿﻿using MauiReactor;
 using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
+using MauiBootstrapTheme.Sample.Reactor.Themes;
 
 namespace MauiBootstrapTheme.Sample.Reactor.Pages;
 
@@ -8,82 +9,82 @@ class ControlsPage : BasePage
 {
     public override VisualNode RenderContent()
         => ScrollView(
-            VStack(spacing: 24,
+            VStack(spacing: Bs.Spacing3,
                 // Page Header
-                VStack(spacing: 4,
-                    Label("Controls").Class("h1"),
-                    Label("Stock MAUI controls styled with Bootstrap 5 theme values.").Class("lead").Class("text-muted")
+                VStack(spacing: Bs.Spacing1,
+                    Label("Controls").Class(Bs.H1),
+                    Label("Stock .NET MAUI controls styled with Bootstrap 5 theme values.").Class(Bs.TextWarning).Class(Bs.TextMuted)
                 ),
 
                 BoxView().HeightRequest(1).Color(BootstrapTheme.Current.OutlineVariant).Margin(0, 4),
 
                 // Buttons Section
-                VStack(spacing: 8,
-                    Label("Buttons").Class("h4"),
+                VStack(spacing: Bs.Spacing2,
+                    Label("Buttons").Class(Bs.H4),
                     FlexLayout(
-                        Button("Primary").Class("btn-primary").Margin(0, 0, 8, 8),
-                        Button("Secondary").Class("btn-secondary").Margin(0, 0, 8, 8),
-                        Button("Success").Class("btn-success").Margin(0, 0, 8, 8),
-                        Button("Danger").Class("btn-danger").Margin(0, 0, 8, 8),
-                        Button("Warning").Class("btn-warning").Margin(0, 0, 8, 8),
-                        Button("Info").Class("btn-info").Margin(0, 0, 8, 8)
+                        Button("Primary").Class(Bs.BtnPrimary).Margin(0, 0, 8, 8),
+                        Button("Secondary").Class(Bs.BtnSecondary).Margin(0, 0, 8, 8),
+                        Button("Success").Class(Bs.BtnSuccess).Margin(0, 0, 8, 8),
+                        Button("Danger").Class(Bs.BtnDanger).Margin(0, 0, 8, 8),
+                        Button("Warning").Class(Bs.BtnWarning).Margin(0, 0, 8, 8),
+                        Button("Info").Class(Bs.BtnInfo).Margin(0, 0, 8, 8)
                     ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start).AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
                 ),
 
                 // Outline Buttons Section
-                VStack(spacing: 8,
-                    Label("Outline Buttons").Class("h5"),
+                VStack(spacing: Bs.Spacing2,
+                    Label("Outline Buttons").Class(Bs.H5),
                     FlexLayout(
-                        Button("Primary").Class("btn-outline-primary").Margin(0, 0, 8, 8),
-                        Button("Secondary").Class("btn-outline-secondary").Margin(0, 0, 8, 8),
-                        Button("Success").Class("btn-outline-success").Margin(0, 0, 8, 8),
-                        Button("Danger").Class("btn-outline-danger").Margin(0, 0, 8, 8)
+                        Button("Primary").Class(Bs.BtnOutlinePrimary).Margin(0, 0, 8, 8),
+                        Button("Secondary").Class(Bs.BtnOutlineSecondary).Margin(0, 0, 8, 8),
+                        Button("Success").Class(Bs.BtnOutlineSuccess).Margin(0, 0, 8, 8),
+                        Button("Danger").Class(Bs.BtnOutlineDanger).Margin(0, 0, 8, 8)
                     ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start).AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
                 ),
 
                 // Button Sizes Section
-                VStack(spacing: 8,
-                    Label("Button Sizes").Class("h5"),
+                VStack(spacing: Bs.Spacing2,
+                    Label("Button Sizes").Class(Bs.H5),
                     FlexLayout(
-                        Button("Large").Class("btn-primary").Class("btn-lg").Margin(0, 0, 8, 8),
-                        Button("Default").Class("btn-primary").Margin(0, 0, 8, 8),
-                        Button("Small").Class("btn-primary").Class("btn-sm").Margin(0, 0, 8, 8)
+                        Button("Large").Class(Bs.BtnPrimary).Class(Bs.BtnLg).Margin(0, 0, 8, 8),
+                        Button("Default").Class(Bs.BtnPrimary).Margin(0, 0, 8, 8),
+                        Button("Small").Class(Bs.BtnPrimary).Class(Bs.BtnSm).Margin(0, 0, 8, 8)
                     ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start).AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
                 ),
 
                 // Pill Buttons Section
-                VStack(spacing: 8,
-                    Label("Pill Buttons").Class("h5"),
+                VStack(spacing: Bs.Spacing2,
+                    Label("Pill Buttons").Class(Bs.H5),
                     FlexLayout(
-                        Button("Primary Pill").Class("btn-primary").Class("btn-pill").Margin(0, 0, 8, 8),
-                        Button("Success Pill").Class("btn-success").Class("btn-pill").Margin(0, 0, 8, 8)
+                        Button("Primary Pill").Class(Bs.BtnPrimary).Class(Bs.BtnPill).Margin(0, 0, 8, 8),
+                        Button("Success Pill").Class(Bs.BtnSuccess).Class(Bs.BtnPill).Margin(0, 0, 8, 8)
                     ).Wrap(FlexWrap.Wrap).JustifyContent(Microsoft.Maui.Layouts.FlexJustify.Start).AlignItems(Microsoft.Maui.Layouts.FlexAlignItems.Center)
                 ),
 
                 // Progress Section
-                VStack(spacing: 12,
-                    Label("Progress").Class("h4"),
-                    VStack(spacing: 4,
+                VStack(spacing: Bs.Spacing3,
+                    Label("Progress").Class(Bs.H4),
+                    VStack(spacing: Bs.Spacing1,
                         Label("Primary (75%)"),
                         ProgressBar().Progress(0.75)
                     ),
-                    VStack(spacing: 4,
+                    VStack(spacing: Bs.Spacing1,
                         Label("Success (50%)"),
-                        ProgressBar().Progress(0.5).Class("progress-success")
+                        ProgressBar().Progress(0.5).Class(Bs.ProgressSuccess)
                     ),
-                    VStack(spacing: 4,
+                    VStack(spacing: Bs.Spacing1,
                         Label("Danger (25%)"),
-                        ProgressBar().Progress(0.25).Class("progress-danger")
+                        ProgressBar().Progress(0.25).Class(Bs.ProgressDanger)
                     )
                 ),
 
                 // Spinners Section
-                VStack(spacing: 8,
-                    Label("Spinners").Class("h4"),
-                    HStack(spacing: 16,
-                        ActivityIndicator().IsRunning(true).Color(GetResource<Color>("Primary")),
-                        ActivityIndicator().IsRunning(true).Color(GetResource<Color>("Success")),
-                        ActivityIndicator().IsRunning(true).Color(GetResource<Color>("Danger"))
+                VStack(spacing: Bs.Spacing2,
+                    Label("Spinners").Class(Bs.H4),
+                    HStack(spacing: Bs.Spacing3,
+                        ActivityIndicator().IsRunning(true).Color(BootstrapTheme.Current.Muted),
+                        ActivityIndicator().IsRunning(true).Color(BootstrapTheme.Current.Success),
+                        ActivityIndicator().IsRunning(true).Color(BootstrapTheme.Current.Danger)
                     )
                 )
             ).Padding(20)

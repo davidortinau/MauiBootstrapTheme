@@ -215,6 +215,49 @@ public partial class MyPage : ContentPage
 
 ### MauiReactor Pages
 
+For MauiReactor projects, enable Reactor code generation in your `.csproj`:
+
+```xml
+<PropertyGroup>
+  <BootstrapThemeGenerateReactor>true</BootstrapThemeGenerateReactor>
+</PropertyGroup>
+```
+
+This generates a `Bs` constants class and `*ReactorTheme` classes at build time.
+
+#### Using `Bs` Constants
+
+Use `Bs.*` constants instead of raw strings for IntelliSense and type safety:
+
+```csharp
+// Typography — use .Class() consistently
+Label("Dashboard").Class(Bs.H1)
+Label("Description").Class(Bs.Lead)
+
+// Buttons — use .Class() for composable styling
+Button("Save").Class(Bs.BtnPrimary)
+Button("Delete").Class(Bs.BtnDanger).Class(Bs.BtnSm)
+Button("Submit").Class(Bs.BtnSuccess).Class(Bs.BtnLg)
+
+// Forms
+Entry().Placeholder("Email").Class(Bs.FormControl)
+Picker().Class(Bs.FormSelect)
+
+// Cards & containers
+Border(content).Class(Bs.Card).Class(Bs.Shadow)
+
+// Spacing constants (Bootstrap scale → dp)
+VStack(spacing: Bs.Spacing3, ...)  // 16dp
+.Padding(Bs.Spacing4)              // 24dp
+
+// Bootstrap spacing utility helpers (no direct .Set(...))
+Border(label).BsPadding0()
+Border(label).BsPadding3()
+Border(label).BsMargin2()
+```
+
+#### Theme Change Handling
+
 Create a `BasePage` component that subscribes to `ThemeChanged` and calls `Invalidate()` to re-render:
 
 ```csharp
