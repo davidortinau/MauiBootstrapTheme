@@ -35,7 +35,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\MauiBootstrapTheme\MauiBootstrapTheme.csproj" />
     <ProjectReference Include="..\..\src\MauiBootstrapTheme.Build\MauiBootstrapTheme.Build.csproj" ReferenceOutputAssembly="false" />
-    <ProjectReference Include="..\..\..\hotreload-sentinel\src\HotReloadSentinel.Diagnostics\HotReloadSentinel.Diagnostics.csproj" Condition="'$(Configuration)'=='Debug'" />
   </ItemGroup>
 
   <ItemGroup>

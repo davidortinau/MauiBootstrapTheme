@@ -1,9 +1,6 @@
-﻿﻿﻿using MauiBootstrapTheme.Extensions;
+using MauiBootstrapTheme.Extensions;
 using MauiReactor;
 using Microsoft.Extensions.Logging;
-#if DEBUG
-using HotReloadSentinel.Diagnostics;
-#endif
 
 namespace MauiBootstrapTheme.Sample.Reactor;
 
@@ -32,7 +29,6 @@ public static class MauiProgram
 
 #if DEBUG
         builder.Logging.AddDebug();
-        builder.UseHotReloadDiagnostics();
 #endif
 
         return builder.Build();
