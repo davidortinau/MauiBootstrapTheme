@@ -11,27 +11,27 @@ class MainPage : Component
             FlyoutItem("Themes",
                 ShellContent().RenderContent(() => new ThemesPage()).Route("themes")
             ).Route("themes"),
-            FlyoutItem("Controls",
-                ShellContent().RenderContent(() => new ControlsPage()).Route("controls")
-            ).Route("controls"),
-            FlyoutItem("Inputs",
-                ShellContent().RenderContent(() => new InputsPage()).Route("inputs")
-            ).Route("inputs"),
-            FlyoutItem("Typography",
-                ShellContent().RenderContent(() => new TypographyPage()).Route("typography")
-            ).Route("typography"),
             FlyoutItem("Cards",
                 ShellContent().RenderContent(() => new CardsPage()).Route("cards")
             ).Route("cards"),
+            FlyoutItem("Controls",
+                ShellContent().RenderContent(() => new ControlsPage()).Route("controls")
+            ).Route("controls"),
             FlyoutItem("Forms",
                 ShellContent().RenderContent(() => new FormsPage()).Route("forms")
             ).Route("forms"),
-            FlyoutItem("Variants",
-                ShellContent().RenderContent(() => new VariantsPage()).Route("variants")
-            ).Route("variants"),
+            FlyoutItem("Inputs",
+                ShellContent().RenderContent(() => new InputsPage()).Route("inputs")
+            ).Route("inputs"),
             FlyoutItem("Spacing",
                 ShellContent().RenderContent(() => new SpacingPage()).Route("spacing")
-            ).Route("spacing")
+            ).Route("spacing"),
+            FlyoutItem("Typography",
+                ShellContent().RenderContent(() => new TypographyPage()).Route("typography")
+            ).Route("typography"),
+            FlyoutItem("Variants",
+                ShellContent().RenderContent(() => new VariantsPage()).Route("variants")
+            ).Route("variants")
         )
         .Title("Bootstrap Theme")
         .FlyoutBehavior(FlyoutBehavior.Flyout)

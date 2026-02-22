@@ -34,40 +34,40 @@
         </DataTemplate>
     </Shell.ItemTemplate>
 
-    <FlyoutItem Title="Controls" Route="controls">
-        <ShellContent ContentTemplate="{DataTemplate pages:ControlsPage}" />
+    <FlyoutItem Title="Themes" Route="themes">
+        <ShellContent ContentTemplate="{DataTemplate pages:ThemesPage}" />
     </FlyoutItem>
-    
-    <FlyoutItem Title="Inputs" Route="inputs">
-        <ShellContent ContentTemplate="{DataTemplate pages:InputsPage}" />
-    </FlyoutItem>
-    
-    <FlyoutItem Title="Typography" Route="typography">
-        <ShellContent ContentTemplate="{DataTemplate pages:TypographyPage}" />
-    </FlyoutItem>
-    
+
     <FlyoutItem Title="Cards" Route="cards">
         <ShellContent ContentTemplate="{DataTemplate pages:CardsPage}" />
     </FlyoutItem>
-    
-    <FlyoutItem Title="Themes" Route="themes">
-        <ShellContent ContentTemplate="{DataTemplate pages:ThemesPage}" />
+
+    <FlyoutItem Title="Controls" Route="controls">
+        <ShellContent ContentTemplate="{DataTemplate pages:ControlsPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Forms" Route="forms">
         <ShellContent ContentTemplate="{DataTemplate pages:FormsPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Visual States" Route="visualstates">
-        <ShellContent ContentTemplate="{DataTemplate pages:VisualStatesPage}" />
+    <FlyoutItem Title="Inputs" Route="inputs">
+        <ShellContent ContentTemplate="{DataTemplate pages:InputsPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Spacing" Route="spacing">
+        <ShellContent ContentTemplate="{DataTemplate pages:SpacingPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Typography" Route="typography">
+        <ShellContent ContentTemplate="{DataTemplate pages:TypographyPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Variants" Route="variants">
         <ShellContent ContentTemplate="{DataTemplate pages:VariantsPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Spacing" Route="spacing">
-        <ShellContent ContentTemplate="{DataTemplate pages:SpacingPage}" />
+    <FlyoutItem Title="Visual States" Route="visualstates">
+        <ShellContent ContentTemplate="{DataTemplate pages:VisualStatesPage}" />
     </FlyoutItem>
 
 </Shell>
