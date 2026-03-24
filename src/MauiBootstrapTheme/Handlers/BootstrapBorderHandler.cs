@@ -85,27 +85,37 @@ public static class BootstrapBorderHandler
         }
     }
 
-    private static IEnumerable<VisualElement> GetDescendants(View view, int depth, int maxDepth)
+    private const int MaxDescendantDepth = 10;
+
+    private static IEnumerable<VisualElement> GetDescendants(View view, int depth = 0, int maxDepth = MaxDescendantDepth)
     {
-        if (depth >= maxDepth)
-            yield break;
+        if (maxDepth <= 0) maxDepth = MaxDescendantDepth;
 
-        if (view is IVisualTreeElement tree)
+        var visited = new HashSet<object>(ReferenceEqualityComparer.Instance);
+        var queue = new Queue<(IVisualTreeElement element, int level)>();
+
+        if (view is IVisualTreeElement root)
+            queue.Enqueue((root, 0));
+
+        while (queue.Count > 0)
         {
-            foreach (var child in tree.GetVisualChildren())
-            {
-                if (child is VisualElement ve)
-                {
-                    if (depth > 0 && ve is Border)
-                        continue;
+            var (current, level) = queue.Dequeue();
+            if (level >= maxDepth)
+                continue;
 
-                    yield return ve;
-                    if (ve is View childView)
-                    {
-                        foreach (var desc in GetDescendants(childView, depth + 1, maxDepth))
-                            yield return desc;
-                    }
-                }
+            foreach (var child in current.GetVisualChildren())
+            {
+                if (child is not VisualElement ve || !visited.Add(ve))
+                    continue;
+
+                // Skip nested Borders (they handle their own styling)
+                if (level > 0 && ve is Border)
+                    continue;
+
+                yield return ve;
+
+                if (ve is IVisualTreeElement treeChild)
+                    queue.Enqueue((treeChild, level + 1));
             }
         }
     }

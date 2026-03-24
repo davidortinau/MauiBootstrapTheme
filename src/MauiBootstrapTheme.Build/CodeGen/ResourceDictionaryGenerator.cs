@@ -439,27 +439,44 @@ public partial class {className} : ResourceDictionary
             sb.AppendLine("                System.Diagnostics.Debug.WriteLine($\"ApplyThemeMode failed during init: {ex}\");");
             sb.AppendLine("            }");
             sb.AppendLine($"            var weakSelf = new WeakReference<{className}>(this);");
-            sb.AppendLine("            Application.Current.RequestedThemeChanged += (s, e) =>");
+            sb.AppendLine("            _themeChangedHandler = (s, e) =>");
             sb.AppendLine("            {");
             sb.AppendLine("                try");
             sb.AppendLine("                {");
             sb.AppendLine("                    if (Application.Current == null) return;");
             sb.AppendLine("                    if (weakSelf.TryGetTarget(out var self))");
             sb.AppendLine("                        self.ApplyThemeMode(e.RequestedTheme);");
+            sb.AppendLine("                    else if (Application.Current != null)");
+            sb.AppendLine("                        Application.Current.RequestedThemeChanged -= _themeChangedHandler;");
             sb.AppendLine("                }");
             sb.AppendLine("                catch (Exception ex)");
             sb.AppendLine("                {");
             sb.AppendLine("                    System.Diagnostics.Debug.WriteLine($\"ApplyThemeMode failed on theme change: {ex}\");");
             sb.AppendLine("                }");
             sb.AppendLine("            };");
+            sb.AppendLine("            Application.Current.RequestedThemeChanged += _themeChangedHandler;");
             sb.AppendLine("        }");
         }
 
         sb.AppendLine("    }");
 
-        // Generate ApplyThemeMode method for themes with dark mode
+        // Generate event handler field, Dispose pattern, and ApplyThemeMode for dark mode
         if (data.HasDarkMode)
         {
+            sb.AppendLine();
+            sb.AppendLine("    private EventHandler<AppThemeChangedEventArgs>? _themeChangedHandler;");
+            sb.AppendLine();
+            sb.AppendLine("    /// <summary>");
+            sb.AppendLine("    /// Unsubscribes from theme change events to prevent memory leaks.");
+            sb.AppendLine("    /// </summary>");
+            sb.AppendLine("    public void Dispose()");
+            sb.AppendLine("    {");
+            sb.AppendLine("        if (_themeChangedHandler != null && Application.Current != null)");
+            sb.AppendLine("        {");
+            sb.AppendLine("            Application.Current.RequestedThemeChanged -= _themeChangedHandler;");
+            sb.AppendLine("            _themeChangedHandler = null;");
+            sb.AppendLine("        }");
+            sb.AppendLine("    }");
             sb.AppendLine();
             EmitApplyThemeModeMethod(sb, data);
         }
@@ -473,20 +490,20 @@ public partial class {className} : ResourceDictionary
 
     private void EmitApplyThemeModeMethod(StringBuilder sb, Parsing.BootstrapThemeData data)
     {
-        sb.AppendLine("    private bool _isApplyingTheme;");
+        sb.AppendLine("    private int _isApplyingTheme;");
         sb.AppendLine();
         sb.AppendLine("    /// <summary>");
         sb.AppendLine("    /// Applies light or dark mode color overrides from the CSS [data-bs-theme=dark] block.");
         sb.AppendLine("    /// </summary>");
         sb.AppendLine("    private void ApplyThemeMode(AppTheme theme)");
         sb.AppendLine("    {");
-        sb.AppendLine("        if (_isApplyingTheme) return;");
+        sb.AppendLine("        if (System.Threading.Interlocked.CompareExchange(ref _isApplyingTheme, 1, 0) != 0) return;");
         sb.AppendLine("        if (!Microsoft.Maui.ApplicationModel.MainThread.IsMainThread)");
         sb.AppendLine("        {");
+        sb.AppendLine("            System.Threading.Interlocked.Exchange(ref _isApplyingTheme, 0);");
         sb.AppendLine("            Microsoft.Maui.ApplicationModel.MainThread.BeginInvokeOnMainThread(() => ApplyThemeMode(theme));");
         sb.AppendLine("            return;");
         sb.AppendLine("        }");
-        sb.AppendLine("        _isApplyingTheme = true;");
         sb.AppendLine("        try");
         sb.AppendLine("        {");
         sb.AppendLine();
@@ -604,7 +621,7 @@ public partial class {className} : ResourceDictionary
         sb.AppendLine("        }");
         sb.AppendLine("        finally");
         sb.AppendLine("        {");
-        sb.AppendLine("            _isApplyingTheme = false;");
+        sb.AppendLine("            System.Threading.Interlocked.Exchange(ref _isApplyingTheme, 0);");
         sb.AppendLine("        }");
         sb.AppendLine("    }");
     }
