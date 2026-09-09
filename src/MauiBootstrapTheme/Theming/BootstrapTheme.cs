@@ -727,3 +727,11 @@ public class BootstrapTheme
         SetTheme(theme);
     }
 }
+
+/// <summary>
+/// Provides a pre-built Bootstrap theme for applications that package theme definitions.
+/// </summary>
+public interface IBootstrapThemeProvider
+{
+    BootstrapTheme GetTheme();
+}

@@ -28,11 +28,11 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '11.0.100-rc.1.26425.128'
           dotnet-quality: 'preview'
 
-      - name: Install MAUI workload
-        run: dotnet workload install maui
+      - name: Restore MAUI workload set
+        run: dotnet workload restore
 
       - name: Restore
         run: dotnet restore MauiBootstrapTheme.sln
@@ -56,11 +56,23 @@ jobs:
       - name: Build Plugin.Maui.BootstrapTheme
         run: dotnet build src/MauiBootstrapTheme -c Release --no-restore
 
+      - name: Build default themes
+        run: dotnet build src/MauiBootstrapTheme.Themes.Default -c Release --no-restore
+
       - name: Test
         run: dotnet test tests/MauiBootstrapTheme.Tests -c Release --no-restore
 
-      - name: Build sample app
-        run: dotnet build samples/MauiBootstrapTheme.Sample -c Release -f net10.0-android --no-restore
+      - name: Run build validation
+        run: dotnet run --project tests/MauiBootstrapTheme.Build.Tests -c Release -f net11.0 -- samples/MauiBootstrapTheme.Sample/Resources/Themes "$RUNNER_TEMP/bootstrap-theme-output"
+
+      - name: Build XAML sample
+        run: dotnet build samples/MauiBootstrapTheme.Sample -c Release -f net11.0-maccatalyst --no-restore
+
+      - name: Build Blazor sample
+        run: dotnet build samples/MauiBootstrapTheme.Sample.Blazor -c Release -f net11.0-maccatalyst --no-restore
+
+      - name: Build Reactor sample
+        run: dotnet build samples/MauiBootstrapTheme.Sample.Reactor -c Release -f net11.0-maccatalyst --no-restore
 
       - name: Pack MauiBootstrapTheme.Build
         run: dotnet pack src/MauiBootstrapTheme.Build -c Release --no-build -p:Version=${{ steps.vars.outputs.version }} -o artifacts
