@@ -1,6 +1,6 @@
 ﻿using MauiBootstrapTheme.Extensions;
 using MauiBootstrapTheme.Theming;
-using MauiDevFlow.Agent;
+using Microsoft.Maui.DevFlow.Agent;
 
 namespace MauiBootstrapTheme.Sample;
 

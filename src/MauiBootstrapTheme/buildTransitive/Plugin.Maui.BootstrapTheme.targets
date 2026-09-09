@@ -7,7 +7,7 @@
              Condition="Exists('$(MSBuildThisFileDirectory)MauiBootstrapTheme.Build.dll')" />
 
   <PropertyGroup>
-    <BootstrapThemeOutputDir>$(MSBuildProjectDirectory)\obj\BootstrapTheme\</BootstrapThemeOutputDir>
+    <BootstrapThemeOutputDir>$(IntermediateOutputPath)BootstrapTheme\</BootstrapThemeOutputDir>
   </PropertyGroup>
 
   <!-- Discover CSS files marked as BootstrapCss -->

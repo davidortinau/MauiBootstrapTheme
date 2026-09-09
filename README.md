@@ -344,8 +344,12 @@ xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapThem
 
 ## Requirements
 
-- .NET 10.0+
-- MAUI workload installed
+- .NET 10.0 or .NET 11.0 RC1 SDK
+- MAUI workload for the selected SDK
+
+The library packages support .NET 10 and .NET 11 MAUI targets. The sample apps use .NET 11 RC1 and require SDK `11.0.100-rc.1.26425.128`, workload set `11.0.100-rc.1.26458.5`, Xcode 26.6 on macOS, and the Android or iOS platform tools for those targets. .NET 11 targets require Android API 24 or later and iOS or Mac Catalyst 17 or later.
+
+The repository uses the public `dotnet10` feed in `NuGet.config` for the preview MAUI DevFlow packages used by the Debug sample validation builds.
 
 ## Building from Source
 
@@ -353,11 +357,21 @@ xmlns:theme="clr-namespace:MauiBootstrapTheme.Theming;assembly=MauiBootstrapThem
 # Build the MSBuild task
 dotnet build src/MauiBootstrapTheme.Build
 
-# Build and run the sample app (macOS)
-dotnet build samples/MauiBootstrapTheme.Sample -f net10.0-maccatalyst -t:Run
+# Build and run the XAML sample app (macOS)
+dotnet build samples/MauiBootstrapTheme.Sample -f net11.0-maccatalyst -p:RuntimeIdentifier=maccatalyst-arm64 -t:Run
 
-# Run tests
-dotnet test tests/MauiBootstrapTheme.Build.Tests
+# Build and run the Blazor sample app (macOS)
+dotnet build samples/MauiBootstrapTheme.Sample.Blazor -f net11.0-maccatalyst -p:RuntimeIdentifier=maccatalyst-arm64 -t:Run
+
+# Build and run the MauiReactor sample app (macOS)
+dotnet build samples/MauiBootstrapTheme.Sample.Reactor -f net11.0-maccatalyst -p:RuntimeIdentifier=maccatalyst-arm64 -t:Run
+
+# Run unit tests
+dotnet test tests/MauiBootstrapTheme.Tests
+
+# Run CSS build validation
+dotnet run --project tests/MauiBootstrapTheme.Build.Tests -f net11.0 -- \
+  samples/MauiBootstrapTheme.Sample/Resources/Themes ./artifacts/theme-validation
 ```
 
 ## Contributing
